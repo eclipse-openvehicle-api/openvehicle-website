@@ -1,0 +1,54 @@
+
+.. _program_listing_file_sdv_vss_util_codegen_base.h:
+
+Program Listing for File codegen_base.h
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_vss_util_codegen_base.h>` (``sdv_vss_util\codegen_base.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CODEGEN_BASE_H
+   #define CODEGEN_BASE_H
+   
+   #include <map>
+   #include <string>
+   #include <sstream>
+   #include <cmath>
+   
+   class CCodeGeneratorBase
+   {
+   protected:
+       typedef std::map<std::string, std::string> CKeywordMap;
+   
+       static std::string ReplaceKeywords(const std::string& rssStr, const CKeywordMap& rmapKeywords, char cMarker = '%');
+   
+       template <typename T>
+       static std::string to_string(const T& rtVar)
+       {
+           std::ostringstream sstream;
+           sstream << rtVar;
+           return sstream.str();
+       }
+   
+       static std::string to_string(const double& rdVar)
+       {
+           std::ostringstream sstream;
+           sstream << rdVar;
+           if (std::round(rdVar) == rdVar) sstream << ".0";
+           return sstream.str();
+       }
+   
+       static std::string to_string(const float& rfVar)
+       {
+           std::ostringstream sstream;
+           sstream << rfVar;
+           if (std::round(rfVar) == rfVar) sstream << ".0";
+           sstream << "f";
+           return sstream.str();
+       }
+   };
+   
+   #endif // !defined CODEGEN_BASE_H

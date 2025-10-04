@@ -1,0 +1,134 @@
+
+.. _program_listing_file_interfaces_app.h:
+
+Program Listing for File app.h
+==============================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_app.h>` (``interfaces\app.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__APP_H__20251003_130454_65__
+   #define __IDL_GENERATED__APP_H__20251003_130454_65__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   #include "toml.h"
+   
+   namespace sdv
+   {
+       namespace app
+       {
+           enum class EAppOperationState : int32_t
+           {
+               not_started = 0,
+   
+               starting = 1,
+   
+               started = 2,
+   
+               initializing = 10,
+   
+               initialized = 12,
+   
+               configuring = 20,
+   
+               running = 30,
+   
+               shutting_down = 90,
+           };
+   
+           struct SAppEvent
+           {
+               uint32_t uiEventID;
+   
+               uint32_t uiInfo;
+           };
+   
+           static const uint32_t EVENT_OPERATION_STATE_CHANGED = 1;
+   
+           static const uint32_t EVENT_RUNNING_LOOP = 8;
+   
+           /*local*/ interface IAppEvent
+           {
+               static constexpr ::sdv::interface_id _id = 0xE545F66A4F61D52B;
+   
+               virtual void ProcessEvent(/*inout*/ SAppEvent& sEvent) = 0;
+           };
+   
+           enum class EAppContext : uint32_t
+           {
+               no_context = 0,
+   
+               standalone = 10,
+   
+               external = 20,
+   
+               isolated = 30,
+   
+               main = 100,
+   
+               essential = 5,
+   
+               maintenance = 80,
+           };
+   
+           /*local*/ interface IAppContext
+           {
+               static constexpr ::sdv::interface_id _id = 0x7D6C84691A3CCB78;
+   
+               virtual EAppContext GetContextType() const = 0;
+   
+               virtual uint32_t GetInstanceID() const = 0;
+   
+               virtual uint32_t GetRetries() const = 0;
+           };
+   
+           /*local*/ interface IAppControl
+           {
+               static constexpr ::sdv::interface_id _id = 0xED694A7D83569900;
+   
+               virtual bool Startup(/*in*/ const sdv::u8string& ssConfig, /*in*/ IInterfaceAccess* pEventHandler) = 0;
+   
+               virtual void RunLoop() = 0;
+   
+               virtual void Shutdown(/*in*/ bool bForce) = 0;
+           };
+   
+           interface IAppOperation
+           {
+               static constexpr ::sdv::interface_id _id = 0x23A03198AE6B8BD0;
+   
+               virtual EAppOperationState GetOperationState() const = 0;
+   
+               virtual void SetConfigMode() = 0;
+   
+               virtual void SetRunningMode() = 0;
+           };
+   
+           interface IAppShutdownRequest
+           {
+               static constexpr ::sdv::interface_id _id = 0x0133298619E6BF21;
+   
+               virtual void RequestShutdown() = 0;
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__APP_H__20251003_130454_76__)

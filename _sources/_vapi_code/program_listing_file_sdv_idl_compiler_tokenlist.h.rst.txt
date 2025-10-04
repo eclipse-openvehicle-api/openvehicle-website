@@ -1,0 +1,74 @@
+
+.. _program_listing_file_sdv_idl_compiler_tokenlist.h:
+
+Program Listing for File tokenlist.h
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_tokenlist.h>` (``sdv_idl_compiler\tokenlist.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef TOKENLIST_H
+   #define TOKENLIST_H
+   
+   #include "token.h"
+   #include <list>
+   
+   class CTokenList : public std::list<CToken>
+   {
+   public:
+       CTokenList();
+   
+       CTokenList(const CTokenList& rlstTokens);
+   
+       CTokenList(CTokenList&& rlstTokens) noexcept;
+   
+       CTokenList& operator=(const CTokenList& rlstTokens);
+   
+       CTokenList& operator=(CTokenList&& rlstTokens) noexcept;
+   
+       const CToken& Current(size_t nIndex = 0) const;
+   
+       const CToken& LastValid() const;
+   
+       CTokenList operator++(int) const;
+   
+       const CTokenList& operator++() const;
+   
+       bool End() const;
+   
+       void push_front(const CToken& rToken);
+       void push_front(CToken&& rToken);
+       void pop_front();
+   
+       void push_back(const CToken& rToken);
+       void push_back(CToken&& rToken);
+       void pop_back();
+   
+       void insert(const CToken& rToken);
+       void insert(CToken&& rToken);
+       template<class... Args>
+       CToken& emplace_back(Args&&... args);
+   
+   private:
+       mutable std::list<CToken>::iterator     m_itCurrent;    
+   };
+   
+   template<class... Args>
+   CToken& CTokenList::emplace_back(Args&&... args)
+   {
+       bool bEmpty = empty();
+       bool bEnd = bEmpty || m_itCurrent == end();
+       CToken& rToken = std::list<CToken>::emplace_back(args...);
+       if (bEmpty) m_itCurrent = begin();
+       else if (bEnd)
+       {
+           m_itCurrent = end();
+           --m_itCurrent;
+       }
+       return rToken;
+   }
+   
+   #endif // !defined(TOKENLIST_H)

@@ -1,0 +1,133 @@
+
+.. _program_listing_file_interfaces_core_ps.idl:
+
+Program Listing for File core_ps.idl
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_core_ps.idl>` (``interfaces\core_ps.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core.idl"
+   #include "process.idl"
+   
+   module sdv
+   {
+       module ps
+       {
+           exception XMarshallExcept
+           {};
+   
+           exception XMarshallNotInitialized : XMarshallExcept
+           {
+               const char _description[] = "Marshalling data between proxy and stub was not initialized or is in an invalid state.";
+           };
+   
+           exception XMarshallTimeout : XMarshallExcept
+           {
+               const char _description[] = "The marshalling call was timed out.";
+           };
+   
+           exception XMarshallMissingData : XMarshallExcept
+           {
+               const char _description[] = "Part of the marshalling data was lost during the marshalling call.";
+           };
+   
+           exception XMarshallVersion : XMarshallExcept
+           {
+               const char _description[] = "The marshalling interfaces of objects have different versions and therefore cannot be connected.";
+           };
+   
+           exception XMarshallIntegrity : XMarshallExcept
+           {
+               const char _description[] = "An integrity violation has occurred during marshalling.";
+           };
+   
+           exception XMarshallNoObject : XMarshallExcept
+           {
+               const char _description[] = "No marshalling object for the interface found.";
+           };
+   
+           enum EMarshallFlags : uint32
+           {
+               direction_output = 0x10,        
+               exception_triggered = 0x80,     
+           };
+   
+           struct SMarshallID
+           {
+               uint32                  uiHostID;       
+               process::TProcessID     tProcessID;     
+               uint32                  uiIdent;        
+               uint32                  uiControl;      
+           };
+   
+           typedef SMarshallID TMarshallID;
+   
+           struct SMarshall
+           {
+               EEndian             eEndian;        
+               uint16              uiVersion;      
+               interface_id        tIfcId;         
+               uint32              uiFuncIndex;    
+               sequence<uint16>    seqChecksums;   
+               uint32              uiFlags;        
+               uint16              uiHdrChecksum;  
+           };
+   
+           enum EMarshallDataInterpret : uint32
+           {
+               input_data = 0,    
+               output_data = 1,   
+           };
+   
+           struct SMarshallAddress
+           {
+               EEndian                 eEndian;        
+               uint16                  uiVersion;      
+               EMarshallDataInterpret  eInterpret;     
+               TMarshallID             tProxyID;       
+               TMarshallID             tStubID;        
+               uint64                  uiCallIndex;    
+           };
+   
+           interface IMarshallObjectIdent
+           {
+               void SetIdentification(in TMarshallID tMarshallID);
+           };
+   
+           local interface IMarshall
+           {
+               sequence<pointer<uint8>> Call(inout sequence<pointer<uint8>> seqInputData);
+           };
+   
+           interface IMarshallLink
+           {
+               void Link(in IMarshall pMarshall);
+   
+               void Unlink();
+           };
+   
+           interface IProxyControl
+           {
+               interface_t GetTargetInterface();
+           };
+   
+           interface IStubLink
+           {
+               void Link(in interface_t ifc);
+   
+               void Unlink();
+           };
+   
+           interface IMarshallAccess
+           {
+               interface_t GetProxy(in TMarshallID tStubID, in interface_id id) raises(XMarshallNoObject);
+   
+               TMarshallID GetStub(in interface_t ifc) raises(XMarshallNoObject);
+           };
+       }; // module ps
+   }; // module sdv

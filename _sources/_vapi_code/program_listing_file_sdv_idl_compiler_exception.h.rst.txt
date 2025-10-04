@@ -1,0 +1,123 @@
+
+.. _program_listing_file_sdv_idl_compiler_exception.h:
+
+Program Listing for File exception.h
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_exception.h>` (``sdv_idl_compiler\exception.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef EXCEPTION_H
+   #define EXCEPTION_H
+   
+   #include "logger.h"
+   #include "token.h"
+   #include <exception>
+   #include <sstream>
+   #include <cassert>
+   #include <filesystem>
+   #include <iostream>
+   
+   // Forward declaration
+   class CParser;
+   
+   struct CCompileException : public sdv::idl::XCompileError
+   {
+       friend class CParser;
+   
+   public:
+       CCompileException(const sdv::idl::XCompileError& rxCompileError);
+   
+       template <class... TAdditionalReason>
+       explicit CCompileException(const char* szReason, TAdditionalReason... tAdditionalReasons);
+   
+       template <class... TAdditionalReason>
+       explicit CCompileException(const CToken& rtoken, const char* szReason, TAdditionalReason... tAdditionalReasons);
+   
+       template <class... TAdditionalReason>
+       explicit CCompileException(const std::filesystem::path& rpath, const CToken& rtoken,
+           const char* szReason, TAdditionalReason... tAdditionalReasons);
+   
+        std::string GetPath() const;
+   
+       std::string GetReason() const;
+   
+       uint32_t GetLineNo() const;
+   
+       uint32_t GetColNo() const;
+   
+       std::string GetToken() const;
+   
+       std::string GetLine() const;
+   
+   private:
+       void SetPath(const std::filesystem::path& rpath);
+   
+       void SetLocation(const CToken& rtoken);
+   };
+   
+   template <class TParam>
+   void AddParamListToString(std::stringstream& rsstream, TParam param)
+   {
+       rsstream << param;
+   }
+   
+   template <class TParam, class... TAdditionalParams>
+   void AddParamListToString(std::stringstream& rsstream, TParam param, TAdditionalParams... tAdditionalParams)
+   {
+       rsstream << param;
+       AddParamListToString(rsstream, tAdditionalParams...);
+   }
+   
+   template <class... TAdditionalReason>
+   CCompileException::CCompileException(const char* szReason, TAdditionalReason... tAdditionalReasons) : sdv::idl::XCompileError{}
+   {
+       assert(szReason);
+       if (szReason)
+       {
+           std::stringstream sstream;
+           AddParamListToString(sstream, szReason, tAdditionalReasons...);
+           ssReason = sstream.str();
+       }
+       CLog log;
+       log << "EXCEPTION: " << ssReason << std::endl;
+   }
+   
+   template <class... TAdditionalReason>
+   CCompileException::CCompileException(const CToken& rtoken, const char* szReason, TAdditionalReason... tAdditionalReasons) :
+       sdv::idl::XCompileError{}
+   {
+       assert(szReason);
+       if (szReason)
+       {
+           std::stringstream sstream;
+           AddParamListToString(sstream, szReason, tAdditionalReasons...);
+           ssReason = sstream.str();
+       }
+       SetLocation(rtoken);
+       CLog log;
+       log << "EXCEPTION " << "[" << GetLineNo() << ", " << GetColNo() << "]: " << ssReason << std::endl;
+   }
+   
+   template <class... TAdditionalReason>
+   CCompileException::CCompileException(const std::filesystem::path& rpath, const CToken& rtoken,
+       const char* szReason, TAdditionalReason... tAdditionalReasons) :
+       CCompileException::CCompileException(rtoken, szReason, tAdditionalReasons...)
+   {
+       assert(szReason);
+       if (szReason)
+       {
+           std::stringstream sstream;
+           AddParamListToString(sstream, szReason, tAdditionalReasons...);
+           ssReason = sstream.str();
+       }
+       SetLocation(rtoken);
+       ssFile = rpath.generic_u8string();
+       CLog log;
+       log << "EXCEPTION " << rpath.generic_u8string() << " [" << GetLineNo() << ", " << GetColNo() << "]: " << ssReason << std::endl;
+   }
+   
+   #endif // !defined EXCEPTION_H

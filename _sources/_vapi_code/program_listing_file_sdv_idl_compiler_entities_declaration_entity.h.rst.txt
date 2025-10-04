@@ -1,0 +1,121 @@
+
+.. _program_listing_file_sdv_idl_compiler_entities_declaration_entity.h:
+
+Program Listing for File declaration_entity.h
+=============================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_entities_declaration_entity.h>` (``sdv_idl_compiler\entities\declaration_entity.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef BASIC_TYPE_ENTITY_H
+   #define BASIC_TYPE_ENTITY_H
+   
+   #include "entity_base.h"
+   #include "entity_value.h"
+   #include "../constvariant.h"
+   #include <vector>
+   
+   class CDeclarationEntity : public CEntity, public sdv::idl::IDeclarationEntity
+   {
+       friend CSimpleTypeValueNode;
+   public:
+       CDeclarationEntity(const CContextPtr& rptrContext, CEntityPtr ptrParent);
+   
+       CDeclarationEntity(const CContextPtr& rptrContext, CEntityPtr ptrParent, const CTokenList& rlstTokenList);
+   
+       virtual ~CDeclarationEntity() override = default;
+   
+       virtual sdv::interface_t GetInterface(sdv::interface_id idInterface) override;
+   
+       virtual sdv::IInterfaceAccess* GetDeclarationType() const override;
+   
+       virtual bool HasArray() const override;
+   
+       virtual sdv::sequence<sdv::idl::SArrayDimension> GetArrayDimensions() const override;
+   
+       virtual bool HasAssignment() const override;
+   
+       virtual sdv::u8string GetAssignment() const override;
+   
+       virtual sdv::idl::EDeclType GetBaseType() const { return m_typedecl.GetBaseType(); }
+   
+       CEntityPtr GetTypeEntity() const;
+   
+       virtual void Process() override;
+   
+       void ProcessDeclaration(const CTypeDeclaration& rTypeDecl);
+   
+       void PreprocessArrayDeclaration();
+   
+       void PreprocessTokenListVector(std::vector<CTokenList>& rvecTokenList);
+   
+       void PostProcess();
+   
+       virtual bool SupportAssignments() const { return false; }
+   
+       virtual bool RequiresAssignment() const;
+   
+       virtual bool CanSupportComplexTypeAssignments() const { return false; }
+   
+       virtual bool SupportArrays() const { return false; }
+   
+       virtual bool IsReadOnly() const override { return true; }
+   
+       virtual bool IsAnonymous() const override { return false; }
+   
+       virtual bool SupportMultipleDeclarations() const { return false; }
+   
+       virtual bool DoNotEnfoceNextDeclarationAfterComma() const { return false; }
+   
+       virtual bool SupportRaiseExceptions() const { return false; }
+   
+       virtual bool SupportSeparateSetGetRaiseExceptions() const { return false; }
+   
+       virtual bool SupportInterface() const { return false; }
+   
+       virtual bool SupportVoid() const { return false; }
+   
+       virtual bool RequiresParameters() const { return false; }
+   
+       virtual void SetOperationAsConst() {}
+   
+       virtual void CalcHash(CHashObject& rHash) const override;
+   
+   protected:
+       CEntityVector& GetParamVector() { return m_vecParameters; }
+   
+       const CEntityVector& GetParamVector() const { return m_vecParameters; }
+   
+       CEntityVector& GetExceptionVector() { return m_vecRaisesExceptions; }
+   
+       CEntityVector& GetReadExceptionVector() { return m_vecGetRaisesExceptions; }
+   
+       CEntityVector& GetWriteExceptionVector() { return m_vecSetRaisesExceptions; }
+   
+   private:
+   
+       enum class EProcessAssignmentProgression
+       {
+           unprocessed,            
+           currently_processing,   
+           processed,              
+       };
+   
+       CTypeDeclaration                m_typedecl;                         
+       std::vector<CTokenList>         m_vecMultiArraySizeTokenList;       
+       CTokenList                      m_lstAssignmentTokenList;           
+       std::vector<CTokenList>         m_vecRaisesExceptionsTokenList;     
+       std::vector<CTokenList>         m_vecSetRaisesExceptionsTokenList;  
+       std::vector<CTokenList>         m_vecGetRaisesExceptionsTokenList;  
+       std::vector<CTokenList>         m_vecParametersTokenList;           
+       EProcessAssignmentProgression   m_eProcAssState = EProcessAssignmentProgression::unprocessed;  
+       CEntityVector                   m_vecRaisesExceptions;              
+       CEntityVector                   m_vecGetRaisesExceptions;           
+       CEntityVector                   m_vecSetRaisesExceptions;           
+       CEntityVector                   m_vecParameters;                    
+   };
+   
+   #endif // !defined(BASIC_TYPE_ENTITY_H)

@@ -1,0 +1,96 @@
+
+.. _program_listing_file_interfaces_repository.idl:
+
+Program Listing for File repository.idl
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_repository.idl>` (``interfaces\repository.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core.idl"
+   #include "module.idl"
+   
+   module sdv
+   {
+       module core
+       {
+   
+           typedef uint64 TObjectID;
+   
+           interface IObjectAccess
+           {
+               IInterfaceAccess GetObject(in u8string ssObjectName);
+   
+               IInterfaceAccess GetObjectByID(in TObjectID tObjectID);
+           };
+   
+           enum EObjectInfoFlags : uint32
+           {
+               object_foreign = 0x00000100,        
+               object_controlled = 0x00008000,     
+               object_isolated = 0x00010000,       
+           };
+   
+           struct SObjectInfo
+           {
+               TObjectID       tObjectID;          
+               TModuleID       tModuleID;          
+               SClassInfo      sClassInfo;         
+               u8string        ssObjectName;       
+               u8string        ssObjectConfig;     
+               uint32          uiFlags;            
+   
+               // TODO... Proxy/Stub objects (tObjectID) and Process (tProcessID) information and host information.
+           };
+   
+           interface IRepositoryInfo
+           {
+               SClassInfo FindClass(in u8string ssClassName) const;
+   
+               sequence<SObjectInfo> GetObjectList() const;
+   
+               SObjectInfo GetObjectInfo(in TObjectID tObjectID) const;
+   
+               SObjectInfo FindObject(in u8string ssObjectName) const;
+           };
+   
+           interface IRepositoryControl
+           {
+               TObjectID CreateObject(in u8string ssClassName, in u8string ssObjectName, in u8string ssObjectConfig);
+   
+               TObjectID CreateObjectFromModule(in TModuleID tModuleID, in u8string ssClassName, in u8string ssObjectName,
+                   in u8string ssObjectConfig);
+   
+               boolean DestroyObject(in u8string ssObjectName);
+           };
+   
+           interface IRepositoryUtilityCreate
+           {
+               IInterfaceAccess CreateUtility(in u8string ssClassName, in u8string ssObjectConfig);
+           };
+   
+           local interface IRepositoryMarshallCreate
+           {
+               IInterfaceAccess CreateProxyObject(in interface_id id);
+   
+               IInterfaceAccess CreateStubObject(in interface_id id);
+           };
+   
+           interface IRegisterForeignObject
+           {
+               TObjectID RegisterObject(in IInterfaceAccess pObjectIfc, in u8string ssObjectName);
+           };
+   
+           interface ILinkCoreRepository
+           {
+               void LinkCoreRepository(in IInterfaceAccess pCoreRepository);
+   
+               void UnlinkCoreRepository();
+           };
+   
+       }; // module core
+   }; // module sdv

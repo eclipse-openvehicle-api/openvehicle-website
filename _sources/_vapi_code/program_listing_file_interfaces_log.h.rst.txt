@@ -1,0 +1,77 @@
+
+.. _program_listing_file_interfaces_log.h:
+
+Program Listing for File log.h
+==============================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_log.h>` (``interfaces\log.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__LOG_H__20251003_130453_979__
+   #define __IDL_GENERATED__LOG_H__20251003_130453_979__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   #include "process.h"
+   
+   namespace sdv
+   {
+       namespace core
+       {
+           enum class ELogSeverity : uint32_t
+           {
+               trace = 1,
+   
+               debug = 2,
+   
+               info = 3,
+   
+               warning = 4,
+   
+               error = 5,
+   
+               fatal = 6,
+           };
+   
+           interface ILoggerConfig
+           {
+               static constexpr ::sdv::interface_id _id = 0x79E629DFA82E226A;
+   
+               virtual void SetProgramTag(/*in*/ const sdv::u8string& ssTag) = 0;
+   
+               virtual sdv::u8string GetProgramTag() const = 0;
+   
+               virtual void SetLogFilter(/*in*/ ELogSeverity eSeverity, /*in*/ ELogSeverity eViewSeverity) = 0;
+   
+               virtual ELogSeverity GetLogFilter() const = 0;
+   
+               virtual ELogSeverity GetViewFilter() const = 0;
+           };
+   
+           interface ILogger
+           {
+               static constexpr ::sdv::interface_id _id = 0x4479E85567789789;
+   
+               virtual void Log(/*in*/ ELogSeverity eSeverity, /*in*/ const sdv::u8string& ssSrcFile, /*in*/ uint32_t iSrcLine, /*in*/ process::TProcessID tProcessID, /*in*/ const sdv::u8string& ssObjectName, /*in*/ const sdv::u8string& ssMessage) = 0;
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__LOG_H__20251003_130453_985__)

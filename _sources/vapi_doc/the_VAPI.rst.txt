@@ -1,0 +1,135 @@
+What is Open Vehicle API
+========================
+
+General
+-------
+
+The VAPI or Open Vehicle API is an abstract and complex topic, so for a better understanding please read the following topics and have a look at the :ref:`VAPI Glossary <vapi-glossary>`.
+
+What is the Open Vehicle API?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* The VAPI is an open component based framework in C++ for setting up and using a vehicle abstraction through multiple abstraction stages (:term:`VAPI Layer`).
+* Built :term:`VAPI Component` s don't rely on exact matching of compiler versions for compatibility, even multiple different compilers can be used to create a set of components that work together, for more details please see the :ref:`SDK requirements <requirements-for-vapi-sdk>`.
+* The VAPI is designed to be used event-driven, but can work in a timed context using :term:`Platform Abstraction` functionalities.
+
+What is the VAPI not?
+~~~~~~~~~~~~~~~~~~~~~
+
+* The VAPI is **not** yet developed under ISO 26262. But that's exactly the development of the :term:`VAPI Framework` is targeting for at the moment. The current development of the :term:`VAPI Framework` focuses on mixed critical to have a system with a safety instance and a QM mode instance.
+* The VAPI is **not** a fixed API description. The :term:`VAPI Framework` allows for any API descriptions (:term:`Interface Set` s) that consists of :term:`Interface` s. But we are part of projects which are looking forward to standardize interfaces. Therefore you will read on several placess about VSS (Vehicle Signal Specification) in the documentation. All examples are targeting for that.
+* The VAPI does **not** define communication interfaces except for communication between the :term:`VAPI Platform Integration` and the :term:`VAPI Framework` and VAPI-internal communication. There is no supposed communication or data exchange between :term:`VAPI Component` s and any non-internal tools and elements.
+
+.. _vapi-principles:
+
+VAPI Principles
+~~~~~~~~~~~~~~~
+
+The principles on which the VAPI is developed are:
+
+* The VAPI should be simple to use as an integrator and as a :term:`VAPI Component` developer. The provided :term:`VAPI Interface` s and :term:`VAPI support class` es should be easy to understand and use, hard to misuse, but still provide all needed functionality conveniently in a compact form.
+* External dependencies should be minimal.
+* Developed :term:`VAPI Component` s should be testable in isolation.
+* Developed :term:`VAPI Component` s only communicate via :term:`Interface` s to be replaceable in a system without reconfiguring or recompiling the system.
+* Communication is done through :term:`VAPI Layer`. The :term:`Platform Abstraction` and :term:`Vehicle Device` s only communicate with the :term:`Data Dispatch Service`, :term:`Basic Service` s only with :term:`Vehicle Device` s, :term:`Complex Service` s and :term:`Extern Application` s only with :term:`Basic Service` s and :term:`Complex Service` s.
+* Data units should be generalized through the different layers of the Vehicle API, as exemplary shown here:
+
+
+.. _requirements-for-vapi-sdk:
+
+Requirements of the VAPI SDK
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* The VAPI relies on virtual functions as a base of its :term:`Interface` s and on the use of a `vtable <https://en.wikipedia.org/wiki/Virtual_method_table>`_. To assure correct behaviour with other components, that may not have been compiled with the same compiler, an appropriate compiler has to implement polymorphism through vtables.
+* The VAPI relies on Runtime Type Information (RTTI) at compile time for now and requires this feature to be enabled.
+* The VAPI needs a compiler compatible with C++17 or later.
+* The VAPI Framework requires an underlying :term:`Platform Abstraction` that implements and exposes the required Interfaces.
+
+  * interprocess communication
+  * loading and unloading of shared libraries
+  * starting and stopping processes
+  * file reads and writes
+  * timed triggers
+
+* To compile VAPI Services from Source a compiler compatible with C++17 or later is needed.
+* The system the :term:`VAPI Framework` runs on must allow exceptions.
+* To assure correct behaviour, little endian systems are needed. Big endian systems may be possible, but are not (yet) officially supported. Remote machines in a single system **must not** differ in endianness!
+
+
+Overview
+--------
+
+The :term:`VAPI Framework` supports :term:`Mixed-Criticality` and focuses on the HPC to run in 2 modes (see also :ref:`Picture Mixed-Criticality <vapi-mixed_criticality>`
+
+* Safety context
+* Non-safety context (QM mode)
+  
+.. figure:: ../vapi_media/architecture/overview/VAPI_on_hpc.png
+   :name: fig-overview-on-hpc
+
+
+
+
+The Open Vehicle API framework comprises of:
+
+* a set of building and orchestration tools
+* a run-time managing binary components
+* services for communication and platform interface (logging, IPC, task timer)
+* management software to run components on different (virtual) machines and to run complex services and applications as isolated services
+* components and services to run on a local machine, a cloud-based SIL environment and a target HW on the HIL or in the vehicle
+
+.. figure:: ../vapi_media/architecture/overview/tools.png
+   :name: fig-overview-tools
+
+It contains already:
+
+* several executables and helper tools
+* a lot of core services ready to be used
+* Hardware abstraction components e.g. access to CAN bus.
+* Helper tools to auto generate several layers to access Can bus, FMU creation for Siumlation with ``OpenXilEnv`` and more.
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: More details under the hood:
+
+   under_the_hood
+
+.. _vapi-developer:
+
+Open Vehicle API Framework User
+-------------------------------
+
+There is not a single type of developer for the :term:`VAPI Framework`. Instead, one has to distinguish between different developer types and views depending on the topic to be implemented. The developer has not to know in which environment his component is finally running. That means the developer does not need to have or know about the final environment his component/application is running while he develops and debugs his component.
+
+Therefore, a final application may run on different platforms and may use multiple components which will come from different suppliers which may not know each other.
+
+VAPI Framework developer
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Enhances the framework core functionality and provides support classes for these core functionalities.
+
+Vehicle device developer
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Develops the abstraction of a specific hardware device and provides access to the device via one or more interfaces.
+
+Basic service developer
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Implements a single basic functionality of a vehicle using only interfaces of vehicle devices and provides this functionality to complex services and applications via Interfaces.
+
+Complex service developer
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Implements a single complex functionality of a vehicle using only interfaces of basic services and provides this functionality via Interfaces to be used by another complex services and applications.
+
+Application developer
+~~~~~~~~~~~~~~~~~~~~~
+
+Develops applications using the interfaces of the complex services. The complex services and the underlying vehicle devices and services can be provided by different suppliers.
+
+Platform integrator
+~~~~~~~~~~~~~~~~~~~
+
+Implements the platform abstraction (file access, process management, ...). This platform abstraction component is required either for a new platform or if an existing middleware must be adapted to use the :term:`VAPI Framework`. All interfaces of the platform abstraction need to be implemented.

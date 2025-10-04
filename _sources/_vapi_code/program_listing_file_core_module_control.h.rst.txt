@@ -1,0 +1,132 @@
+
+.. _program_listing_file_core_module_control.h:
+
+Program Listing for File module_control.h
+=========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_module_control.h>` (``core\module_control.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef MODULE_CONTROL_H
+   #define MODULE_CONTROL_H
+   
+   #include <support/interface_ptr.h>
+   #include <support/local_service_access.h>
+   #include <support/component_impl.h>
+   #include <mutex>
+   #include <list>
+   #include <set>
+   #include "toml_parser/parser_toml.h"
+   #include "module.h"
+   
+   class CModuleControl : public sdv::IInterfaceAccess, public sdv::core::IModuleControl, public sdv::core::IModuleControlConfig,
+       public sdv::core::IModuleInfo
+   {
+   public:
+       CModuleControl();
+   
+       CModuleControl(const CModuleControl& rctrl) = delete;
+   
+       CModuleControl(CModuleControl&& rctrl) = delete;
+   
+       virtual ~CModuleControl();
+   
+       // Interface map
+       // NOTE: Only the sdv::core::IModuleControlConfig interface should be accessible from here, since the module control is
+       // accessible through sdv::GetCore() function, which should not make all other interfaces accessible (the system needs to start
+       // and access should happen over sdv::core::GetObject()).
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::core::IModuleControlConfig)
+       END_SDV_INTERFACE_MAP()
+   
+       CModuleControl& operator=(const CModuleControl&) = delete;
+   
+       CModuleControl& operator=(CModuleControl&&) = delete;
+   
+       virtual bool AddModuleSearchDir(const sdv::u8string& ssDir) override;
+   
+       virtual sdv::sequence<sdv::u8string> GetModuleSearchDirs() const override;
+   
+       virtual sdv::sequence<sdv::core::SModuleInfo> GetModuleList() const override;
+   
+       virtual sdv::sequence<sdv::SClassInfo> GetClassList(/*in*/ sdv::core::TModuleID tModuleID) const override;
+   
+       virtual sdv::core::TModuleID Load(const sdv::u8string& ssModulePath) override;
+   
+       virtual bool Unload(sdv::core::TModuleID tModuleID) override;
+   
+       virtual bool HasActiveObjects(sdv::core::TModuleID tModuleID) const override;
+   
+       std::shared_ptr<CModuleInst> FindModuleByClass(const std::string& rssClass);
+   
+       std::shared_ptr<CModuleInst> GetModule(sdv::core::TModuleID tModuleID) const;
+   
+       void UnloadAll(const std::vector<sdv::core::TModuleID>& rvecIgnoreModules);
+   
+       void ResetConfigBaseline();
+   
+       std::string SaveConfig(const std::set<std::filesystem::path>& rsetIgnoreModule);
+   
+       sdv::core::TModuleID ContextLoad(const std::filesystem::path& rpathModule, const std::string& rssManifest);
+   
+       bool ContextUnload(sdv::core::TModuleID tModuleID, bool bForce);
+   
+   private:
+       std::shared_ptr<CModuleInst> FindModuleByPath(const std::filesystem::path& rpathModule) const;
+   
+       using TFNHasActiveObjects = bool();
+   
+       using TFNGetModuleFactory = sdv::IInterfaceAccess*(uint32_t);
+   
+       void AddCurrentPath();
+   
+       using TConfigSet = std::set<sdv::core::TModuleID>;
+       mutable std::recursive_mutex            m_mtxModules;           
+       std::list<std::shared_ptr<CModuleInst>> m_lstModules;           
+       std::list<std::filesystem::path>        m_lstSearchPaths;       
+       TConfigSet                              m_setConfigModules;     
+   };
+   
+   #ifndef DO_NOT_INCLUDE_IN_UNIT_TEST
+   
+   class CModuleControlService : public sdv::CSdvObject
+   {
+   public:
+       CModuleControlService() = default;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_CHAIN_MEMBER(GetModuleControl())
+           SDV_INTERFACE_ENTRY_MEMBER(sdv::core::IModuleInfo, GetModuleControl())
+           SDV_INTERFACE_SET_SECTION_CONDITION(EnableModuleControlAccess(), 1)
+           SDV_INTERFACE_SECTION(1)
+           SDV_INTERFACE_ENTRY_MEMBER(sdv::core::IModuleControl, GetModuleControl())
+           SDV_INTERFACE_DEFAULT_SECTION()
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_NAME("ModuleControlService")
+       DECLARE_OBJECT_SINGLETON()
+   
+       static CModuleControl& GetModuleControl();
+   
+       static bool EnableModuleControlAccess();
+   };
+   
+   DEFINE_SDV_OBJECT_NO_EXPORT(CModuleControlService)
+   #endif
+   
+   
+   #ifdef _WIN32
+   #ifdef __GNUC__
+   #pragma GCC diagnostic pop
+   #endif
+   #endif
+   
+   
+   #endif // !define MODULE_CONTROL_H

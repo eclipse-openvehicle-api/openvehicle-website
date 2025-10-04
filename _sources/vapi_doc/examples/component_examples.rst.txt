@@ -1,0 +1,104 @@
+.. _vapi-component_examples:
+
+Examples of Open Vehicle API
+============================
+
+Before starting with the examples we have to explain the wording.
+
+``Open Vehicle API`` is an application development framework above the middleware. In general context :term:`Vehicle Function` is often named as application or the other way around.
+
+.. image:: ../../vapi_media/examples/expression_in_contect_of_open_vapi.png
+
+In context of ``Open Vehicle API`` it is different: the :term:`Vehicle Function` will be implemented as :term:`Complex Service` . In context of ``Open Vehicle API`` an application is either an :term:`Standalone Application` or an :term:`Extern Application`. A :term:`Standalone Application` contains all :term:`VAPI Component` s while an :term:`Extern Application` connects itself to a running ``Open Vehicle API`` instance.
+
+A :term:`Complex Service` is meant to run in it own process and is supposed to connect to :term:`Basic Service` s and other :term:`Complex Service` s. A :term:`Complex Service` should not use :term:`interface` s of :term:`Vehicle Device` s. This will be avoided when we do not create :term:`Proxy` and :term:`Stub` code for the :term:`Vehicle Device` :term:`interface`.
+
+.. hint:: 
+
+   .. code-block:: text
+
+      General layout of a standalone application:
+
+      sdv::app::CAppControl appcontrol;
+      appcontrol.AddModuleSearchDir(<path_to_component_binaries>);
+      appcontrol.Startup("");
+      appcontrol.SetConfigMode();
+      appcontrol.AddConfigSearchDir(<path_to_configuration_files>);
+
+      appcontrol->LoadConfig(<load_data_dispatch_service>);
+      appcontrol->LoadConfig(<load_tasktimer_service>);
+      - register your signals or load a data link component (which will register signals)
+      appcontrol->LoadConfig(<load_your_components>);
+      appcontrol.SetRunningMode();
+
+         ... run your application
+
+      - unregister signals in case no data link component was used
+      appcontrol.Shutdown();
+
+Basic Examples
+--------------
+
+The :term:`VAPI Framework` contains several different types of examples.
+
+.. toctree::
+   :maxdepth: 2
+
+   basic_examples/basic_examples
+
+**Basic examples:** First it is recommended to have a closer look at the basic examples to understand the basics of a SDV component and the principles of the framework.
+
+Headlight Example
+-----------------
+
+.. toctree::
+   :maxdepth: 1
+   
+   auto_headlight_example/auto_headlight_example
+
+**Headlight example:** This example shows a simple function. If the vehicle is in a tunnel, the headlights are turned on
+Outside of the tunnel the lights are switched off.
+
+Door Service Example
+--------------------
+
+.. toctree::
+   :maxdepth: 1
+   
+   door_service_example/door_service_example
+
+**Door service example:** This example shows one possibility to abstract a vehicle to support multiple doors.
+Additional it contains the creation of an FMU to simulate :term:`VAPI component` s in the open source software ``OpenXilEnv``.
+
+Open Trunk Example
+--------------------
+
+.. toctree::
+   :maxdepth: 1
+   
+   open_trunk_example/open_trunk_example
+
+**Open trunk example:** This example will show a :term:`Mixed-Criticality` scenario: Two :term:`VAPI Component` s. As the example is running only one VAPI instance, the :term:`QM Function` can avoid the connection to the safety :term:`Complex Service` just by bypassing and using the :term:`Basic Service` directly. In :term:`Mixed-Criticality` mode the connection would be prevendet and the :term:`Complex Service` in this example could be seen as safety, ASIL rated component.
+
+System Demo Example
+-------------------
+
+.. toctree::
+   :maxdepth: 1
+   
+   system_demo_example/system_demo   
+
+**System demo example:** explains the different layers, how signals are handled and how an application or a core instance could look like.
+Also the helper utilities ``sdv_dbc_util`` and ``sdv_vss_utl`` to create auto generated code are descripted.
+
+.. important:: This example is worth to spent a time to deep dive into it as it contains the complete stack: its build up with auto generated code, runs with and without data link, generates an installation and shows how an external application connects itself to a running VAPI core instance.
+
+
+
+Additional Examples
+-------------------
+
+.. toctree::
+   :maxdepth: 2
+   
+   additional_examples/additional_examples

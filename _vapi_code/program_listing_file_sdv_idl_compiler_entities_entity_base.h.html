@@ -1,0 +1,1191 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Program Listing for File entity_base.h &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/program_listing_file_sdv_idl_compiler_entities_entity_base.h';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Program...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="program-listing-for-file-entity-base-h">
+<span id="program-listing-file-sdv-idl-compiler-entities-entity-base-h"></span><h1>Program Listing for File entity_base.h<a class="headerlink" href="#program-listing-for-file-entity-base-h" title="Permalink to this heading">#</a></h1>
+<p>↰ <a class="reference internal" href="file_sdv_idl_compiler_entities_entity_base.h.html#file-sdv-idl-compiler-entities-entity-base-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">sdv_idl_compiler\entities\entity_base.h</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef ENTITY_BASE_H</span>
+<span class="cp">#define ENTITY_BASE_H</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../includes.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../token.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../tokenlist.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../exception.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;memory&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;list&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;map&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;type_traits&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;hash_calc.h&quot;</span>
+
+<span class="cp">#define DONT_LOAD_CORE_TYPES</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/interface_ptr.h&gt;</span>
+
+<span class="c1">// Forward declaration</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CEntity</span><span class="p">;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CParser</span><span class="p">;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CEntityValueNode</span><span class="p">;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CTypedefEntity</span><span class="p">;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CContext</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CEntity</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">CEntityMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">CEntityPtr</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">CEntityList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">CEntityPtr</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">CEntityVector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">CEntityPtr</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">CValueNodePtr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CEntityValueNode</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">CEntityValueVector</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">CValueNodePtr</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="kr">inline</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsIntegralDeclType</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="w"> </span><span class="n">eType</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">eType</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_short</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_long</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_long_long</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_unsigned_short</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_unsigned_long</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_unsigned_long_long</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_char</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_char16</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_char32</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_wchar</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_boolean</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_native</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_octet</span><span class="p">:</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="k">default</span><span class="o">:</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsSignedDeclType</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="w"> </span><span class="n">eType</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">eType</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_short</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_long</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_long_long</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_char</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_float</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_double</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_long_double</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_fixed</span><span class="p">:</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="k">default</span><span class="o">:</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsUnsignedDeclType</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="w"> </span><span class="n">eType</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">eType</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_unsigned_short</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_unsigned_long</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_unsigned_long_long</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_char16</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_char32</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_wchar</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_boolean</span><span class="p">:</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_octet</span><span class="p">:</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">idl</span><span class="o">::</span><span class="no">EDeclType</span><span class="o">::</span><span class="no">decltype_native</span><span class="p">:</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">is_unsigned_v</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">default</span><span class="o">:</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">using</span><span class="w"> </span><span class="n">TDeclTypeAssoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">TDeclTypeAssoc</span><span class="o">&gt;</span><span class="w"> </span><span class="n">g_vecDeclTypes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;short&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_short</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;unsigned short&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_unsigned_short</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;long&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_long</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;unsigned long&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_unsigned_long</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;long long&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_long_long</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;unsigned long long&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_unsigned_long_long</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;fixed&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_fixed</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;float&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_float</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;double&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_double</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;long double&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_long_double</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;char&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_char</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;wchar&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_wchar</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;int8&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_char</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;int16&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_short</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;int32&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_long</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;int64&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_long_long</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;int&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_long</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;uint8&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_octet</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;uint16&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_unsigned_short</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;uint32&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_unsigned_long</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;uint64&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_unsigned_long_long</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;uint&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_unsigned_long</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;boolean&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_boolean</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;native&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_native</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;octet&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_octet</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;byte&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_octet</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;string&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_string</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;wstring&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_wstring</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;enum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_enum</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;struct&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_struct</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;union&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_union</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;operation&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_operation</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;attribute&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_parameter</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;enum_entry&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_enum_entry</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;case_entry&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_case_entry</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;typedef&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_typedef</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;sequence&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_sequence</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;map&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_map</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;bitset&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_bitset</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;bitfield&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_bitfield</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;bitmask&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_bitmask</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;any&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_any</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="s">&quot;void&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_void</span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CTypeDeclaration</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">IDeclarationType</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="p">)</span>
+<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">IDeclarationType</span><span class="p">)</span>
+<span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="w"> </span><span class="n">GetBaseType</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetBaseType</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="w"> </span><span class="n">eBaseType</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="w"> </span><span class="nf">GetTypeString</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetTypeString</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssType</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">AddTypeString</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rss</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="nf">GetTypeDefinition</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="nf">GetTypeDefinitionEntityPtr</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetTypeDefinitionEntityPtr</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CEntityPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rptrDefinition</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">GetFixedLength</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetFixedLength</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiFixedLength</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">GetDecimals</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetDecimals</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiDecimals</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="nf">GetValueType</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetValueTypePtr</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CTypeDeclaration</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rptrValueType</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="nf">GetKeyType</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetKeyTypePtr</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CTypeDeclaration</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rptrKeyType</span><span class="p">);</span>
+
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="w"> </span><span class="n">m_eBaseType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="o">::</span><span class="n">decltype_unknown</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">m_ssOriginalType</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="n">m_ptrOriginalType</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">m_uiFixedLen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">m_uiDecimals</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CTypeDeclaration</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_ptrValueType</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CTypeDeclaration</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_ptrKeyType</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// TODO:</span>
+<span class="c1">// - Const complex entities need to be told, that they are const during assignment.</span>
+<span class="c1">// - Deal with the case of forward declaration (why is this needed, there are no references and no pointers)?</span>
+<span class="c1">// - Deal with the case of ambiguity through inheritance:</span>
+<span class="c1">//     struct S1{ const int32 i1 = 10; };</span>
+<span class="c1">//     struct S2{ const int32 i1 = 20; };</span>
+<span class="c1">//     struct S3 : S1, S2 { int32 j1[i1]; }; --&gt; ERROR</span>
+<span class="c1">// - Not allowed to assign dynamic values when the parent value is a const value.</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CEntity</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">IEntityInfo</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">IEntityComments</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">IEntityContext</span><span class="p">,</span>
+<span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">IForwardDeclarationEntity</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">enable_shared_from_this</span><span class="o">&lt;</span><span class="n">CEntity</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">friend</span><span class="w"> </span><span class="n">CTypedefEntity</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">CEntity</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CContextPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rptrContext</span><span class="p">,</span><span class="w"> </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="n">ptrParent</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">CEntity</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CContextPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rptrContext</span><span class="p">,</span><span class="w"> </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="n">ptrParent</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">CTokenList</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rlstTokenList</span><span class="p">);</span>
+
+<span class="k">protected</span><span class="o">:</span>
+<span class="w">    </span><span class="n">CEntity</span><span class="p">(</span><span class="n">CParser</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rParser</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">CContextPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rptrContext</span><span class="p">);</span>
+<span class="k">public</span><span class="o">:</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">CEntity</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">interface_t</span><span class="w"> </span><span class="nf">GetInterface</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">interface_id</span><span class="w"> </span><span class="n">idInterface</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EEntityType</span><span class="w"> </span><span class="nf">GetType</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="nf">GetEntity</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">   </span><span class="k">virtual</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">GetDeclTypeStr</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">bResolveTypedef</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TEntity</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="n">TEntity</span><span class="o">*</span><span class="w"> </span><span class="n">Get</span><span class="p">();</span>
+<span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TEntity</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">TEntity</span><span class="o">*</span><span class="w"> </span><span class="n">Get</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Process</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="w"> </span><span class="nf">GetName</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="w"> </span><span class="nf">GetScopedName</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">MakeFullScoped</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssExpression</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsEqual</span><span class="p">(</span><span class="n">CEntityPtr</span><span class="w"> </span><span class="n">ptrEntity</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">GetScopedName</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ptrEntity</span><span class="o">-&gt;</span><span class="n">GetScopedName</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">CContextPtr</span><span class="w"> </span><span class="nf">GetContext</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CContextPtr</span><span class="w"> </span><span class="nf">GetContext</span><span class="p">();</span>
+<span class="w">    </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="nf">GetParentEntity</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="nf">GetParentEntity</span><span class="p">();</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="nf">GetParent</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="nf">GetRootEntity</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="nf">GetRootEntity</span><span class="p">();</span>
+<span class="w">    </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="nf">GetResolvedEntity</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="nf">GetResolvedEntity</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetCommentTokens</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CTokenList</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rlstComments</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bPreceeding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">CTokenList</span><span class="w"> </span><span class="nf">GetPreCommentTokenList</span><span class="p">();</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessPostCommentTokenList</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiLine</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="w"> </span><span class="nf">GetComments</span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ruiFlags</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">IEntityContext</span><span class="o">::</span><span class="n">ELocation</span><span class="w"> </span><span class="nf">GetLocation</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="w"> </span><span class="nf">GetSourcePath</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">GetPosition</span><span class="p">(</span><span class="kt">uint32_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ruiLineBegin</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ruiColBegin</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ruiLineEnd</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ruiColEnd</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetBeginPosition</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiLine</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiCol</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">m_uiLineBegin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uiLine</span><span class="p">;</span><span class="w"> </span><span class="n">m_uiColBegin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uiCol</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetEndPosition</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiLine</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiCol</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">m_uiLineEnd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uiLine</span><span class="p">;</span><span class="w"> </span><span class="n">m_uiColEnd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uiCol</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">CalcHash</span><span class="p">(</span><span class="n">CHashObject</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rHash</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">CParser</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">GetParserRef</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CParser</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">GetParserRef</span><span class="p">();</span>
+<span class="k">protected</span><span class="o">:</span>
+<span class="w">    </span><span class="n">CToken</span><span class="w"> </span><span class="n">GetToken</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">CToken</span><span class="w"> </span><span class="nf">GetLastValidToken</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">CToken</span><span class="w"> </span><span class="nf">PeekToken</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">nIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">PrependToken</span><span class="p">(</span><span class="n">CToken</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rToken</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TEntity</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">TParams</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="n">CreateChild</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CContextPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rptrContext</span><span class="p">,</span><span class="w"> </span><span class="n">CEntity</span><span class="o">*</span><span class="w"> </span><span class="n">pParent</span><span class="p">,</span><span class="w"> </span><span class="n">TParams</span><span class="p">...</span><span class="w"> </span><span class="n">tParams</span><span class="p">);</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="n">Find</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssScopedName</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bCheckParent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TEntity</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="n">TEntity</span><span class="o">*</span><span class="w"> </span><span class="n">Find</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssScopedName</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">CValueNodePtr</span><span class="w"> </span><span class="nf">FindValue</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CTokenList</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rlstScopedNameInclMembers</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">CValueNodePtr</span><span class="w"> </span><span class="nf">FindValue</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssScopedNameInclMembers</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TValueNode</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="n">TValueNode</span><span class="o">*</span><span class="w"> </span><span class="n">FindValue</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssScopedNameInclMembers</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">CConstVariant</span><span class="w"> </span><span class="nf">FindValueVariant</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssScopedNameInclMembers</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="nf">GetId</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">ForwardDeclaration</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m_bForwardDeclaration</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsRootEntity</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsExtendable</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">SupportsChildren</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">CValueNodePtr</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">ValueRef</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m_ptrValue</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="n">CValueNodePtr</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">ValueRef</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m_ptrValue</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">CEntityPtr</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ProcessScopedName</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">bNoSearchError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">CEntityPtr</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ProcessScopedName</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CTokenList</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rlstExpression</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bNoSearchError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="k">protected</span><span class="o">:</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">CConstVariant</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ProcessNumericExpression</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CTokenList</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rlstExpression</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiPrecedence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">CConstVariant</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ProcessStringExpression</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CTokenList</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rlstExpression</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">CTypeDeclaration</span><span class="w"> </span><span class="nf">ProcessType</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">bNoSearchError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetName</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssName</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bForwardDeclaration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bNoInsert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessSystemTypeAssignments</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">AddChild</span><span class="p">(</span><span class="n">CEntityPtr</span><span class="w"> </span><span class="n">ptrChild</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">CEntityPtr</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">FindLocal</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssName</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bDeclaration</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="nf">FindMember</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssScopedName</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">CEntityVector</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">GetChildrenVector</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m_vecChildren</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">DeclTypeToString</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="w"> </span><span class="n">eType</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">EDeclType</span><span class="w"> </span><span class="nf">StringToDeclType</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssType</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CEntityIterator</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">idl</span><span class="o">::</span><span class="n">IEntityIterator</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">CEntityIterator</span><span class="p">(</span><span class="n">CEntityVector</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rvecEntities</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">interface_t</span><span class="w"> </span><span class="nf">GetInterface</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">interface_id</span><span class="w"> </span><span class="n">idInterface</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">GetCount</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="nf">GetEntityByIndex</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiIndex</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="n">CEntityVector</span><span class="o">&amp;</span><span class="w"> </span><span class="n">m_rvecEntities</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">CContextPtr</span><span class="w">                     </span><span class="n">m_ptrContext</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CEntityPtr</span><span class="w">                      </span><span class="n">m_ptrParent</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CParser</span><span class="o">*</span><span class="w">                        </span><span class="n">m_pParser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CTokenList</span><span class="w">                      </span><span class="n">m_lstLocalTokenList</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">                     </span><span class="n">m_ssName</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CEntityVector</span><span class="w">                   </span><span class="n">m_vecChildren</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CEntityList</span><span class="w">                     </span><span class="n">m_lstUnassigned</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CEntityMap</span><span class="o">&gt;</span><span class="w">     </span><span class="n">m_ptrChildDefMap</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CEntityMap</span><span class="o">&gt;</span><span class="w">     </span><span class="n">m_ptrChildDeclMap</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                            </span><span class="n">m_bForwardDeclaration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CValueNodePtr</span><span class="w">                   </span><span class="n">m_ptrValue</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">                     </span><span class="n">m_ssComments</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w">                        </span><span class="n">m_uiCommentFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w">                        </span><span class="n">m_uiLineBegin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w">                        </span><span class="n">m_uiColBegin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w">                        </span><span class="n">m_uiLineEnd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w">                        </span><span class="n">m_uiColEnd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">TDeclTypeAssoc</span><span class="o">&gt;</span><span class="w">    </span><span class="n">m_vecDeclTypes</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TEntity</span><span class="o">&gt;</span>
+<span class="n">TEntity</span><span class="o">*</span><span class="w"> </span><span class="n">CEntity</span><span class="o">::</span><span class="n">Get</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">TEntity</span><span class="o">*&gt;</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TEntity</span><span class="o">&gt;</span>
+<span class="k">const</span><span class="w"> </span><span class="n">TEntity</span><span class="o">*</span><span class="w"> </span><span class="n">CEntity</span><span class="o">::</span><span class="n">Get</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="n">TEntity</span><span class="o">*&gt;</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TEntity</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">TParams</span><span class="o">&gt;</span>
+<span class="kr">inline</span><span class="w"> </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="n">CEntity</span><span class="o">::</span><span class="n">CreateChild</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CContextPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rptrContext</span><span class="p">,</span><span class="w"> </span><span class="n">CEntity</span><span class="o">*</span><span class="w"> </span><span class="n">pParent</span><span class="p">,</span><span class="w"> </span><span class="n">TParams</span><span class="p">...</span><span class="w"> </span><span class="n">tParams</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Check to see if TEntity derives from CEntity.</span>
+<span class="w">    </span><span class="k">static_assert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_base_of_v</span><span class="o">&lt;</span><span class="n">CEntity</span><span class="p">,</span><span class="w"> </span><span class="n">TEntity</span><span class="o">&gt;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Valid parent entity?</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">pParent</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="n">CCompileException</span><span class="p">(</span><span class="s">&quot;Internal error: missing parent.&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Is the creation of children allowed?</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">pParent</span><span class="o">-&gt;</span><span class="n">SupportsChildren</span><span class="p">())</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="n">CCompileException</span><span class="p">(</span><span class="s">&quot;Internal error: trying to add an entity to a parent entity that doesn&#39;t support this.&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// Get the shared pointer</span>
+<span class="w">    </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="n">ptrParent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pParent</span><span class="o">-&gt;</span><span class="n">shared_from_this</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Create the entity class</span>
+<span class="w">    </span><span class="n">CEntityPtr</span><span class="w"> </span><span class="n">ptrEntity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">TEntity</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rptrContext</span><span class="p">,</span><span class="w"> </span><span class="n">ptrParent</span><span class="p">,</span><span class="w"> </span><span class="n">tParams</span><span class="p">...);</span>
+
+<span class="w">    </span><span class="c1">// Add the entity to the parent&#39;s children list.</span>
+<span class="w">    </span><span class="n">pParent</span><span class="o">-&gt;</span><span class="n">AddChild</span><span class="p">(</span><span class="n">ptrEntity</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ptrEntity</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TEntity</span><span class="o">&gt;</span>
+<span class="n">TEntity</span><span class="o">*</span><span class="w"> </span><span class="n">CEntity</span><span class="o">::</span><span class="n">Find</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssScopedName</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">TEntity</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">Find</span><span class="p">(</span><span class="n">rssScopedName</span><span class="p">).</span><span class="n">get</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TValueNode</span><span class="o">&gt;</span>
+<span class="n">TValueNode</span><span class="o">*</span><span class="w"> </span><span class="n">CEntity</span><span class="o">::</span><span class="n">FindValue</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssScopedNameInclMembers</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">ptrtValueNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FindValue</span><span class="p">(</span><span class="n">rssScopedNameInclMembers</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">dynamic_cast</span><span class="o">&lt;</span><span class="n">TValueNode</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">ptrtValueNode</span><span class="p">.</span><span class="n">get</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="cp">#endif </span><span class="c1">// !defined(ENTITY_BASE_H)</span>
+</pre></div>
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

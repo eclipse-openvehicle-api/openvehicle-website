@@ -1,0 +1,104 @@
+
+.. _program_listing_file_sdv_idl_compiler_entities_definition_entity.h:
+
+Program Listing for File definition_entity.h
+============================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_entities_definition_entity.h>` (``sdv_idl_compiler\entities\definition_entity.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef DEFINITION_ENTITY_H
+   #define DEFINITION_ENTITY_H
+   
+   #include "entity_base.h"
+   
+   enum class EDefinitionSupport : uint32_t
+   {
+       support_variable,               
+       support_const_variable,         
+       support_case_declaration,       
+       support_enum_entry,             
+       support_module,                 
+       support_typedef,                
+       support_interface,              
+       support_struct,                 
+       support_union,                  
+       support_enum,                   
+       support_exception,              
+       support_attribute,              
+       support_operation,              
+   };
+   
+   class CDefinitionEntity : public CEntity, public sdv::idl::IDefinitionEntity
+   {
+   public:
+       CDefinitionEntity(const CContextPtr& rptrContext, CEntityPtr ptrParent);
+   
+   protected:
+       CDefinitionEntity(CParser& rParser, const CContextPtr& rptrContext);
+   public:
+   
+       virtual ~CDefinitionEntity() override = default;
+   
+       virtual sdv::interface_t GetInterface(sdv::interface_id idInterface) override;
+   
+       virtual void ProcessContent();
+   
+       virtual void Process() override;
+   
+       virtual void ProcessDefinitionAddendum();
+   
+       void CreateInheritanceValueChildNodes();
+   
+       virtual bool IsUnnamed() const override { return m_bAnonymousDefinition; };
+   
+       virtual bool Supports(EDefinitionSupport eSupport) const = 0;
+   
+       virtual bool SupportsChildren() const override { return true; }
+   
+       virtual bool SupportsInheritance() const { return false; }
+   
+       virtual bool SupportsAnonymous() const { return false; }
+   
+       virtual bool SupportContentAttributes() const { return false; }
+   
+       virtual bool SupportContentOperations() const { return false; }
+   
+       virtual bool RequireContentDefinition() const { return m_bRequiresContent; }
+   
+       virtual bool RequireDeclaration() const { return IsUnnamed(); }
+   
+       virtual bool AllowAutoTransparentDeclaration() const { return false; }
+   
+       virtual sdv::idl::IEntityIterator* GetChildren() override;
+   
+       virtual sdv::idl::IEntityIterator* GetInheritance() override;
+   
+       virtual void CalcHash(CHashObject& rHash) const override;
+   
+       const CEntityList GetDeclMembers() const;
+   
+   protected:
+       virtual void AddChild(CEntityPtr ptrChild) override;
+   
+       virtual std::pair<CEntityPtr, bool> FindLocal(const std::string& rssName, bool bDeclaration) const override;
+   
+       virtual void CreateValueNode() {};
+   
+   protected:
+       CEntityVector           m_vecInheritance;               
+       CEntityList             m_lstTypeMembers;               
+       CEntityList             m_lstConstMembers;              
+       CEntityList             m_lstDeclMembers;               
+       CEntityList             m_lstAttributesOperation;       
+       bool                    m_bRequiresContent = false;     
+       bool                    m_bAnonymousDefinition = false; 
+       CEntityIterator         m_iteratorChildren;             
+       CEntityIterator         m_iteratorInheritance;          
+   };
+   
+   
+   #endif // !defined(DEFINITION_ENTITY_H)

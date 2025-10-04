@@ -1,0 +1,87 @@
+
+.. _program_listing_file_sdv_idl_compiler_codepos.h:
+
+Program Listing for File codepos.h
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_codepos.h>` (``sdv_idl_compiler\codepos.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CODEPOS_H
+   #define CODEPOS_H
+   
+   #include "lexerbase.h"
+   #include <cstdint>
+   #include <list>
+   #include <string>
+   
+   // Forward declaration
+   class CToken;
+   
+   class CCodePos
+   {
+   public:
+       CCodePos();
+   
+       CCodePos(const char* szCode);
+   
+       CCodePos(const CCodePos& rCode);
+   
+       CCodePos(CCodePos&& rCode) noexcept;
+   
+       bool IsValid() const;
+       operator bool() const;
+       void Reset();
+   
+       uint32_t GetLine() const;
+   
+       uint32_t GetCol() const;
+   
+       bool HasEOF() const;
+   
+       bool HasEOL() const;
+   
+       CToken GetLocation(ETokenType eTokenType = ETokenType::token_none) const;
+   
+       void UpdateLocation(CToken& rtoken) const;
+   
+       void UpdateLocation(CToken& rtoken, ETokenLiteralType eLiteralType) const;
+   
+       void UpdateLocation(CToken& rtoken, ETokenMetaType eMetaType) const;
+   
+       void PrependCode(const std::string& rssCode);
+   
+       bool CurrentPositionInMacroExpansion() const;
+   
+       CCodePos& operator=(const CCodePos& rCode);
+   
+       CCodePos& operator=(CCodePos&& rCode) noexcept;
+   
+       char operator[](uint32_t uiOffset /*= 0*/) const;
+   
+       char operator*() const;
+   
+       operator const char*() const;
+   
+       CCodePos operator++(int);
+   
+       CCodePos& operator++();
+   
+       CCodePos& operator+=(uint32_t uiOffset);
+   
+    private:
+       const char*                     m_szCode = nullptr;             
+       const char*                     m_szCurrent = nullptr;          
+       const char*                     m_szPrependedPos = nullptr;     
+       const char*                     m_szPrependedCode = nullptr;    
+       const char*                     m_szPrependedCurrent = nullptr; 
+       std::string                     m_ssPrependedCode;              
+       mutable std::list<std::string>  m_lstCodeChunks;                
+       uint32_t                        m_uiLine = 0;                   
+       uint32_t                        m_uiCol = 0;                    
+   };
+   
+   #endif // !defined CODEPOS_H

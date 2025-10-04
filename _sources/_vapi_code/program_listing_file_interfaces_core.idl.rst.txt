@@ -1,0 +1,154 @@
+
+.. _program_listing_file_interfaces_core.idl:
+
+Program Listing for File core.idl
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_core.idl>` (``interfaces\core.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core_types.idl"
+   
+   #verbatim #include "../support/pointer.h"
+   #verbatim #include "../support/iterator.h"
+   #verbatim #include "../support/string.h"
+   #verbatim #include "../support/sequence.h"
+   #verbatim #include "../support/any.h"
+   
+   #verbatim_begin
+   #if defined(_WIN32) && defined(GetClassInfo)
+   #undef GetClassinfo
+   #endif
+   #ifdef _MSC_VER
+   #pragma warning(disable: 4190)  // Disable C-linkage warning when using C++ objects.
+   #endif
+   #verbatim_end
+   
+   module sdv
+   {
+       interface IInterfaceAccess
+       {
+           interface_t GetInterface(in interface_id idInterface);
+   
+   #verbatim_begin
+           template <typename TInterface>
+           TInterface* GetInterface()
+           {
+               return GetInterface(sdv::GetInterfaceId<TInterface>()).template get<TInterface>();
+           }
+   #verbatim_end
+       };
+   
+       enum EObjectType : uint32
+       {
+           SystemObject = 0,       
+           Device = 10,            
+           BasicService = 20,      
+           ComplexService = 21,    
+           Application = 30,       
+           Proxy = 100,            
+           Stub = 101,             
+           Utility = 1000,         
+       };
+   
+       enum EObjectFlags : uint32
+       {
+           singleton = 256,        
+       };
+   
+       struct SClassInfo
+       {
+           u8string            ssModulePath;           
+           u8string            ssClassName;            
+           sequence<u8string>  seqClassAliases;        
+           u8string            ssDefaultObjectName;    
+           EObjectType         eType;                  
+           uint32              uiFlags;                
+           sequence<u8string>  seqDependencies;        
+       };
+   
+       interface IObjectFactory
+       {
+           IInterfaceAccess CreateObject(in u8string ssClassName);
+   
+           void DestroyObject(in IInterfaceAccess sdvObject);
+   
+           void DestroyAllObjects();
+       };
+   
+       enum EObjectStatus : uint32
+       {
+           initialization_pending = 0,     
+           initializing = 10,              
+           initialization_failure = 11,    
+           initialized = 12,               
+           configuring = 20,               
+           config_error = 21,              
+           running = 30,                   
+           runtime_error = 31,             
+           shutdown_in_progress = 90,      
+           destruction_pending = 99,       
+       };
+   
+       enum EOperationMode : uint32
+       {
+           configuring = 20,               
+           running = 30,                   
+       };
+   
+       interface IObjectControl
+       {
+           void Initialize(in u8string ssObjectConfig);
+   
+           EObjectStatus GetStatus() const;
+   
+           void SetOperationMode(in EOperationMode eMode);
+   
+           void Shutdown();
+       };
+   
+       interface IObjectDestroy
+       {
+           void DestroyObject();
+       };
+   
+       interface IObjectLifetime
+       {
+           void Increment();
+   
+           boolean Decrement();
+   
+           uint32 GetCount() const;
+       };
+   
+       enum EAttributeFlags : uint32
+       {
+           read_only = 0x100,      
+       };
+   
+       interface IAttributes
+       {
+           sequence<u8string> GetNames() const;
+   
+           any Get(in u8string ssAttribute) const;
+   
+           boolean Set(in u8string ssAttribute, in any anyAttribute);
+   
+           uint32 GetFlags(in u8string ssAttribute) const;
+       };
+   
+   }; // module sdv
+   
+   #verbatim_begin
+   extern "C" SDV_SYMBOL_PUBLIC bool HasActiveObjects();
+   
+   extern "C" SDV_SYMBOL_PUBLIC sdv::IInterfaceAccess* GetModuleFactory(uint32_t interfaceVersion);
+   
+   extern "C" SDV_SYMBOL_PUBLIC const char* GetManifest();
+   #verbatim_end
+   
+   #include "mem.idl"

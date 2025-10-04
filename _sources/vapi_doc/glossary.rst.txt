@@ -1,0 +1,196 @@
+.. _vapi-glossary:
+
+VAPI Glossary
+=============
+
+The glossary of the terms within the Open Vehicle API context.
+
+.. glossary::
+
+   Application
+      Within automotive software architecture, the term **Application** commonly refers to the algorithm that realizes a particular :term:`Vehicle Function`. In the context of ``Open Vehicle API`` we talk about :term:`Standalone Application` or :term:`Extern Application`. The :term:`Vehicle Function` is implemented as a :term:`Complex Service` :term:`VAPI Component`.
+
+   Standalone Application
+      **Standalone Application** is an executable which loads the complete ``Open Vehicle API`` core components and all required :term:`VAPI Component` s.
+
+   Application developer
+      An **Application developer** develops applications using the :term:`Interface` s of the :term:`Complex Service` s. The :term:`Complex Service` s and the underlying :term:`Basic Service` s can be provided by different suppliers.
+
+   ASIL Level
+      **ASIL Level**: ASIL stands for Automotive Safety Integrity Level, and it's a key concept in the ISO 26262 standard for functional safety in road vehicles.ASIL defines the risk level associated with a potential hazard in automotive systems. It helps determine how rigorously a safety function must be developed and tested.
+
+   Basic Service
+      A **Basic Service** is a :term:`VAPI Component` using the :term:`VAPI SDK` and implementing one or more :term:`Interface` s of an :term:`Interface Set` representing a single basic functionality of a vehicle relying only on :term:`Interface` s of :term:`Vehicle Device` s for information and exposing the :term:`Interface` s it implements for access in :term:`Complex Service` s and other **Basic Services**.
+
+   Basic service developer
+      An **Basic service developer** implements a single basic functionality of a vehicle using only :term:`Interface` s of :term:`Vehicle Device` s and provides this functionality to :term:`Complex Service` s and **Basic Services** via :term:`Interface` s.
+
+   Bus Abstraction
+      The **Bus Abstraction** is part of the :term:`Platform Abstraction` and provides access to some bus; it is not part of the VAPI. At best it allows to strip bus specifics off the data and supply the individual data points to the :term:`Data Dispatch Service`. It also may access an :term:`Vehicle Device` directly and bypass the :term:`Data Dispatch Service`, but in this case the feature of the :term:`Data Dispatch Service` to allow registering of callbacks can't be used.
+      The **Bus Abstraction** is closely coupled with the :term:`Bus Access` and the two may be the same implementation.
+
+   Bus Access
+      A **Bus Access** is an implementation on :term:`Platform Abstraction` level that grants access to a certain data source. This could be a physical or virtual CAN-Bus or Ethernet, or it can simply be a replay or data-generation functionality.
+      The **Bus Access** is closely coupled with the :term:`Bus Abstraction` and the two may be the same implementation.
+
+   Complex Service
+      A **Complex Service** is a :term:`VAPI Component` using the :term:`VAPI SDK` and implementing one or more :term:`Interface` s of an :term:`Interface Set` representing a single :term:`Vehicle Function` relying only on :term:`Interface` s of :term:`Basic Service` s and :term:`Complex Service` s for information and exposing the interfaces it implements for access in other **Complex Services** and :term:`Extern Application` s. It must not access :term:`Interface` s from :term:`Vehicle Device` s
+
+   Complex service developer
+      An **Complex service developer** implements a single :term:`Vehicle Function` of a vehicle using only :term:`Interface` s of :term:`Basic Service` s and provides this functionality via :term:`Interface` s to be used by another **Complex Services** and :term:`Extern Application` s.
+
+   Config File
+      The **Config File** is a TOML based configuration file with specified layout. It contains all the information needed for a specific system based on the VAPI including:
+
+      - Names and locations of all the :term:`VAPI-library` s to be included in the system
+      - Names of the objects contained in these libraries
+      - Configuration options for each object
+
+   Data Dispatch Service
+      The **Data Dispatch Service** or **Dispatch Service** is a :term:`VAPI Service` and supposed to be the sole interface down form the :term:`VAPI layer` s for data transfer. Its purpose is data transfer between the :term:`Bus Abstraction` and the :term:`Vehicle Device` s without the :term:`Bus Abstraction` having to know the devices that need a specific blob of data and the :term:`Vehicle Device` not needing to know about bus specifics like for example a CAN-ID. The only properties known to both sides is an ID to identify the location where to write or read data and the type (C++-Type) of the data.
+
+   Data Link
+      A **VAPI Remote Process** The data link layer demonstrates the vehicle :term:`Bus Abstraction`. This component is responsible to read and write to the vehicle network. For reading / writing to a CAN bus there is uility ``sdv_dbc_util``.  This uility can generate code automatically using the DBC (CAN Database) file describing the CAN bus layout. Its purpose is the extraction and composition of signals from and to CAN messages.
+      
+   Data Link Layer 
+      see :term:`Data Link`
+
+   Event-Driven Framework
+      See :ref:`Picture Event Driven Framework <vapi-event_driven_framework>`. An **Event-Driven Framework** is a type of software framework that is designed around the concept of events—actions or occurrences that happen during the execution of a program, such as user interactions, sensor outputs, or messages from other programs.
+
+   Extern Application
+      **Extern Application** is an executable which connects itself to a running ``Open Vehicle API`` instance instead of loading the core like it is done by a :term:`Standalone Application`.
+
+   Freedom from Interference      
+     **Freedom from Interference** is a concept required in safety-critical systems and concurrent programming, where it ensures that one process or component does not negatively affect another. A fault in one process cannot cause another component to fail. It applies to timing, memory, and communication interference.
+ 
+   FMU 
+      A **FMU** stands for Functional Mock-up Unit. It’s a file format used in model-based systems engineering and simulation, especially within the FMI (Functional Mock-up Interface) standard. See :ref:`What is an FMU? <vapi-simulation>`
+	  
+   Interface
+      An **Interface** in the VAPI context is a pure virtual C++ class or struct defining only pure virtual functions and no other members. Interfaces typically are located in header files that only contain interfaces since they are needed by both, the implementer and the user of the interface.
+
+   Interface Set
+      An **Interface Set** is a collection of :term:`Interface` s for all the different :term:`Vehicle Device` s, :term:`Basic Service` s and :term:`Complex Service` s that may be part of a vehicle abstraction; it also may contain definitions of data-types and -structures. An **Interface Set** can be composed of any number of :term:`Interface` s that need not be related to each other.
+      In the future :term:`Interface` s and :term:`Interface Set` s are to be described in an IDL and then automatically generated.
+
+   Mixed-Criticality
+      **Mixed-Criticality** essentially means one 'System' is running two pieces of software that require disparate safety levels. Different functions have different safety levels therefore must be handled differently. The :term:`VAPI Framework` is designed to be able to run multiple instances. See the :ref:`Picture Mixed-Criticality <vapi-mixed_criticality>`.
+
+   Platform Abstraction
+      The **Platform Abstraction** provides operating system specific functionality; it is not part of the VAPI. It should however provide some OS functionality to VAPI via given :term:`Interface` s.
+
+   Platform integrator
+      The **Platform integrator** implements the :term:`Platform Abstraction` (file access, process management, …). This :term:`Platform Abstraction` component is required either for a new platform or if an existing middleware must be adapted to use the :term:`VAPI Framework`. All :term:`Interface` s of the :term:`Platform Abstraction` need to be implemented.
+
+   Proxy
+      A **Proxy** is similar to a :term:`Stub` but refers to a more intelligent or flexible intermediary. It contains Caching, Access control, Load balancing and more.
+
+   QM Function
+      The **QM Function** A QM function is a function that does not require specific safety measures under ISO 26262. It is considered to have no or negligible impact on functional safety. :term:`ASIL Level` It corresponds to ASIL = QM, meaning Quality Management only, not subject to the rigorous safety lifecycle of ISO 26262.
+
+   Repository Service
+      The **Repository Service** is a :term:`VAPI Service` and handles the lifetime of :term:`VAPI Component` s in a system and is responsible for loading and unloading :term:`VAPI-library` s in the correct order as described in a config file.
+
+   Safety Function
+      A **Safety Function** is a function that directly contributes to the safety of the vehicle and must be developed according to ISO 26262 requirements. :term:`ASIL Level` is assigned an :term:`ASIL level` (A, B, C, or D) depending on the risk assessment (severity, exposure, controllability). These functions require rigorous safety analysis, verification, and validation to ensure they behave correctly even in fault conditions.  
+
+   SDV-library
+      See :term:`VAPI-library`.
+
+   sdv_vss_util
+      Generates IDL files and component code from a CSV-formatted Excel file based on the Vehicle Signal Specification (VSS). Used to define signal interfaces and component structure.
+
+   sdv_idl_compiler
+      Compiles IDL (Interface Definition Language) files into proxy and stub code for inter-process communication between components.
+
+   sdv_dbc_util
+      Processes DBC (CAN database) files to generate code for CAN signal extraction and composition, enabling integration with the vehicle’s communication bus.
+
+   sdv_packager
+      Creates, installs, verifies, and uninstalls SDV component installation packages. Used to deploy components across platforms.
+
+   sdv_iso
+      Runs components in isolated processes to improve system stability and fault tolerance. Typically used for complex services
+
+   sdv_control
+      Main utility for managing the SDV server and services. Supports startup, shutdown, installation, and dynamic service control.
+
+   sdv_core
+      Core application that runs the SDV service framework. Can operate in local simulation mode or server mode, hosting vehicle devices and basic services.
+
+   sdv_trace_mon
+      Monitors log messages from the SDV server for debugging, diagnostics, and runtime analysis.
+
+   sdv_local_shutdown
+      Gracefully shuts down a locally started SDV core instance, typically used in standalone or simulation environments.
+
+   Service
+      A **Service** in the VAPI-context is either a :term:`VAPI Service`, a :term:`Basic Service` or a :term:`Complex Service`.
+
+   Stub
+      A **Stub** is a piece of code that acts as a client-side placeholder for a function or service that actually runs in a another :term:`VAPI Component`. It provides the same :term:`Interface` as the real function, so the client can call it as if it were local. The stub marshals (packs) the input parameters and sends them over the network or IPC mechanism.
+
+   VAPI Component
+      A **Component** or **VAPI-Component** is a :term:`VAPI-library` or a named object/class contained in a :term:`VAPI-library` based on the CSdvObject class of the :term:`VAPI SDK`.
+
+   VAPI Core Process
+      A **VAPI Core Process** is a :term:`VAPI Process` that may create :term:`VAPI Isolated Process` es to isolate individual components and achieve freedom from interference. There should only be one **VAPI Core Process** per logical 
+      machine and it is responsible for creating and stopping :term:`VAPI Isolated Process` es and establishes IPC and RPC connections between 
+      :term:`VAPI Isolated Process` es. Each **VAPI Core Process** is connected by an IPC connection to all its :term:`VAPI Isolated Process` es and 
+      all remote **VAPI Core Process** es. All local :term:`Vehicle Device` s and :term:`Basic Service` s run in its context.
+
+   VAPI Developer
+      The :term:`VAPI Framework` targets for a platform which allows the collaboration of different companies. There are different work areas, therefore we can distinguish between different software developers:
+      :term:`Vehicle device developer` :term:`Basic Service Developer` :term:`Complex Service Developer` :term:`Application Developer` and :term:`Platform Integrator` as described in :ref:`User/Developer <vapi-developer>`.
+
+   VAPI Framework
+      The **VAPI Framework** is a runtime environment (?), that includes the :term:`VAPI Service` s, in which components built with the :term:`VAPI SDK` can run in.
+
+   VAPI Interface
+      A **VAPI Interface** is an :term:`Interface` defined in the :term:`VAPI SDK`.
+
+   VAPI Isolated Process
+      A **VAPI Isolated Process** is a process created by a :term:`VAPI Core Process` and is used to establish freedom from interference between 
+      :term:`VAPI Component` s by running them in isolation. **VAPI Isolated Process** es are connected via an IPC connection to their local :term:`VAPI Core Process`. 
+      There runs a :term:`Complex Service` while :term:`Vehicle Device` or :term:`Basic Service` run in the :term:`VAPI Core Process`.
+
+   VAPI Layer
+      The **VAPI Layer** structure specifies what layer can communicate with what other layer and allows an increasingly general :term:`Interface Set` towards the top (see the point on data generalization in :ref:`VAPI Principles <vapi-principles>`). The :term:`Data Dispatch Service` can be skipped if the :term:`Bus Abstraction` and the :term:`Vehicle Device` it communicates with know about each other; this needs more specific knowledge of the system of the developer of both.
+
+   VAPI Local Process
+      A **VAPI Local Process** is any :term:`VAPI Process` that runs on a local machine or on the same machine as a reference process.
+      
+   VAPI-library
+      A **VAPI-library** is a shared library, typically with the file extension .sdv, containing objects created with the :term:`VAPI SDK`.
+
+   VAPI Platform Integration
+      With **VAPI Platform Integration** is meant the implementation of an :term:`Platform Abstraction`. The Platform Integration allows the possibility to adapt a new platform or an existing middleware to use the :term:`VAPI Framework`.
+
+   VAPI Process
+      A **VAPI Process** is either a :term:`VAPI Core Process` or a :term:`VAPI Isolated Process`; dividing in :term:`VAPI Local Process` and :term:`VAPI Remote Process` is a relative view depending on how one defines *local*.
+
+   VAPI Remote Process
+      A **VAPI Remote Process** is any :term:`VAPI Process` that runs on a remote machine or on another machine as a reference process.   
+
+   VAPI SDK
+      The **VAPI SDK** is a collection of header files including :term:`VAPI interface` s and their :term:`VAPI support class` es.
+
+   VAPI Service
+      **VAPI Service** are provided implementations using :term:`VAPI interface` s to provide a specific functionality usable from all implementations using the :term:`VAPI SDK` (running in the context of the :term:`VAPI Framework`).
+
+   VAPI Signal
+      A **VAPI Signal** is signal created with the :term:`Data Dispatch Service`. Depending on the type (either Reception or Transmission) its possible to subscribe or to add a publisher. The :term:`Data Dispatch Service` will send an event to any subscriber of the signal.
+
+   VAPI Support Class
+      A **VAPI Support Class** is a quality of life implementation contained in the :term:`VAPI SDK` to simplify the usage of :term:`VAPI Interface` s for a developer working with the :term:`VAPI SDK`.
+      
+   Vehicle Device
+      An **Vehicle Device** is a :term:`VAPI Component` using the :term:`VAPI SDK` and implementing one or more :term:`Interface Set` s of an :term:`Interface Set` representing a specific hardware device to be part of a vehicle abstraction in a system. An **Vehicle Device** only communicates with the :term:`Data Dispatch Service` and exposes the interfaces it implements for access in :term:`Basic Service` s.
+      An **Vehicle Device** can be interpreted as a driver for a specific hardware device.
+
+   Vehicle device developer
+      An **Vehicle device developer** develops the abstraction of a specific hardware device and provides access to the device via one or more :term:`Interface Set` s.   
+
+   Vehicle Function
+      An **Vehicle Function** refers to a specific behavior or capability of the vehicle that is implemented by a software routine. Examples are 'Automatic braking' or 'Parking assistence'. Some are simple, others complex or build up by multiple software components. The implementation in the  ``Open Vehicle API`` context is done in a :term:`Complex Service`.

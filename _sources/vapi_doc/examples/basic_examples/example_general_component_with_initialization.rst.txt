@@ -1,0 +1,74 @@
+.. _example-general-componentwithinitialiation:
+
+Example Component with Initialization
+=====================================
+
+.. note::
+   A :term:`VAPI Component` can have its own configuration in a `TOML <https://toml.io/en/v1.0.0>`_-like structure.
+
+.. tab-set::
+
+   .. tab-item:: Example
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component_with_initialization.cpp
+         :tab-width: 4
+
+   .. tab-item:: Inheritance
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component_with_initialization.cpp
+         :tab-width: 4
+         :emphasize-lines: 8, 25, 35, 49, 70, 78
+
+      Additionally to the **CSdvObject** class the component should inherit from **sdv::IObjectControl**.
+
+   .. tab-item:: Function implementation
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component_with_initialization.cpp
+         :tab-width: 4
+         :emphasize-lines: 37-42, 51-63, 72, 80
+
+      The :term:`VAPI Component` needs to implement the 4 functions `Initialize(const sdv::u8string& objectConfig)`, `SetOperationMode(/*in*/ sdv::EOperationMode eMode)`, `GetStatus()` and `Shutdown()`.
+
+      .. note::
+         The function *Initialize()*: when leaving the function the status should either be `sdv::EObjectStatus::initialization_failure` or `sdv::EObjectStatus::initialize`.
+
+         The function *SetOperationMode()*: This function is called from outside and sets the mode either `sdv::EOperationMode::configuring` or `sdv::EOperationMode::running`. The mode should only be changed if the current state is valid (initialized/configuring/running). Any false state should not be changed.
+
+         The function *Shutdown()*: during shutdown the status should be set to `sdv::EObjectStatus::destruction_pending`.
+
+   .. tab-item:: Parsing
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component_with_initialization.cpp
+         :tab-width: 4
+         :emphasize-lines: 2, 37, 102-117
+
+      The configuration string can be parsed easily with the parser class including arrays, tables, ...
+
+      .. warning::
+         See :ref:`Example of the config files <example-config-file>` to write a valid `TOML <https://toml.io/en/v1.0.0>`_-like structure for the object initialization.
+
+   .. tab-item:: Parsing examples
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component_with_initialization.cpp
+         :tab-width: 4
+         :emphasize-lines: 104, 106-111
+
+      The first example reads and validates an integer value. Just get the node from the parser, check the type and then get the value.
+
+      .. warning::
+         See :ref:`Example of the config files <example-config-file>` to write a valid `TOML <https://toml.io/en/v1.0.0>`_-like structure for the object initialization.
+
+.. note::
+
+   .. code-block:: text
+
+      # Version of the Configuration for the application
+      [Configuration]
+      Version = 100
+
+      # Configuration including the example number = 7
+      [[Component]]
+      Path = "example_general_component_with_initialization.sdv"
+      Class = "Hello_Component_With_Initialization"
+      number = 7
+

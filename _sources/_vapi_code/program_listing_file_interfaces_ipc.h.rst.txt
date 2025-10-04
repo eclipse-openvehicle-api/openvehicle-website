@@ -1,0 +1,124 @@
+
+.. _program_listing_file_interfaces_ipc.h:
+
+Program Listing for File ipc.h
+==============================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_ipc.h>` (``interfaces\ipc.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__IPC_H__20251003_130453_851__
+   #define __IDL_GENERATED__IPC_H__20251003_130453_851__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   namespace sdv
+   {
+       namespace ipc
+       {
+           struct SChannelEndpoint
+           {
+               IInterfaceAccess* pConnection;
+   
+               sdv::u8string ssConnectString;
+           };
+   
+           interface ICreateEndpoint
+           {
+               static constexpr ::sdv::interface_id _id = 0x3133A1F2460D779F;
+   
+               virtual SChannelEndpoint CreateEndpoint(/*in*/ const sdv::u8string& ssChannelConfig) = 0;
+           };
+   
+           interface IChannelAccess
+           {
+               static constexpr ::sdv::interface_id _id = 0x12F87B9658986539;
+   
+               virtual IInterfaceAccess* Access(/*in*/ const sdv::u8string& ssConnectString) = 0;
+           };
+   
+           enum class EConnectStatus : uint32_t
+           {
+               uninitialized = 0,
+   
+               initializing = 1,
+   
+               initialized = 2,
+   
+               connecting = 10,
+   
+               negotiating = 20,
+   
+               connection_error = 990,
+   
+               connected = 11,
+   
+               communication_error = 991,
+   
+               disconnected = 30,
+   
+               disconnected_forced = 32,
+   
+               terminating = 90,
+           };
+   
+           interface IConnect
+           {
+               static constexpr ::sdv::interface_id _id = 0x8D73A5E8FFBB9261;
+   
+               virtual bool AsyncConnect(/*in*/ IInterfaceAccess* pReceiver) = 0;
+   
+               virtual bool WaitForConnection(/*in*/ uint32_t uiWaitMs) = 0;
+   
+               virtual void CancelWait() = 0;
+   
+               virtual void Disconnect() = 0;
+   
+               virtual uint64_t RegisterStatusEventCallback(/*in*/ IInterfaceAccess* pEventCallback) = 0;
+   
+               virtual void UnregisterStatusEventCallback(/*in*/ uint64_t uiCookie) = 0;
+   
+               virtual EConnectStatus GetStatus() const = 0;
+           };
+   
+           interface IConnectEventCallback
+           {
+               static constexpr ::sdv::interface_id _id = 0x6B0B33C1F11C7CF9;
+   
+               virtual void SetStatus(/*in*/ EConnectStatus eConnectStatus) = 0;
+           };
+   
+           interface IDataSend
+           {
+               static constexpr ::sdv::interface_id _id = 0x0DAAFCB866248F9C;
+   
+               virtual bool SendData(/*inout*/ sdv::sequence<sdv::pointer<uint8_t>>& seqData) = 0;
+           };
+   
+           interface IDataReceiveCallback
+           {
+               static constexpr ::sdv::interface_id _id = 0x22F4BE784DB63195;
+   
+               virtual void ReceiveData(/*inout*/ sdv::sequence<sdv::pointer<uint8_t>>& seqData) = 0;
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__IPC_H__20251003_130453_862__)

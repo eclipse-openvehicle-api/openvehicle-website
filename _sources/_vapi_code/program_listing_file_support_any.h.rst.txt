@@ -1,0 +1,246 @@
+
+.. _program_listing_file_support_any.h:
+
+Program Listing for File any.h
+==============================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_any.h>` (``support\any.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SDV_ANY_H
+   #define SDV_ANY_H
+   
+   #include <string>
+   #include <algorithm>
+   #include <ostream>
+   #include <istream>
+   #include <filesystem>
+   #include "string.h"
+   #include "interface.h"
+   #include "except.h"
+   
+   namespace sdv
+   {
+       class any_t
+       {
+       public:
+           enum class EValType : uint32_t
+           {
+               val_type_empty = 0,             
+               val_type_bool = 1,              
+               val_type_int8 = 8,              
+               val_type_uint8 = 9,             
+               val_type_int16 = 16,            
+               val_type_uint16 = 17,           
+               val_type_int32 = 32,            
+               val_type_uint32 = 33,           
+               val_type_int64 = 64,            
+               val_type_uint64 = 65,           
+               val_type_char = 100,            
+               val_type_char16 = 116,          
+               val_type_char32 = 132,          
+               val_type_wchar = 101,           
+               val_type_float = 232,           
+               val_type_double = 264,          
+               val_type_long_double = 265,     
+               val_type_fixed = 300,           
+               val_type_string = 1000,         
+               val_type_u8string = 1008,       
+               val_type_u16string = 1016,      
+               val_type_u32string = 1032,      
+               val_type_wstring = 1001,        
+               val_type_interface = 2000,      
+               val_type_interface_id = 2001,   
+               val_type_exception_id = 3000,   
+           } eValType = EValType::val_type_empty;     
+   
+           union
+           {
+               bool            bVal;           
+               int8_t          i8Val;          
+               uint8_t         ui8Val;         
+               int16_t         i16Val;         
+               uint16_t        ui16Val;        
+               int32_t         i32Val;         
+               uint32_t        ui32Val;        
+               int64_t         i64Val;         
+               uint64_t        ui64Val;        
+               char            cVal;           
+               char16_t        c16Val;         
+               char32_t        c32Val;         
+               wchar_t         cwVal;          
+               float           fVal;           
+               double          dVal;           
+               long double     ldVal;          
+               //fixed           fixValue;       ///< Fixed point value
+               string          ssVal;          
+               u8string        ss8Val;         
+               u16string       ss16Val;        
+               u32string       ss32Val;        
+               wstring         sswVal;         
+               interface_t     ifcVal;         
+               interface_id    idIfcVal;       
+               exception_id    idExceptVal;    
+           };
+   
+           any_t();
+   
+           ~any_t();
+   
+           template <typename TType>
+           explicit any_t(TType tVal);
+   
+           explicit any_t(const string& rssVal);
+           explicit any_t(const u8string& rssVal);
+           explicit any_t(const u16string& rssVal);
+           explicit any_t(const u32string& rssVal);
+           explicit any_t(const wstring& rssVal);
+           any_t(const char* sz);
+   
+           any_t(const char16_t* sz);
+   
+           any_t(const char32_t* sz);
+   
+           any_t(const wchar_t* sz);
+   
+           explicit any_t(const std::string& rssVal);
+           explicit any_t(const std::u16string& rssVal);
+           explicit any_t(const std::u32string& rssVal);
+           explicit any_t(const std::wstring& rssVal);
+           template <typename TType>
+           any_t(TType tVal, EValType eValTypeParam);
+   
+           any_t(const any_t& rany);
+   
+           any_t(any_t&& rany) noexcept;
+   
+           template <typename TType>
+           any_t& operator=(TType tVal);
+   
+           any_t& operator=(const any_t& rany);
+   
+           any_t& operator=(any_t&& rany) noexcept;
+   
+           operator bool() const;
+           operator int8_t() const;
+           operator uint8_t() const;
+           operator int16_t() const;
+           operator uint16_t() const;
+           operator int32_t() const;
+           operator uint32_t() const;
+           operator int64_t() const;
+           operator uint64_t() const;
+   #ifdef __linux__
+           operator long long int() const { return static_cast<long long int>(operator int64_t()); }
+           operator unsigned long long int() const { return static_cast<long long int>(operator uint64_t()); }
+   #endif
+           operator char() const;
+           operator char16_t() const;
+           operator char32_t() const;
+           operator wchar_t() const;
+           operator float() const;
+           operator double() const;
+           operator long double() const;
+           //operator fixed() const;
+           operator string() const;
+           operator u8string() const;
+           operator u16string() const;
+           operator u32string() const;
+           operator wstring() const;
+           operator interface_t() const;
+           //operator interface_id() const;
+           //operator exception_id() const;
+           operator std::string() const;
+           operator std::u16string() const;
+           operator std::u32string() const;
+           operator std::wstring() const;
+           bool empty() const;
+   
+           void clear();
+   
+           template <typename TType>
+           void set(TType tVal);
+   
+           template <typename TType>
+           void set(TType tVal, EValType eValTypeParam);
+   
+           template <typename TType>
+           TType get() const;
+   
+           enum class ECompareType
+           {
+               compare_equal,
+               compare_inequal,
+               compare_smaller,
+               compare_smaller_equal,
+               compare_larger,
+               compare_larger_equal,
+           };
+   
+           template <typename TType, ECompareType eType>
+           bool Compare(const TType& rtVal) const;
+   
+           template <ECompareType eType>
+           bool Compare(const any_t& ranyVal) const;
+   
+       private:
+           template <typename TSourceType, typename TDestType>
+           static void convert(const TSourceType& rtSrcVal, TDestType& rtDstVal);
+       };
+   
+       template <typename TType>
+       bool operator==(const sdv::any_t& ranyVal1, TType tVal2);
+   
+       template <typename TType>
+       bool operator==(TType tVal1, const sdv::any_t& ranyVal2);
+   
+       bool operator==(const sdv::any_t& ranyVal1, const sdv::any_t& ranyVal2);
+   
+       template <typename TType>
+       bool operator!=(const sdv::any_t& ranyVal1, TType tVal2);
+   
+       template <typename TType>
+       bool operator!=(TType tVal1, const sdv::any_t& ranyVal2);
+   
+       bool operator!=(const sdv::any_t& ranyVal1, const sdv::any_t& ranyVal2);
+   
+       template <typename TType>
+       bool operator<(const sdv::any_t& ranyVal1, TType tVal2);
+   
+       template <typename TType>
+       bool operator<(TType tVal1, const sdv::any_t& ranyVal2);
+   
+       bool operator<(const sdv::any_t& ranyVal1, const sdv::any_t& ranyVal2);
+   
+       template <typename TType>
+       bool operator<=(const sdv::any_t& ranyVal1, TType tVal2);
+   
+       template <typename TType>
+       bool operator<=(TType tVal1, const sdv::any_t& ranyVal2);
+   
+       bool operator<=(const sdv::any_t& ranyVal1, const sdv::any_t& ranyVal2);
+   
+       template <typename TType>
+       bool operator>(const sdv::any_t& ranyVal1, TType tVal2);
+   
+       template <typename TType>
+       bool operator>(TType tVal1, const sdv::any_t& ranyVal2);
+   
+       bool operator>(const sdv::any_t& ranyVal1, const sdv::any_t& ranyVal2);
+   
+       template <typename TType>
+       bool operator>=(const sdv::any_t& ranyVal1, TType tVal2);
+   
+       template <typename TType>
+       bool operator>=(TType tVal1, const sdv::any_t& ranyVal2);
+   
+       bool operator>=(const sdv::any_t& ranyVal1, const sdv::any_t& ranyVal2);
+   
+   }
+   
+   #include "any.inl"
+   
+   #endif // !defined SDV_ANY_H

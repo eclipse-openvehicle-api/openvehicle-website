@@ -1,0 +1,44 @@
+
+.. _program_listing_file_ascformat_ascwriter.h:
+
+Program Listing for File ascwriter.h
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_ascformat_ascwriter.h>` (``ascformat\ascwriter.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef ASC_FILE_WRITER_H
+   #define ASC_FILE_WRITER_H
+   
+   #include "ascreader.h"
+   #include <list>
+   #include <chrono>
+   
+   namespace asc
+   {
+       class CAscWriter
+       {
+       public:
+           CAscWriter();
+   
+           void StartTimer();
+   
+           void AddSample(const SCanMessage& rsSample);
+   
+           bool HasSamples() const;
+   
+           void Clear();
+   
+           bool Write(const std::filesystem::path& rpathFile);
+   
+       private:
+           std::list<SCanMessage>                              m_lstMessages;        
+           std::chrono::high_resolution_clock::time_point      m_timepointStart;     
+           std::chrono::system_clock::time_point               m_timepointSystem;    
+       };
+   }
+   
+   #endif // !defined ASC_FILE_WRITER_H

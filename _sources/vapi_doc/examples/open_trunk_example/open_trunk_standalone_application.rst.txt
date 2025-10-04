@@ -1,0 +1,78 @@
+.. _vapi-open_trunk_standalone:
+
+Open Trunk Standalone Application
+=================================
+
+.. note:: 
+   | Execution:
+   | open_trunk_example 0
+
+.. note:: 
+   
+   - The :term:`Complex Service` will run in its own process, therefore we need the :term:`Proxy` & :term:`Stub` code of the :term:`Interface` of the :term:`Basic Service`.
+   - In the :term:`Standalone Application` we have access to all :term:`Interface` s including the signals in in the dispatch service.
+   - As the :term:`Complex Service` should prevent the opening of the trunk it can be seen as an ASIL A component.  
+
+
+Demonstration of Open Trunk Example Code
+----------------------------------------
+
+To simplify the code of this example we did not include the code processing the TX signal as it is not important here. The TX signals are included in all other examples. This example should visualize only a safety aspect and introduce the view about :term:`Mixed-Criticality` .
+
+**Initialization**
+   - When user runs the executable  ./open_trunk_example 0 , then the application will run as standalone application.
+   - At first, it will check whether the SDV_FRAMEWORK_RUNTIME environment variable exists or not. 
+     If it was not set, then we need to set it manually by giving the location of framework headerfiles and binaries. 
+
+     .. image:: ../../../vapi_media/examples/open_trunk_example/environment_set.png
+
+   - From the given application configuration, the core services will be loaded in order to start the application.
+
+     .. image:: ../../../vapi_media/examples/open_trunk_example/startup_app.png
+
+   - Now, we need to set to config mode for loading the required configuration files. 
+
+     .. image:: ../../../vapi_media/examples/open_trunk_example/set_config.png
+
+**Data communication**
+   - The Vehicle Speed (Rx) signal will be subscribed via Data Dispatch Service, so when there is a change in signal value,
+     the callback function will be called. 
+
+     .. image:: ../../../vapi_media/examples/open_trunk_example/data_dispatch.png
+
+   - Register the event in Vehicle Device on signal change.
+
+     .. image:: ../../../vapi_media/examples/open_trunk_example/vehicle_device_rx.png
+
+   - Register callback function in Basic Service for signal change update.
+
+     .. image:: ../../../vapi_media/examples/open_trunk_example/basic_service_rx.png
+
+   - Get the interfaces of Basic Service and Complex Service for opening the trunk.
+
+     .. image:: ../../../vapi_media/examples/open_trunk_example/get_interfaces.png
+
+   - Now, we will set to running mode in which we can no longer load any more config files later. 
+
+     .. image:: ../../../vapi_media/examples/open_trunk_example/set_running.png
+
+     .. image:: ../../../vapi_media/examples/open_trunk_example/data_flow_diag.png
+
+**Shutdown**
+   - Unregister the signals and events from the Basic and Complex services.
+
+     .. image:: ../../../vapi_media/examples/open_trunk_example/unregister_events.png
+
+   - Shutdown the application.
+   
+     .. image:: ../../../vapi_media/examples/open_trunk_example/shutdown_app.png
+   
+.. image:: ../../../vapi_media/examples/open_trunk_example/open_trunk_screenshot_0.png
+
+The Speed signal is coming via CAN bus by using the :term:`VAPI Component` ``can_com_sim.sdv`` from the framework. The :term:`VAPI Component` reads the CAN messages from a text file and sends these messages to the :term:`Data Link` The :term:`Data Link` component is created from a dbc file with the help of the helper tool ``sdv_bcd_util``.
+
+.. Attention:: For safety reason the red connection in the picture must be prevented as the connection bypasses the validation against vehicle movement.
+
+.. image:: ../../../vapi_media/examples/open_trunk_example/open_trunk_example.png
+
+

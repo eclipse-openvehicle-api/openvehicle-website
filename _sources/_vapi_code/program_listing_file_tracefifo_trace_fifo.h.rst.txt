@@ -1,0 +1,211 @@
+
+.. _program_listing_file_tracefifo_trace_fifo.h:
+
+Program Listing for File trace_fifo.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_tracefifo_trace_fifo.h>` (``tracefifo\trace_fifo.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef TRACE_FIFO_H
+   #define TRACE_FIFO_H
+   
+   #include <cstdint>
+   #include <mutex>
+   #include <string>
+   #include <sstream>
+   #include <map>
+   
+   enum class ETraceFifoOpenFlags : uint32_t
+   {
+       open_only = 1,      
+       force_create = 2,   
+       read_only = 4,      
+   };
+   
+   class CTraceFifoBase
+   {
+   public:
+       CTraceFifoBase(uint32_t uiInstanceID, size_t nSize);
+   
+       virtual ~CTraceFifoBase();
+   
+       CTraceFifoBase(const CTraceFifoBase& rfifo) = delete;
+   
+       CTraceFifoBase(CTraceFifoBase&& rfifo) noexcept;
+   
+       CTraceFifoBase& operator=(const CTraceFifoBase& rfifo) = delete;
+   
+       CTraceFifoBase& operator=(CTraceFifoBase&& rfifo) noexcept;
+   
+       virtual bool Open(size_t nTimeout = 1000, uint32_t uiFlags = 0u) = 0;
+   
+       virtual void Close() = 0;
+   
+       virtual bool IsOpened() const = 0;
+   
+       bool SetInstanceID(uint32_t uiInstanceID);
+   
+       uint32_t GetInstanceID() const;
+   
+       void SetDefaultSize(size_t nSize);
+   
+       size_t GetDefaultSize() const;
+   
+       size_t GetViewSize() const;
+   
+       size_t GetDataBufferSize() const;
+   
+   protected:
+       void InitializeBuffer(void* pView, size_t nBufferSize, bool bReadOnly);
+   
+       bool IsInitialized() const;
+   
+       void Terminate();
+   
+       std::unique_lock<std::recursive_mutex> CreateAccessLockObject() const;
+   
+       void* GetView();
+   
+       uint8_t* GetDataPtr();
+       const uint8_t* GetDataPtr() const;
+       size_t GetWritePos() const;
+   
+       void SetWritePos(size_t nTxPos);
+   
+   private:
+       struct SSharedMemBufHeader
+       {
+           char                rgszSignature[8];   
+           uint32_t            uiInstanceID;       
+           volatile uint32_t   uiTxOffs;           
+       };
+   
+       mutable volatile bool           m_bInitConfirmed = false;           
+       uint32_t                        m_uiInstanceID = 1000;              
+       size_t                          m_nSize = 0;                        
+       size_t                          m_nDefaultSize = 0;                 
+       uint8_t*                        m_pBuffer = nullptr;                
+       SSharedMemBufHeader*            m_psHdr = nullptr;                  
+       mutable std::recursive_mutex    m_mtxAccess;                        
+   };
+   
+   // Include the implementation classes classes for the trace fifo
+   #include "trace_fifo_windows.h"
+   #include "trace_fifo_posix.h"
+   
+   class CTraceFifoReader : public CTraceFifoImpl
+   {
+   public:
+       CTraceFifoReader(uint32_t uiInstanceID = 1000u, size_t nSize = 16384);
+   
+       virtual ~CTraceFifoReader() override;
+   
+       CTraceFifoReader(const CTraceFifoReader& rfifo) = delete;
+   
+       CTraceFifoReader(CTraceFifoReader&& rfifo) noexcept;
+   
+       CTraceFifoReader& operator=(const CTraceFifoReader& rfifo) = delete;
+   
+       CTraceFifoReader& operator=(CTraceFifoReader&& rfifo) noexcept;
+   
+       virtual bool Open(size_t nTimeout = 1000, uint32_t uiFlags = 0u) override;
+   
+       // Ignore cppcheck warning for not using dynamic binding when being called through the destructor.
+       // cppcheck-suppress virtualCallInConstructor
+       virtual void Close() override;
+   
+       std::string WaitForMessage(size_t nTimeout = 1000);
+   
+   private:
+       size_t      m_nRxOffs = 0;      
+   };
+   
+   class CTraceFifoWriter : public CTraceFifoImpl
+   {
+   public:
+       CTraceFifoWriter(uint32_t uiInstanceID = 1000u, size_t nSize = 16384);
+   
+       virtual ~CTraceFifoWriter() override;
+   
+       CTraceFifoWriter(const CTraceFifoWriter& rfifo) = delete;
+   
+       CTraceFifoWriter(CTraceFifoWriter&& rfifo) noexcept;
+   
+       CTraceFifoWriter& operator=(const CTraceFifoWriter& rfifo) = delete;
+   
+       CTraceFifoWriter& operator=(CTraceFifoWriter&& rfifo) noexcept;
+   
+       virtual bool Open(size_t nTimeout = 1000, uint32_t uiFlags = 0u) override;
+   
+       // Ignore cppcheck warning for not using dynamic binding when being called through the destructor.
+       // cppcheck-suppress virtualCallInConstructor
+       virtual void Close() override;
+   
+       void Publish(const std::string& rssMessage);
+   
+   };
+   
+   class CTraceFifoStreamBuffer : public CTraceFifoWriter, public std::stringbuf
+   {
+   public:
+       CTraceFifoStreamBuffer(uint32_t uiInstanceID = 1000u, size_t nSize = 16384);
+   
+       virtual ~CTraceFifoStreamBuffer() override;
+   
+       void InterceptStream(std::ostream& rstream);
+   
+       void RevertInterception(std::ostream& rstream);
+   
+       // Ignore cppcheck warning for not using dynamic binding when being called through the destructor.
+       // cppcheck-suppress virtualCallInConstructor
+       virtual void Close() override;
+   
+       int sync();
+   
+   private:
+       struct SInterceptBinding
+       {
+           SInterceptBinding(std::ostream& rstream, CTraceFifoStreamBuffer& rstreamBuffer);
+   
+           //SInterceptBinding(SInterceptBinding& rsBinding) : rstreamIntercepted(rsBinding.rstreamIntercepted), streamOrginal(rsBinding.streamOrginal.rdbuf()) {}
+   
+           ~SInterceptBinding();
+   
+           std::ostream&   rstreamIntercepted;     
+           std::ostream    streamOrginal;          
+       };
+   
+       std::map<std::ostream*, std::unique_ptr<SInterceptBinding>> m_mapBindings;    
+   };
+   
+   class CTraceFifoStdBuffer : public CTraceFifoWriter
+   {
+   public:
+       CTraceFifoStdBuffer(uint32_t uiInstanceID = 1000u, size_t nSize = 16384);
+   
+       virtual ~CTraceFifoStdBuffer() override;
+   
+       virtual bool Open(size_t nTimeout = 1000, uint32_t uiFlags = 0u) override;
+   
+       // Ignore cppcheck warning for not using dynamic binding when being called through the destructor.
+       // cppcheck-suppress virtualCallInConstructor
+       virtual void Close() override;
+   
+   private:
+       void DispatchThreadFunc();
+   
+       const size_t nReadIndex = 0;                    
+       const size_t nWriteIndex = 1;                   
+       bool        m_bShutdown = false;                
+       int         m_rgPipeStdOut[2] = { -1, -1 };     
+       int         m_rgPipeStdErr[2] = { -1, -1 };     
+       int         m_iOldStdOut = -1;                  
+       int         m_iOldStdErr = -1;                  
+       std::thread m_threadDispatch;                   
+   };
+   
+   #endif // !defined TRACE_FIFO_H

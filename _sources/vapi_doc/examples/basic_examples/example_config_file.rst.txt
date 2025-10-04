@@ -1,0 +1,102 @@
+.. _example-config-file:
+
+Example of the Config File
+==========================
+
+A :term:`Config File` contains a configuration of a system in a `TOML <https://toml.io/en/v1.0.0>`_-like structure.
+
+.. tab-set::
+
+   .. tab-item:: Example
+
+      .. literalinclude:: ../../../../examples/_howto_examples/example_config_filee.cfg
+         :tab-width: 4
+
+   .. tab-item:: Version
+
+      .. literalinclude:: ../../../../examples/_howto_examples/example_config_file.cfg
+         :tab-width: 4
+         :emphasize-lines: 1-2
+
+      A :term:`Config File` must contain a version information.
+
+   .. tab-item:: Object information
+
+      .. literalinclude:: ../../../../examples/_howto_examples/example_config_file.cfg
+         :tab-width: 4
+         :emphasize-lines: 5-6
+
+      To load a :term:`VAPI Component` the path/name to the binary file and the class name is required.
+
+   .. tab-item:: Object name
+
+      .. literalinclude:: ../../../../examples/_howto_examples/example_config_file.cfg
+         :tab-width: 4
+         :emphasize-lines: 7
+
+      The object name is optional. With that multiple :term:`VAPI Component` s of the same class can be created.
+
+   .. tab-item:: User defined configuration
+
+      .. literalinclude:: ../../../../examples/_howto_examples/example_config_file.cfg
+         :tab-width: 4
+         :emphasize-lines: 8-13
+
+      The rest are user defined variables of any type including arrays and further tables. With that any data could be in the configuration file
+
+Setting one or more folders for the modules:
+
+.. code-block:: text
+
+   sdv::app::CAppControl appcontrol;
+   auto bResult = appcontrol.AddModuleSearchDir("../../tests/bin");
+   bResult &= appcontrol.AddModuleSearchDir("../../bin"); // even more can be added
+
+Setting one or more folders for the config files:
+
+.. code-block:: text
+
+   appcontrol.SetConfigMode();
+   bResult &= appcontrol.AddConfigSearchDir("ApplicationConfigFiles");
+   bResult &= appcontrol.AddConfigSearchDir("ServiceConfigFiles"); // even more can be added
+
+Following shows how to parse the configuration example above.
+
+.. tab-set::
+
+   .. tab-item:: Example
+
+      .. literalinclude:: ../../../../examples/_howto_examples/example_config_file_parsing.cfg
+         :tab-width: 4
+
+   .. tab-item:: Normal parsing
+
+      .. literalinclude:: ../../../../examples/_howto_examples/example_config_file_parsing.cfg
+         :tab-width: 4
+         :emphasize-lines: 26-72
+
+      The access to the variables is very easy with the sdv::toml::CTOMLParser. Just get direct access, validate the data type and get the value.
+
+   .. tab-item:: Direct access
+
+      .. literalinclude:: ../../../../examples/_howto_examples/example_config_file_parsing.cfg
+         :tab-width: 4
+         :emphasize-lines: 74-79
+
+      The configuration can include very complex data including tables. It's not required to get from top to down, a direct access is also possible.
+
+   .. tab-item:: IObjectControl
+
+      .. literalinclude:: ../../../../examples/_howto_examples/example_config_file_parsing.cfg
+         :tab-width: 4
+         :emphasize-lines: 20, 98, 107, 128
+
+      These functions just implement the IObjectControl interface.
+
+   .. tab-item:: Print variables
+
+      .. literalinclude:: ../../../../examples/_howto_examples/example_config_file_parsing.cfg
+         :tab-width: 4
+         :emphasize-lines: 138-151, 157-167
+
+      These are the variables required for the parsing of the example. The example can be found in the code examples.

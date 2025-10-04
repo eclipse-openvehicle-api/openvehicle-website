@@ -1,0 +1,25 @@
+
+.. _program_listing_file_core_toml_parser_exception.h:
+
+Program Listing for File exception.h
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_toml_parser_exception.h>` (``core\toml_parser\exception.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CONFIG_EXCEPTION_H
+   #define CONFIG_EXCEPTION_H
+   
+   #include <interfaces/toml.h>
+   
+   except XTOMLParseException : public sdv::toml::XTOMLParseException
+   {
+       XTOMLParseException(const std::string& rss) { ssMessage = rss; };
+   
+       virtual const char* what() const noexcept override { return ssMessage.c_str(); }
+   };
+   
+   #endif // !defined CONFIG_EXCEPTION_H

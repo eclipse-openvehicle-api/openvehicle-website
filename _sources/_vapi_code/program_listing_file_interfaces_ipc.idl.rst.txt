@@ -1,0 +1,83 @@
+
+.. _program_listing_file_interfaces_ipc.idl:
+
+Program Listing for File ipc.idl
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_ipc.idl>` (``interfaces\ipc.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core.idl"
+   
+   module sdv
+   {
+       module ipc
+       {
+           struct SChannelEndpoint
+           {
+               IInterfaceAccess  pConnection;      
+               u8string          ssConnectString;  
+           };
+   
+           interface ICreateEndpoint
+           {
+               SChannelEndpoint CreateEndpoint(in u8string ssChannelConfig);
+           };
+   
+           interface IChannelAccess
+           {
+               IInterfaceAccess Access(in u8string ssConnectString);
+           };
+   
+           enum EConnectStatus : uint32
+           {
+               uninitialized = 0,              
+               initializing = 1,               
+               initialized = 2,                
+               connecting = 10,                
+               negotiating = 20,               
+               connection_error = 990,         
+               connected = 11,                 
+               communication_error = 991,      
+               disconnected = 30,              
+               disconnected_forced = 32,       
+               terminating = 90,               
+           };
+   
+           interface IConnect
+           {
+               boolean AsyncConnect(in IInterfaceAccess pReceiver);
+   
+               boolean WaitForConnection(in uint32 uiWaitMs);
+   
+               void CancelWait();
+   
+               void Disconnect();
+   
+               uint64 RegisterStatusEventCallback(in IInterfaceAccess pEventCallback);
+   
+               void UnregisterStatusEventCallback(in uint64 uiCookie);
+   
+               EConnectStatus GetStatus() const;
+           };
+   
+           interface IConnectEventCallback
+           {
+               void SetStatus(in EConnectStatus eConnectStatus);
+           };
+   
+           interface IDataSend
+           {
+               boolean SendData(inout sequence<pointer<uint8>> seqData);
+           };
+   
+           interface IDataReceiveCallback
+           {
+               void ReceiveData(inout sequence<pointer<uint8>> seqData);
+           };
+       }; // module ipc
+   }; // module sdv

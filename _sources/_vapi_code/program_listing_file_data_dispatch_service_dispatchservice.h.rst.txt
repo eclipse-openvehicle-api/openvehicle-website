@@ -1,0 +1,114 @@
+
+.. _program_listing_file_data_dispatch_service_dispatchservice.h:
+
+Program Listing for File dispatchservice.h
+==========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_data_dispatch_service_dispatchservice.h>` (``data_dispatch_service\dispatchservice.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef DISPATCH_SERVICE_H
+   #define DISPATCH_SERVICE_H
+   
+   #include <interfaces/dispatch.h>
+   #include <support/component_impl.h>
+   #include <memory>
+   #include <map>
+   #include <list>
+   #include <set>
+   
+   // Data dispatch service for CAN:
+   //
+   // - CAN Link object for Lotus Eletre registers all the CAN signals as follows:
+   // - Rx Signals are being registered to receive data from the vehicle and supply data to the vehicle devices.
+   //      - Signals are all grouped per message and per node/ECU
+   //      - One event is sent to update the data in the vehicle devices
+   //      - Data is updated first and then the event is broadcasted (toggle buffer)
+   // - Tx Signals are being registered to receive data from the vehicle devices and supply data to the vehicle
+   //      - Signals are grouped per message and per node/ECU
+   //      - (Default values are available for each signal; either one time reset or reset after each send) -> service task?
+   //      - Sending per event or per timer
+   
+   #include "transaction.h"
+   #include "signal.h"
+   #include "trigger.h"
+   
+   class CDispatchService : public sdv::CSdvObject, public sdv::core::ISignalTransmission, public sdv::core::ISignalAccess,
+       public sdv::core::IDispatchTransaction, public sdv::IObjectControl
+   {
+   public:
+       CDispatchService();
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::core::ISignalTransmission)
+           SDV_INTERFACE_ENTRY(sdv::core::ISignalAccess)
+           SDV_INTERFACE_ENTRY(sdv::core::IDispatchTransaction)
+           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_NAME("DataDispatchService")
+       DECLARE_OBJECT_SINGLETON()
+       DECLARE_OBJECT_DEPENDENCIES("TaskTimerService")
+   
+       IInterfaceAccess* CreateTxTrigger(uint32_t uiCycleTime, uint32_t uiDelayTime, uint32_t uiBehaviorFlags,
+           sdv::IInterfaceAccess* pTriggerCallback);
+   
+       virtual sdv::IInterfaceAccess* RegisterTxSignal(/*in*/ const sdv::u8string& ssSignalName, /*in*/ sdv::any_t anyDefVal) override;
+   
+       virtual sdv::IInterfaceAccess* RegisterRxSignal(/*in*/ const sdv::u8string& ssSignalName) override;
+   
+       virtual sdv::IInterfaceAccess* RequestSignalPublisher(/*in*/ const sdv::u8string& ssSignalName) override;
+   
+       virtual sdv::IInterfaceAccess* AddSignalSubscription(/*in*/ const sdv::u8string& ssSignalName, /*in*/ sdv::IInterfaceAccess* pSubscriber) override;
+   
+       virtual sdv::sequence<sdv::core::SSignalRegistration> GetRegisteredSignals() const override;
+   
+       virtual sdv::IInterfaceAccess* CreateTransaction() override;
+   
+       uint64_t GetNextTransactionID();
+   
+       void CreateDirectTransactionID();
+   
+       uint64_t GetDirectTransactionID() const;
+   
+       void Initialize(const sdv::u8string& ssObjectConfig) override;
+   
+       sdv::EObjectStatus GetStatus() const override;
+   
+       void SetOperationMode(sdv::EOperationMode eMode) override;
+   
+       void Shutdown() override;
+   
+       void UnregisterSignal(const sdv::u8string& ssSignalName, sdv::core::ESignalDirection eDirection);
+   
+       CSignal* FindSignal(const sdv::u8string& rssSignalName, sdv::core::ESignalDirection eDirection);
+   
+       void FinishTransaction(const CTransaction* pTransaction);
+   
+       CScheduler& GetScheduler();
+   
+       void RemoveTxTrigger(CTrigger* pTrigger);
+   
+   private:
+       mutable std::mutex                              m_mtxSignals;                           
+       std::map<sdv::u8string, CSignal>                m_mapRxSignals;                         
+       std::map<sdv::u8string, CSignal>                m_mapTxSignals;                         
+       sdv::EObjectStatus      m_eObjectStatus = sdv::EObjectStatus::initialization_pending;    
+       std::atomic_uint64_t                            m_uiTransactionCnt = 1ull;              
+       std::mutex                                      m_mtxTransactions;                      
+       std::list<CTransaction>                         m_lstTransactions;                      
+       uint64_t                                        m_uiDirectTransactionID;                
+       CScheduler                                      m_scheduler;                            
+       mutable std::mutex                              m_mtxTriggers;                          
+       std::map<CTrigger*, std::unique_ptr<CTrigger>>  m_mapTriggers;                          
+   };
+   
+   DEFINE_SDV_OBJECT(CDispatchService)
+   
+   #endif // !defined DISPATCH_SERVICE_H

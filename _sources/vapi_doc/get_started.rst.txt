@@ -1,0 +1,233 @@
+.. _vapi-get_started:
+
+Get started... / Installation Steps
+===================================
+
+.. seealso:: :ref:`Q & A (tipps and tricks) <vapi-q_and_a>`.
+
+Step-by-Step Installation Manual 
+
+Prerequisites
+-------------
+
+- **Visual Studio Code** or **Visual Studio** 2019 or higher
+- **Git**
+- **CMake (at least version 3.20)**
+- **GCC Compiler (version 14.2.0)**
+
+Installation Steps
+~~~~~~~~~~~~~~~~~~
+
+Step 1: Install Visual Studio Code / Visual Studio
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1. **Download Visual Studio Code 2019** or **Visual Studio 2019** (or higher):
+   
+   - Go to the Visual Studio Code / Visual Studio website.
+   - Download the installer for your operating system (Windows, macOS, or Linux).
+
+2. **Install Visual Studio Code 2019** or **Visual Studio 2019**:
+   
+   - Run the downloaded installer and follow the on-screen instructions to complete the installation.
+
+
+Step 2: Install Git
+^^^^^^^^^^^^^^^^^^^
+
+.. tab-set::
+         
+   .. tab-item:: Windows
+
+      1. **Download Git for Windows**.
+
+         - Go to https://git-scm.com/download/win — the download should start automatically.
+
+      2. **Run the Installer**.
+      
+         - Double-click the downloaded .exe file..
+       
+      3. **Follow the Setup Wizard**:
+        
+         - Choose default options unless you have specific preferences.
+         - Make sure "Git from the command line and also from 3rd-party software" is selected.
+         - Choose your preferred editor (e.g., Vim, Notepad++, VS Code).
+         - Leave the rest of the settings as default and finish the installation.
+  
+      4. **Verify Installation**:
+        
+         - Open a terminal or command prompt.
+         - Type ``git --version`` and press Enter.
+         
+   .. tab-item:: Linux (Ubuntu/Debian)
+         
+      1. **Open Terminal and run**:
+        
+         - sudo apt update
+         - sudo apt install git
+
+      2. **Verify Installation**:
+        
+         - Open a terminal or command prompt.
+         - Type ``git --version`` and press Enter.  
+
+      2. **Configuration git**:
+
+         - git config --global user.name "Your Name"
+         - git config --global user.email "you@example.com"
+         - git config --list  [to verify the settings]
+         - During the building the project the user must be logged in into git
+
+
+Step 3: Install CMake
+^^^^^^^^^^^^^^^^^^^^^
+1. **Download CMake** 3.20 or higher:
+   
+   - Visit the CMake download page.
+   - Download the installer for your operating system.
+
+2. **Install CMake**:
+   
+   - Run the installer and follow the on-screen instructions.
+   - Ensure that you add CMake to your system PATH during the installation process.
+
+3. **Verify CMake Installation**:
+ 
+   - Open a terminal or command prompt.
+   - Type ``cmake --version`` and press Enter.
+   - Ensure the version is at least 3.20.
+
+
+
+Step 4: Install GCC Compiler
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1. **Download GCC Compiler**:
+
+   - For Windows, you can use MinGW-w64. See :ref:`MinGW Installation <vapi-MinGW_installation>`. 
+   - For Linux, use your package manager (e.g., ``sudo apt-get install gcc`` for Debian-based distributions).
+
+2. **Install GCC Compiler**:
+
+   - Follow the instructions specific to your operating system to install GCC.
+
+3. **Verify GCC Installation**:
+   
+   - Open a terminal or command prompt.
+   - Type ``gcc --version`` and press Enter.
+   - Ensure the version is 14.2.0.  
+
+
+
+Step 5: Install Visual Studio Code Extensions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. tip:: There are several visual studio extensions, which may be helpful. Some we see as recommendated, some are more optional.
+
+1. **Recommended Extensions**:
+   
+   - C/C++
+   - CMake tools
+
+2. **Optional / helpful extensions**:
+   
+   - Git Graph
+   - Git History
+
+
+
+Step 6: Clone Your Project Repository
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1. **Open Visual Studio Code**.
+
+2. **Open the Terminal**:
+   
+   - Go to ``View > Terminal`` or press `` Ctrl+` ``
+  
+3. **Clone the Repository**:
+   
+   - In the terminal, type `git clone <your-repository-url>` and press Enter.
+   - Replace `<your-repository-url>` with the URL of your project repository.
+
+
+
+Step 7: Build the Project with CMake
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. tab-set::
+         
+   .. tab-item:: With Visual Studio Extension
+
+      1. **Open Visual Studio Code**.
+
+      2. **Navigate to the Project Directory**.
+      
+         - Go to ``File > Open Folder...`` and select ``<your-project-directory>``
+         - Replace ``<your-project-directory>`` with the path to your project directory.
+       
+      3. **Configure & Build**:
+        
+         - In the CMake extension go to ``Configure`` section and select the required Preset.
+         - In the CMake extension go to ``Build`` and trigger a build 
+
+      4. **Run executable**:
+        
+         - After the compilation is complete, you can run the executable generated in the build directory. The executable can be found in ``<your-project-directory>/build/<selected-compiler-platform>/bin``
+
+      5. **Run tests**:
+        
+         - During the build also the tests are included. The tests can be found in ``<your-project-directory>/build/<selected-compiler-platform>/tests/bin``
+
+   .. tab-item:: Without Visual Studio Extension
+         
+      6. **Navigate to the Project Directory**:
+         - In the terminal, type ``cd <your-project-directory>`` and press Enter.
+         - Replace ``<your-project-directory>`` with the path to your project directory.     
+
+      7. **Run CMake**:
+         - In the terminal, type ``cmake . --preset <your-preset-name>`` and press Enter.
+         - Replace ``<your-preset-name>`` with the preset you want to use. 
+         - e.g. ``cmake . --preset gcc_w64_unix_debug``.  
+         - The available presets can be found in file ``CMakePresets.json``
+         - This will configure the project and generate the necessary build files.
+
+      8. **Build Project**:
+         - In the terminal, type ``cmake --build . --preset <your-preset-name>`` and press Enter.
+         - Replace ``<your-preset-name>`` with the preset you want to use. 
+         - e.g. ``cmake --build . --preset gcc_w64_unix_debug``.  
+         - The available presets can be found in file ``CMakePresets.json``
+         - This will compile the project using the selected compiler.
+
+      9. **Run executables**:
+        
+         - After the compilation is complete, you can run the executable generated in the build directory. The executable can be found in ``<your-project-directory>/build/<selected-compiler-platform>/bin``
+
+      10. **Run tests**:
+        
+         - During the build also the tests are included. The tests can be found in ``<your-project-directory>/build/<selected-compiler-platform>/tests/bin``
+
+.. note::  
+   | Following executables can be found in ``<output-folder>/examples/bin`` and can be executed:
+   | sdv_control
+   | sdv_dbc_util
+   | sdv_idl_compiler 
+   | sdv_packager  
+   | sdv_vss_util
+
+
+.. hint::  **That's it!** Your project should now be compiled and ready to run. If you encounter any issues, feel free to ask for help.
+
+
+Follow Up Steps
+---------------
+
+After successful setting up the build environment, building the :term:`VAPI Framework` and executing the executables the follow up step would be to build and take a closer look at the examples.
+
+See :ref:`Examples <vapi-component_examples>` for the documentation of the examples.
+
+.. include:: build_examples.rst
+
+Do the same with subfolder ``<your-project-directory>/framework_tests`` which contains tests for the auto generated code.
+
+.. _vapi-create-your-own_project:
+
+Create Your Own Project / Working Space
+---------------------------------------
+
+.. include:: build_own_project.rst
+

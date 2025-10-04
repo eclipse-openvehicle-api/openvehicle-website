@@ -1,0 +1,33 @@
+.. _vapi-door_service_example:
+
+Door Service Example
+====================
+
+.. attention:: Purpose: Vehicle Abstraction, :term:`Vehicle Function` is independent from the vehicle, independent from the number of doors of the vehicle.
+
+.. note:: 
+   | Example can be found in ``<output-folder>/examples/bin``:
+   | door_demo_example
+   | door_external_app   
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Sub pages of the Door Service Example
+
+   door_service_standalone_example
+   door_service_extern_example
+   door_demo_fmu.rst
+
+.. hint:: 
+   
+   The function should automatically lock the doors a few seconds after all doors have been closed:
+
+   - one or more signals, depending on the number of doors, are input signals. The signals represents the status of a single door (opened or closed).
+   - The same number of signals are output signals. These signals will lock the doors.
+   - The function (complex service) must work independently from the number of doors.  
+   - After all doors are closed, a 'timer' should be started so that after some seconds the doors are locked. If no door is reopened of course.  
+   - Doors can be reopened at any time and will unlock the doors if they have been locked.
+
+.. attention:: For safety reasons, the concept is as follows: First, the system is in configuration mode, and services like the timer service can be created. After all components are configured, the system must switch to running mode. In this mode, the timer service does not allow the creation of additional timers. That’s why we do not use the timer service in this example.
+   
+.. image:: ../../../vapi_media/examples/door_service_example/door_service_example.png

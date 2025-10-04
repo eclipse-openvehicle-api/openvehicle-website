@@ -1,0 +1,264 @@
+
+.. _program_listing_file_core_toml_parser_parser_node_toml.h:
+
+Program Listing for File parser_node_toml.h
+===========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_toml_parser_parser_node_toml.h>` (``core\toml_parser\parser_node_toml.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef PARSER_NODE_TOML_H
+   #define PARSER_NODE_TOML_H
+   
+   #include <map>
+   #include <memory>
+   #include <stdexcept>
+   #include <string>
+   #include <vector>
+   
+   #include <interfaces/toml.h>
+   #include <support/interface_ptr.h>
+   
+   // Forward declaration
+   class CArray;
+   class CTable;
+   
+   size_t FindFirst(const std::string& rss, const std::string& rssSeparator = ".");
+   
+   size_t FindLast(const std::string& rss, const std::string& rssSeparator = ".");
+   
+   bool CompareEqual(const std::string& rss1, const std::string& rss2);
+   
+   std::string EscapeString(const std::string& rssString, const char cQuoteType = '\"');
+   
+   class CNode : public std::enable_shared_from_this<CNode>, public sdv::IInterfaceAccess, public sdv::toml::INodeInfo
+   {
+   protected:
+       CNode(const std::string& rssName);
+   
+   public:
+       CNode(const CNode&) = delete;
+       CNode& operator=(const CNode&) = delete;
+       CNode(const CNode&&) = delete;
+       CNode& operator=(const CNode&&) = delete;
+       ~CNode();
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::toml::INodeInfo)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual sdv::u8string GetName() const override;
+   
+       virtual sdv::any_t GetValue() const override;
+   
+       virtual sdv::u8string GetTOML() const override;
+   
+       std::shared_ptr<const CArray> GetArray() const;
+   
+       std::shared_ptr<CArray> GetArray();
+   
+       std::shared_ptr<const CTable> GetTable() const;
+   
+       std::shared_ptr<CTable> GetTable();
+   
+   protected:
+       std::weak_ptr<const CNode> GetParent() const;
+   
+   public:
+       void SetParent(const std::shared_ptr<CNode>& rptrParent);
+   
+       virtual std::shared_ptr<CNode> GetDirect(const std::string& rssPath) const;
+   
+       std::string CreateTOMLText(const std::string& rssParent = std::string()) const;
+   
+       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst = true,
+           bool bEmbedded = false, bool bAssignment = true, bool bRoot = false) const = 0;
+   
+   private:
+       std::weak_ptr<CNode>                m_ptrParent;    
+       std::string                         m_ssName;       
+   
+   public:
+       virtual std::shared_ptr<CNode> Find(const std::string& rssPath) const;
+   
+       virtual void Add(const std::string& rssPath, const std::shared_ptr<CNode>& rptrNode, bool bDefinedExplicitly = true);
+   };
+   
+   class CBooleanNode : public CNode
+   {
+   public:
+       CBooleanNode(const std::string& rssName, bool bVal);
+   
+       virtual sdv::toml::ENodeType GetType() const override;
+   
+       virtual sdv::any_t GetValue() const override;
+   
+       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
+           bool bAssignment, bool bRoot) const override;
+   
+   private:
+       bool    m_bVal;    
+   };
+   
+   class CIntegerNode : public CNode
+   {
+   public:
+       CIntegerNode(const std::string& rssName, int64_t iVal);
+   
+       virtual sdv::toml::ENodeType GetType() const override;
+   
+       virtual sdv::any_t GetValue() const override;
+   
+       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
+           bool bAssignment, bool bRoot) const override;
+   
+   private:
+       int64_t     m_iVal;     
+   };
+   
+   class CFloatingPointNode : public CNode
+   {
+   public:
+       CFloatingPointNode(const std::string& rssName, double dVal);
+   
+       virtual sdv::toml::ENodeType GetType() const override;
+   
+       virtual sdv::any_t GetValue() const override;
+   
+       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
+           bool bAssignment, bool bRoot) const override;
+   
+   private:
+       double      m_dVal;     
+   };
+   
+   class CStringNode : public CNode
+   {
+   public:
+       CStringNode(const std::string& rssName, const std::string& rssVal);
+   
+       virtual sdv::toml::ENodeType GetType() const override;
+   
+       virtual sdv::any_t GetValue() const override;
+   
+       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
+           bool bAssignment, bool bRoot) const override;
+   
+   private:
+       std::string     m_ssVal;        
+   };
+   
+   class CNodeCollection : public CNode, public sdv::toml::INodeCollection
+   {
+   protected:
+       CNodeCollection(const std::string& rssName);
+   
+   public:
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::toml::INodeCollection)
+           SDV_INTERFACE_CHAIN_BASE(CNode)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual uint32_t GetCount() const override;
+   
+       virtual IInterfaceAccess* GetNode(/*in*/ uint32_t uiIndex) const override;
+   
+       std::shared_ptr<CNode> Get(uint32_t uiIndex) const;
+   
+       virtual sdv::IInterfaceAccess* GetNodeDirect(/*in*/ const sdv::u8string& ssPath) const override;
+   
+       bool AddElement(const std::shared_ptr<CNode>& rptrNode, bool bUnique = false);
+   
+   private:
+   
+       std::vector<std::shared_ptr<CNode>>     m_vecContent;                   
+   
+   public:
+       bool                                    m_bDefinedExplicitly = true;    
+   };
+   
+   class CTable : public CNodeCollection
+   {
+   protected:
+       CTable(const std::string& rssName);
+   
+   public:
+       virtual sdv::toml::ENodeType GetType() const override;
+   
+       virtual std::shared_ptr<CNode> GetDirect(const std::string& rssPath) const override;
+   
+       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
+           bool bAssignment, bool bRoot) const override;
+   
+       virtual void Add(const std::string& rssPath, const std::shared_ptr<CNode>& rptrNode, bool bDefinedExplicitly) override;
+   
+       virtual std::shared_ptr<CNode> Find(const std::string& rssPath) const override;
+   
+       bool        m_bOpenToAddChildren = true;                    
+   
+   };
+   
+   class CArray : public CNodeCollection
+   {
+   protected:
+       CArray(const std::string& rssName);
+   
+   public:
+       virtual sdv::toml::ENodeType GetType() const override;
+   
+       virtual std::shared_ptr<CNode> GetDirect(const std::string& rssPath) const override;
+   
+       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
+           bool bAssignment, bool bRoot) const override;
+   
+       virtual void Add(const std::string& rssPath, const std::shared_ptr<CNode>& rptrNode, bool bDefinedExplicitly) override;
+   
+       virtual std::shared_ptr<CNode> Find(const std::string& rssPath) const override;
+   };
+   
+   class CNormalTable : public CTable
+   {
+   public:
+       CNormalTable(const std::string& rssName) : CTable(rssName) {}
+   };
+   
+   class CInlineTable : public CTable
+   {
+   public:
+       CInlineTable(const std::string& rssName) : CTable(rssName) {}
+   };
+   
+   class CNormalArray : public CArray
+   {
+   public:
+       CNormalArray(const std::string& rssName) : CArray(rssName) {}
+   };
+   
+   class CTableArray : public CArray
+   {
+   public:
+       CTableArray(const std::string& rssName) : CArray(rssName) {}
+   
+       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
+           bool bAssignment, bool bRoot) const override;
+   
+       virtual void Add(const std::string& rssPath, const std::shared_ptr<CNode>& rptrNode, bool bDefinedExplicitly) override;
+   
+       virtual std::shared_ptr<CNode> Find(const std::string& rssPath) const override;
+   };
+   
+   class CRootTable : public CNormalTable
+   {
+   public:
+       CRootTable() : CNormalTable("root") {}
+   
+       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
+           bool bAssignment, bool bRoot) const override;
+   };
+   
+   #endif // !defined PARSER_NODE_TOML_H

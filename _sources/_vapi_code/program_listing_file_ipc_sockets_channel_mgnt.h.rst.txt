@@ -1,0 +1,128 @@
+
+.. _program_listing_file_ipc_sockets_channel_mgnt.h:
+
+Program Listing for File channel_mgnt.h
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_ipc_sockets_channel_mgnt.h>` (``ipc_sockets\channel_mgnt.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CHANNEL_MGNT_H
+   #define CHANNEL_MGNT_H
+   
+   #include <support/component_impl.h>
+   #include <interfaces/ipc.h>
+   
+   #ifdef _WIN32
+   #include <ws2tcpip.h>
+   #endif
+   
+   struct CAddrInfo
+   {
+       CAddrInfo()                            = default;
+       CAddrInfo(const CAddrInfo&)            = delete;
+       CAddrInfo& operator=(const CAddrInfo&) = delete;
+       CAddrInfo(CAddrInfo&& other)           = delete;
+   
+       CAddrInfo& operator=(CAddrInfo&& other) = delete;
+   
+       ~CAddrInfo()
+       {
+           freeaddrinfo(AddressInfo);
+       }
+   
+       addrinfo* AddressInfo{nullptr}; 
+   };
+   
+   inline int StartUpWinSock()
+   {
+       static bool isInitialized = false;
+       if (isInitialized)
+       {
+           return 0;
+       }
+   
+       WSADATA wsaData;
+       int     error = WSAStartup(MAKEWORD(2, 2), &wsaData);
+       if (error != 0)
+       {
+           SDV_LOG_ERROR("WSAStartup failed with error: ", std::to_string(error));
+       }
+       else
+       {
+           SDV_LOG_INFO("WSAStartup initialized");
+           isInitialized = true;
+       }
+       return error;
+   }
+   
+   struct SocketConnection
+   {
+       SOCKET From{ INVALID_SOCKET }; 
+       SOCKET To{ INVALID_SOCKET };   
+   };
+   
+   
+   class CSocketsChannelMgnt : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::ipc::ICreateEndpoint,
+       public sdv::ipc::IChannelAccess
+   {
+   public:
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
+           SDV_INTERFACE_ENTRY(sdv::ipc::IChannelAccess)
+           SDV_INTERFACE_ENTRY(sdv::ipc::ICreateEndpoint)
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_NAME("DefaultSocketsChannelControl")
+       DECLARE_OBJECT_CLASS_ALIAS("RemoteChannelControl")
+       DECLARE_DEFAULT_OBJECT_NAME("RemoteChannelControl")
+       DECLARE_OBJECT_SINGLETON()
+   
+       
+       void Initialize(const sdv::u8string& ssObjectConfig) override;
+   
+       sdv::EObjectStatus GetStatus() const override;
+   
+       void SetOperationMode(sdv::EOperationMode eMode) override;
+   
+       void Shutdown() override;
+   
+       sdv::ipc::SChannelEndpoint CreateEndpoint(/*in*/ const sdv::u8string& ssChannelConfig) override;
+   
+       sdv::IInterfaceAccess* Access(const sdv::u8string& ssConnectString) override;
+   
+   private:
+       SOCKET CreateSocket(const addrinfo& hints);
+   
+       uint16_t GetPort(SOCKET socket) const;
+   
+       SocketConnection CreateConnectedSocketPair();
+       SOCKET Listen(const addrinfo& hints, uint32_t port);
+       SOCKET CreateAndConnectToSocket(const addrinfo& hints, const char* defaultHost, const char* defaultPort);
+   
+       SOCKET CreateAndConnectToExistingSocket(const addrinfo& hints, const char* hostName, const char* portName);
+   
+       inline static const addrinfo getHints
+       {
+           []() constexpr {
+               addrinfo hints{0, 0, 0, 0, 0, nullptr, nullptr, nullptr};
+               hints.ai_family = AF_INET;
+               hints.ai_socktype = SOCK_STREAM;
+               hints.ai_protocol = IPPROTO_TCP;
+               hints.ai_flags = AI_PASSIVE;
+               hints.ai_next = nullptr;
+   
+               return hints;
+           }()
+       };
+   
+       sdv::EObjectStatus  m_eObjectStatus = sdv::EObjectStatus::initialization_pending;    
+   };
+   DEFINE_SDV_OBJECT(CSocketsChannelMgnt)
+   
+   #endif // ! defined CHANNEL_MGNT_H

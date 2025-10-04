@@ -1,0 +1,84 @@
+
+.. _program_listing_file_interfaces_module.h:
+
+Program Listing for File module.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_module.h>` (``interfaces\module.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__MODULE_H__20251003_130453_963__
+   #define __IDL_GENERATED__MODULE_H__20251003_130453_963__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   namespace sdv
+   {
+       namespace core
+       {
+           typedef uint64_t TModuleID;
+   
+           static const TModuleID tCoreLibModule = 0xffffffffffffffffu;
+   
+           interface IModuleControl
+           {
+               static constexpr ::sdv::interface_id _id = 0x8AA4273629DB8A02;
+   
+               virtual TModuleID Load(/*in*/ const sdv::u8string& ssModulePath) = 0;
+   
+               virtual bool Unload(/*in*/ TModuleID tModuleID) = 0;
+   
+               virtual bool HasActiveObjects(/*in*/ TModuleID tModuleID) const = 0;
+           };
+   
+           interface IModuleControlConfig
+           {
+               static constexpr ::sdv::interface_id _id = 0x229760CE616ED234;
+   
+               virtual bool AddModuleSearchDir(/*in*/ const sdv::u8string& ssDir) = 0;
+   
+               virtual sdv::sequence<sdv::u8string> GetModuleSearchDirs() const = 0;
+           };
+   
+           struct SModuleInfo
+           {
+               TModuleID tModuleID;
+   
+               sdv::u8string ssPath;
+   
+               sdv::u8string ssFilename;
+   
+               uint32_t uiVersion;
+   
+               bool bActive;
+           };
+   
+           interface IModuleInfo
+           {
+               static constexpr ::sdv::interface_id _id = 0x5FE3099157ED7EED;
+   
+               virtual sdv::sequence<SModuleInfo> GetModuleList() const = 0;
+   
+               virtual sdv::sequence<SClassInfo> GetClassList(/*in*/ TModuleID tModuleID) const = 0;
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__MODULE_H__20251003_130453_969__)

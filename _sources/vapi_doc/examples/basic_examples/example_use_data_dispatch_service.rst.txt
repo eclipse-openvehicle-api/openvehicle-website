@@ -1,0 +1,54 @@
+(example-datadispatchservice)=
+
+Example Data Dispatch Service
+=============================
+
+The :term:`Data Dispatch Service` is supposed to be used by :term:`Vehicle Device` s and the :term:`Bus Abstraction` implementations to exchange information without needing to know any recipient of the data or who sent the data; only the ID number and the data type of the information must be known. Also callback functions can be registered to any existing ID in order to be informed when the data behind the ID has been updated. This makes the :term:`Data Dispatch Service` a possible link between timed and event-driven approaches.
+
+.. tab-set::
+
+   .. tab-item:: Example
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_dispatch_service.cpp
+         :tab-width: 4
+
+   .. tab-item:: Register signal for sending (TX)
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_dispatch_service.cpp
+         :tab-width: 4
+         :emphasize-lines: 11, 13-15, 98-100
+
+      For sending data over the network a 'TxSignal' has to be registered. The data is provided by the publisher. Multiple registration of the same signal are allowed. The signal is identified by the signal name. To guarantee uniqueness, it is preferred to add the group hierarchy to the signal name separated by a dot. E.g. with CAN: MAB.BcmChas1Fr03.SteerReCtrlReqAgReq
+
+   .. tab-item:: Sending (TX)
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_dispatch_service.cpp
+         :tab-width: 4
+         :emphasize-lines: 47-49, 68-72, 78-82, 98-100, 103-105
+
+      An :term:`Vehicle Device` can act as a publisher for the signal. For that it has to add itself as a publisher to the signal.
+
+   .. tab-item:: Transaction
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_dispatch_service.cpp
+         :tab-width: 4
+         :emphasize-lines: 68-72, 78-82
+
+      If multiple transacted updates or transacted readings without interference of another update have to be made a transaction can be created before reading/writing.
+
+   .. tab-item:: Register signal for reception (RX)
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_dispatch_service.cpp
+         :tab-width: 4
+         :emphasize-lines: 11-12, 97
+
+      To receipt data over the network a 'RxSignal' has to be registered. Multiple registrations of the same signal are allowed. The signal is identified by the signal name. To guarantee uniqueness, it is preferred to add the group hierarchy to the signal name separated by a dot. E.g. with CAN: MAB.BcmChas1Fr03.SteerReCtrlReqAgReq. Every component which wants to receive the data must subscribe.
+
+   .. tab-item:: Reception (RX)
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_dispatch_service.cpp
+         :tab-width: 4
+         :emphasize-lines: 32-33, 91-95, 102
+
+      An (or multiple) :term:`Vehicle Device` or :term:`Basic Service` can subscribe a callback function to receive the data when the signal is updated.
+

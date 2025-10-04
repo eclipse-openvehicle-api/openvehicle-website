@@ -1,0 +1,64 @@
+.. role:: raw-html-m2r(raw)
+   :format: html
+
+.. _example-basic-service:
+
+Example Basic Service
+=====================
+
+.. note::
+   The code in the following example is different from typical :term:`Basic Service` s in the way that the service in the example reads from and writes to the :term:`Vehicle Device`. In real life an vehicle device will either write or read from :term:`Vehicle Device`, not both together. The :term:`Vehicle Device` itself offers only one functionality, not both.
+
+To create a :term:`Basic Service` one just starts with a :ref:`general Component <example-general-component>`, sets the object type to ``BasicService`` from the `EObjectType <exhale_define_component__impl_8h_1a23c0fa93f06b3d3dd3650e6dccd27913>`_ enum and adds functionality through implementing the inherited interfaces, using :term:`Vehicle Device` s, see :ref:`How to access other components <example-access-components>`.
+
+.. tab-set::
+
+   .. tab-item:: Example
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_basic_service.cpp
+         :tab-width: 4
+
+   .. tab-item:: Basic Service
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_basic_service.cpp
+         :tab-width: 4
+         :emphasize-lines: 12, 54-55, 122
+
+      Set object type and name.
+
+   .. tab-item:: Write (TX)
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_basic_service.cpp
+         :tab-width: 4
+         :emphasize-lines: 16, 29-34, 51, 62-65, 119
+
+      To write/send any data to the network the corresponding :term:`VAPI Interface` of the :term:`Vehicle Device` has to be used.
+
+   .. tab-item:: Register Event (RX)
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_basic_service.cpp
+         :tab-width: 4
+         :emphasize-lines: 14, 21-27, 49, 71-73, 116
+
+      First of all, the :term:`Basic Service` must register itself by calling the register method of the :term:`Vehicle Device`. 
+      This is done in the constructor of the class. Event driven approach: now on any signal change the 'SetSpeedValue' method is called and the value is updated automatically. 
+      Any :term:`Complex Service` or :term:`Extern Application` can get this value by polling 'GetSpeed()' or automatically if the :term:`Complex Service` or :term:`Extern Application` has registered a callback function.
+      In this case the callback function of all registered methods will be called.
+
+   .. tab-item:: Unregister Event (RX)
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_basic_service.cpp
+         :tab-width: 4
+         :emphasize-lines: 41-45
+
+      If the :term:`Basic Service` has registered itself in the :term:`Vehicle Device` it has to unregister itself on shutdown.
+
+   .. tab-item:: Offer A Register Interface
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_basic_service.cpp
+         :tab-width: 4
+         :emphasize-lines: 15, 49, 74-78, 93-100, 106-113, 117-118
+
+      Event driven approach: Implement the :term:`VAPI Interface` which allows any :term:`Complex Service` or :term:`Extern Application` to register a callback 
+      (the :term:`Vehicle Device` event), which is called on any signal change so that a :term:`Complex Service` or :term:`Extern Application` is automatically updated.
+

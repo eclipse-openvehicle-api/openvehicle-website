@@ -1,0 +1,131 @@
+
+.. _program_listing_file_interfaces_repository.h:
+
+Program Listing for File repository.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_repository.h>` (``interfaces\repository.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__REPOSITORY_H__20251003_130454_20__
+   #define __IDL_GENERATED__REPOSITORY_H__20251003_130454_20__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   #include "module.h"
+   
+   namespace sdv
+   {
+       namespace core
+       {
+           typedef uint64_t TObjectID;
+   
+           interface IObjectAccess
+           {
+               static constexpr ::sdv::interface_id _id = 0x8EEACAB6A9B2D46B;
+   
+               virtual IInterfaceAccess* GetObject(/*in*/ const sdv::u8string& ssObjectName) = 0;
+   
+               virtual IInterfaceAccess* GetObjectByID(/*in*/ TObjectID tObjectID) = 0;
+           };
+   
+           enum class EObjectInfoFlags : uint32_t
+           {
+               object_foreign = 0x00000100,
+   
+               object_controlled = 0x00008000,
+   
+               object_isolated = 0x00010000,
+           };
+   
+           struct SObjectInfo
+           {
+               TObjectID tObjectID;
+   
+               TModuleID tModuleID;
+   
+               SClassInfo sClassInfo;
+   
+               sdv::u8string ssObjectName;
+   
+               sdv::u8string ssObjectConfig;
+   
+               uint32_t uiFlags;
+           };
+   
+           interface IRepositoryInfo
+           {
+               static constexpr ::sdv::interface_id _id = 0x0FB06F2FC3AED094;
+   
+               virtual SClassInfo FindClass(/*in*/ const sdv::u8string& ssClassName) const = 0;
+   
+               virtual sdv::sequence<SObjectInfo> GetObjectList() const = 0;
+   
+               virtual SObjectInfo GetObjectInfo(/*in*/ TObjectID tObjectID) const = 0;
+   
+               virtual SObjectInfo FindObject(/*in*/ const sdv::u8string& ssObjectName) const = 0;
+           };
+   
+           interface IRepositoryControl
+           {
+               static constexpr ::sdv::interface_id _id = 0xB8F96D8B650478A5;
+   
+               virtual TObjectID CreateObject(/*in*/ const sdv::u8string& ssClassName, /*in*/ const sdv::u8string& ssObjectName, /*in*/ const sdv::u8string& ssObjectConfig) = 0;
+   
+               virtual TObjectID CreateObjectFromModule(/*in*/ TModuleID tModuleID, /*in*/ const sdv::u8string& ssClassName, /*in*/ const sdv::u8string& ssObjectName, /*in*/ const sdv::u8string& ssObjectConfig) = 0;
+   
+               virtual bool DestroyObject(/*in*/ const sdv::u8string& ssObjectName) = 0;
+           };
+   
+           interface IRepositoryUtilityCreate
+           {
+               static constexpr ::sdv::interface_id _id = 0x0C3CEDF14F63B91D;
+   
+               virtual IInterfaceAccess* CreateUtility(/*in*/ const sdv::u8string& ssClassName, /*in*/ const sdv::u8string& ssObjectConfig) = 0;
+           };
+   
+           /*local*/ interface IRepositoryMarshallCreate
+           {
+               static constexpr ::sdv::interface_id _id = 0x580D4A9B224A24F7;
+   
+               virtual IInterfaceAccess* CreateProxyObject(/*in*/ sdv::interface_id id) = 0;
+   
+               virtual IInterfaceAccess* CreateStubObject(/*in*/ sdv::interface_id id) = 0;
+           };
+   
+           interface IRegisterForeignObject
+           {
+               static constexpr ::sdv::interface_id _id = 0xDBF8AD8B6DDCA82A;
+   
+               virtual TObjectID RegisterObject(/*in*/ IInterfaceAccess* pObjectIfc, /*in*/ const sdv::u8string& ssObjectName) = 0;
+           };
+   
+           interface ILinkCoreRepository
+           {
+               static constexpr ::sdv::interface_id _id = 0xA11C6FF4116D35F1;
+   
+               virtual void LinkCoreRepository(/*in*/ IInterfaceAccess* pCoreRepository) = 0;
+   
+               virtual void UnlinkCoreRepository() = 0;
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__REPOSITORY_H__20251003_130454_37__)

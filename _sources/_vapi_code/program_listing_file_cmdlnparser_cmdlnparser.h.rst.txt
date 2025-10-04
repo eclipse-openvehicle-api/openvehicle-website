@@ -1,0 +1,1581 @@
+
+.. _program_listing_file_cmdlnparser_cmdlnparser.h:
+
+Program Listing for File cmdlnparser.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_cmdlnparser_cmdlnparser.h>` (``cmdlnparser\cmdlnparser.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CMDLN_PARSER_H
+   #define CMDLN_PARSER_H
+   
+   
+   #include <iostream>
+   #include <string>
+   #include <sstream>
+   #include <map>
+   #include <list>
+   #include <set>
+   #include <stdexcept>
+   #include <iostream>
+   #include <filesystem>
+   #include <vector>
+   #include <memory>
+   #include <optional>
+   #include <queue>
+   #include <support/pointer.h>
+   #include <support/string.h>
+   #include <support/sequence.h>
+   
+   #ifdef min
+   #undef min
+   #endif
+   
+   #ifdef max
+   #undef max
+   #endif
+   
+   namespace helper
+   {
+       inline std::string rtrim(const std::string& rss)
+       {
+           const std::string ssWhitespace = " \t\n\r\f\v";
+           std::string ssResult = rss;
+           ssResult.erase(ssResult.find_last_not_of(ssWhitespace) + 1);
+           return ssResult;
+       }
+   
+       inline std::string ltrim(const std::string& rss)
+       {
+           const std::string ssWhitespace = " \t\n\r\f\v";
+           std::string ssResult = rss;
+           ssResult.erase(0, ssResult.find_first_not_of(ssWhitespace));
+           return ssResult;
+       }
+   
+       inline std::string trim(const std::string& rss)
+       {
+           return ltrim(rtrim(rss));
+       }
+   } // namespace helper
+   
+   // Forward declaration
+   class CArgumentDefBase;
+   
+   template <typename TVar, typename TEnable = void>
+   class CArgumentDefT;
+   
+   struct SGroupDef
+   {
+       std::string     ssTitle;        
+       std::string     ssDescription;  
+   };
+   
+   class CArgumentIterator
+   {
+   public:
+       template <typename TCharType>
+       CArgumentIterator(size_t nArgs, const TCharType** rgszArgs);
+   
+       std::optional<std::string> GetNext();
+   
+       size_t GetIndexOfLastArg() const;
+   
+   private:
+       size_t                      m_nCounter = 0;         
+       std::queue<std::string>     m_queueArguments;       
+   };
+   
+   class CCommandLine
+   {
+       friend CArgumentDefBase;
+   
+   public:
+       enum class EParseFlags : uint32_t
+       {
+           assignment_character = 0x10,        
+           no_assignment_character = 0x20,     
+           assignment_next_arg = 0x40,         
+       };
+   
+       CCommandLine(uint32_t uiFlags = static_cast<uint32_t>(EParseFlags::assignment_character));
+   
+       ~CCommandLine();
+   
+       std::filesystem::path GetApplicationPath() const;
+   
+       uint32_t GetParseFlags() const { return m_uiParseFlags; }
+   
+       bool CheckParseFlag(EParseFlags eParseFlag) const { return m_uiParseFlags & static_cast<uint32_t>(eParseFlag); }
+   
+       template <typename TCharType>
+       void Parse(size_t nArgs, const TCharType** rgszArgs);
+   
+       void DefineGroup(const std::string& rssTitle, const std::string& rssDescription = std::string{});
+   
+       template <typename TVar>
+       CArgumentDefT<TVar>& DefineDefaultArgument(TVar& rtVar, const std::string& rssHelpText);
+   
+       template <typename TVar, typename... TArgumentGroup>
+       CArgumentDefT<TVar>& DefineOption(const std::string& rssArgument, TVar& rtVar, const std::string& rssHelpText,
+           bool bCaseSensitive = true, size_t nArgumentGroup = 0, TArgumentGroup... nAdditionalGroups);
+   
+       template <typename TVar, typename... TArgumentGroup>
+       CArgumentDefT<TVar>& DefineSubOption(const std::string& rssArgument, TVar& rtVar, const std::string& rssHelpText,
+           bool bCaseSensitive = true, size_t nArgumentGroup = 0, TArgumentGroup... nAdditionalGroups);
+   
+       template <typename... TArgumentGroup>
+       CArgumentDefT<bool>& DefineFlagOption(const std::string& rssArgument, bool& rbFlag, const std::string& rssHelpText,
+           bool bCaseSensitive = true, size_t nArgumentGroup = 0, TArgumentGroup... nAdditionalGroups);
+   
+       template <typename... TArgumentGroup>
+       CArgumentDefT<bool>& DefineFlagSubOption(const std::string& rssArgument, bool& rbFlag, const std::string& rssHelpText,
+           bool bCaseSensitive = true, size_t nArgumentGroup = 0, TArgumentGroup... nAdditionalGroups);
+   
+       void PrintFixedWidth(size_t nWidth);
+   
+       size_t PrintFixedWidth() const;
+   
+       void PrintMaxWidth(size_t nWidth);
+   
+       size_t PrintMaxWidth() const;
+   
+       void PrintSyntax(bool bEnable);
+   
+       bool PrintSyntax() const;
+   
+       void PrintHelp(std::ostream& rstream, const std::string& rssHelpText = std::string{}, size_t nArgumentGroup = 0) const;
+   
+       static void PrintHelpText(std::ostream& rstream, const std::string& rssHelpText, size_t nPrintWidth = 0);
+   
+       void DumpArguments(std::ostream& rstream, bool bAll = true) const;
+   
+       std::vector<std::string> IncompatibleArguments(size_t nArgumentGroup, bool bFull = true) const;
+   
+   private:
+       uint32_t                                        m_uiParseFlags = 0;     
+       std::shared_ptr<CArgumentDefBase>               m_ptrDefaultArg;        
+       std::list<std::shared_ptr<CArgumentDefBase>>    m_lstOptionArgs;        
+       std::map<std::string, CArgumentDefBase&, std::greater<std::string>> m_mapSortedOptions;     
+       std::map<std::string, CArgumentDefBase&, std::greater<std::string>> m_mapSortedSubOptions;  
+       std::shared_ptr<SGroupDef>                      m_ptrCurrentGroup;      
+       std::list<std::pair<std::reference_wrapper<CArgumentDefBase>, std::string>> m_lstSupplied;  
+       size_t                                          m_nFixedWidth = 0;      
+       size_t                                          m_nMaxWidth = 0;        
+       bool                                            m_bSyntaxPrint = true;  
+   };
+   
+   struct SArgumentParseException : std::exception
+   {
+       SArgumentParseException(const std::string& rssDescription) : m_ssDescription(rssDescription)
+       {
+           Compose();
+       }
+   
+       virtual const char* what() const noexcept
+       {
+           return m_ssWhat.c_str();
+       }
+   
+       void AddIndex(size_t nIndex)
+       {
+           m_nIndex = nIndex; Compose();
+       }
+   
+       void AddArgument(const std::string& rssArg)
+       {
+           m_ssArgument = rssArg; Compose();
+       }
+   
+   private:
+       void Compose()
+       {
+           std::stringstream sstream;
+           if (m_nIndex != static_cast<size_t>(-1))
+               sstream << "Argument #" << m_nIndex;
+           if (!m_ssArgument.empty())
+           {
+               if (!sstream.str().empty()) sstream << " ";
+               sstream << "'" << m_ssArgument << "'";
+           }
+           if (!sstream.str().empty())
+               sstream << ": ";
+           sstream << m_ssDescription;
+           m_ssWhat = std::move(sstream.str());
+       }
+   
+       std::string     m_ssWhat;                               
+       std::string     m_ssDescription;                        
+       std::string     m_ssArgument;                           
+       size_t          m_nIndex = static_cast<size_t>(-1);     
+   };
+   
+   void PrintBlock(std::ostream& rstream, const std::string& rssText, size_t nIndentPos, size_t nCurrentPos, size_t nMaxPos);
+   
+   struct IArgumentProvide
+   {
+       virtual void ArgumentAssign(const std::string& rssValue) = 0;
+   
+       virtual std::string GetArgumentOptionMarkup() = 0;
+   
+       virtual std::string GetArgumentOptionDetails(size_t nMaxStringLen) = 0;
+   
+       virtual std::string GetArgumentValueString() = 0;
+   
+       virtual bool IsArgumentAssigned() = 0;
+   
+       virtual bool AllowMultiArgumentAssign() = 0;
+   };
+   
+   enum class EArgumentFlags : uint32_t
+   {
+       default_argument = 1,           
+       option_argument = 0x10,         
+       sub_option_argument = 0x20,     
+       bool_option = 0x100,            
+       flag_option = 0x200,            
+       case_sensitive = 0x1000,         
+   };
+   
+   class CArgumentDefBase
+   {
+   protected:
+       template <typename TVar, typename... TArgumentGroup>
+       CArgumentDefBase(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, TVar& rtVar, TArgumentGroup... nArgumentGroup);
+   
+       virtual ~CArgumentDefBase();
+   
+   public:
+       struct SOptionName
+       {
+           std::string     ssName;         
+           uint32_t        uiFlags = 0;    
+       };
+   
+       const CCommandLine& GetCLParser() const { return m_rCLParser; }
+   
+       bool CompareNameAndAssign(CArgumentIterator& rargit, const std::string& rssArgument, const std::string& rssOptionName,
+           bool bPartial) const;
+   
+       void AddExample(const std::string& rssExample);
+   
+       const std::vector<SOptionName>& GetOptionNames() const { return m_vecOptionNames; }
+   
+       const std::string& GetHelpText() const { return m_ssHelpText; }
+   
+       const std::shared_ptr<IArgumentProvide>& GetArgumentVar() const { return m_ptrArgProvide; }
+   
+       const std::list<std::string>& GetExamples() const { return m_lstExamples; }
+   
+       bool CheckFlag(EArgumentFlags eFlag) const { return m_uiFlags & static_cast<uint32_t>(eFlag); }
+   
+       void AddOptionName(const std::string& rssOption)
+       {
+           SOptionName sOption{ rssOption, static_cast<uint32_t>(EArgumentFlags::option_argument) };
+           m_vecOptionNames.push_back(sOption);
+           m_rCLParser.m_mapSortedOptions.emplace(rssOption, *this);
+       }
+   
+       void AddSubOptionName(const std::string& rssSubOption)
+       {
+           SOptionName sSubOption{ rssSubOption, static_cast<uint32_t>(EArgumentFlags::sub_option_argument) };
+           m_vecOptionNames.push_back(sSubOption);
+           m_rCLParser.m_mapSortedSubOptions.emplace(rssSubOption, *this);
+       }
+   
+       std::shared_ptr<SGroupDef> GetGroup() const { return m_ptrGroup; }
+   
+       bool PartOfArgumentGroup(size_t nGroup) const
+       {
+           return m_setArgumentGroups.find(nGroup) != m_setArgumentGroups.end() ||
+               m_setArgumentGroups.find(0) != m_setArgumentGroups.end();
+       }
+   
+       bool OptionAvailableOnCommandLine() const { return m_bAvailableOnCommandLine; }
+   
+   private:
+       CCommandLine&                       m_rCLParser;                        
+       std::shared_ptr<SGroupDef>          m_ptrGroup;                         
+       std::vector<SOptionName>            m_vecOptionNames;                   
+       std::string                         m_ssHelpText;                       
+       std::shared_ptr<IArgumentProvide>   m_ptrArgProvide;                    
+       std::list<std::string>              m_lstExamples;                      
+       uint32_t                            m_uiFlags = 0;                      
+       std::set<size_t>                    m_setArgumentGroups;                
+       mutable bool                        m_bAvailableOnCommandLine = false;  
+   };
+   
+   template <typename TVar>
+   class CArgumentDefT<TVar, typename std::enable_if_t<std::is_arithmetic<TVar>::value>> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, TVar& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <typename TVar>
+   class CArgumentDefT<std::vector<TVar>, typename std::enable_if_t<std::is_arithmetic<TVar>::value>> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, std::vector<TVar>& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <typename TVar>
+   class CArgumentDefT<sdv::sequence<TVar>, typename std::enable_if_t<std::is_arithmetic<TVar>::value>> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, sdv::sequence<TVar>& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <typename TVar>
+   class CArgumentDefT<std::list<TVar>, typename std::enable_if_t<std::is_arithmetic<TVar>::value>> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, std::list<TVar>& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <>
+   class CArgumentDefT<std::filesystem::path, void> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, std::filesystem::path& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <>
+   class CArgumentDefT<std::vector<std::filesystem::path>, void> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, std::vector<std::filesystem::path>& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <>
+   class CArgumentDefT<sdv::sequence<std::filesystem::path>, void> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, sdv::sequence<std::filesystem::path>& rtVar,
+           TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <>
+   class CArgumentDefT<std::list<std::filesystem::path>, void> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, std::list<std::filesystem::path>& rtVar,
+           TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <>
+   class CArgumentDefT<std::string, void> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, std::string& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <>
+   class CArgumentDefT<std::vector<std::string>, void> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, std::vector<std::string>& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <>
+   class CArgumentDefT<sdv::sequence<std::string>, void> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, sdv::sequence<std::string>& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <>
+   class CArgumentDefT<std::list<std::string>, void> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, std::list<std::string>& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <>
+   class CArgumentDefT<sdv::u8string, void> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, sdv::u8string& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <>
+   class CArgumentDefT<std::vector<sdv::u8string>, void> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, std::vector<sdv::u8string>& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <>
+   class CArgumentDefT<sdv::sequence<sdv::u8string>, void> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, sdv::sequence<sdv::u8string>& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <>
+   class CArgumentDefT<std::list<sdv::u8string>, void> : public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, std::list<sdv::u8string>& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <typename TEnum>
+   struct SEnumArgumentAssoc
+   {
+       TEnum           eValue;             
+       std::string     ssValueText;        
+       std::string     ssDescription;      
+   };
+   
+   template <typename TEnum>
+   class CEnumArgumentDefBase
+   {
+   public:
+       void AddAssociation(TEnum eEnumValue, const std::string& rssValueText, const std::string& rssDescription)
+       {
+           if (rssValueText.empty()) return;   // At least a value text is needed
+           SEnumAssociation sEnumAssociation;
+           sEnumAssociation.eValue = eEnumValue;
+           sEnumAssociation.ssValueText = rssValueText;
+           sEnumAssociation.ssDescr = rssDescription.empty() ? rssValueText : rssDescription;
+           m_lstEnumAssociations.push_back(sEnumAssociation);
+       }
+   
+       void AddAssociation(const SEnumArgumentAssoc<TEnum>& rsAssociation)
+       {
+           if (rsAssociation.ssValueText.empty()) return;  // At least a value text is needed
+           SEnumAssociation sEnumAssociation;
+           sEnumAssociation.eValue = rsAssociation.eValue;
+           sEnumAssociation.ssValueText = rsAssociation.ssValueText;
+           sEnumAssociation.ssDescription =
+               rsAssociation.ssDescription.empty() ? rsAssociation.ssValueText : rsAssociation.ssDescription;
+           m_lstEnumAssociations.push_back(sEnumAssociation);
+       }
+   
+       template <size_t nSize>
+       void AddAssociations(const SEnumArgumentAssoc<TEnum>(& rgsAssociations)[nSize])
+       {
+           for (size_t n = 0; n < nSize; n++)
+               AddAssociation(rgsAssociations[n]);
+       }
+   
+       struct SEnumAssociation
+       {
+           TEnum           eValue;             
+           std::string     ssValueText;        
+           std::string     ssDescription;      
+       };
+   
+       const std::list<SEnumAssociation>& GetAssociations() const
+       {
+           return m_lstEnumAssociations;
+       }
+   
+   private:
+       std::list<SEnumAssociation>     m_lstEnumAssociations;      
+   };
+   
+   template <typename TEnum>
+   class CArgumentDefT <TEnum, typename std::enable_if_t<std::is_enum<TEnum>::value>> :
+       public CEnumArgumentDefBase<TEnum>, public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, TEnum& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <typename TEnum>
+   class CArgumentDefT<std::vector<TEnum>, typename std::enable_if_t<std::is_enum<TEnum>::value>> :
+       public CEnumArgumentDefBase<TEnum>, public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, std::vector<TEnum>& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <typename TEnum>
+   class CArgumentDefT<sdv::sequence<TEnum>, typename std::enable_if_t<std::is_enum<TEnum>::value>> :
+       public CEnumArgumentDefBase<TEnum>, public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, sdv::sequence<TEnum>& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <typename TEnum>
+   class CArgumentDefT<std::list<TEnum>, typename std::enable_if_t<std::is_enum<TEnum>::value>> :
+       public CEnumArgumentDefBase<TEnum>, public CArgumentDefBase
+   {
+   public:
+       template <typename... TArgumentGroup>
+       CArgumentDefT(CCommandLine& rCLParser, const std::string& rssArgument, const std::shared_ptr<SGroupDef>& rptrGroup,
+           const std::string& rssHelpText, uint32_t uiFlags, std::list<TEnum>& rtVar, TArgumentGroup... nArgumentGroup) :
+           CArgumentDefBase(rCLParser, rssArgument, rptrGroup, rssHelpText, uiFlags, rtVar, nArgumentGroup...)
+       {}
+   };
+   
+   template <typename TVar>
+   class CArgValueImpl
+   {
+   public:
+       CArgValueImpl(CArgumentDefT<TVar>& rArgumentDef) : m_rArgumentDef(rArgumentDef)
+       {
+       }
+   
+       void Parse(TVar& /*rtArgument*/, const std::string& /*rssValue*/) {}
+   
+       std::string GetArgumentOptionMarkup() { return std::string(); }
+   
+       std::string GetOptionDetails(size_t /*nMaxStringLen*/) { return std::string(); }
+   
+       std::string GetArgumentValueString(const TVar& /*rtArgument*/) { return std::string(); }
+   
+       bool MultiArgument() { return false; }
+   
+   protected:
+       CArgumentDefT<TVar>&    m_rArgumentDef;     
+   };
+   
+   template <class TBase, typename TVarClass, typename TVar = TVarClass>
+   class CValueAssignment : public TBase
+   {
+   public:
+       CValueAssignment(CArgumentDefT<TVarClass>& rArgumentDef) :
+           TBase(rArgumentDef),
+           m_bNoAssignChar(rArgumentDef.GetOptionNames().empty() ||
+               rArgumentDef.GetCLParser().CheckParseFlag(CCommandLine::EParseFlags::no_assignment_character) ||
+               rArgumentDef.GetCLParser().CheckParseFlag(CCommandLine::EParseFlags::assignment_next_arg))
+       {}
+   
+       void Parse(TVarClass& rtArgument, const std::string& rssValue)
+       {
+           // Value existing?
+           if (!m_bNoAssignChar && !rssValue.size())
+               throw SArgumentParseException("Incorrect value (assignment expected)!");
+   
+           // Assignment expected?
+           if (!m_bNoAssignChar && rssValue[0] != '=' && rssValue[0] != ':')
+               throw SArgumentParseException("Incorrect value (assignment expected)!");
+   
+           // Forward the request to the base
+           TBase::Parse(rtArgument, rssValue.substr(m_bNoAssignChar ? 0 : 1));
+       }
+   
+       std::string GetArgumentOptionMarkup()
+       {
+           // Request the markup of the argument(s)
+           // Option markup is composed of ':' with the markup of the argument type(s)
+           return (m_bNoAssignChar ? "" : ":") + TBase::GetArgumentOptionMarkup();
+       }
+   
+   private:
+       bool m_bNoAssignChar = false;        
+   };
+   
+   template <class TContainer, class TBase, typename TVar>
+   class CContainerArgValue : public TBase
+   {
+   public:
+       CContainerArgValue(CArgumentDefT<TContainer>& rArgumentDef) : TBase(rArgumentDef)   {}
+   
+       void Parse(TContainer& rvectArgument, const std::string& rssValue)
+       {
+           // Parse through the value ('\\' and '"' are escape characters)
+           std::size_t nPos = 0;
+           std::string ssValue;
+           enum class EState { value_or_quote, value_or_comma, quote_string, comma_or_end } eState = EState::value_or_quote;
+           bool bEscape = false;
+           size_t nDepth = 0;
+   
+           do
+           {
+               bool bSkip = false;
+               bool bProcess = false;
+   
+               // Use the '\0' to identify the end of the string
+               char ch = nPos >= rssValue.size() ? '\0' : rssValue[nPos];
+   
+               // interpret the character
+               switch (ch)
+               {
+               case '(':
+               case '{':
+                   if (!bEscape && eState != EState::quote_string)
+                       nDepth++;
+                   break;
+               case ')':
+               case '}':
+                   if (nDepth && !bEscape && eState != EState::quote_string)
+                       nDepth--;
+                   break;
+               case '\\':
+                   if (bEscape)    // Keep this character
+                   {
+                       bEscape = false;
+                       break;
+                   }
+                   // Escape character
+                   bEscape = true;
+                   bSkip = true;
+                   break;
+               case '"':
+                   if (bEscape)    // Keep this character
+                   {
+                       bEscape = false;
+                       break;
+                   }
+                   if (eState == EState::value_or_comma || eState == EState::comma_or_end) // Invalid state, quoted string cannot start in the middle
+                       throw SArgumentParseException("Incorrect value (quoted string cannot start in the middle of another string)!");
+                   if (eState == EState::value_or_quote) // Start of quoted string
+                   {
+                       eState = EState::quote_string;
+                       bSkip = true;
+                   }
+                   else if (eState == EState::quote_string) // End of quoted string
+                   {
+                       eState = EState::comma_or_end;
+                       bSkip = true;
+                   }
+                   break;
+               case ',':
+               case ';':
+                   if (bEscape) // Keep this character
+                   {
+                       bEscape = false;
+                       break;
+                   }
+                   if (eState == EState::quote_string) // Comma is allowed in quoted strings
+                       break;
+                   if (nDepth) // Comma is allowed when within brackets
+                       break;
+                   if (eState == EState::value_or_quote)
+                       throw SArgumentParseException("Incorrect value (string part cannot start with a comma)!");
+                   if (eState == EState::value_or_comma || eState == EState::comma_or_end) // Invalid state, quoted string cannot start in the middle
+                   {
+                       bSkip = true;
+                       bProcess = true;
+                       eState = EState::value_or_quote;
+                   }
+                   break;
+               case '\0':
+                   bProcess = true;
+                   bSkip = true;
+                   break;
+               case ' ':
+               case '\t':
+               case '\n':
+               case '\a':
+               default:
+                   if (bEscape)
+                   {
+                       bEscape = false;    // When the value previously was escaped... this was not wanted
+                       nPos--;
+                       ch = '\\';
+                   }
+                   if (eState != EState::quote_string)
+                       eState = EState::value_or_comma;
+                   break;
+               }
+   
+   
+               // Add the character to the current string
+               if (!bSkip)
+                   ssValue += ch;
+   
+               // Process the current value
+               if (bProcess)
+               {
+                   // To allow proper initialization, the value is first added
+                   // to the container and then assigned.
+                   TVar tVar{};
+                   rvectArgument.push_back(tVar);
+                   TBase::Parse(rvectArgument.back(), ssValue);
+                   ssValue.clear();
+               }
+           } while (++nPos <= rssValue.size());
+       }
+   
+       std::string GetArgumentOptionMarkup()
+       {
+           // Request the markup of the argument(s)
+           // Option markup is composed of ':' with the markup of the argument type(s)
+           return TBase::GetArgumentOptionMarkup() + "[," + TBase::GetArgumentOptionMarkup() + "]";
+       }
+   
+       std::string GetArgumentValueString(const TContainer& rvectArgument)
+       {
+           std::string ssValue;
+           for (const TVar& tVar : rvectArgument)
+           {
+               if (ssValue.size())
+                   ssValue += ",";
+               ssValue += TBase::GetArgumentValueString(tVar);
+           }
+           return ssValue;
+       }
+   
+       bool MultiArgument() { return true; }
+   };
+   
+   template <typename TVarBase = std::string, typename TVar = std::string>
+   class CStdStringValue : public CArgValueImpl<TVarBase>
+   {
+   public:
+       CStdStringValue(CArgumentDefT<TVarBase>& rArgumentDef) : CArgValueImpl<TVarBase>(rArgumentDef)  {}
+   
+       void Parse(TVar& rssArgument, const std::string& rssValue) const
+       {
+           // Assign the string
+           // Does the string have a quote at the beginning and at the end?
+           if (rssValue.size() >= 2 && rssValue.front() == '\"' && rssValue.back() == '\"')
+               rssArgument = rssValue.substr(1, rssValue.size() - 2);
+           else
+               rssArgument = rssValue;
+       }
+   
+       std::string GetArgumentOptionMarkup() const
+       {
+           return "<string>";
+       }
+   
+       std::string GetArgumentValueString(const TVar& rssArgument) const
+       {
+           return rssArgument;
+       }
+   };
+   
+   template <typename TVarBase = sdv::u8string, typename TVar = sdv::u8string>
+   class CSdvStringValue : public CArgValueImpl<TVarBase>
+   {
+   public:
+       CSdvStringValue(CArgumentDefT<TVarBase>& rArgumentDef) : CArgValueImpl<TVarBase>(rArgumentDef)  {}
+   
+       void Parse(TVar& rssArgument, const std::string& rssValue) const
+       {
+           // Assign the string
+           // Does the string have a quote �t the beginning and at the end?
+           if (rssValue.size() >= 2 && rssValue.front() == '\"' && rssValue.back() == '\"')
+               rssArgument = rssValue.substr(1, rssValue.size() - 2);
+           else
+               rssArgument = rssValue;
+       }
+   
+       std::string GetArgumentOptionMarkup() const
+       {
+           return "<string>";
+       }
+   
+       std::string GetArgumentValueString(const TVar& rssArgument) const
+       {
+           return rssArgument;
+       }
+   };
+   
+   template <typename TVarBase = std::filesystem::path>
+   class CPathArgValue : public CArgValueImpl<TVarBase>
+   {
+   public:
+       CPathArgValue(CArgumentDefT<TVarBase>& rArgumentDef) : CArgValueImpl<TVarBase>(rArgumentDef){}
+   
+       void Parse(std::filesystem::path& rssArgument, const std::string& rssValue) const
+       {
+           // Assign the string
+           // Does the string have a quote �t the beginning and at the end?
+           if (rssValue.size() >= 2 && rssValue.front() == '\"' && rssValue.back() == '\"')
+               rssArgument = rssValue.substr(1, rssValue.size() - 2);
+           else
+               rssArgument = rssValue;
+       }
+   
+       std::string GetArgumentOptionMarkup() const
+       {
+           return "<path>";
+       }
+   
+       std::string GetArgumentValueString(const ::std::filesystem::path& rssArgument) const
+       {
+           return rssArgument.u8string();
+       }
+   };
+   
+   template <typename TVarBase, typename TVar = TVarBase>
+   class CNumericArgValue : public CArgValueImpl<TVarBase>
+   {
+   public:
+       CNumericArgValue(CArgumentDefT<TVarBase>& rArgumentDef) : CArgValueImpl<TVarBase>(rArgumentDef) {}
+   
+       void Parse(TVar& rtArgument, const std::string& rssValue) const
+       {
+           // Assign the number
+           std::istringstream sstream;
+           sstream.str(rssValue);
+   
+           // Skip whitespace
+           while (!sstream.str().empty() && std::isspace(sstream.str()[0]))
+               sstream.str().erase(0, 1);
+   
+           // To support int8_t and uint8_t as well (which are implemented using the char data type), stream into a 64-bit
+           // integer and assign separately. Streaming into a character will not interpret the value as number, but as a single
+           // character.
+           if constexpr (std::is_integral_v<TVar>)
+           {
+               if constexpr (std::is_signed_v<TVar>)
+               {
+                   int64_t iVal = 0;
+                   if (!sstream.str().empty() && !std::isdigit(sstream.str()[0]) && sstream.str()[0] != '-')
+                       throw SArgumentParseException("Value is not a number!");
+                   sstream >> iVal;
+                   if (iVal < std::numeric_limits<TVar>().min())
+                       throw SArgumentParseException("Value too small!");
+                   if (iVal > std::numeric_limits<TVar>().max())
+                       throw SArgumentParseException("Value too large!");
+                   rtArgument = static_cast<TVar>(iVal);
+               }
+               else
+               {
+                   uint64_t uiVal = 0;
+                   if (!sstream.str().empty() && !std::isdigit(sstream.str()[0]))
+                       throw SArgumentParseException("Value is not a number!");
+                   sstream >> uiVal;
+                   if (uiVal > std::numeric_limits<TVar>().max())
+                       throw SArgumentParseException("Value too large!");
+                   rtArgument = static_cast<TVar>(uiVal);
+               }
+           }
+           else
+           {
+               if (!sstream.str().empty() && !std::isdigit(sstream.str()[0]) && sstream.str()[0] != '-' && sstream.str()[0] != '.')
+                   throw SArgumentParseException("Value is not a number!");
+               sstream >> rtArgument;
+           }
+       }
+   
+       std::string GetArgumentOptionMarkup() const
+       {
+           return "<number>";
+       }
+   
+       std::string GetArgumentValueString(const TVar& rtArgument) const
+       {
+           std::ostringstream sstream;
+           sstream << rtArgument;
+           return sstream.str();
+       }
+   };
+   
+   template <typename TVarBase, typename TVar = TVarBase>
+   class CEnumArgValue : public CArgValueImpl<TVarBase>
+   {
+   public:
+       CEnumArgValue(CArgumentDefT<TVarBase>& rArgumentDef) : CArgValueImpl<TVarBase>(rArgumentDef)    {}
+   
+       void Parse(TVar& rtArgument, const std::string& rssValue) const
+       {
+           // Find the value
+           bool bFound = false;
+           for(const typename CArgumentDefT<TVarBase>::SEnumAssociation& rsEnumAssociation :
+               CArgValueImpl<TVarBase>::m_rArgumentDef.GetAssociations())
+           {
+               if (rssValue == rsEnumAssociation.ssValueText)
+               {
+                   rtArgument = rsEnumAssociation.eValue;
+                   bFound = true;
+                   break;
+               }
+           }
+   
+           // Error?
+           if (!bFound)
+               throw SArgumentParseException("Incorrect value!");
+       }
+   
+       std::string GetArgumentOptionMarkup() const
+       {
+           return "<...>";
+       }
+   
+       std::string GetOptionDetails(size_t nMaxStringLen)
+       {
+           size_t nMaxNameLen = 0;
+           for (const typename CArgumentDefT<TVarBase>::SEnumAssociation& rsEnumAssociation :
+               CArgValueImpl<TVarBase>::m_rArgumentDef.GetAssociations())
+           {
+               nMaxNameLen = std::max(rsEnumAssociation.ssValueText.size(), nMaxNameLen);
+           }
+           std::string ssResult;
+           bool bFirst = true;
+           for (const typename CArgumentDefT<TVarBase>::SEnumAssociation& rsEnumAssociation :
+               CArgValueImpl<TVarBase>::m_rArgumentDef.GetAssociations())
+           {
+               // Insert a newline starting with the second enum value
+               if (!bFirst) ssResult += "\n";
+               bFirst = false;
+   
+               // A space
+               ssResult += " ";
+   
+               // The enum value
+               ssResult += rsEnumAssociation.ssValueText;
+   
+               // Extra space
+               ssResult.insert(ssResult.end(), nMaxNameLen - rsEnumAssociation.ssValueText.size(), ' ');
+   
+               // Separator
+               ssResult += " - ";
+   
+               // Start position of text
+               size_t nStartTextPos = nMaxNameLen + 4; // Include ' ' and ' - '
+   
+               // Create a text block
+               std::stringstream sstream;
+               PrintBlock(sstream, rsEnumAssociation.ssDescription, nStartTextPos, nStartTextPos, nMaxStringLen);
+   
+               // Text
+               ssResult += sstream.str();
+           }
+           return ssResult;
+       }
+   
+       std::string GetArgumentValueString(const TVar& rtArgument) const
+       {
+           // Find the value
+           for (const typename CArgumentDefT<TVarBase>::SEnumAssociation& rsEnumAssociation :
+               CArgValueImpl<TVarBase>::m_rArgumentDef.GetAssociations())
+           {
+               if (rtArgument == rsEnumAssociation.eValue)
+                   return rsEnumAssociation.ssValueText;
+           }
+           return std::string();
+       }
+   };
+   
+   template <typename TArgument, typename TEnable = void>
+   class CArgumentProvideImpl;
+   
+   template <> class CArgumentProvideImpl<std::string, void> :
+       public CValueAssignment<CStdStringValue<>, std::string>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<std::string>& rArgumentDef) :
+           CValueAssignment<CStdStringValue<>, std::string>(rArgumentDef)
+       {}
+   };
+   
+   
+   template <> class CArgumentProvideImpl<sdv::u8string, void> :
+       public CValueAssignment<CSdvStringValue<>, sdv::u8string>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<sdv::u8string>& rArgumentDef) :
+           CValueAssignment<CSdvStringValue<>, sdv::u8string>(rArgumentDef)
+       {}
+   };
+   
+   template <> class CArgumentProvideImpl<std::filesystem::path, void> :
+       public CValueAssignment<CPathArgValue<>, std::filesystem::path>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<std::filesystem::path>& rArgumentDef) :
+           CValueAssignment<CPathArgValue<>, std::filesystem::path>(rArgumentDef)
+       {}
+   };
+   
+   template <typename TArgument>
+   class CArgumentProvideImpl<TArgument, typename std::enable_if_t<std::is_arithmetic<TArgument>::value>> :
+       public CValueAssignment<CNumericArgValue<TArgument>, TArgument>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<TArgument>& rArgumentDef) :
+           CValueAssignment<CNumericArgValue<TArgument>, TArgument>(rArgumentDef)
+       {}
+   };
+   
+   template <typename TArgument>
+   class CArgumentProvideImpl<std::vector<TArgument>, typename std::enable_if_t<std::is_arithmetic<TArgument>::value>> :
+       public CValueAssignment<
+           CContainerArgValue<std::vector<TArgument>, CNumericArgValue<std::vector<TArgument>, TArgument>, TArgument>,
+           std::vector<TArgument>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<std::vector<TArgument>>& rArgumentDef) :
+           CValueAssignment<
+               CContainerArgValue<std::vector<TArgument>, CNumericArgValue<std::vector<TArgument>, TArgument>, TArgument>,
+               std::vector<TArgument>>(rArgumentDef)
+       {}
+   };
+   
+   template <typename TArgument>
+   class CArgumentProvideImpl<sdv::sequence<TArgument>, typename std::enable_if_t<std::is_arithmetic<TArgument>::value>> :
+       public CValueAssignment<
+           CContainerArgValue<sdv::sequence<TArgument>, CNumericArgValue<sdv::sequence<TArgument>, TArgument>, TArgument>,
+       sdv::sequence<TArgument>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<sdv::sequence<TArgument>>& rArgumentDef) :
+           CValueAssignment<
+               CContainerArgValue<sdv::sequence<TArgument>, CNumericArgValue<sdv::sequence<TArgument>, TArgument>, TArgument>,
+           sdv::sequence<TArgument>>(rArgumentDef)
+       {}
+   };
+   
+   template <typename TArgument>
+   class CArgumentProvideImpl<std::list<TArgument>, typename std::enable_if_t<std::is_arithmetic<TArgument>::value>> :
+       public CValueAssignment<CContainerArgValue<std::list<TArgument>, CNumericArgValue<std::list<TArgument>, TArgument>, TArgument>,
+           std::list<TArgument>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<std::list<TArgument>>& rArgumentDef) :
+           CValueAssignment<CContainerArgValue<std::list<TArgument>, CNumericArgValue<std::list<TArgument>, TArgument>, TArgument>,
+               std::list<TArgument>>(rArgumentDef)
+       {}
+   };
+   
+   template <> class CArgumentProvideImpl<std::vector<std::string>, void> :
+       public CValueAssignment<CContainerArgValue<std::vector<std::string>, CStdStringValue<std::vector<std::string>>, std::string>,
+       std::vector<std::string>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<std::vector<std::string>>& rArgumentDef) :
+           CValueAssignment<CContainerArgValue<std::vector<std::string>, CStdStringValue<std::vector<std::string>>, std::string>,
+           std::vector<std::string>>(rArgumentDef)
+       {}
+   };
+   
+   template <> class CArgumentProvideImpl<sdv::sequence<std::string>, void> :
+       public CValueAssignment<CContainerArgValue<sdv::sequence<std::string>, CStdStringValue<sdv::sequence<std::string>>, std::string>,
+       sdv::sequence<std::string>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<sdv::sequence<std::string>>& rArgumentDef) :
+           CValueAssignment<CContainerArgValue<sdv::sequence<std::string>, CStdStringValue<sdv::sequence<std::string>>, std::string>,
+           sdv::sequence<std::string>>(rArgumentDef)
+       {}
+   };
+   
+   template <> class CArgumentProvideImpl<std::list<std::string>, void> :
+       public CValueAssignment<CContainerArgValue<std::list<std::string>, CStdStringValue<std::list<std::string>>, std::string>,
+       std::list<std::string>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<std::list<std::string>>& rArgumentDef) :
+           CValueAssignment<CContainerArgValue<std::list<std::string>, CStdStringValue<std::list<std::string>>, std::string>,
+           std::list<std::string>>(rArgumentDef)
+       {}
+   };
+   
+   template <> class CArgumentProvideImpl<std::vector<sdv::u8string>, void> :
+       public CValueAssignment<CContainerArgValue<std::vector<sdv::u8string>, CSdvStringValue<std::vector<sdv::u8string>>, sdv::u8string>,
+       std::vector<sdv::u8string>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<std::vector<sdv::u8string>>& rArgumentDef) :
+           CValueAssignment<CContainerArgValue<std::vector<sdv::u8string>, CSdvStringValue<std::vector<sdv::u8string>>, sdv::u8string>,
+           std::vector<sdv::u8string>>(rArgumentDef)
+       {}
+   };
+   
+   template <> class CArgumentProvideImpl<sdv::sequence<sdv::u8string>, void> :
+       public CValueAssignment<CContainerArgValue<sdv::sequence<sdv::u8string>, CSdvStringValue<sdv::sequence<sdv::u8string>>, sdv::u8string>,
+       sdv::sequence<sdv::u8string>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<sdv::sequence<sdv::u8string>>& rArgumentDef) :
+           CValueAssignment<CContainerArgValue<sdv::sequence<sdv::u8string>, CSdvStringValue<sdv::sequence<sdv::u8string>>, sdv::u8string>,
+           sdv::sequence<sdv::u8string>>(rArgumentDef)
+       {}
+   };
+   
+   template <> class CArgumentProvideImpl<std::list<sdv::u8string>, void> :
+       public CValueAssignment<CContainerArgValue<std::list<sdv::u8string>, CSdvStringValue<std::list<sdv::u8string>>, sdv::u8string>,
+       std::list<sdv::u8string>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<std::list<sdv::u8string>>& rArgumentDef) :
+           CValueAssignment<CContainerArgValue<std::list<sdv::u8string>, CSdvStringValue<std::list<sdv::u8string>>, sdv::u8string>,
+           std::list<sdv::u8string>>(rArgumentDef)
+       {}
+   };
+   
+   template <> class CArgumentProvideImpl<std::vector<std::filesystem::path>, void> :
+       public CValueAssignment<CContainerArgValue<std::vector<std::filesystem::path>,
+           CPathArgValue<std::vector<std::filesystem::path>>, std::filesystem::path>, std::vector<std::filesystem::path>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<std::vector<std::filesystem::path>>& rArgumentDef) :
+           CValueAssignment<CContainerArgValue<std::vector<std::filesystem::path>,
+               CPathArgValue<std::vector<std::filesystem::path>>, std::filesystem::path>,
+               std::vector<std::filesystem::path>>(rArgumentDef)
+       {}
+   };
+   
+   template <> class CArgumentProvideImpl<sdv::sequence<std::filesystem::path>, void> :
+       public CValueAssignment<CContainerArgValue<sdv::sequence<std::filesystem::path>,
+           CPathArgValue<sdv::sequence<std::filesystem::path>>, std::filesystem::path>, sdv::sequence<std::filesystem::path>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<sdv::sequence<std::filesystem::path>>& rArgumentDef) :
+           CValueAssignment<CContainerArgValue<sdv::sequence<std::filesystem::path>,
+               CPathArgValue<sdv::sequence<std::filesystem::path>>, std::filesystem::path>,
+           sdv::sequence<std::filesystem::path>>(rArgumentDef)
+       {}
+   };
+   
+   template <> class CArgumentProvideImpl<std::list<std::filesystem::path>, void> :
+       public CValueAssignment<CContainerArgValue<std::list<std::filesystem::path>,
+           CPathArgValue<std::list<std::filesystem::path>>, std::filesystem::path>, std::list<std::filesystem::path>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<std::list<std::filesystem::path>>& rArgumentDef) :
+           CValueAssignment<CContainerArgValue<std::list<std::filesystem::path>, CPathArgValue<std::list<std::filesystem::path>>,
+               std::filesystem::path>, std::list<std::filesystem::path>>(rArgumentDef)
+       {}
+   };
+   
+   template <typename TEnum>
+   class CArgumentProvideImpl<TEnum, typename std::enable_if_t<std::is_enum<TEnum>::value>> :
+       public CValueAssignment<CEnumArgValue<TEnum>, TEnum>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<TEnum>& rArgumentDef) :
+           CValueAssignment<CEnumArgValue<TEnum>, TEnum>(rArgumentDef)
+       {}
+   };
+   
+   template <typename TEnum>
+   class CArgumentProvideImpl<std::vector<TEnum>, typename std::enable_if_t<std::is_enum<TEnum>::value>> :
+       public CValueAssignment<CContainerArgValue<std::vector<TEnum>, CEnumArgValue<std::vector<TEnum>, TEnum>, TEnum>,
+           std::vector<TEnum>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<std::vector<TEnum>>& rArgumentDef) :
+           CValueAssignment<CContainerArgValue<std::vector<TEnum>, CEnumArgValue<std::vector<TEnum>, TEnum>, TEnum>,
+               std::vector<TEnum>>(rArgumentDef)
+       {}
+   };
+   
+   template <typename TEnum>
+   class CArgumentProvideImpl<sdv::sequence<TEnum>, typename std::enable_if_t<std::is_enum<TEnum>::value>> :
+       public CValueAssignment<CContainerArgValue<sdv::sequence<TEnum>, CEnumArgValue<sdv::sequence<TEnum>, TEnum>, TEnum>,
+       sdv::sequence<TEnum>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<sdv::sequence<TEnum>>& rArgumentDef) :
+           CValueAssignment<CContainerArgValue<sdv::sequence<TEnum>, CEnumArgValue<sdv::sequence<TEnum>, TEnum>, TEnum>,
+           sdv::sequence<TEnum>>(rArgumentDef)
+       {}
+   };
+   
+   template <typename TEnum>
+   class CArgumentProvideImpl<std::list<TEnum>, typename std::enable_if_t<std::is_enum<TEnum>::value>> :
+       public CValueAssignment<CContainerArgValue<std::list<TEnum>, CEnumArgValue<std::list<TEnum>, TEnum>, TEnum>, std::list<TEnum>>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<std::list<TEnum>>& rArgumentDef) :
+           CValueAssignment<CContainerArgValue<std::list<TEnum>, CEnumArgValue<std::list<TEnum>, TEnum>, TEnum>,
+               std::list<TEnum>>(rArgumentDef)
+       {}
+   };
+   
+   template <> class CArgumentProvideImpl<bool, void> : public CArgValueImpl<bool>
+   {
+   public:
+       CArgumentProvideImpl(CArgumentDefT<bool>& rArgumentDef) : CArgValueImpl<bool>(rArgumentDef) {}
+   
+       void Parse(bool& rbArgument, const std::string& rssValue) const
+       {
+           // Differentiate between a flag and a boolean.
+           if (m_rArgumentDef.CheckFlag(EArgumentFlags::flag_option))
+           {
+               // Interpret the value (either + or -).
+               if (rssValue == "+")
+                   rbArgument = true;
+               else if (rssValue == "-")
+                   rbArgument = false;
+               else
+                   throw SArgumentParseException("Incorrect value: + or - expected!");
+           }
+           else
+           {
+               // The value can be ignored...
+               rbArgument = true;
+           }
+       }
+   
+       std::string GetArgumentOptionMarkup() const
+       {
+           if (m_rArgumentDef.CheckFlag(EArgumentFlags::flag_option))
+               return "<+|->";
+           else
+               return std::string();
+       }
+   
+       std::string GetArgumentValueString(const bool& rbArgument) const
+       {
+           if (m_rArgumentDef.CheckFlag(EArgumentFlags::flag_option))
+               return rbArgument ? "signalled (+)" : "not signalled (-)";
+           else
+               return rbArgument ? "true" : "false";
+       }
+   };
+   
+   template <typename TArgument>
+   class CArgumentProvide : public CArgumentProvideImpl<TArgument>, public IArgumentProvide
+   {
+   public:
+       CArgumentProvide(CArgumentDefT<TArgument>& rArgumentDef, TArgument& rtArgument) :
+           CArgumentProvideImpl<TArgument>(rArgumentDef), m_rtArgument(rtArgument), m_bArgumentAssigned(false)
+       {};
+   
+       virtual void ArgumentAssign(const std::string& rssValue) override
+       {
+           CArgumentProvideImpl<TArgument>::Parse(m_rtArgument, rssValue);
+           m_bArgumentAssigned = true;
+       }
+   
+       virtual std::string GetArgumentOptionMarkup() override
+       {
+           return CArgumentProvideImpl<TArgument>::GetArgumentOptionMarkup();
+       }
+   
+       virtual std::string GetArgumentOptionDetails(size_t nMaxStringLen) override
+       {
+           return CArgumentProvideImpl<TArgument>::GetOptionDetails(nMaxStringLen);
+       }
+   
+       virtual std::string GetArgumentValueString() override
+       {
+           return CArgumentProvideImpl<TArgument>::GetArgumentValueString(m_rtArgument);
+       }
+   
+       virtual bool IsArgumentAssigned() override
+       {
+           return m_bArgumentAssigned;
+       }
+   
+       virtual bool AllowMultiArgumentAssign() override
+       {
+           return CArgumentProvideImpl<TArgument>::MultiArgument();
+       }
+   
+   private:
+       TArgument&  m_rtArgument;           
+       bool        m_bArgumentAssigned;    
+   };
+   
+   template <typename TVar, typename... TArgumentGroup>
+   CArgumentDefBase::CArgumentDefBase(CCommandLine& rCLParser, const std::string& rssArgument,
+       const std::shared_ptr<SGroupDef>& rptrGroup,const std::string& rssHelpText, uint32_t uiFlags, TVar& rtVar,
+       TArgumentGroup... nArgumentGroup) :
+       m_rCLParser(rCLParser), m_ptrGroup(rptrGroup), m_setArgumentGroups({ static_cast<size_t>(nArgumentGroup)... })
+   {
+       // Set the flags, but remove the option/sub-option information.
+       m_uiFlags = uiFlags &
+           ~static_cast<uint32_t>(EArgumentFlags::option_argument) &
+           ~static_cast<uint32_t>(EArgumentFlags::sub_option_argument);
+       if (!rssArgument.empty())
+       {
+           std::string ssArgument = rssArgument;
+           size_t nPos = 0;
+           do
+           {
+               size_t nSeparator = ssArgument.find('|', nPos);
+               std::string ssArgumentPart = helper::trim(ssArgument.substr(nPos, nSeparator - nPos));
+               if (!uiFlags && !ssArgumentPart.empty())
+                   for (char& rc : ssArgumentPart)
+                       rc = static_cast<char>(std::tolower(rc));
+               if (ssArgumentPart.size())
+               {
+                   SOptionName sOptionName{ ssArgumentPart, uiFlags };
+                   m_vecOptionNames.push_back(sOptionName);
+               }
+               if (nSeparator != std::string::npos)
+                   nSeparator++;
+               nPos = nSeparator;
+           } while (nPos < ssArgument.size());
+       }
+       if (!rssHelpText.empty()) m_ssHelpText = rssHelpText;
+       m_ptrArgProvide = std::make_shared<CArgumentProvide<TVar>>(static_cast<CArgumentDefT<TVar>&>(*this), rtVar);
+   }
+   
+   template <typename TCharType>
+   CArgumentIterator::CArgumentIterator(size_t nArgs, const TCharType** rgszArgs)
+   {
+       // Start with the second argument (skipping the app name).
+       for (size_t nArg = 1; rgszArgs && nArg < nArgs; nArg++)
+       {
+           // Create an UTF-8 string from the argument
+           std::string ssArg = sdv::MakeUtf8String(rgszArgs[nArg]);
+           if (ssArg.empty())
+           {
+               SArgumentParseException exception("Invalid argument!");
+               exception.AddIndex(nArg);
+               throw exception;
+           }
+   
+           // Add to the queue
+           m_queueArguments.push(ssArg);
+       }
+   }
+   
+   inline std::optional<std::string> CArgumentIterator::GetNext()
+   {
+       if (m_queueArguments.empty()) return {};
+       std::string ssArg = std::move(m_queueArguments.front());
+       m_queueArguments.pop();
+       m_nCounter++;
+       return ssArg;
+   }
+   
+   inline size_t CArgumentIterator::GetIndexOfLastArg() const
+   {
+       return m_nCounter;
+   }
+   
+   template <typename TCharType>
+   inline void CCommandLine::Parse(size_t nArgs, const TCharType** rgszArgs)
+   {
+       switch (m_uiParseFlags)
+       {
+       case static_cast<uint32_t>(EParseFlags::assignment_character):
+       case static_cast<uint32_t>(EParseFlags::no_assignment_character):
+       case static_cast<uint32_t>(EParseFlags::assignment_next_arg):
+           break;
+       default:
+           throw (SArgumentParseException("Invalid parse mode!"));
+       }
+   
+       if (!nArgs || !rgszArgs[0])
+       {
+           SArgumentParseException exception("Missing arguments!");
+           exception.AddIndex(0);
+           throw exception;
+       }
+   
+       CArgumentIterator argit(nArgs, rgszArgs);
+   
+       // Iterate through the arguments. Skip the first argument, which points to the name of the application.
+       while (true)
+       {
+           // Get the next argument
+           auto optArg = argit.GetNext();
+           if (!optArg) return;
+   
+           // Create an UTF-8 string from the argument
+           std::string ssArg = *optArg;
+   
+           if (ssArg.empty())
+               throw (SArgumentParseException("Invalid argument!"));
+   
+           // Check for the (sub-)option character '-' (or under Windows '/').
+           bool bSubOption = false;
+           bool bOption = false;
+           if (ssArg.size() >= 2 && ssArg[0] == '-' && ssArg[1] == '-')
+               bSubOption = true;
+           else if (ssArg.size() >= 2 && ssArg[0] == '-')
+               bOption = true;
+   #ifdef _WIN32
+           else if (ssArg.size() >= 2 && ssArg[0] == '/')
+               bOption = true;
+   #endif
+   
+           // Find argument function
+           auto fnFindAndAssign = [&](CArgumentDefBase& rArgument, const std::string& rssOptionName) -> bool
+           {
+               // Compare the argument name
+               try
+               {
+                   bool bRet = rArgument.CompareNameAndAssign(argit, ssArg, rssOptionName,
+                       CheckParseFlag(EParseFlags::no_assignment_character) || CheckParseFlag(EParseFlags::assignment_next_arg));
+                   if (bRet)
+                   {
+                       std::string ssOptionName(rssOptionName);
+                       m_lstSupplied.emplace_back(std::ref(rArgument), ssArg);
+                   }
+                   return bRet;
+               }
+               catch (SArgumentParseException& rexception)
+               {
+                   rexception.AddIndex(argit.GetIndexOfLastArg());
+                   rexception.AddArgument(ssArg);
+                   throw;
+               }
+           };
+   
+           // Find the argument
+           bool bFound = false;
+           if (bOption)
+           {
+               for (auto& rvtOption : m_mapSortedOptions)
+               {
+                   bFound = fnFindAndAssign(rvtOption.second, rvtOption.first);
+                   if (bFound) break;
+               }
+           }
+           else if (bSubOption)
+           {
+               for (auto& rvtOption : m_mapSortedSubOptions)
+               {
+                   bFound = fnFindAndAssign(rvtOption.second, rvtOption.first);
+                   if (bFound) break;
+               }
+           } else // Default argument
+               bFound = m_ptrDefaultArg ? fnFindAndAssign(*m_ptrDefaultArg.get(), {}) : false;
+   
+           if (!bFound)
+           {
+               SArgumentParseException exception("Argument unknown");
+               exception.AddIndex(argit.GetIndexOfLastArg());
+               exception.AddArgument(ssArg);
+               throw exception;
+           }
+       }
+   }
+   
+   template <typename TVar>
+   inline CArgumentDefT<TVar>& CCommandLine::DefineDefaultArgument(TVar& rtVar, const std::string& rssHelpText)
+   {
+       uint32_t uiFlags = static_cast<uint32_t>(EArgumentFlags::default_argument);
+       m_ptrDefaultArg = std::make_shared<CArgumentDefT<TVar>>(*this, "", m_ptrCurrentGroup, rssHelpText, uiFlags, rtVar);
+       return static_cast<CArgumentDefT<TVar>&>(*m_ptrDefaultArg.get());
+   }
+   
+   template <typename TVar, typename... TArgumentGroup>
+   inline CArgumentDefT<TVar>& CCommandLine::DefineOption(const std::string& rssArgument, TVar& rtVar, const std::string& rssHelpText,
+       bool bCaseSensitive /*= true*/, size_t nArgumentGroup /*= 0*/, TArgumentGroup... nAdditionalGroups)
+   {
+       uint32_t uiFlags = static_cast<uint32_t>(EArgumentFlags::option_argument);
+       if (bCaseSensitive) uiFlags |= static_cast<uint32_t>(EArgumentFlags::case_sensitive);
+       if constexpr (std::is_same_v<TVar, bool>)
+           uiFlags |= static_cast<uint32_t>(EArgumentFlags::bool_option);
+       auto ptrOption = std::make_shared<CArgumentDefT<TVar>>(*this, rssArgument, m_ptrCurrentGroup, rssHelpText, uiFlags, rtVar,
+           nArgumentGroup, nAdditionalGroups...);
+       m_lstOptionArgs.push_back(ptrOption);
+       m_mapSortedOptions.emplace(rssArgument, *ptrOption.get());
+       CArgumentDefT<TVar>& rArg = static_cast<CArgumentDefT<TVar>&>(*ptrOption.get());
+       return rArg;
+   }
+   
+   template <typename TVar, typename... TArgumentGroup>
+   inline CArgumentDefT<TVar>& CCommandLine::DefineSubOption(const std::string& rssArgument, TVar& rtVar, const std::string& rssHelpText,
+       bool bCaseSensitive /*= true*/, size_t nArgumentGroup /*= 0*/, TArgumentGroup... nAdditionalGroups)
+   {
+       uint32_t uiFlags = static_cast<uint32_t>(EArgumentFlags::sub_option_argument);
+       if (bCaseSensitive) uiFlags |= static_cast<uint32_t>(EArgumentFlags::case_sensitive);
+       if constexpr (std::is_same_v<TVar, bool>)
+           uiFlags |= static_cast<uint32_t>(EArgumentFlags::bool_option);
+       auto ptrOption = std::make_shared<CArgumentDefT<TVar>>(*this, rssArgument, m_ptrCurrentGroup, rssHelpText, uiFlags, rtVar,
+           nArgumentGroup, nAdditionalGroups...);
+       m_lstOptionArgs.push_back(ptrOption);
+       m_mapSortedSubOptions.emplace(rssArgument, *ptrOption.get());
+       CArgumentDefT<TVar>& rArg = static_cast<CArgumentDefT<TVar>&>(*ptrOption.get());
+       return rArg;
+   }
+   
+   template <typename... TArgumentGroup>
+   inline CArgumentDefT<bool>& CCommandLine::DefineFlagOption(const std::string& rssArgument, bool& rbFlag, const std::string& rssHelpText,
+       bool bCaseSensitive /*= true*/, size_t nArgumentGroup /*= 0*/, TArgumentGroup... nAdditionalGroups)
+   {
+       uint32_t uiFlags = static_cast<uint32_t>(EArgumentFlags::option_argument);
+       uiFlags |= static_cast<uint32_t>(EArgumentFlags::flag_option);
+       if (bCaseSensitive) uiFlags |= static_cast<uint32_t>(EArgumentFlags::case_sensitive);
+       auto ptrOption = std::make_shared<CArgumentDefT<bool>>(*this, rssArgument, m_ptrCurrentGroup, rssHelpText, uiFlags, rbFlag,
+           nArgumentGroup, nAdditionalGroups...);
+       m_lstOptionArgs.push_back(ptrOption);
+       m_mapSortedOptions.emplace(rssArgument, *ptrOption.get());
+       return static_cast<CArgumentDefT<bool>&>(*ptrOption.get());
+   }
+   
+   template <typename... TArgumentGroup>
+   inline CArgumentDefT<bool>& CCommandLine::DefineFlagSubOption(const std::string& rssArgument, bool& rbFlag, const std::string& rssHelpText,
+       bool bCaseSensitive /*= true*/, size_t nArgumentGroup /*= 0*/, TArgumentGroup... nAdditionalGroups)
+   {
+       uint32_t uiFlags = static_cast<uint32_t>(EArgumentFlags::sub_option_argument);
+       uiFlags |= static_cast<uint32_t>(EArgumentFlags::flag_option);
+       if (bCaseSensitive) uiFlags |= static_cast<uint32_t>(EArgumentFlags::case_sensitive);
+       auto ptrOption = std::make_shared<CArgumentDefT<bool>>(*this, rssArgument, m_ptrCurrentGroup, rssHelpText, uiFlags, rbFlag,
+           nArgumentGroup, nAdditionalGroups...);
+       m_lstOptionArgs.push_back(ptrOption);
+       m_mapSortedSubOptions.emplace(rssArgument, *ptrOption.get());
+       CArgumentDefT<bool>& rArg = static_cast<CArgumentDefT<bool>&>(*ptrOption.get());
+       return rArg;
+   }
+   
+   #endif // !defined CMDLN_PARSER_H

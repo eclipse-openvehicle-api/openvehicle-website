@@ -1,0 +1,39 @@
+
+.. _program_listing_file_sdv_idl_compiler_entities_root_entity.h:
+
+Program Listing for File root_entity.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_entities_root_entity.h>` (``sdv_idl_compiler\entities\root_entity.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef ROOT_ENTITY_H
+   #define ROOT_ENTITY_H
+   
+   #include "module_entity.h"
+   #include "meta_entity.h"
+   
+   class CRootEntity : public CModuleEntity
+   {
+   public:
+       CRootEntity(CParser& rParser, const CContextPtr& rptrContext);
+   
+       virtual void Process() override;
+   
+       virtual bool IsRootEntity() const override { return true; }
+   
+       virtual bool IsExtendable() const override;
+   
+       void AddMeta(const CEntityPtr& ptrMeta);
+   
+       const CEntityList& GetMeta() const;
+   
+   private:
+       CEntityList  m_lstMetaEntities;          
+   
+   };
+   
+   #endif // !defined(ROOT_ENTITY_H)

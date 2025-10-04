@@ -1,0 +1,168 @@
+
+.. _program_listing_file_interfaces_serdes_log_serdes.h:
+
+Program Listing for File log_serdes.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_serdes_log_serdes.h>` (``interfaces\serdes\log_serdes.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__LOG_SERDES_H__20251003_130453_988__
+   #define __IDL_GENERATED__LOG_SERDES_H__20251003_130453_988__
+   
+   // Includes...
+   #include <cstdint>
+   #include <support/serdes.h>
+   #include <support/local_service_access.h>
+   #include <interfaces/com.h>
+   #include <interfaces/serdes/core_ps_serdes.h>
+   #include "../log.h"
+   
+   #include "core_serdes.h"
+   #include "process_serdes.h"
+   
+   // Serializer / deserializer namespace
+   namespace serdes
+   {
+       template <>
+       class CSerdes<sdv::core::ELogSeverity>
+       {
+       public:
+           static void CalcSize(const sdv::core::ELogSeverity& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of ELogSeverity
+               sdv::ser_size(static_cast<uint32_t>(rVar), rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::core::ELogSeverity& rVar)
+           {
+               // Serializing members of ELogSeverity
+               rSerializer << static_cast<uint32_t>(rVar);
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::core::ELogSeverity& rVar)
+           {
+               // Deserializing members of ELogSeverity
+               uint32_t base = 0;
+               rDeserializer >> base;
+               rVar = static_cast<sdv::core::ELogSeverity>(base);
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::core::ILoggerConfig*>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] sdv::core::ILoggerConfig* pInterface, size_t& rnSize)
+           {
+               sdv::ser_size(sdv::interface_id(), rnSize);
+               sdv::ser_size(sdv::ps::TMarshallID(), rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, sdv::core::ILoggerConfig* pInterface)
+           {
+               // Get interface to the component isolation service.
+               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
+               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
+               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
+               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
+   
+               // Serialize the interface ID first
+               rSerializer << sdv::GetInterfaceId<sdv::core::ILoggerConfig>();
+   
+               // Create and serialize a stub object for the interface.
+               sdv::ps::TMarshallID tStubID = pMarshallAccess->GetStub(pInterface);
+               rSerializer << tStubID;
+   
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::core::ILoggerConfig*& rpInterface)
+           {
+               // Get interface to the component isolation service.
+               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
+               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
+               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
+               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
+   
+               // Get the interface ID
+               sdv::interface_id id = 0;
+               rDeserializer >> id;
+   
+               // Get the stub ID
+               sdv::ps::TMarshallID tStubID{};
+               rDeserializer >> tStubID;
+   
+               // Create the proxy
+               rpInterface = pMarshallAccess->GetProxy(tStubID, id).get<sdv::core::ILoggerConfig>();
+   
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::core::ILogger*>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] sdv::core::ILogger* pInterface, size_t& rnSize)
+           {
+               sdv::ser_size(sdv::interface_id(), rnSize);
+               sdv::ser_size(sdv::ps::TMarshallID(), rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, sdv::core::ILogger* pInterface)
+           {
+               // Get interface to the component isolation service.
+               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
+               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
+               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
+               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
+   
+               // Serialize the interface ID first
+               rSerializer << sdv::GetInterfaceId<sdv::core::ILogger>();
+   
+               // Create and serialize a stub object for the interface.
+               sdv::ps::TMarshallID tStubID = pMarshallAccess->GetStub(pInterface);
+               rSerializer << tStubID;
+   
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::core::ILogger*& rpInterface)
+           {
+               // Get interface to the component isolation service.
+               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
+               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
+               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
+               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
+   
+               // Get the interface ID
+               sdv::interface_id id = 0;
+               rDeserializer >> id;
+   
+               // Get the stub ID
+               sdv::ps::TMarshallID tStubID{};
+               rDeserializer >> tStubID;
+   
+               // Create the proxy
+               rpInterface = pMarshallAccess->GetProxy(tStubID, id).get<sdv::core::ILogger>();
+   
+               return rDeserializer;
+           }
+       };
+   } // serdes namespace
+   
+   #endif // !defined(__IDL_GENERATED__LOG_SERDES_H__20251003_130454_2__)

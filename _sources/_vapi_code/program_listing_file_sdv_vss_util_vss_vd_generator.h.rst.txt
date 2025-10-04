@@ -1,0 +1,62 @@
+
+.. _program_listing_file_sdv_vss_util_vss_vd_generator.h:
+
+Program Listing for File vss_vd_generator.h
+===========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_vss_util_vss_vd_generator.h>` (``sdv_vss_util\vss_vd_generator.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef VSS_VD_GENERATOR_H
+   #define VSS_VD_GENERATOR_H
+   
+   #include <fstream>
+   #include "codegen_base.h"
+   #include "vss_helper.h"
+   
+   class CVSSVDGenerator : public CCodeGeneratorBase, CVSSHelper
+   {
+   public:
+       CVSSVDGenerator(const std::vector<SSignalVDDefinition>& signals, const std::filesystem::path& rpathOutputDir, const std::string& rsPrefix, const std::string& rsVersion, const bool enableComponentCreation) :
+           m_enableComponentCreation(enableComponentCreation),
+           m_ssPrefix(rsPrefix),
+           m_ssVersion(rsVersion), 
+           m_pathProject(rpathOutputDir), 
+           m_signals(signals)
+       {}
+   
+       bool GeneratedCode();
+   
+   private:
+   
+       std::string SummaryTextFile() const;
+   
+       std::string AppendExtension(const std::string& prefix, const std::string& filename, const std::string& extension) const;
+   
+       void CreateFiles(const std::string& ssVersion);
+   
+       void CreateRXFiles(const std::string& ssVersion) const;
+   
+       void CreateVehicleDeviceFilesForRXSignal(const SSignalVDDefinition& signal, const std::string& ssVersion) const;
+   
+       void CreateIDLVehicleDeviceFileForRXSignal(const SSignalVDDefinition& signal, const std::string& ssVersion) const;
+   
+       void CreateTXFiles(const std::string& ssVersion) const;
+   
+       void CreateVehicleDeviceFilesForTXSignal(const SSignalVDDefinition& signal, const std::string& ssVersion) const;
+   
+       void CreateIDLVehicleDeviceFileForTXSignal(const SSignalVDDefinition& signal, const std::string& ssVersion) const;
+   
+       bool m_enableComponentCreation;                
+       std::string m_ssPrefix;                        
+       std::string m_ssVersion;                       
+       std::filesystem::path  m_pathProject;          
+       std::vector <SSignalVDDefinition> m_signals;   
+       std::vector <SSignalVDDefinition> m_TXsignals; 
+       std::vector <SSignalVDDefinition> m_RXsignals; 
+   };
+   
+   #endif // !defined VSS_VD_GENERATOR_H

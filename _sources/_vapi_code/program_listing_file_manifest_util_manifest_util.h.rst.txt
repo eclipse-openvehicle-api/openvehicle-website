@@ -1,0 +1,37 @@
+
+.. _program_listing_file_manifest_util_manifest_util.h:
+
+Program Listing for File manifest_util.h
+========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_manifest_util_manifest_util.h>` (``manifest_util\manifest_util.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef MANIFEST_UTIL_H
+   #define MANIFEST_UTIL_H
+   
+   #include <interfaces/config.h>
+   #include <support/component_impl.h>
+   
+   class CManifestUtil : public sdv::CSdvObject, public sdv::helper::IModuleManifestHelper
+   {
+   public:
+   
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::helper::IModuleManifestHelper)
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::Utility)
+       DECLARE_OBJECT_CLASS_NAME("ManifestHelperUtility")
+   
+       
+       virtual sdv::u8string ReadModuleManifest(/*in*/ const sdv::u8string& ssModule) override;
+   };
+   DEFINE_SDV_OBJECT(CManifestUtil)
+   
+   #endif // !define MANIFEST_UTIL_H

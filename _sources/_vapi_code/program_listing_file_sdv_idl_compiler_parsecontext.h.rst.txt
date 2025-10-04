@@ -1,0 +1,58 @@
+
+.. _program_listing_file_sdv_idl_compiler_parsecontext.h:
+
+Program Listing for File parsecontext.h
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_parsecontext.h>` (``sdv_idl_compiler\parsecontext.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef PARSE_CONTEXT_H
+   #define PARSE_CONTEXT_H
+   
+   #include "includes.h"
+   #include "source.h"
+   #include "codepos.h"
+   #include <filesystem>
+   #include <string>
+   
+   class CContext
+   {
+   public:
+   
+       CContext(const std::filesystem::path& rpath, sdv::idl::IEntityContext::ELocation eLocation = sdv::idl::IEntityContext::ELocation::source);
+   
+       CContext(const char* szCode);
+   
+       CContext(const CContext&) = delete;
+   
+       CContext(CContext&& rContext) noexcept;
+   
+       ~CContext();
+   
+       CContext& operator=(const CContext&) = delete;
+   
+       CContext& operator=(CContext&& rContext) noexcept;
+   
+       bool operator==(const CContext& rContext) const;
+   
+       bool operator!=(const CContext& rContext) const;
+   
+       CSource& Source() { return m_source; }
+       const CSource& Source() const { return m_source; }
+       CCodePos& Code() { return m_code; }
+       const CCodePos& Code() const { return m_code; }
+       sdv::idl::IEntityContext::ELocation GetLocation() const { return m_eLocation; }
+   
+   private:
+       CSource                             m_source;                                                   
+       CCodePos                            m_code;                                                     
+       sdv::idl::IEntityContext::ELocation m_eLocation = sdv::idl::IEntityContext::ELocation::source;  
+   };
+   
+   using CContextPtr = std::shared_ptr<CContext>;
+   
+   #endif // !defined(PARSE_CONTEXT_H)

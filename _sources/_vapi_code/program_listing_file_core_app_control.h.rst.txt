@@ -1,0 +1,151 @@
+
+.. _program_listing_file_core_app_control.h:
+
+Program Listing for File app_control.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_app_control.h>` (``core\app_control.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef APP_CONTROL_H
+   #define APP_CONTROL_H
+   
+   #include <interfaces/app.h>
+   #include <support/component_impl.h>
+   #include <support/interface_ptr.h>
+   #include "../../global/tracefifo/trace_fifo.h"
+   
+   class CAppControl : public sdv::IInterfaceAccess, public sdv::app::IAppContext, public sdv::app::IAppControl,
+       public sdv::app::IAppOperation, public sdv::app::IAppShutdownRequest, public sdv::IAttributes
+   {
+   public:
+       CAppControl();
+   
+       ~CAppControl();
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::app::IAppOperation)
+           SDV_INTERFACE_ENTRY(sdv::app::IAppContext)
+           SDV_INTERFACE_ENTRY(sdv::app::IAppControl)
+           SDV_INTERFACE_ENTRY(sdv::app::IAppShutdownRequest)
+       END_SDV_INTERFACE_MAP()
+   
+       bool IsMainApplication() const;
+   
+       bool IsIsolatedApplication() const;
+   
+       bool IsStandaloneApplication() const;
+   
+       bool IsEssentialApplication() const;
+   
+       bool IsMaintenanceApplication() const;
+   
+       bool IsExternalApplication() const;
+   
+       sdv::app::EAppContext GetContextType() const override;
+   
+       uint32_t GetInstanceID() const override;
+   
+       uint32_t GetRetries() const override;
+   
+       virtual bool Startup(/*in*/ const sdv::u8string& ssConfig, /*in*/ IInterfaceAccess* pEventHandler) override;
+   
+       virtual void RunLoop() override;
+   
+       virtual void Shutdown(/*in*/ bool bForce) override;
+   
+       virtual void RequestShutdown() override;
+   
+       virtual sdv::app::EAppOperationState GetOperationState() const override;
+   
+       uint32_t GetInstance() const;
+   
+       virtual void SetConfigMode() override;
+   
+       virtual void SetRunningMode() override;
+   
+       virtual sdv::sequence<sdv::u8string> GetNames() const override;
+   
+       virtual sdv::any_t Get(/*in*/ const sdv::u8string& ssAttribute) const override;
+   
+       virtual bool Set(/*in*/ const sdv::u8string& ssAttribute, /*in*/ sdv::any_t anyAttribute) override;
+   
+       virtual uint32_t GetFlags(/*in*/ const sdv::u8string& ssAttribute) const override;
+   
+       std::filesystem::path GetInstallDir() const;
+   
+       void DisableAutoConfigUpdate();
+   
+       void EnableAutoConfigUpdate();
+   
+       void TriggerConfigUpdate();
+   
+       bool IsConsoleSilent() const;
+   
+       bool IsConsoleVerbose() const;
+   
+   private:
+       void BroadcastOperationState(sdv::app::EAppOperationState eState);
+   
+       bool ProcessAppConfig(const sdv::u8string& rssConfig);
+   
+       sdv::app::EAppContext               m_eContextMode = sdv::app::EAppContext::no_context;    
+       sdv::app::EAppOperationState        m_eState = sdv::app::EAppOperationState::not_started;  
+       sdv::app::IAppEvent*                m_pEvent = nullptr;         
+       std::string                         m_ssLoggerClass;            
+       sdv::core::TModuleID                m_tLoggerModuleID = 0;      
+       std::filesystem::path               m_pathLoggerModule;         
+       std::string                         m_ssProgramTag;             
+       sdv::core::ELogSeverity             m_eSeverityFilter = sdv::core::ELogSeverity::info;      
+       sdv::core::ELogSeverity             m_eSeverityViewFilter = sdv::core::ELogSeverity::error; 
+       uint32_t                            m_uiRetries = 0u;           
+       uint32_t                            m_uiInstanceID = 0u;        
+       std::filesystem::path               m_pathInstallDir;           
+       std::filesystem::path               m_pathRootDir;              
+       std::vector<std::filesystem::path>  m_vecSysConfigs;            
+       std::filesystem::path               m_pathAppConfig;            
+       bool                                m_bAutoSaveConfig = false;  
+       bool                                m_bEnableAutoSave = false;  
+       bool                                m_bRunLoop = false;         
+       bool                                m_bSilent = false;          
+       bool                                m_bVerbose = false;         
+       std::filesystem::path               m_pathLockFile;             
+       FILE*                               m_pLockFile = nullptr;      
+       CTraceFifoStdBuffer                 m_fifoTraceStreamBuffer;    
+   };
+   
+   #ifndef DO_NOT_INCLUDE_IN_UNIT_TEST
+   
+   class CAppControlService : public sdv::CSdvObject
+   {
+   public:
+       CAppControlService() = default;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY_MEMBER(sdv::app::IAppOperation, GetAppControl())
+           SDV_INTERFACE_ENTRY_MEMBER(sdv::IAttributes, GetAppControl())
+           SDV_INTERFACE_SET_SECTION_CONDITION(EnableAppShutdownRequestAccess(), 1)
+           SDV_INTERFACE_SECTION(1)
+           SDV_INTERFACE_ENTRY_MEMBER(sdv::app::IAppShutdownRequest, GetAppControl())
+           SDV_INTERFACE_DEFAULT_SECTION()
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_NAME("AppControlService")
+       DECLARE_OBJECT_SINGLETON()
+   
+       static CAppControl& GetAppControl();
+   
+       bool EnableAppShutdownRequestAccess() const;
+   };
+   DEFINE_SDV_OBJECT_NO_EXPORT(CAppControlService)
+   
+   #endif
+   
+   #endif // !defined APP_CONTROL_H

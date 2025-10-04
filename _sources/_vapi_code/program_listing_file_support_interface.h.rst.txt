@@ -1,0 +1,115 @@
+
+.. _program_listing_file_support_interface.h:
+
+Program Listing for File interface.h
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_interface.h>` (``support\interface.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SDV_INTERFACE_H
+   #define SDV_INTERFACE_H
+   
+   #include <cstdint>
+   
+   #ifndef interface
+   #define interface struct
+   #endif
+   
+   namespace sdv
+   {
+       using interface_id = uint64_t;
+   
+       template <typename TIfc>
+       constexpr inline interface_id GetInterfaceId() noexcept
+       {
+           // Return the interface ID.
+           return TIfc::_id;
+       }
+   
+       class interface_t
+       {
+       public:
+           interface_t() noexcept;
+   
+           interface_t(const interface_t& rifc) noexcept;
+   
+           interface_t(interface_t&& rifc) noexcept;
+   
+           interface_t(std::nullptr_t) noexcept;
+   
+           template <typename TInterface>
+           interface_t(TInterface* pInterface) noexcept;
+   
+           interface_t& operator=(const interface_t& rifc) noexcept;
+   
+           interface_t& operator=(interface_t&& rifc) noexcept;
+   
+           interface_t& operator=(std::nullptr_t) noexcept;
+   
+           template <typename TInterface>
+           interface_t& operator=(TInterface* pInterface) noexcept;
+   
+           operator bool() const noexcept;
+   
+           void reset() noexcept;
+   
+           interface_id id() const noexcept;
+   
+           template <typename TInterface>
+           TInterface* get() noexcept;
+   
+           template <typename TInterface>
+           const TInterface* get() const noexcept;
+   
+           int compare(const interface_t& rifc) const noexcept;
+   
+       private:
+           interface_id    m_id = 0ull;            
+           void*           m_pInterface = nullptr; 
+       };
+   
+       bool operator==(const interface_t& rifcLeft, const interface_t& rifcRight) noexcept;
+   
+       bool operator==(const interface_t& rifcLeft, std::nullptr_t) noexcept;
+   
+       bool operator==(std::nullptr_t, const interface_t& rifcRight) noexcept;
+   
+       bool operator!=(const interface_t& rifcLeft, const interface_t& rifcRight) noexcept;
+   
+       bool operator!=(const interface_t& rifcLeft, std::nullptr_t) noexcept;
+   
+       bool operator!=(std::nullptr_t, const interface_t& rifcRight) noexcept;
+   
+       bool operator<(const interface_t& rifcLeft, const interface_t& rifcRight) noexcept;
+   
+       bool operator<(const interface_t& rifcLeft, std::nullptr_t) noexcept;
+   
+       bool operator<(std::nullptr_t, const interface_t& rifcRight) noexcept;
+   
+       bool operator<=(const interface_t& rifcLeft, const interface_t& rifcRight) noexcept;
+   
+       bool operator<=(const interface_t& rifcLeft, std::nullptr_t) noexcept;
+   
+       bool operator<=(std::nullptr_t, const interface_t& rifcRight) noexcept;
+   
+       bool operator>(const interface_t& rifcLeft, const interface_t& rifcRight) noexcept;
+   
+       bool operator>(const interface_t& rifcLeft, std::nullptr_t) noexcept;
+   
+       bool operator>(std::nullptr_t, const interface_t& rifcRight) noexcept;
+   
+       bool operator>=(const interface_t& rifcLeft, const interface_t& rifcRight) noexcept;
+   
+       bool operator>=(const interface_t& rifcLeft, std::nullptr_t) noexcept;
+   
+       bool operator>=(std::nullptr_t, const interface_t& rifcRight) noexcept;
+   
+   } // namespace idl
+   
+   #include "interface.inl"
+   
+   #endif // !defined SDV_INTERFACE_H

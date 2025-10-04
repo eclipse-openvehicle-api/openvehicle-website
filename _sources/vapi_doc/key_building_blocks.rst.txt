@@ -1,0 +1,135 @@
+.. _vapi-key_building_blocks:
+
+Key Building Blocks of Open Vehicle API
+=======================================
+
+For more features the Open Vehicle API offers go to :ref:`Key Features <vapi-key_features>`.
+
+Here we describe the major building blocks the framework contains.
+
+Vehicle and Platform Abstraction
+--------------------------------
+
+- **Purpose**: Decouples application logic from hardware specifics.
+- **Components**:
+
+  - Abstract Interfaces for Vehicle Types.
+
+  - Platform-Specific Implementations.
+
+  - Middleware Layer for Communication.
+
+- **Benefits**:
+
+  - Portability across platforms, supported development platforms: **Windows** and **Linux**.
+
+  - Platform abstraction (file access, process management, …) allows to integrate any middleware by implementing the platform abstraction interfaces through the middleware.
+
+  - Easier integration with new vehicle models.
+
+For more details see :ref:`Component Stack <vapi-component_stack>`.
+
+.. _vapi-mixed_criticality:
+
+Mixed-Criticality
+-----------------
+
+- **Purpose**: Supports multiple applications with different safety to run at the same time.
+- **Components**:
+
+  - Criticality Levels (Safety-Critical ASIL A/B, None-Safety Applications).
+
+  - Free of interference (Sandboxing).
+
+- **Benefits**:
+
+  - Safe coexistence of critical and non-critical tasks & applications.
+
+  - Optimized resource usage.
+
+Open Vehicle API supports :term:`Mixed-Criticality`. The following picture shows how the :term:`Mixed-Criticality` is build up. While a possible :term:`ASIL Level`-A / :term:`ASIL Level`-B function would run on the Safety Instance and will not be changed at runtime, the :term:`QM Function` s run on the QM Instance. These :term:`QM Function` s can be installed/uninstalled and started/stopped at runtime. :term:`QM Function` instance has no connection to the vehicle network. Both, :term:`QM Function` s as well as :term:`Safety Function` s run in isolated processes.
+
+.. figure:: ../vapi_media/architecture/mixed_criticality_architecture.png
+   :name: fig-mixed-criticallity
+       
+The target is to run multiple applications at the same time and to allow dynamical loading / stopping of QM applications at runtime.
+
+.. table:: ASIL levels and how they are handled
+
+   +-----------------+------------+------------------+----------------------------+----------------------------------------+
+   | Term            | ASIL Level | Safety Relevance | Development Requirements   | Installable & can be started & stopped |
+   +-----------------+------------+------------------+----------------------------+----------------------------------------+
+   | QM Function     | QM         | Low/None         | Standard quality processes | at runtime                             |
+   +-----------------+------------+------------------+----------------------------+----------------------------------------+
+   | Safety Function | A-D        | High             | ISO 26262 safety lifecycle | at startup of HPC: system is testable  |
+   +-----------------+------------+------------------+----------------------------+----------------------------------------+
+  
+.. _vapi-event_driven_framework:
+
+Event-Driven Architecture
+-------------------------
+
+- **Purpose**: Enables reactive and modular system behavior.
+- **Components**:
+
+  - Event Dispatcher.
+
+  - Subscriber/Publisher Model.
+
+- **Benefits**:
+
+  - Loose coupling between components.
+
+  - Scalability and flexibility.
+
+Besides cyclic execution Open Vehicle API is a event driven framework. It's possible to support cyclic data connection like a CAN bus or a simulation software like the Open-Source Simulation Software ``OpenXilEnv``. The :term:`VAPI Component` s then support event driven execution as well as cyclic execution by using the timer service.
+
+.. figure:: ../vapi_media/architecture/event_driven_architecture.png
+   :name: fig-event-driven
+
+.. _vapi-test_release_process:
+
+Enhanced Testability & Development Process
+------------------------------------------
+
+- **Purpose**: Improves development efficiency and reliability.
+- **Components**:
+
+  - Mock Interfaces.
+
+  - Support of Unit-, Integration- & System Test Frameworks.
+
+  - Continuous Integration Hooks.
+
+  - Validation and Release Processes.
+
+- **Benefits**:
+
+  - Faster development cycles.
+
+  - Easier debugging and validation.
+
+This framework was developed by Test-Driven Development (TDD) methodology. This approach ensures that the codebase is robust, maintainable, and meets the specified requirements from the outset. Therefore, we have already more than 6000 tests (Development Snapshot: August 1, 2025).
+
+
+.. figure:: ../vapi_media/key_building_blocks/test_coverage.png
+   :name: fig-test-coverage
+
+The increasing complexity of modern vehicle software requires robust, scalable, and future-oriented frameworks. Especially in the context of distributed systems and agile development processes- The component-based framework makes it possible that test-driven development can be easily be put into practice. The developer can use his local Operating System to develop his :term:`VAPI Component` by writing unit and module tests. Testing locally is therefore normally no problem. Additional is it possible from a dbc file to auto generate a FMU with the tool ``sdv_dbc_util``. This FMU can then be used in simulation software like the Open-Source Software ``OpenXilEnv``.
+
+After finishing the development, the automatic validation can be carried out. A build pipeline can trigger system tests by using the CAN Reader/Writer component based on ``Vector SIL Kit`` instead of the CAN Reader/Writer component based on CAN Sockets which will be necessary on the real vehicle itself. After successful system test runs the component can be released and be put on the real vehicle.
+
+It's not worth mentioning that with setting up systems with different :term:`VAPI Component` s huge test systems are easily be build and will grow by itself.
+
+.. figure:: ../vapi_media/architecture/test_driven_architecture.png
+   :name: fig-test-validate-release-process
+
+This framework allows to setup a structured test, validation and release process just by implementing/changing one or two components without changing the behavior of the system under test.
+
+.. important:: To learn more about the difference of ECU and Software development go to :ref:`ECU compared to Software <vapi-ISO26262-Development>`.
+
+To sum up it is important to speed up the development process. The Open Vehicle API can be a cruical part of it by reducing the impact (smaller components, reusing already tested components) and increasing the detection (test single component in multiple systemss)-
+
+.. tip:: See :ref:`Software development process <vapi_software_development-process>`.
+
+

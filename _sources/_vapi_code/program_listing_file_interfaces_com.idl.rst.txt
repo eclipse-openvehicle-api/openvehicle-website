@@ -1,0 +1,64 @@
+
+.. _program_listing_file_interfaces_com.idl:
+
+Program Listing for File com.idl
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_com.idl>` (``interfaces\com.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core.idl"
+   #include "core_ps.idl"
+   #include "process.idl"
+   
+   module sdv
+   {
+       module com
+       {
+           struct SConnectionID
+           {
+               uint32      uiIdent;        
+               uint32      uiControl;      
+           };
+   
+           typedef SConnectionID TConnectionID;
+   
+           interface IRequestChannel
+           {
+               u8string RequestChannel(in u8string ssConfig);
+           };
+   
+           interface IClientConnect
+           {
+               IInterfaceAccess Connect(in u8string ssConnectString) raises(XAccessDenied, XNotFound, XInvalidState, XTimeout);
+           };
+   
+           enum EChannelType : uint32
+           {
+               local_channel  = 0,     
+               remote_channel = 1,     
+               custom_channel = 2,     
+           };
+   
+           local interface IConnectionControl
+           {
+               TConnectionID CreateServerConnection(in EChannelType eChannelType, in IInterfaceAccess pObject, in uint32 uiTimeoutMs,
+                   out u8string ssConnectionString);
+   
+               TConnectionID CreateClientConnection(in u8string ssConnectionString, in uint32 uiTimeoutMs, out IInterfaceAccess pProxy);
+   
+               TConnectionID AssignServerEndpoint(in IInterfaceAccess pChannelEndpoint, in IInterfaceAccess pObject,
+                   in uint32 uiTimeoutMs, in boolean bAllowReconnect);
+   
+               TConnectionID AssignClientEndpoint(in IInterfaceAccess pChannelEndpoint, in uint32 uiTimeoutMs,
+                   out IInterfaceAccess pProxy);
+   
+               void RemoveConnection(in TConnectionID tConnectionID);
+           };
+   
+       };  // module com
+   }; // module sdv

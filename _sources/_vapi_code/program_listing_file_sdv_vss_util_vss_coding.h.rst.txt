@@ -1,0 +1,57 @@
+
+.. _program_listing_file_sdv_vss_util_vss_coding.h:
+
+Program Listing for File vss_coding.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_vss_util_vss_coding.h>` (``sdv_vss_util\vss_coding.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef VSS_CODING_H
+   #define VSS_CODING_H
+   
+   #include <iostream>
+   #include <vector>
+   #include <algorithm>
+   #include <string>
+   #include <sstream>
+   #include <interfaces/dispatch.h>
+   
+   #include "codegen_base.h"
+   #include "vss_helper.h"
+      
+   class CVSSCodingCommon : public CCodeGeneratorBase, CVSSHelper
+   {
+   
+   public:
+       CVSSCodingCommon(const std::string& rsPrefix) : m_ssPrefix(rsPrefix) {}
+   
+       void GetCommonKeyWordMap(const SSignalVDDefinition& signal, CKeywordMap& mapKeywords, const std::string& rsVersion) const;
+   
+       void GetCommonKeyWordMap(const SSignalBSDefinition& signal, CKeywordMap& mapKeywords, const std::string& rsVersion) const;
+   
+       std::string Code_SignalIdentifier(const std::vector <SSignalVDDefinition>& allSignals, const std::string& ssFileName, 
+           const std::string& ssVersion) const;
+   
+       std::string Code_VSSFileVersion(const std::string& ssVersion) const;
+   
+       std::string Code_SafeGuard(const std::string& ssFileName) const;
+   
+       std::string Code_CMakeProject(const std::string& targetLibName, const std::string& targetComponentName) const;
+   
+   protected:
+   
+       std::string Code_SignalIdentifierList(const std::vector <SSignalVDDefinition>& allSignals, const SSignalVDDefinition& signal,
+           const SFunctionVDDefinition& func, const std::string& signalTitle, const std::string& canSignalTitle, const std::string& cTypeTitle) const;
+   
+       std::string Code_AllSignalsIdentifierList(const std::vector <SSignalVDDefinition>& allSignals,
+           const std::string& signalTitle, const std::string& canSignalTitle, const std::string& cTypeTitle) const;
+   
+       std::string m_ssPrefix; 
+   };
+   
+   #endif // !defined VSS_CODING_H
+   

@@ -1,0 +1,109 @@
+
+.. _program_listing_file_process_control_process_control.h:
+
+Program Listing for File process_control.h
+==========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_process_control_process_control.h>` (``process_control\process_control.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef PROCESS_CONTROL_H
+   #define PROCESS_CONTROL_H
+   
+   #include <interfaces/process.h>
+   #include <support/component_impl.h>
+   #include <map>
+   #include <set>
+   #include <condition_variable>
+   
+   class CProcessControl : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::process::IProcessInfo,
+       public sdv::process::IProcessLifetime, public sdv::process::IProcessControl
+   {
+   public:
+       CProcessControl() = default;
+   
+       virtual ~CProcessControl() override;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
+           SDV_INTERFACE_ENTRY(sdv::process::IProcessInfo)
+           SDV_INTERFACE_ENTRY(sdv::process::IProcessLifetime)
+           SDV_INTERFACE_CHECK_CONDITION(AllowProcessControl())
+           SDV_INTERFACE_ENTRY(sdv::process::IProcessControl)
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_NAME("ProcessControlService")
+       DECLARE_OBJECT_SINGLETON()
+   
+       void Initialize(const sdv::u8string& ssObjectConfig) override;
+   
+       sdv::EObjectStatus GetStatus() const override;
+   
+       void SetOperationMode(sdv::EOperationMode eMode) override;
+   
+       // Ignore cppcheck warning for not using dynamic binding when being called through the destructor.
+       // cppcheck-suppress virtualCallInConstructor
+       void Shutdown() override;
+   
+       bool AllowProcessControl() const;
+   
+       sdv::process::TProcessID GetProcessID() const override;
+   
+       virtual uint32_t RegisterMonitor(/*in*/ sdv::process::TProcessID tProcessID, /*in*/ sdv::IInterfaceAccess* pMonitor) override;
+   
+       virtual void UnregisterMonitor(/*in*/ uint32_t uiCookie) override;
+   
+       virtual bool WaitForTerminate(/*in*/ sdv::process::TProcessID tProcessID, /*in*/ uint32_t uiWaitMs) override;
+   
+       virtual sdv::process::TProcessID Execute(/*in*/ const sdv::u8string& ssModule,
+           /*in*/ const sdv::sequence<sdv::u8string>& seqArgs, /*in*/ sdv::process::EProcessRights eRights) override;
+   
+       virtual bool Terminate(/*in*/ sdv::process::TProcessID tProcessID) override;
+   
+     private:
+       void MonitorThread();
+   
+       sdv::EObjectStatus      m_eObjectStatus = sdv::EObjectStatus::initialization_pending;       
+   
+         std::mutex            m_mtxProcessThreadShutdown;                                         
+   #ifdef _WIN32
+       std::map<sdv::process::TProcessID, std::pair<HANDLE,HANDLE>>    m_mapProcessThreadShutdown; 
+   #elif __unix__
+         std::set<sdv::process::TProcessID>    m_setProcessThreadShutdown;                         
+   #else
+   #error OS is not supported!
+   #endif
+   
+         struct SProcessHelper
+         {
+             sdv::process::TProcessID  tProcessID = 0;             
+   #ifdef _WIN32
+             HANDLE                    hProcess = 0;               
+   #elif defined __unix__
+             bool                      bNotAChild = false;         
+   #else
+   #error OS is not supported!
+   #endif
+             bool                      bRunning = true;            
+             int64_t                   iRetVal = 0;                
+             std::map<uint32_t, sdv::process::IProcessLifetimeCallback*> mapAssociatedMonitors;    
+             std::mutex                mtxProcess;                 
+             std::condition_variable   cvWaitForProcess;           
+         };
+         mutable std::mutex            m_mtxProcesses;             
+         std::map<sdv::process::TProcessID, std::shared_ptr<SProcessHelper>> m_mapProcesses;   
+         uint32_t                      m_uiNextMonCookie = 1;      
+         std::map<uint32_t, std::shared_ptr<SProcessHelper>> m_mapMonitors;    
+         bool                          m_bShutdown = false;        
+         std::thread                   m_threadMonitor;            
+   };
+   DEFINE_SDV_OBJECT(CProcessControl)
+   
+   #endif // !define PROCESS_CONTROL_H

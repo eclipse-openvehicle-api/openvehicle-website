@@ -1,0 +1,129 @@
+
+.. _program_listing_file_interfaces_serdes_can_serdes.h:
+
+Program Listing for File can_serdes.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_serdes_can_serdes.h>` (``interfaces\serdes\can_serdes.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__CAN_SERDES_H__20251003_130453_868__
+   #define __IDL_GENERATED__CAN_SERDES_H__20251003_130453_868__
+   
+   // Includes...
+   #include <cstdint>
+   #include <support/serdes.h>
+   #include <support/local_service_access.h>
+   #include <interfaces/com.h>
+   #include <interfaces/serdes/core_ps_serdes.h>
+   #include "../can.h"
+   
+   #include "core_serdes.h"
+   
+   // Serializer / deserializer namespace
+   namespace serdes
+   {
+       template <>
+       class CSerdes<sdv::can::SMessage>
+       {
+       public:
+           static void CalcSize(const sdv::can::SMessage& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of SMessage
+               sdv::ser_size(rVar.uiID, rnSize);
+               sdv::ser_size(rVar.bExtended, rnSize);
+               sdv::ser_size(rVar.bCanFd, rnSize);
+               sdv::ser_size(rVar.seqData, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::can::SMessage& rVar)
+           {
+               // Serializing members of SMessage
+               rSerializer << rVar.uiID;
+               rSerializer << rVar.bExtended;
+               rSerializer << rVar.bCanFd;
+               rSerializer << rVar.seqData;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::can::SMessage& rVar)
+           {
+               // Deserializing members of SMessage
+               rDeserializer >> rVar.uiID;
+               rDeserializer >> rVar.bExtended;
+               rDeserializer >> rVar.bCanFd;
+               rDeserializer >> rVar.seqData;
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::can::EError>
+       {
+       public:
+           static void CalcSize(const sdv::can::EError& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of EError
+               sdv::ser_size(static_cast<uint32_t>(rVar), rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::can::EError& rVar)
+           {
+               // Serializing members of EError
+               rSerializer << static_cast<uint32_t>(rVar);
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::can::EError& rVar)
+           {
+               // Deserializing members of EError
+               uint32_t base = 0;
+               rDeserializer >> base;
+               rVar = static_cast<sdv::can::EError>(base);
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::can::SErrorFrame>
+       {
+       public:
+           static void CalcSize(const sdv::can::SErrorFrame& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of SErrorFrame
+               sdv::ser_size(rVar.uiID, rnSize);
+               sdv::ser_size(rVar.eError, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::can::SErrorFrame& rVar)
+           {
+               // Serializing members of SErrorFrame
+               rSerializer << rVar.uiID;
+               rSerializer << rVar.eError;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::can::SErrorFrame& rVar)
+           {
+               // Deserializing members of SErrorFrame
+               rDeserializer >> rVar.uiID;
+               rDeserializer >> rVar.eError;
+               return rDeserializer;
+           }
+       };
+   } // serdes namespace
+   
+   #endif // !defined(__IDL_GENERATED__CAN_SERDES_H__20251003_130453_872__)

@@ -1,0 +1,104 @@
+
+.. _program_listing_file_ipc_sockets_connection.h:
+
+Program Listing for File connection.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_ipc_sockets_connection.h>` (``ipc_sockets\connection.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef CHANNEL_H
+   #define CHANNEL_H
+   
+   #include <thread>
+   #include <algorithm>
+   
+   #include <interfaces/ipc.h>
+   #include <support/interface_ptr.h>
+   #include <support/local_service_access.h>
+   #include <support/component_impl.h>
+   
+   #ifdef _MSC_VER
+   #pragma comment(lib, "Ws2_32.lib")
+   #endif
+   
+   constexpr uint32_t m_MsgStart = 0x01020304; 
+   constexpr uint32_t m_MsgEnd  = 0x05060708;  
+   
+   struct SMsgHeader
+   {
+       uint32_t msgStart         = 0; 
+       uint32_t msgId            = 0; 
+       uint32_t msgSize          = 0; 
+       uint32_t packetNumber     = 0; 
+       uint32_t totalPacketCount = 0; 
+       uint32_t msgEnd           = 0; 
+   };
+   
+   class CConnection : public sdv::IInterfaceAccess, public sdv::ipc::IDataSend, public sdv::ipc::IConnect, public sdv::IObjectDestroy
+   {
+   public:
+       CConnection();
+   
+       CConnection(SOCKET preconfiguredSocket, bool acceptConnectionRequired);
+   
+       virtual ~CConnection() = default;
+   
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::ipc::IDataSend)
+           SDV_INTERFACE_ENTRY(sdv::ipc::IConnect)
+           SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual bool SendData(/*inout*/ sdv::sequence<sdv::pointer<uint8_t>>& seqData) override;
+   
+       virtual bool AsyncConnect(/*in*/ sdv::IInterfaceAccess* pReceiver) override;
+   
+       virtual bool WaitForConnection(/*in*/ uint32_t uiWaitMs) override;
+   
+       virtual void CancelWait() override;
+   
+       virtual void Disconnect() override;
+   
+       virtual uint64_t RegisterStatusEventCallback(/*in*/ sdv::IInterfaceAccess* pEventCallback) override;
+   
+       virtual void UnregisterStatusEventCallback(/*in*/ uint64_t uiCookie) override;
+   
+       virtual sdv::ipc::EConnectStatus GetStatus() const override;
+   
+       virtual void DestroyObject() override;
+   
+   private:
+       std::thread                             m_ReceiveThread;                
+       std::atomic<bool>                       m_StopReceiveThread = false;    
+       std::atomic<sdv::ipc::EConnectStatus>   m_ConnectionStatus;             
+       SOCKET                                  m_ConnectionSocket;             
+       sdv::ipc::IDataReceiveCallback*         m_pReceiver = nullptr;          
+       sdv::ipc::IConnectEventCallback*        m_pEvent = nullptr;             
+       bool                                    m_AcceptConnectionRequired;     
+       mutable std::recursive_mutex            m_SendMutex;                    
+   
+       static constexpr uint32_t               m_SendMessageSize{ 1024 };                                  
+       static constexpr uint32_t               m_SendBufferSize = sizeof(SMsgHeader) + m_SendMessageSize;  
+       char                                    m_SendBuffer[m_SendBufferSize];                             
+       char                                    m_ReceiveBuffer[sizeof(SMsgHeader)];                        
+       uint32_t                                m_ReceiveBufferLength = sizeof(SMsgHeader);                 
+   
+       SOCKET AcceptConnection();
+   
+       int32_t Send(const char* data, int32_t dataLength);
+   
+       void ReceiveMessages();
+   
+       bool ValidateHeader(const SMsgHeader& msgHeader);
+   
+       bool ReadMessageHeader(uint32_t &msgSize, uint32_t &msgId, uint32_t &packageNumber, uint32_t &totalPackageCount, bool verifyHeader);
+   
+       bool ReadNumberOfBytes(char* buffer, uint32_t length);
+   };
+   
+   #endif // !define CHANNEL_H

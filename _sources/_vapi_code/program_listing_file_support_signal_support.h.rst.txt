@@ -1,0 +1,527 @@
+
+.. _program_listing_file_support_signal_support.h:
+
+Program Listing for File signal_support.h
+=========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_signal_support.h>` (``support\signal_support.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef SIGNAL_SUPPORT_H
+   #define SIGNAL_SUPPORT_H
+   
+   #include <functional>
+   #include <mutex>
+   #include <vector>
+   
+   #include "../interfaces/dispatch.h"
+   #include "local_service_access.h"
+   
+   namespace sdv
+   {
+       namespace core
+       {
+           // Forward declaration
+           class CSignal;
+           class CTrigger;
+           class CTransaction;
+   
+           class CDispatchService
+           {
+           public:
+               CDispatchService();
+   
+               ~CDispatchService();
+   
+               template <typename TType>
+               CSignal RegisterTxSignal(const u8string& rssSignalName, TType tDefVal);
+   
+               CSignal RegisterRxSignal(const u8string& rssSignalName);
+   
+               CSignal AddPublisher(const u8string& rssSignalName);
+   
+               CSignal Subscribe(const u8string& rssSignalName, std::function<void(any_t)> func);
+   
+               template <typename TType>
+               CSignal Subscribe(const u8string& rssSignalName, std::atomic<TType>& rtVal);
+   
+               sequence<SSignalRegistration> GetRegisteredSignals() const;
+   
+               CTransaction CreateTransaction();
+   
+               void FinishTransaction(CTransaction& rTransaction);
+   
+               CTrigger CreateTxTrigger(std::function<void()> fnExecute, bool bSpontaneous = true, uint32_t uiDelayTime = 0,
+                   uint32_t uiPeriod = 0ul, bool bOnlyWhenActive = false);
+           };
+   
+           class CTransaction
+           {
+               friend CDispatchService;
+   
+           public:
+               CTransaction() = default;
+   
+           protected:
+               CTransaction(CDispatchService& rDispatch, IInterfaceAccess* pTransaction) :
+                   m_pDispatch(&rDispatch), m_pTransaction(pTransaction)
+               {}
+   
+           public:
+               CTransaction(const CTransaction& rTransaction) = delete;
+   
+               CTransaction(CTransaction&& rTransaction) :
+                   m_pDispatch(rTransaction.m_pDispatch), m_pTransaction(rTransaction.m_pTransaction)
+               {
+                   rTransaction.m_pDispatch = nullptr;
+                   rTransaction.m_pTransaction = nullptr;
+               }
+   
+               ~CTransaction()
+               {
+                   Finish();
+               }
+   
+               CTransaction& operator=(const CTransaction& rTransaction) = delete;
+   
+               CTransaction& operator=(CTransaction&& rTransaction)
+               {
+                   Finish();
+                   m_pDispatch = rTransaction.m_pDispatch;
+                   m_pTransaction = rTransaction.m_pTransaction;
+                   rTransaction.m_pDispatch = nullptr;
+                   rTransaction.m_pTransaction = nullptr;
+                   return *this;
+               }
+   
+               operator bool() const { return m_pTransaction ? true : false; }
+   
+               void Finish()
+               {
+                   if (m_pDispatch && m_pTransaction)
+                   {
+                       IObjectDestroy* pDestroy = m_pTransaction->GetInterface<IObjectDestroy>();
+                       pDestroy->DestroyObject();
+                   }
+   
+                   m_pDispatch = nullptr;
+                   m_pTransaction = nullptr;
+               }
+   
+               IInterfaceAccess* GetTransaction() const
+               {
+                   return m_pTransaction;
+               }
+   
+           private:
+               CDispatchService*       m_pDispatch = nullptr;          
+               IInterfaceAccess*       m_pTransaction = nullptr;       
+           };
+   
+           class CSignal
+           {
+               friend CDispatchService;
+   
+           public:
+               CSignal() = default;
+   
+           protected:
+               CSignal(CDispatchService& rDispatch, const u8string& rssName, IInterfaceAccess* pSignal, bool bRegistering) :
+                   m_pDispatch(&rDispatch), m_ssName(rssName), m_pSignal(pSignal), m_bRegistering(bRegistering)
+               {
+                   if (pSignal)
+                   {
+                       m_pSignalWrite = pSignal->GetInterface<ISignalWrite>();
+                       m_pSignalRead = pSignal->GetInterface<ISignalRead>();
+                   }
+               }
+   
+               CSignal(CDispatchService& rDispatch, const u8string& rssName, std::function<void(any_t)> func) :
+                   m_pDispatch(&rDispatch), m_ssName(rssName),
+                   m_ptrSubscriptionHandler(std::make_unique<CReceiveEventHandler>(rDispatch, func))
+               {}
+   
+               template <typename TType>
+               CSignal(CDispatchService& rDispatch, const u8string& rssName, std::atomic<TType>& rtVal) :
+                   m_pDispatch(&rDispatch), m_ssName(rssName),
+                   m_ptrSubscriptionHandler(std::make_unique<CReceiveEventHandler>(rDispatch, rtVal))
+               {}
+   
+               IInterfaceAccess* GetSubscriptionEventHandler()
+               {
+                   return m_ptrSubscriptionHandler.get();
+               }
+   
+               void Assign(IInterfaceAccess* pSubscription)
+               {
+                   // The subscription object is managed through the signal int
+                   if (m_ptrSubscriptionHandler && !m_pSignal) m_pSignal = pSubscription;
+               }
+   
+           public:
+               CSignal(const CSignal& rSignal) = delete;
+   
+               CSignal(CSignal&& rSignal) : m_pDispatch(rSignal.m_pDispatch), m_ssName(std::move(rSignal.m_ssName)),
+                   m_pSignal(rSignal.m_pSignal), m_pSignalWrite(rSignal.m_pSignalWrite), m_pSignalRead(rSignal.m_pSignalRead),
+                   m_ptrSubscriptionHandler(std::move(rSignal.m_ptrSubscriptionHandler)), m_bRegistering(rSignal.m_bRegistering)
+               {
+                   rSignal.m_pSignal = nullptr;
+                   rSignal.m_pSignalWrite = nullptr;
+                   rSignal.m_pSignalRead = nullptr;
+                   rSignal.m_bRegistering = false;
+               }
+   
+               CSignal& operator=(const CSignal& rSignal) = delete;
+   
+               CSignal& operator=(CSignal&& rSignal)
+               {
+                   Reset();
+                   m_pDispatch = rSignal.m_pDispatch;
+                   m_ssName = std::move(rSignal.m_ssName);
+                   m_pSignal = rSignal.m_pSignal;
+                   m_pSignalWrite = rSignal.m_pSignalWrite;
+                   m_pSignalRead = rSignal.m_pSignalRead;
+                   m_ptrSubscriptionHandler = std::move(rSignal.m_ptrSubscriptionHandler);
+                   m_bRegistering = rSignal.m_bRegistering;
+                   rSignal.m_pSignal = nullptr;
+                   rSignal.m_pSignalWrite = nullptr;
+                   rSignal.m_pSignalRead = nullptr;
+                   rSignal.m_bRegistering = false;
+                   return *this;
+               }
+   
+               ~CSignal()
+               {
+                   Reset();
+               }
+   
+               void Reset()
+               {
+                   // First destroy the signal object. This will also prevent events to arrive.
+                   if (m_pSignal)
+                   {
+                       IObjectDestroy* pDestroy = m_pSignal->GetInterface<IObjectDestroy>();
+                       if (pDestroy) pDestroy->DestroyObject();
+                   }
+                   m_ptrSubscriptionHandler.reset();
+                   m_bRegistering = false;
+                   m_ssName.clear();
+                   m_pSignal = nullptr;
+                   m_pSignalWrite = nullptr;
+                   m_pSignalRead = nullptr;
+                   m_pDispatch = nullptr;
+               }
+   
+               operator bool() const
+               {
+                   return m_pSignal ? true : false;
+               }
+   
+               template <typename TType>
+               void Write(TType tVal, const CTransaction& rTransaction = CTransaction())
+               {
+                   if (m_pSignalWrite) m_pSignalWrite->Write(any_t(tVal), rTransaction.GetTransaction());
+               }
+   
+               any_t Read(const CTransaction& rTransaction = CTransaction()) const
+               {
+                   any_t anyVal;
+                   if (m_pSignalRead) anyVal = m_pSignalRead->Read(rTransaction.GetTransaction());
+                   return anyVal;
+               }
+   
+               bool UsedForRegistration() const { return m_bRegistering; }
+   
+               u8string GetName() const { return m_ssName; }
+   
+           private:
+               class CReceiveEventHandler : public IInterfaceAccess, public ISignalReceiveEvent
+               {
+               public:
+                   CReceiveEventHandler(CDispatchService& rDispatch, std::function<void(any_t)> funcSignalReceive) :
+                       m_rDispatch(rDispatch), m_funcSignalReceive(funcSignalReceive)
+                   {}
+   
+                   template <typename TType>
+                   CReceiveEventHandler(CDispatchService& rDispatch, std::atomic<TType>& rtVal) :
+                       m_rDispatch(rDispatch), m_ptrValue(std::make_unique<CValueAssignmentHelperT<TType>>(rtVal))
+                   {}
+   
+                   ~CReceiveEventHandler()
+                   {
+                       if (m_pSubscription)
+                       {
+                           IObjectDestroy* pDestroy = m_pSubscription->GetInterface<IObjectDestroy>();
+                           if (pDestroy) pDestroy->DestroyObject();
+                       }
+                   }
+   
+                   class CValueAssignmentHelper : public ISignalReceiveEvent
+                   {
+                   public:
+                       virtual ~CValueAssignmentHelper() = default;
+                   };
+   
+                   template <typename TType>
+                   class CValueAssignmentHelperT : public CValueAssignmentHelper
+                   {
+                   public:
+                       CValueAssignmentHelperT(std::atomic<TType>& rtVal) : m_rtVal(rtVal)
+                       {}
+   
+                       virtual ~CValueAssignmentHelperT() = default;
+   
+                       virtual void Receive(any_t anyVal) override
+                       {
+                           m_rtVal = static_cast<TType>(anyVal);
+                       }
+   
+                   private:
+                       std::atomic<TType>&     m_rtVal;
+                   };
+   
+                   void Assign(IInterfaceAccess* pSubscription)
+                   {
+                       m_pSubscription = pSubscription;
+                   }
+   
+               private:
+                   // Interface map
+                   BEGIN_SDV_INTERFACE_MAP()
+                       SDV_INTERFACE_ENTRY(IInterfaceAccess)
+                       SDV_INTERFACE_ENTRY(ISignalReceiveEvent)
+                   END_SDV_INTERFACE_MAP()
+   
+                   virtual void Receive(any_t anyVal) override
+                   {
+                       if (m_funcSignalReceive) m_funcSignalReceive(anyVal);
+                       if (m_ptrValue) m_ptrValue->Receive(anyVal);
+                   }
+   
+                   CDispatchService&               m_rDispatch;                
+                   std::function<void(any_t)> m_funcSignalReceive;        
+                   IInterfaceAccess*               m_pSubscription = nullptr;  
+                   std::unique_ptr<CValueAssignmentHelper>     m_ptrValue;     
+               };
+   
+               using CReceiveEventHandlerPtr = std::unique_ptr<CReceiveEventHandler>;
+   
+               CDispatchService*                   m_pDispatch = nullptr;          
+               u8string                       m_ssName;                       
+               IInterfaceAccess*              m_pSignal = nullptr;            
+               ISignalWrite*            m_pSignalWrite = nullptr;       
+               ISignalRead*             m_pSignalRead = nullptr;        
+               CReceiveEventHandlerPtr             m_ptrSubscriptionHandler;       
+               bool                                m_bRegistering = false;         
+           };
+   
+           class CTrigger
+           {
+               friend CDispatchService;
+           public:
+               CTrigger() = default;
+   
+           protected:
+               CTrigger(CDispatchService& rDispatch, std::function<void()> fnExecute) :
+                   m_pDispatch(&rDispatch), m_ptrCallback(std::make_unique<STriggerCallback>(fnExecute))
+               {}
+   
+           public:
+               CTrigger(const CTrigger& rTrigger) = delete;
+   
+               CTrigger(CTrigger&& rTrigger) :
+                   m_pDispatch(rTrigger.m_pDispatch), m_pTrigger(rTrigger.m_pTrigger),
+                   m_ptrCallback(std::move(rTrigger.m_ptrCallback))
+               {
+                   rTrigger.m_pDispatch = nullptr;
+                   rTrigger.m_pTrigger = nullptr;
+               }
+   
+               ~CTrigger()
+               {
+                   Reset();
+               }
+   
+               CTrigger& operator=(const CTrigger& rTrigger) = delete;
+   
+               CTrigger& operator=(CTrigger&& rTrigger)
+               {
+                   Reset();
+                   m_pDispatch = rTrigger.m_pDispatch;
+                   m_pTrigger = rTrigger.m_pTrigger;
+                   m_ptrCallback = std::move(rTrigger.m_ptrCallback);
+                   rTrigger.m_pDispatch = nullptr;
+                   rTrigger.m_pTrigger = nullptr;
+                   return *this;
+               }
+   
+               operator bool() const { return m_pTrigger ? true : false; }
+   
+               void Reset()
+               {
+                   if (m_pDispatch && m_pTrigger)
+                   {
+                       IObjectDestroy* pDestroy = m_pTrigger->GetInterface<IObjectDestroy>();
+                       pDestroy->DestroyObject();
+                   }
+   
+                   m_pDispatch = nullptr;
+                   m_pTrigger = nullptr;
+                   m_ptrCallback.reset();
+               }
+   
+               void AddSignal(const CSignal& rSignal)
+               {
+                   if (!m_pTrigger) return;
+                   ITxTrigger* pTrigger = m_pTrigger->GetInterface<ITxTrigger>();
+                   if (!pTrigger) return;
+   
+                   pTrigger->AddSignal(rSignal.GetName());
+               }
+   
+               void RemoveSignal(const CSignal& rSignal)
+               {
+                   if (!m_pTrigger) return;
+                   ITxTrigger* pTrigger = m_pTrigger->GetInterface<ITxTrigger>();
+                   if (!pTrigger) return;
+   
+                   pTrigger->RemoveSignal(rSignal.GetName());
+               }
+   
+           protected:
+               IInterfaceAccess* GetCallback()
+               {
+                   return m_ptrCallback.get();
+               }
+   
+               void Assign(IInterfaceAccess* pTrigger)
+               {
+                   m_pTrigger = pTrigger;
+               }
+   
+           private:
+               struct STriggerCallback : public IInterfaceAccess, public ITxTriggerCallback
+               {
+                   STriggerCallback(std::function<void()> fnExecute) : m_fnExecute(fnExecute)
+                   {}
+   
+               protected:
+                   // Interface map
+                   BEGIN_SDV_INTERFACE_MAP()
+                       SDV_INTERFACE_ENTRY(ITxTriggerCallback)
+                   END_SDV_INTERFACE_MAP()
+   
+                   virtual void Execute() override
+                   {
+                       if (m_fnExecute) m_fnExecute();
+                   }
+   
+               private:
+                   std::function<void()>   m_fnExecute;                    
+               };
+   
+               CDispatchService*                   m_pDispatch = nullptr;          
+               IInterfaceAccess*                   m_pTrigger = nullptr;           
+               std::unique_ptr<STriggerCallback>   m_ptrCallback;                  
+           };
+   
+           inline CDispatchService::CDispatchService()
+           {}
+   
+           inline CDispatchService::~CDispatchService()
+           {}
+   
+           template <typename TType>
+           inline CSignal CDispatchService::RegisterTxSignal(const u8string& rssName, TType tDefVal)
+           {
+               ISignalTransmission* pRegister = GetObject<ISignalTransmission>("DataDispatchService");
+               CSignal signal;
+               if (pRegister)
+                   signal = CSignal(*this, rssName,
+                       pRegister->RegisterTxSignal(rssName, any_t(tDefVal)),
+                       true);
+               return signal;
+           }
+   
+           inline CSignal CDispatchService::RegisterRxSignal(const u8string& rssName)
+           {
+               ISignalTransmission* pRegister = GetObject<ISignalTransmission>("DataDispatchService");
+               CSignal signal;
+               if (pRegister)
+                   signal = CSignal(*this, rssName, pRegister->RegisterRxSignal(rssName), true);
+               return signal;
+           }
+   
+           inline CSignal CDispatchService::AddPublisher(const u8string& rssSignalName)
+           {
+               ISignalAccess* pAccess = GetObject<ISignalAccess>("DataDispatchService");
+               CSignal signal;
+               if (pAccess)
+                   signal = CSignal(*this, rssSignalName, pAccess->RequestSignalPublisher(rssSignalName), false);
+               return signal;
+           }
+   
+           inline CSignal CDispatchService::Subscribe(const u8string& rssSignalName, std::function<void(any_t)> func)
+           {
+               ISignalAccess* pAccess = GetObject<ISignalAccess>("DataDispatchService");
+               CSignal signal(*this, rssSignalName, func);
+               if (pAccess)
+                   signal.Assign(pAccess->AddSignalSubscription(rssSignalName, signal.GetSubscriptionEventHandler()));
+               return signal;
+           }
+   
+           template <typename TType>
+           inline CSignal CDispatchService::Subscribe(const u8string& rssSignalName, std::atomic<TType>& rtVal)
+           {
+               ISignalAccess* pAccess = GetObject<ISignalAccess>("DataDispatchService");
+               CSignal signal(*this, rssSignalName, rtVal);
+               if (pAccess)
+                   signal.Assign(pAccess->AddSignalSubscription(rssSignalName, signal.GetSubscriptionEventHandler()));
+               return signal;
+           }
+   
+           inline sequence<SSignalRegistration> CDispatchService::GetRegisteredSignals() const
+           {
+               ISignalAccess* pAccess = GetObject<ISignalAccess>("DataDispatchService");
+               sequence<SSignalRegistration> seqSignalNames;
+               if (pAccess) seqSignalNames = pAccess->GetRegisteredSignals();
+               return seqSignalNames;
+           }
+   
+           inline CTransaction CDispatchService::CreateTransaction()
+           {
+               IDispatchTransaction* pTransaction = GetObject<IDispatchTransaction>("DataDispatchService");
+               CTransaction transaction;
+               if (pTransaction) transaction = CTransaction(*this, pTransaction->CreateTransaction());
+               return transaction;
+           }
+   
+           inline void CDispatchService::FinishTransaction(CTransaction& rTransaction)
+           {
+               rTransaction.Finish();
+           }
+   
+           inline CTrigger CDispatchService::CreateTxTrigger(std::function<void()> fnExecute, bool bSpontaneous /*= true*/,
+               uint32_t uiDelayTime /*= 0*/, uint32_t uiPeriod /*= 0ul*/, bool bOnlyWhenActive /*= false*/)
+           {
+               if (!fnExecute) return CTrigger();
+               if (!bSpontaneous && !uiPeriod) return CTrigger();
+               ISignalTransmission* pSignalTransmission = GetObject<ISignalTransmission>("DataDispatchService");
+               if (!pSignalTransmission) return CTrigger();
+               uint32_t uiFlags = 0;
+               if (bSpontaneous) uiFlags |= static_cast<uint32_t>(ISignalTransmission::ETxTriggerBehavior::spontaneous);
+               if (uiPeriod && bOnlyWhenActive) uiFlags |= static_cast<uint32_t>(ISignalTransmission::ETxTriggerBehavior::periodic_if_active);
+               CTrigger trigger(*this, fnExecute);
+               trigger.Assign(pSignalTransmission->CreateTxTrigger(uiPeriod, uiDelayTime, uiFlags, trigger.GetCallback()));
+               return trigger;
+           }
+   
+       } // namespace core
+   } // namespace sdv
+   
+   
+   #endif // !defined SIGNAL_SUPPORT_H

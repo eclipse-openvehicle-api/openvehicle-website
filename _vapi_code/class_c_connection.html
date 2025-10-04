@@ -1,0 +1,1112 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Class CConnection &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/class_c_connection';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Class CConnection</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-cconnection">
+<span id="exhale-class-class-c-connection"></span><h1>Class CConnection<a class="headerlink" href="#class-cconnection" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_ipc_shared_mem_connection.h.html#file-ipc-shared-mem-connection-h"><span class="std std-ref">File connection.h</span></a></p></li>
+</ul>
+<section id="nested-relationships">
+<h2>Nested Relationships<a class="headerlink" href="#nested-relationships" title="Permalink to this heading">#</a></h2>
+<section id="nested-types">
+<h3>Nested Types<a class="headerlink" href="#nested-types" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="class_c_connection_1_1_c_message.html#exhale-class-class-c-connection-1-1-c-message"><span class="std std-ref">Class CConnection::CMessage</span></a></p></li>
+<li><p><a class="reference internal" href="struct_c_connection_1_1_s_connect_msg.html#exhale-struct-struct-c-connection-1-1-s-connect-msg"><span class="std std-ref">Struct CConnection::SConnectMsg</span></a></p></li>
+<li><p><a class="reference internal" href="struct_c_connection_1_1_s_data_context.html#exhale-struct-struct-c-connection-1-1-s-data-context"><span class="std std-ref">Struct CConnection::SDataContext</span></a></p></li>
+<li><p><a class="reference internal" href="struct_c_connection_1_1_s_event_callback.html#exhale-struct-struct-c-connection-1-1-s-event-callback"><span class="std std-ref">Struct CConnection::SEventCallback</span></a></p></li>
+<li><p><a class="reference internal" href="struct_c_connection_1_1_s_fragmented_msg_hdr.html#exhale-struct-struct-c-connection-1-1-s-fragmented-msg-hdr"><span class="std std-ref">Struct CConnection::SFragmentedMsgHdr</span></a></p></li>
+<li><p><a class="reference internal" href="struct_c_connection_1_1_s_msg_hdr.html#exhale-struct-struct-c-connection-1-1-s-msg-hdr"><span class="std std-ref">Struct CConnection::SMsgHdr</span></a></p></li>
+</ul>
+</section>
+</section>
+<section id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Permalink to this heading">#</a></h2>
+<section id="base-types">
+<h3>Base Types<a class="headerlink" href="#base-types" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">std::enable_shared_from_this&lt;</span> <span class="pre">CConnection</span> <span class="pre">&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::IInterfaceAccess</span></code> (<a class="reference internal" href="structsdv_1_1_i_interface_access.html#exhale-struct-structsdv-1-1-i-interface-access"><span class="std std-ref">Struct IInterfaceAccess</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::IObjectDestroy</span></code> (<a class="reference internal" href="structsdv_1_1_i_object_destroy.html#exhale-struct-structsdv-1-1-i-object-destroy"><span class="std std-ref">Struct IObjectDestroy</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::ipc::IDataSend</span></code> (<a class="reference internal" href="structsdv_1_1ipc_1_1_i_data_send.html#exhale-struct-structsdv-1-1ipc-1-1-i-data-send"><span class="std std-ref">Struct IDataSend</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::ipc::IConnect</span></code> (<a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#exhale-struct-structsdv-1-1ipc-1-1-i-connect"><span class="std std-ref">Struct IConnect</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::IInterfaceAccess</span></code> (<a class="reference internal" href="structsdv_1_1_i_interface_access.html#exhale-struct-structsdv-1-1-i-interface-access"><span class="std std-ref">Struct IInterfaceAccess</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::ipc::IDataSend</span></code> (<a class="reference internal" href="structsdv_1_1ipc_1_1_i_data_send.html#exhale-struct-structsdv-1-1ipc-1-1-i-data-send"><span class="std std-ref">Struct IDataSend</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::ipc::IConnect</span></code> (<a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#exhale-struct-structsdv-1-1ipc-1-1-i-connect"><span class="std std-ref">Struct IConnect</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::IObjectDestroy</span></code> (<a class="reference internal" href="structsdv_1_1_i_object_destroy.html#exhale-struct-structsdv-1-1-i-object-destroy"><span class="std std-ref">Struct IObjectDestroy</span></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this heading">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv411CConnection">
+<span id="_CPPv311CConnection"></span><span id="_CPPv211CConnection"></span><span id="CConnection"></span><span class="target" id="class_c_connection"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CConnection</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_shared_from_this</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv411CConnection" title="CConnection"><span class="n"><span class="pre">CConnection</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_object_destroy.html#_CPPv4N3sdv14IObjectDestroyE" title="sdv::IObjectDestroy"><span class="n"><span class="pre">IObjectDestroy</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ipc</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1ipc_1_1_i_data_send.html#_CPPv4N3sdv3ipc9IDataSendE" title="sdv::ipc::IDataSend"><span class="n"><span class="pre">IDataSend</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ipc</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#_CPPv4N3sdv3ipc8IConnectE" title="sdv::ipc::IConnect"><span class="n"><span class="pre">IConnect</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ipc</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1ipc_1_1_i_data_send.html#_CPPv4N3sdv3ipc9IDataSendE" title="sdv::ipc::IDataSend"><span class="n"><span class="pre">IDataSend</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ipc</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#_CPPv4N3sdv3ipc8IConnectE" title="sdv::ipc::IConnect"><span class="n"><span class="pre">IConnect</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_object_destroy.html#_CPPv4N3sdv14IObjectDestroyE" title="sdv::IObjectDestroy"><span class="n"><span class="pre">IObjectDestroy</span></span></a><a class="headerlink" href="#_CPPv411CConnection" title="Permalink to this definition">#</a><br /></dt>
+<dd><p><p>Class for local IPC connection Created and managed by IPCAccess::AccessLocalIPCConnection(best use unique_ptr to store, so memory address stays</p>
+<p>valid)</p>
+</p>
+<p><p>Class for remote IPC connection Created and managed by IPCAccess::AccessRemoveIPCConnection(best use unique_ptr to store, so memory address stays</p>
+<p>valid)</p>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection11CConnectionER9CWatchDog8uint32_tRKNSt6stringEb">
+<span id="_CPPv3N11CConnection11CConnectionER9CWatchDog8uint32_tRKNSt6stringEb"></span><span id="_CPPv2N11CConnection11CConnectionER9CWatchDog8uint32_tRKNSt6stringEb"></span><span id="CConnection::CConnection__CWatchDogR.uint32_t.ssCR.b"></span><span class="target" id="class_c_connection_1a247239e9ee4a9a20316b515ee2275dc4"></span><span class="sig-name descname"><span class="n"><span class="pre">CConnection</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="class_c_watch_dog.html#_CPPv49CWatchDog" title="CWatchDog"><span class="n"><span class="pre">CWatchDog</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rWatchDog</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiSize</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssName</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bServer</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11CConnection11CConnectionER9CWatchDog8uint32_tRKNSt6stringEb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>default constructor used by create endpoint - allocates new buffers m_Sender and m_Receiver </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rWatchDog</strong> – <strong>[in]</strong> Reference to the watch dog object monitoring the connected processes. </p></li>
+<li><p><strong>uiSize</strong> – <strong>[in]</strong> Optional size of the buffer. If zero, a default buffer size of 10k is configured. </p></li>
+<li><p><strong>rssName</strong> – <strong>[in]</strong> Optional name to be used for the connection. If empty, a random name is generated. </p></li>
+<li><p><strong>bServer</strong> – <strong>[in]</strong> When set, the connection is the server connection; otherwise it is the client connection (determines the initial communication). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection11CConnectionER9CWatchDogRKNSt6stringE">
+<span id="_CPPv3N11CConnection11CConnectionER9CWatchDogRKNSt6stringE"></span><span id="_CPPv2N11CConnection11CConnectionER9CWatchDogRKNSt6stringE"></span><span id="CConnection::CConnection__CWatchDogR.ssCR"></span><span class="target" id="class_c_connection_1a18bfe6c9362fb6de83b480786117a066"></span><span class="sig-name descname"><span class="n"><span class="pre">CConnection</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="class_c_watch_dog.html#_CPPv49CWatchDog" title="CWatchDog"><span class="n"><span class="pre">CWatchDog</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rWatchDog</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssConnectionString</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11CConnection11CConnectionER9CWatchDogRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Access existing connection. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rWatchDog</strong> – <strong>[in]</strong> Reference to the watch dog object monitoring the connected processes. </p></li>
+<li><p><strong>rssConnectionString</strong> – <strong>[in]</strong> Reference to string with connection information. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnectionD0Ev">
+<span id="_CPPv3N11CConnectionD0Ev"></span><span id="_CPPv2N11CConnectionD0Ev"></span><span id="CConnection::~CConnection"></span><span class="target" id="class_c_connection_1ae1a209b82c44f8375d2e8b163e1ad5b5"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~CConnection</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11CConnectionD0Ev" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Virtual destructor needed for “delete this;”. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection19GetConnectionStringEv">
+<span id="_CPPv3N11CConnection19GetConnectionStringEv"></span><span id="_CPPv2N11CConnection19GetConnectionStringEv"></span><span id="CConnection::GetConnectionString"></span><span class="target" id="class_c_connection_1aceb1189e5408348679201dd616679190"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetConnectionString</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11CConnection19GetConnectionStringEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>get the connection string for the sender and the receiver </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the connection string for the sender and the receiver together </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection8SendDataERN3sdv8sequenceIN3sdv7pointerI7uint8_tEEEE">
+<span id="_CPPv3N11CConnection8SendDataERN3sdv8sequenceIN3sdv7pointerI7uint8_tEEEE"></span><span id="_CPPv2N11CConnection8SendDataERN3sdv8sequenceIN3sdv7pointerI7uint8_tEEEE"></span><span id="CConnection::SendData__sdv::sequence:sdv::pointer:uint8_t::R"></span><span class="target" id="class_c_connection_1a1daf253e7d0b0c5773a360f7537df2e3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SendData</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1sequence.html#_CPPv4I0_6size_tEN3sdv8sequenceE" title="sdv::sequence"><span class="n"><span class="pre">sequence</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1pointer.html#_CPPv4I0_6size_tEN3sdv7pointerE" title="sdv::pointer"><span class="n"><span class="pre">pointer</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">uint8_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">seqData</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11CConnection8SendDataERN3sdv8sequenceIN3sdv7pointerI7uint8_tEEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sends data consisting of multiple data chunks via the IPC connection. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_data_send.html#structsdv_1_1ipc_1_1_i_data_send_1ad36636e2bae676fe12c0dbde2ae9fc39"><span class="std std-ref">sdv::ipc::IDataSend::SendData</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>seqData</strong> – <strong>[inout]</strong> Sequence of data buffers to be sent. The sequence might be changed to optimize the communication without having to copy the data. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Return ‘true’ if all data could be sent; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection12AsyncConnectEPN3sdv16IInterfaceAccessE">
+<span id="_CPPv3N11CConnection12AsyncConnectEPN3sdv16IInterfaceAccessE"></span><span id="_CPPv2N11CConnection12AsyncConnectEPN3sdv16IInterfaceAccessE"></span><span id="CConnection::AsyncConnect__sdv::IInterfaceAccessP"></span><span class="target" id="class_c_connection_1a009339bc9e01209a2f59290c893483e7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AsyncConnect</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pReceiver</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11CConnection12AsyncConnectEPN3sdv16IInterfaceAccessE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Establish a connection and start sending/receiving messages. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a96253544b10039926019e07a7f7f409b"><span class="std std-ref">sdv::ipc::IConnect::AsyncConnect</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pReceiver</strong> – <strong>[in]</strong> The message has to be forwarded. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when a connection could be established. Use IConnectStatus or IConnectEventCallback to check the connection state. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection17WaitForConnectionE8uint32_t">
+<span id="_CPPv3N11CConnection17WaitForConnectionE8uint32_t"></span><span id="_CPPv2N11CConnection17WaitForConnectionE8uint32_t"></span><span id="CConnection::WaitForConnection__uint32_t"></span><span class="target" id="class_c_connection_1aa2e4082b3146cc10f29a694b7d27368e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WaitForConnection</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiWaitMs</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11CConnection17WaitForConnectionE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Wait for a connection to take place. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a916331029fd58ede5bf2ed731ce0c489"><span class="std std-ref">sdv::ipc::IConnect::WaitForConnection</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiWaitMs</strong> – <strong>[in]</strong> Wait for a connection to take place. A value of 0 doesn’t wait at all, a value of 0xffffffff waits for infinite time. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when a connection took place. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection10CancelWaitEv">
+<span id="_CPPv3N11CConnection10CancelWaitEv"></span><span id="_CPPv2N11CConnection10CancelWaitEv"></span><span id="CConnection::CancelWait"></span><span class="target" id="class_c_connection_1a2899fdf42a42c6159de513b928f06998"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CancelWait</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11CConnection10CancelWaitEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Cancel a wait for connection. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a21582bc1d4aed13ba8f34eb06a34bc02"><span class="std std-ref">sdv::ipc::IConnect::CancelWait</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection10DisconnectEv">
+<span id="_CPPv3N11CConnection10DisconnectEv"></span><span id="_CPPv2N11CConnection10DisconnectEv"></span><span id="CConnection::Disconnect"></span><span class="target" id="class_c_connection_1aa872cce672a9db530a4df388d17a1e1f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Disconnect</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11CConnection10DisconnectEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Disconnect from a connection. This will set the connect status to disconnected. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a4a4180baf9ae5e0f92c0d1ec89001d37"><span class="std std-ref">sdv::ipc::IConnect::Disconnect</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection27RegisterStatusEventCallbackEPN3sdv16IInterfaceAccessE">
+<span id="_CPPv3N11CConnection27RegisterStatusEventCallbackEPN3sdv16IInterfaceAccessE"></span><span id="_CPPv2N11CConnection27RegisterStatusEventCallbackEPN3sdv16IInterfaceAccessE"></span><span id="CConnection::RegisterStatusEventCallback__sdv::IInterfaceAccessP"></span><span class="target" id="class_c_connection_1a831bfe1811e51bac8ede3c0dfeaf5346"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegisterStatusEventCallback</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pEventCallback</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11CConnection27RegisterStatusEventCallbackEPN3sdv16IInterfaceAccessE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Register event callback interface. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a794270d91388d7f74f08164bf07044c7"><span class="std std-ref">sdv::ipc::IConnect::RegisterStatusEventCallback</span></a>. </p>
+<p>Register a connection status event callback interface. The exposed interface must be of type IConnectEventCallback. The registration will exist until a call to the unregister function with the returned cookie or until the connection is terminated. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pEventCallback</strong> – <strong>[in]</strong> Pointer to the object exposing the IConnectEventCallback interface. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The cookie assigned to the registration. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection29UnregisterStatusEventCallbackE8uint64_t">
+<span id="_CPPv3N11CConnection29UnregisterStatusEventCallbackE8uint64_t"></span><span id="_CPPv2N11CConnection29UnregisterStatusEventCallbackE8uint64_t"></span><span id="CConnection::UnregisterStatusEventCallback__uint64_t"></span><span class="target" id="class_c_connection_1ad6b8b0d8e21d40e7e8511f96629f5dbb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UnregisterStatusEventCallback</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiCookie</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11CConnection29UnregisterStatusEventCallbackE8uint64_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Unregister the status event callback with the returned cookie from the registration. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a08431f87a1c2ffb35547a952f14e4838"><span class="std std-ref">sdv::ipc::IConnect::UnregisterStatusEventCallback</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiCookie</strong> – <strong>[in]</strong> The cookie returned by a previous call to the registration function. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11CConnection9GetStatusEv">
+<span id="_CPPv3NK11CConnection9GetStatusEv"></span><span id="_CPPv2NK11CConnection9GetStatusEv"></span><span id="CConnection::GetStatusC"></span><span class="target" id="class_c_connection_1abcbc94507fd3336820049c47b6455f24"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ipc</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="enum_namespacesdv_1_1ipc_1a3bbfad9878931eee7f9b873d673755bc.html#_CPPv4N3sdv3ipc14EConnectStatusE" title="sdv::ipc::EConnectStatus"><span class="n"><span class="pre">EConnectStatus</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetStatus</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11CConnection9GetStatusEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get status of the connection. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a16fe9e4b20c052a25d87079b837ff3d5"><span class="std std-ref">sdv::ipc::IConnect::GetStatus</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the ipc::EConnectStatus struct </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection13DestroyObjectEv">
+<span id="_CPPv3N11CConnection13DestroyObjectEv"></span><span id="_CPPv2N11CConnection13DestroyObjectEv"></span><span id="CConnection::DestroyObject"></span><span class="target" id="class_c_connection_1a50571abf7a7e342d915f61cc75f47a3c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DestroyObject</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11CConnection13DestroyObjectEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Destroy the object. Overload of IObjectDestroy::DestroyObject. </p>
+<p><dl class="simple">
+<dt><strong>Attention</strong></dt><dd><p>After a call of this function, all exposed interfaces render invalid and should not be used any more. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection9SetStatusEN3sdv3ipc14EConnectStatusE">
+<span id="_CPPv3N11CConnection9SetStatusEN3sdv3ipc14EConnectStatusE"></span><span id="_CPPv2N11CConnection9SetStatusEN3sdv3ipc14EConnectStatusE"></span><span id="CConnection::SetStatus__sdv::ipc::EConnectStatus"></span><span class="target" id="class_c_connection_1a762248e12d9555edbbc56a976d0856e4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetStatus</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ipc</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="enum_namespacesdv_1_1ipc_1a3bbfad9878931eee7f9b873d673755bc.html#_CPPv4N3sdv3ipc14EConnectStatusE" title="sdv::ipc::EConnectStatus"><span class="n"><span class="pre">EConnectStatus</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eStatus</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11CConnection9SetStatusEN3sdv3ipc14EConnectStatusE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set the connection status and if needed call the event callback. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>eStatus</strong> – <strong>[in]</strong> The new status. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11CConnection8IsServerEv">
+<span id="_CPPv3NK11CConnection8IsServerEv"></span><span id="_CPPv2NK11CConnection8IsServerEv"></span><span id="CConnection::IsServerC"></span><span class="target" id="class_c_connection_1a078e9c5b961ccf9d813569126ba3d1ad"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsServer</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK11CConnection8IsServerEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns whether this is a server connection or a client connection. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The server connection flag. If ‘true’ the connection is a server connection; otherwise a client connection. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection11CConnectionEv">
+<span id="_CPPv3N11CConnection11CConnectionEv"></span><span id="_CPPv2N11CConnection11CConnectionEv"></span><span id="CConnection::CConnection"></span><span class="target" id="class_c_connection_1a147096f462c29cf3736e419eb5333cfb"></span><span class="sig-name descname"><span class="n"><span class="pre">CConnection</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11CConnection11CConnectionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>default constructor used by create endpoint - allocates new buffers m_Sender and m_Receiver </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection11CConnectionE6SOCKETb">
+<span id="_CPPv3N11CConnection11CConnectionE6SOCKETb"></span><span id="_CPPv2N11CConnection11CConnectionE6SOCKETb"></span><span id="CConnection::CConnection__SOCKET.b"></span><span class="target" id="class_c_connection_1a3dfdf41c80e31a891630e4d281b8a2fa"></span><span class="sig-name descname"><span class="n"><span class="pre">CConnection</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">SOCKET</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">preconfiguredSocket</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">acceptConnectionRequired</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11CConnection11CConnectionE6SOCKETb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>access existing connection </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>preconfiguredSocket</strong> – <strong>[in]</strong> Prepared socket for the connection. </p></li>
+<li><p><strong>acceptConnectionRequired</strong> – <strong>[in]</strong> If true connection has to be accepted before receive thread can be started. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_c_connection_1ad7767fab2275a43909d3a69681b11a8f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~CConnection</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><br /></dt>
+<dd><p>Virtual destructor needed for “delete this;”. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_c_connection_1a1daf253e7d0b0c5773a360f7537df2e3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SendData</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1sequence.html#_CPPv4I0_6size_tEN3sdv8sequenceE" title="sdv::sequence"><span class="n"><span class="pre">sequence</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1pointer.html#_CPPv4I0_6size_tEN3sdv7pointerE" title="sdv::pointer"><span class="n"><span class="pre">pointer</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">uint8_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">seqData</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Sends data consisting of multiple data chunks via the IPC connection. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_data_send.html#structsdv_1_1ipc_1_1_i_data_send_1ad36636e2bae676fe12c0dbde2ae9fc39"><span class="std std-ref">sdv::ipc::IDataSend::SendData</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>seqData</strong> – <strong>[inout]</strong> Sequence of data buffers to be sent. The sequence might be changed to optimize the communication without having to copy the data. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Return ‘true’ if all data could be sent; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_c_connection_1a009339bc9e01209a2f59290c893483e7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AsyncConnect</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pReceiver</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Establish a connection and start sending/receiving messages. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a96253544b10039926019e07a7f7f409b"><span class="std std-ref">sdv::ipc::IConnect::AsyncConnect</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pReceiver</strong> – <strong>[in]</strong> The message has to be forwarded. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when a connection could be established. Use IConnectStatus or IConnectEventCallback to check the connection state. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_c_connection_1aa2e4082b3146cc10f29a694b7d27368e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WaitForConnection</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiWaitMs</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Wait for a connection to take place. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a916331029fd58ede5bf2ed731ce0c489"><span class="std std-ref">sdv::ipc::IConnect::WaitForConnection</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiWaitMs</strong> – <strong>[in]</strong> Wait for a connection to take place. A value of 0 doesn’t wait at all, a value of 0xffffffff waits for infinite time. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when a connection took place. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_c_connection_1a2899fdf42a42c6159de513b928f06998"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CancelWait</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Cancel a wait for connection. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a21582bc1d4aed13ba8f34eb06a34bc02"><span class="std std-ref">sdv::ipc::IConnect::CancelWait</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_c_connection_1aa872cce672a9db530a4df388d17a1e1f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Disconnect</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Disconnect from a connection. This will set the connect status to disconnected and release the interface used for the status events. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_c_connection_1a831bfe1811e51bac8ede3c0dfeaf5346"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegisterStatusEventCallback</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pEventCallback</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Register event callback interface. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a794270d91388d7f74f08164bf07044c7"><span class="std std-ref">sdv::ipc::IConnect::RegisterStatusEventCallback</span></a>. </p>
+<p>Register a connection status event callback interface. The exposed interface must be of type IConnectEventCallback. The registration will exist until a call to the unregister function with the returned cookie or until the connection is terminated. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pEventCallback</strong> – <strong>[in]</strong> Pointer to the object exposing the IConnectEventCallback interface. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The cookie assigned to the registration. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_c_connection_1ad6b8b0d8e21d40e7e8511f96629f5dbb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UnregisterStatusEventCallback</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiCookie</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Unregister the status event callback with the returned cookie from the registration. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a08431f87a1c2ffb35547a952f14e4838"><span class="std std-ref">sdv::ipc::IConnect::UnregisterStatusEventCallback</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiCookie</strong> – <strong>[in]</strong> The cookie returned by a previous call to the registration function. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_c_connection_1abcbc94507fd3336820049c47b6455f24"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ipc</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="enum_namespacesdv_1_1ipc_1a3bbfad9878931eee7f9b873d673755bc.html#_CPPv4N3sdv3ipc14EConnectStatusE" title="sdv::ipc::EConnectStatus"><span class="n"><span class="pre">EConnectStatus</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetStatus</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Get status of the connection. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the ipc::EConnectStatus struct </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="class_c_connection_1a50571abf7a7e342d915f61cc75f47a3c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DestroyObject</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Destroy the object. Overload of IObjectDestroy::DestroyObject. </p>
+<p><dl class="simple">
+<dt><strong>Attention</strong></dt><dd><p>After a call of this function, all exposed interfaces render invalid and should not be used any more. </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

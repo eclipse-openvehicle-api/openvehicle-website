@@ -1,0 +1,54 @@
+.. _example-extern-application:
+
+Example Standalone Application
+==============================
+
+The `sdv::app::CAppControl <exhale_class_classsdv_1_1app_1_1_c_app_control>`_ class allows to set the `EObjectStatus <exhale_enum_namespacesdv_1a21841af170d7abdffe74b2159ba311ac>`_ mode and to load configuration files. Afterwards its possible to access all loaded objects and interfaces.
+
+.. tab-set::
+
+   .. tab-item:: Example
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_application.cpp
+         :tab-width: 4
+
+   .. tab-item:: Environment Variables
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_application.cpp
+         :tab-width: 4
+         :emphasize-lines: 11, 28, 31
+
+      The location of the framework runtime directory can be set via environment variables. If there is no environment variable set, the framework runtime directory must be set.
+
+   .. tab-item:: Application modes
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_application.cpp
+         :tab-width: 4
+         :emphasize-lines: 35, 37, 47, 64
+
+      After startup where its possible to set the first :term:`Config File` the ``configuration mode``should be set. After loading of all :term:`Config File` the ``running mode`` should be set. For a proper shutdown the shutdown should be called before ending the application.
+
+   .. tab-item:: Adding search folders
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_application.cpp
+         :tab-width: 4
+         :emphasize-lines: 31, 35
+
+      To find all required :term:`VAPI Component` and :term:`Config File` the corresponding folders can be added to the list of folders where the system searches for the files.
+
+   .. tab-item:: Loading configurations
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_application.cpp
+         :tab-width: 4
+         :emphasize-lines: 39
+
+      During ``configuration mode`` multiple config files can be loaded.
+
+   .. tab-item:: Running mode
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_application.cpp
+         :tab-width: 4
+         :emphasize-lines: 47-58
+
+      After setting of the ``running mode`` the objects and interfaces if available can be used. For safety reasn changes to the configuration cannot be made in running mode., e.g. the timer service cannot create a timer, it will fail.
+

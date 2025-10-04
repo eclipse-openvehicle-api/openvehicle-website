@@ -1,0 +1,171 @@
+
+.. _program_listing_file_core_installation_composer.h:
+
+Program Listing for File installation_composer.h
+================================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_installation_composer.h>` (``core\installation_composer.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef INSTALL_PACKAGING_H
+   #define INSTALL_PACKAGING_H
+   
+   #include <interfaces/config.h>
+   #include "installation_manifest.h"
+   #include <list>
+   #include <filesystem>
+   
+   #define COMPOSER_SUPPORT_READONLY_LINUX 0
+   
+   #ifdef _WIN32
+   // Resolve conflict
+   #pragma push_macro("interface")
+   #undef interface
+   #pragma push_macro("GetObject")
+   #undef GetObject
+   
+   #ifndef NOMINMAX
+   #define NOMINMAX
+   #endif
+   
+   #include <WinSock2.h>
+   #include <Windows.h>
+   #include <objbase.h>
+   
+   // Resolve conflict
+   #pragma pop_macro("GetObject")
+   #pragma pop_macro("interface")
+   #ifdef GetClassInfo
+   #undef GetClassInfo
+   #endif
+   
+   inline uint64_t WindowsTimeToPosixTime(FILETIME sWinTime)
+   {
+       const uint64_t uiTicksPerMicroSecond = 10ull;      // Windows counts in 100ns; POSIX in seconds
+       const uint64_t uiEpochDifference = 11644473600000000ull;  // Windows starts counting on 1st Jan. 1601; POSIX on 1st Jan. 1970
+       return ((static_cast<uint64_t>(sWinTime.dwHighDateTime) << 32 | static_cast<uint64_t>(sWinTime.dwLowDateTime)) /
+           uiTicksPerMicroSecond) - uiEpochDifference;
+   }
+   
+   inline FILETIME PosixTimeToWindowsTime(uint64_t uiTime)
+   {
+       FILETIME sWinTime{};
+       const uint64_t uiTicksPerMicroSecond = 10ull;      // Windows counts in 100ns; POSIX in seconds
+       const uint64_t uiEpochDifference = 11644473600000000ull;  // Windows starts counting on 1st Jan. 1601; POSIX on 1st Jan. 1970
+       sWinTime.dwLowDateTime = static_cast<uint32_t>(((uiTime + uiEpochDifference) * uiTicksPerMicroSecond) & 0xffffffffull);
+       sWinTime.dwHighDateTime = static_cast<uint32_t>(((uiTime + uiEpochDifference) * uiTicksPerMicroSecond) >> 32ull);
+       return sWinTime;
+   }
+   #endif
+   
+   class CInstallComposer
+   {
+   public:
+       CInstallComposer() = default;
+   
+       ~CInstallComposer();
+   
+       void Clear();
+   
+       enum class EAddModuleFlags : uint32_t
+       {
+           wildcards = 0x00,           
+           regex = 0x01,               
+           keep_structure = 0x10,      
+       };
+   
+       enum class EUpdateRules
+       {
+           not_allowed,        
+           update_when_new,    
+           overwrite,          
+       };
+   
+       std::vector<std::filesystem::path> AddModule(const std::filesystem::path& rpathBasePath, const std::string& rssModulePath,
+           const std::filesystem::path& rpathRelTargetDir = ".", uint32_t uiFlags = 0);
+   
+       void AddProperty(const std::string& rssName, const std::string& rssValue);
+   
+       sdv::pointer<uint8_t> Compose(const std::string& rssInstallName) const;
+   
+       bool Compose(const std::filesystem::path& rpathPackage, const std::string& rssInstallName) const;
+   
+       CInstallManifest ComposeDirect(const std::string& rssInstallName, const std::filesystem::path& rpathInstallDir,
+           EUpdateRules eUpdateRule = EUpdateRules::not_allowed) const;
+   
+       CInstallManifest ComposeInstallManifest(const std::string& rssInstallName) const;
+   
+       static CInstallManifest Extract(const sdv::pointer<uint8_t>& rptrPackage, const std::filesystem::path& rpathInstallDir,
+           EUpdateRules eUpdateRule = EUpdateRules::not_allowed);
+   
+       static CInstallManifest Extract(const std::filesystem::path& rpathPackage, const std::filesystem::path& rpathInstallDir,
+           EUpdateRules eUpdateRule = EUpdateRules::not_allowed);
+   
+       static CInstallManifest Remove(const std::string& rssInstallName, const std::filesystem::path& rpathInstallDir);
+   
+       static bool Verify(const sdv::pointer<uint8_t>& rptrPackage);
+   
+       static bool Verify(const std::filesystem::path& rpathPackage);
+   
+       static CInstallManifest ExtractInstallManifest(const sdv::pointer<uint8_t>& rptrPackage);
+   
+       static CInstallManifest ExtractInstallManifest(const std::filesystem::path& rpathPackage);
+   
+   private:
+       struct SFileEntry
+       {
+           std::filesystem::path   pathSrcModule;      
+           std::filesystem::path   pathRelDir;         
+       };
+   
+       static uint32_t SerializePackageHeader(sdv::pointer<uint8_t>& rptrPackage, const CInstallManifest& rmanifest);
+   
+       static uint32_t SerializeModuleBLOB(uint32_t uiChecksumInit, sdv::pointer<uint8_t>& rptrPackage, const SFileEntry& rsFile);
+   
+       static uint32_t SerializeFinalBLOB(uint32_t uiChecksumInit, sdv::pointer<uint8_t>& rptrPackage);
+   
+       static void SerializePackageFooter(uint32_t uiChecksum, sdv::pointer<uint8_t>& rptrPackage);
+   
+       static sdv::installation::SPackageHeader DeserializeHeader(std::ifstream& rfstream, uint32_t& ruiChecksum);
+   
+       static sdv::installation::SPackageHeader DeserializeHeader(const sdv::pointer<uint8_t>& rptrPackage, size_t& rnOffset,
+           uint32_t& ruiChecksum);
+   
+       static sdv::installation::SPackageBLOB DeserializeBLOB(std::ifstream& rfstream, uint32_t& ruiChecksum);
+   
+       static sdv::installation::SPackageBLOB DeserializeBLOB(const sdv::pointer<uint8_t>& rptrPackage, size_t& rnOffset, uint32_t& ruiChecksum);
+   
+       static void DeserializeFinalChecksum(std::ifstream& rfstream, uint32_t uiChecksum);
+   
+       static void DeserializeFinalChecksum(const sdv::pointer<uint8_t>& rptrPackage, size_t nOffset, uint32_t uiChecksum);
+   
+       static void StoreModuleBLOB(const sdv::installation::SPackageBLOB& rsModuleBLOB, const std::filesystem::path& rpathLocation);
+   
+       static void StoreManifest(const std::filesystem::path& rpathLocation, const CInstallManifest& rmanifest, int64_t uiCreationTime);
+   
+       static void SetReadOnly(const std::filesystem::path& rpathFile);
+   
+       static bool IsReadOnly(const std::filesystem::path& rpathFile);
+   
+       static void SetExecutable(const std::filesystem::path& rpathFile);
+   
+       static bool IsExecutable(const std::filesystem::path& rpathFile);
+   
+       static void SetCreateTime(const std::filesystem::path& rpathFile, uint64_t uiTimeMicrosec);
+   
+       static uint64_t GetCreateTime(const std::filesystem::path& rpathFile);
+   
+       static void SetChangeTime(const std::filesystem::path& rpathFile, uint64_t uiTimeMicrosec);
+   
+       static uint64_t GetChangeTime(const std::filesystem::path& rpathFile);
+   
+       static bool UpdateExistingInstallation(const std::filesystem::path& rpathInstall, sdv::installation::SPackageVersion sVersionNew, EUpdateRules eUpdateRule);
+   
+       std::list<SFileEntry>               m_lstFiles;         
+       std::map<std::string, std::string>  m_mapProperties;    
+   };
+   
+   #endif // !defined INSTALL_PACKAGING_H

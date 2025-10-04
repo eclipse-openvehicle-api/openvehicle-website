@@ -1,0 +1,84 @@
+
+.. _program_listing_file_core_sdv_core.h:
+
+Program Listing for File sdv_core.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_sdv_core.h>` (``core\sdv_core.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CORE_H
+   #define CORE_H
+   
+   #include <support/component_impl.h>
+   #include "app_control.h"
+   #include "module_control.h"
+   #include "memory.h"
+   #include "repository.h"
+   #include "logger_control.h"
+   #include "logger.h"
+   #include "app_config.h"
+   
+   class CSDVCore : public sdv::IInterfaceAccess
+   {
+   public:
+       CSDVCore();
+   
+       ~CSDVCore();
+   
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_CHAIN_MEMBER(m_appctrl)
+           SDV_INTERFACE_CHAIN_MEMBER(m_modulectrl)
+           SDV_INTERFACE_CHAIN_MEMBER(m_memmgr)
+           SDV_INTERFACE_CHAIN_MEMBER(m_repository)
+           SDV_INTERFACE_CHAIN_MEMBER(m_loggerctrl)
+       END_SDV_INTERFACE_MAP()
+   
+       static CSDVCore& GetInstance();
+   
+       CAppControl& GetAppControl();
+   
+       CModuleControl& GetModuleControl();
+   
+       CMemoryManager& GetMemoryManager();
+   
+       CRepository& GetRepository();
+   
+       CLoggerControl& GetLoggerControl();
+   
+       CLogger& GetDefaultLogger();
+   
+       CAppConfig& GetAppConfig();
+   
+   private:
+       CMemoryManager      m_memmgr;           
+       CAppControl         m_appctrl;          
+       CRepository         m_repository;       
+       CModuleControl      m_modulectrl;       
+       CLogger             m_defaultlogger;    
+       CLoggerControl      m_loggerctrl;       
+       CAppConfig          m_appconfig;        
+   };
+   
+   extern "C" SDV_SYMBOL_PUBLIC sdv::IInterfaceAccess* SDVCore();
+   
+   CAppControl& GetAppControl();
+   
+   CModuleControl& GetModuleControl();
+   
+   CMemoryManager& GetMemoryManager();
+   
+   CRepository& GetRepository();
+   
+   CLoggerControl& GetLoggerControl();
+   
+   CLogger& GetDefaultLogger();
+   
+   CAppConfig& GetAppConfig();
+   
+   std::filesystem::path GetCoreDirectory();
+   
+   #endif // !defined CORE_H

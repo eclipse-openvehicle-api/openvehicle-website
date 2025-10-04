@@ -1,0 +1,39 @@
+
+.. _program_listing_file_core_toml_parser_util.h:
+
+Program Listing for File toml_parser_util.h
+===========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_toml_parser_util.h>` (``core\toml_parser_util.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CONFIG_UTILITY_H
+   #define CONFIG_UTILITY_H
+   
+   #include <support/component_impl.h>
+   #include "toml_parser/parser_toml.h"
+   
+   class CTOMLParserUtility : public sdv::CSdvObject
+   {
+   public:
+       CTOMLParserUtility() = default;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_CHAIN_MEMBER(m_parser)
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::Utility)
+       DECLARE_OBJECT_CLASS_NAME("TOMLParserUtility")
+   
+   private:
+       CParserTOML m_parser;       
+   };
+   
+   DEFINE_SDV_OBJECT_NO_EXPORT(CTOMLParserUtility)
+   
+   #endif // !defined CONFIG_UTILITY_H

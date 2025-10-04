@@ -1,0 +1,49 @@
+
+.. _program_listing_file_core_log_csv_writer.h:
+
+Program Listing for File log_csv_writer.h
+=========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_log_csv_writer.h>` (``core\log_csv_writer.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LOG_CSV_WRITER_H
+   #define LOG_CSV_WRITER_H
+   
+   #include <iostream>
+   #include <chrono>
+   #include <string>
+   #include <interfaces/log.h>
+   #include <mutex>
+   
+   class CLogCSVWriter
+   {
+   public:
+       CLogCSVWriter(std::shared_ptr<std::ostream> ostream, const char separator = ';');
+   
+       void Write(const std::string& message, const sdv::core::ELogSeverity severity,
+           const std::chrono::time_point<std::chrono::system_clock> timestamp);
+   
+       std::string GetDateTime(const std::chrono::time_point<std::chrono::system_clock> timestamp);
+   
+       static std::string GetSeverityString(sdv::core::ELogSeverity severity);
+   
+       struct SForbiddenSeparatorException : public std::runtime_error
+       {
+           SForbiddenSeparatorException(const char* message)
+               : std::runtime_error(message)
+           {}
+       };
+   
+   private:
+       static std::string Escape(const std::string& toEscape);
+   
+       std::shared_ptr<std::ostream>   m_streamOutput;     
+       const char                      m_cSeparator;       
+       mutable std::mutex              m_mtxOutput;        
+   };
+   
+   #endif // !defined LOG_CSV_WRITER_H

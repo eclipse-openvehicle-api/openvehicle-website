@@ -1,0 +1,67 @@
+
+.. _program_listing_file_sdv_vss_util_vss_bs_codingrx.h:
+
+Program Listing for File vss_bs_codingrx.h
+==========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_vss_util_vss_bs_codingrx.h>` (``sdv_vss_util\vss_bs_codingrx.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef VSS_BS_CODING_RX_H
+   #define VSS_BS_CODING_RX_H
+   
+   #include <iostream>
+   #include <vector>
+   #include <algorithm>
+   #include <string>
+   #include <sstream>
+   #include <interfaces/dispatch.h>
+   
+   #include "codegen_base.h"
+   #include "vss_helper.h"
+   #include "vss_rx_templates.h"
+   #include "vss_coding.h"
+   
+      
+   class CVSSBSCodingRX : public CCodeGeneratorBase, CVSSHelper
+   {
+   
+   public:
+       std::string Code_RXIDLServiceList(const std::vector<std::string>& vssParts, const std::vector <SFunctionBSDefinition>& vecFunctions) const;
+   
+       void GetKeyWordMap(const SSignalBSDefinition& signal, const SSignalVDDefinition& signalVD, CKeywordMap& mapKeywords) const;
+   
+   protected:
+       std::string Code_BS_RXIncludes(const std::string& vssOriginalNoDot) const;
+   
+       std::string Code_BS_RXInterface(const std::string& functionName, const std::string& vssWithColons,
+           const std::string& vd_functionName, const std::string& vd_vssWithColons) const;
+   
+       std::string Code_BS_RXInterfaceEntry(const std::string& functionName, const std::string& vssWithColons) const;
+   
+       std::string Code_BS_RXReAndUnregisterEvent(const std::string& vssWithColons, const SFunctionBSDefinition& function, 
+           const SFunctionVDDefinition& functionVD) const;
+   
+       std::string Code_BS_RXPrivateHeaderPart(const SFunctionBSDefinition& function, const std::string& vssWithColons) const;
+   
+       std::string Code_RXIDLServiceInterface(const std::string& spaces, const std::string& vssWithColons, 
+           const SFunctionBSDefinition& function) const;
+   
+       std::string Code_BS_RXConstructor(const SSignalVDDefinition& signalVD, const std::string& vd_vssWithColons,
+           const SFunctionVDDefinition& functionVD, const SFunctionBSDefinition& function) const;
+   
+       std::string Code_BS_RXDestructor(const SSignalVDDefinition& signalVD, const std::string& vd_vssWithColons, 
+           const SFunctionVDDefinition& functionVD) const;
+   
+       std::string Code_BS_RXGetAndSetFunctions(const std::string& class_name, const SFunctionBSDefinition& function, 
+           const SFunctionVDDefinition& functionVD) const;
+   
+       std::string Code_BS_RXRegister(const std::string& class_name, const SFunctionBSDefinition& function, 
+           const std::string& vssWithColons) const;
+   };
+   
+   #endif // !defined VSS_BS_CODING_RX_H
+   

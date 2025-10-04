@@ -1,0 +1,134 @@
+
+.. _program_listing_file_support_serdes.h:
+
+Program Listing for File serdes.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_serdes.h>` (``support\serdes.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SDV_SERDES_H
+   #define SDV_SERDES_H
+   
+   #include <cstdint>
+   #include "pointer.h"
+   #include "sequence.h"
+   #include "string.h"
+   #include "any.h"
+   #include "crc.h"
+   
+   namespace sdv
+   {
+   
+       inline constexpr EEndian GetPlatformEndianess()
+       {
+           // Since C++11 there is no programmatic way to test for endianness in a constexpr function. During runtime this is possible
+           // using a union or a casting pointers. C++20 adds platform endian support and the implementation is likely done using
+           // compiler constants.
+   #if defined _MSC_VER
+           return EEndian::little_endian;
+   #elif defined __GNUC__
+           return __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__ ? EEndian::big_endian : EEndian::little_endian;
+   #endif
+       }
+   
+       template <sdv::EEndian eTargetEndianess = GetPlatformEndianess(), typename TCRC = crcCCITT_FALSE>
+       class serializer
+       {
+       public:
+           serializer() noexcept;
+   
+           template <typename T>
+           void push_back(T tValue);
+   
+           void attach(pointer<uint8_t>&& rptrBuffer, size_t nOffset = 0, typename TCRC::TCRCType uiChecksum = 0u);
+   
+           void detach(pointer<uint8_t>& rptrBuffer);
+   
+           void reserve(size_t nSize);
+   
+           pointer<uint8_t> buffer() const;
+   
+           typename TCRC::TCRCType checksum() const noexcept;
+   
+           size_t offset() const;
+   
+       private:
+           template <typename T>
+           void extend_and_align();
+   
+           pointer<uint8_t> m_ptrBuffer;   
+           size_t m_nOffset = 0;           
+           TCRC m_crcChecksum;             
+       };
+   
+       template <sdv::EEndian eSourceEndianess = GetPlatformEndianess(), typename TCRC = crcCCITT_FALSE>
+       class deserializer
+       {
+       public:
+           deserializer();
+   
+           template <typename T>
+           void pop_front(T& rtValue);
+   
+           template <typename T>
+           void peek_front(T& rtValue);
+   
+           void assign(const uint8_t* pData, size_t nSize, typename TCRC::TCRCType uiChecksum = 0);
+   
+           void attach(const pointer<uint8_t>& rptrData, typename TCRC::TCRCType uiChecksum = 0);
+   
+           typename TCRC::TCRCType checksum() const noexcept;
+   
+           size_t size() const;
+   
+           size_t offset() const;
+   
+           size_t remaining() const;
+   
+           void jump(size_t nOffset, typename TCRC::TCRCType uiChecksum = 0);
+   
+       private:
+           template <typename T>
+           void align();
+   
+           pointer<uint8_t> m_ptrBuffer;       
+           const uint8_t* m_pData = nullptr;   
+           size_t m_nSize = 0;                 
+           size_t m_nOffset = 0;               
+           TCRC m_crcChecksum;                 
+   
+       };
+   
+       template <typename T>
+       void ser_size(const T& rtValue, size_t& rnSize);
+   } // namespace sdv
+   
+   namespace serdes
+   {
+       template <typename T>
+       class CSerdes
+       {
+       public:
+           static void CalcSize(const T& rtValue, size_t& rnSize);
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const T& rtValue);
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, T& rtValue);
+       };
+   } // namespace serdes
+   
+   template <typename T, sdv::EEndian eTargetEndianess, typename TCRC>
+   sdv::serializer<eTargetEndianess, TCRC>& operator<<(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const T& rtValue);
+   
+   template <typename T, sdv::EEndian eSourceEndianess, typename TCRC>
+   sdv::deserializer<eSourceEndianess, TCRC>& operator>>(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, T& rtValue);
+   
+   #include "serdes.inl"
+   
+   #endif // !defined SDV_SERDES_H

@@ -1,0 +1,134 @@
+
+.. _program_listing_file_task_timer_simulationtasktimer.h:
+
+Program Listing for File simulationtasktimer.h
+==============================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_task_timer_simulationtasktimer.h>` (``task_timer\simulationtasktimer.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef SIMULATION_TASK_TIMER_H
+   #define SIMULATION_TASK_TIMER_H
+   
+   #include <interfaces/core.h>
+   #include <interfaces/timer.h>
+   #include <support/interface_ptr.h>
+   #include <support/component_impl.h>
+   #include <map>
+   #include <set>
+   #include <fstream>
+   
+   #ifdef _WIN32
+   // Resolve conflict
+   #pragma push_macro("interface")
+   #undef interface
+   
+   #ifndef NOMINMAX
+   #define NOMINMAX
+   #endif
+   
+   #include <WinSock2.h>
+   #include <Windows.h>
+   #include <timeapi.h>
+   
+   // Resolve conflict
+   #pragma pop_macro("interface")
+   #ifdef GetClassInfo
+   #undef GetClassInfo
+   #endif
+   #elif defined __unix__
+   #include <signal.h>
+   #include <unistd.h>
+   #include <mutex>
+   #include <time.h>
+   #include <sys/times.h>
+   #else
+   #error OS is not supported!
+   #endif
+   
+   // Forward declaration
+   class CSimulationTaskTimerService;
+   
+   class CSimulationTimer : public sdv::IInterfaceAccess, public sdv::IObjectDestroy, public sdv::core::ITimerSimulationStep
+   {
+   public:
+       CSimulationTimer(CSimulationTaskTimerService& rtimersvc, uint32_t uiPeriod, sdv::core::ITaskExecute* pExecute);
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
+           SDV_INTERFACE_ENTRY(sdv::core::ITimerSimulationStep)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual void DestroyObject() override;
+   
+       virtual void SimulationStep(/*in*/ uint64_t uiSimulationStep) override;
+   
+       operator bool() const;
+   
+   private:
+   //#ifdef _WIN32
+   //    /**
+   //     * @brief Execution function called by the timer.
+   //     */
+   //    void ExecuteCallback();
+   //
+   //#endif
+   
+       sdv::CLifetimeCookie         m_cookie = sdv::CreateLifetimeCookie(); 
+       CSimulationTaskTimerService& m_rtimersvc;                            
+       sdv::core::ITaskExecute*     m_pExecute = nullptr;                   
+       uint64_t                     m_uiInitializedPeriod = 0;              
+       uint64_t                     m_uiPeriod = 0;                         
+       bool                         m_bRunning = false;                     
+       bool                         m_bPrioritySet = false;                 
+   };
+   
+   class CSimulationTaskTimerService : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::core::ITaskTimer,
+       public sdv::core::ITimerSimulationStep
+   {
+   public:
+       CSimulationTaskTimerService();
+   
+       virtual ~CSimulationTaskTimerService() override;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
+           SDV_INTERFACE_ENTRY(sdv::core::ITaskTimer)
+           SDV_INTERFACE_ENTRY(sdv::core::ITimerSimulationStep)
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_NAME("SimulationTaskTimerService")
+       DECLARE_OBJECT_SINGLETON()
+   
+       virtual void Initialize(/*in*/ const sdv::u8string& ssObjectConfig) override;
+   
+       virtual sdv::EObjectStatus GetStatus() const override;
+   
+       virtual void SetOperationMode(/*in*/ sdv::EOperationMode eMode) override;
+   
+       virtual void Shutdown() override;
+   
+       virtual sdv::IInterfaceAccess* CreateTimer(uint32_t uiPeriod, sdv::IInterfaceAccess* pTask) override;
+   
+   
+       virtual void SimulationStep(/*in*/ uint64_t uiSimulationStep) override;
+   
+       void RemoveTimer(CSimulationTimer* pTimer);
+   
+   private:
+       sdv::EObjectStatus      m_eObjectStatus = sdv::EObjectStatus::initialization_pending; 
+       std::mutex                                                     m_mtxTasks;            
+       std::map<CSimulationTimer*, std::unique_ptr<CSimulationTimer>> m_mapTasks;            
+   };
+   
+   DEFINE_SDV_OBJECT(CSimulationTaskTimerService)
+   
+   #endif // !define SIMULATION_TASK_TIMER_H

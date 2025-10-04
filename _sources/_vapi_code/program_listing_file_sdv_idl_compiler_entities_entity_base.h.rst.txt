@@ -1,0 +1,438 @@
+
+.. _program_listing_file_sdv_idl_compiler_entities_entity_base.h:
+
+Program Listing for File entity_base.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_entities_entity_base.h>` (``sdv_idl_compiler\entities\entity_base.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef ENTITY_BASE_H
+   #define ENTITY_BASE_H
+   
+   #include "../includes.h"
+   #include "../token.h"
+   #include "../tokenlist.h"
+   #include "../exception.h"
+   #include <memory>
+   #include <string>
+   #include <list>
+   #include <map>
+   #include <vector>
+   #include <type_traits>
+   #include "hash_calc.h"
+   
+   #define DONT_LOAD_CORE_TYPES
+   #include <support/interface_ptr.h>
+   
+   // Forward declaration
+   class CEntity;
+   class CParser;
+   class CEntityValueNode;
+   class CTypedefEntity;
+   class CContext;
+   
+   using CEntityPtr = std::shared_ptr<CEntity>;
+   
+   using CEntityMap = std::map<std::string, CEntityPtr>;
+   
+   using CEntityList = std::list<CEntityPtr>;
+   
+   using CEntityVector = std::vector<CEntityPtr>;
+   
+   using CValueNodePtr = std::shared_ptr<CEntityValueNode>;
+   
+   using CEntityValueVector = std::vector<CValueNodePtr>;
+   
+   inline bool IsIntegralDeclType(sdv::idl::EDeclType eType)
+   {
+       switch (eType)
+       {
+       case sdv::idl::EDeclType::decltype_short:
+       case sdv::idl::EDeclType::decltype_long:
+       case sdv::idl::EDeclType::decltype_long_long:
+       case sdv::idl::EDeclType::decltype_unsigned_short:
+       case sdv::idl::EDeclType::decltype_unsigned_long:
+       case sdv::idl::EDeclType::decltype_unsigned_long_long:
+       case sdv::idl::EDeclType::decltype_char:
+       case sdv::idl::EDeclType::decltype_char16:
+       case sdv::idl::EDeclType::decltype_char32:
+       case sdv::idl::EDeclType::decltype_wchar:
+       case sdv::idl::EDeclType::decltype_boolean:
+       case sdv::idl::EDeclType::decltype_native:
+       case sdv::idl::EDeclType::decltype_octet:
+           return true;
+       default:
+           return false;
+       }
+   }
+   
+   inline bool IsSignedDeclType(sdv::idl::EDeclType eType)
+   {
+       switch (eType)
+       {
+       case sdv::idl::EDeclType::decltype_short:
+       case sdv::idl::EDeclType::decltype_long:
+       case sdv::idl::EDeclType::decltype_long_long:
+       case sdv::idl::EDeclType::decltype_char:
+       case sdv::idl::EDeclType::decltype_float:
+       case sdv::idl::EDeclType::decltype_double:
+       case sdv::idl::EDeclType::decltype_long_double:
+       case sdv::idl::EDeclType::decltype_fixed:
+           return true;
+       default:
+           return false;
+       }
+   }
+   
+   inline bool IsUnsignedDeclType(sdv::idl::EDeclType eType)
+   {
+       switch (eType)
+       {
+       case sdv::idl::EDeclType::decltype_unsigned_short:
+       case sdv::idl::EDeclType::decltype_unsigned_long:
+       case sdv::idl::EDeclType::decltype_unsigned_long_long:
+       case sdv::idl::EDeclType::decltype_char16:
+       case sdv::idl::EDeclType::decltype_char32:
+       case sdv::idl::EDeclType::decltype_wchar:
+       case sdv::idl::EDeclType::decltype_boolean:
+       case sdv::idl::EDeclType::decltype_octet:
+           return true;
+       case sdv::idl::EDeclType::decltype_native:
+           return std::is_unsigned_v<size_t>;
+       default:
+           return false;
+       }
+   }
+   
+   using TDeclTypeAssoc = std::pair<std::string, sdv::idl::EDeclType>;
+   
+   const std::vector<TDeclTypeAssoc> g_vecDeclTypes = {
+       {"short", sdv::idl::EDeclType::decltype_short},
+       {"unsigned short", sdv::idl::EDeclType::decltype_unsigned_short},
+       {"long", sdv::idl::EDeclType::decltype_long},
+       {"unsigned long", sdv::idl::EDeclType::decltype_unsigned_long},
+       {"long long", sdv::idl::EDeclType::decltype_long_long},
+       {"unsigned long long", sdv::idl::EDeclType::decltype_unsigned_long_long},
+       {"fixed", sdv::idl::EDeclType::decltype_fixed},
+       {"float", sdv::idl::EDeclType::decltype_float},
+       {"double", sdv::idl::EDeclType::decltype_double},
+       {"long double", sdv::idl::EDeclType::decltype_long_double},
+       {"char", sdv::idl::EDeclType::decltype_char},
+       {"wchar", sdv::idl::EDeclType::decltype_wchar},
+       {"int8", sdv::idl::EDeclType::decltype_char},
+       {"int16", sdv::idl::EDeclType::decltype_short},
+       {"int32", sdv::idl::EDeclType::decltype_long},
+       {"int64", sdv::idl::EDeclType::decltype_long_long},
+       {"int", sdv::idl::EDeclType::decltype_long},
+       {"uint8", sdv::idl::EDeclType::decltype_octet},
+       {"uint16", sdv::idl::EDeclType::decltype_unsigned_short},
+       {"uint32", sdv::idl::EDeclType::decltype_unsigned_long},
+       {"uint64", sdv::idl::EDeclType::decltype_unsigned_long_long},
+       {"uint", sdv::idl::EDeclType::decltype_unsigned_long},
+       {"boolean", sdv::idl::EDeclType::decltype_boolean},
+       {"native", sdv::idl::EDeclType::decltype_native},
+       {"octet", sdv::idl::EDeclType::decltype_octet},
+       {"byte", sdv::idl::EDeclType::decltype_octet},
+       {"string", sdv::idl::EDeclType::decltype_string},
+       {"wstring", sdv::idl::EDeclType::decltype_wstring},
+       {"enum", sdv::idl::EDeclType::decltype_enum},
+       {"struct", sdv::idl::EDeclType::decltype_struct},
+       {"union", sdv::idl::EDeclType::decltype_union},
+       {"operation", sdv::idl::EDeclType::decltype_operation},
+       {"attribute", sdv::idl::EDeclType::decltype_parameter},
+       {"enum_entry", sdv::idl::EDeclType::decltype_enum_entry},
+       {"case_entry", sdv::idl::EDeclType::decltype_case_entry},
+       {"typedef", sdv::idl::EDeclType::decltype_typedef},
+       {"sequence", sdv::idl::EDeclType::decltype_sequence},
+       {"map", sdv::idl::EDeclType::decltype_map},
+       {"bitset", sdv::idl::EDeclType::decltype_bitset},
+       {"bitfield", sdv::idl::EDeclType::decltype_bitfield},
+       {"bitmask", sdv::idl::EDeclType::decltype_bitmask},
+       {"any", sdv::idl::EDeclType::decltype_any},
+       {"void", sdv::idl::EDeclType::decltype_void}
+   };
+   
+   class CTypeDeclaration : public sdv::idl::IDeclarationType, public sdv::IInterfaceAccess
+   {
+   public:
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IInterfaceAccess)
+           SDV_INTERFACE_ENTRY(sdv::idl::IDeclarationType)
+       END_SDV_INTERFACE_MAP()
+   
+       
+       virtual sdv::idl::EDeclType GetBaseType() const override;
+   
+       void SetBaseType(sdv::idl::EDeclType eBaseType);
+   
+       virtual sdv::u8string GetTypeString() const override;
+   
+       void SetTypeString(const sdv::u8string& rssType);
+   
+       void AddTypeString(const sdv::u8string& rss);
+   
+       virtual sdv::IInterfaceAccess* GetTypeDefinition() const override;
+   
+       CEntityPtr GetTypeDefinitionEntityPtr() const;
+   
+       void SetTypeDefinitionEntityPtr(const CEntityPtr& rptrDefinition);
+   
+       virtual uint32_t GetFixedLength() const override;
+   
+       void SetFixedLength(uint32_t uiFixedLength);
+   
+       virtual uint32_t GetDecimals() const override;
+   
+       void SetDecimals(uint32_t uiDecimals);
+   
+       virtual sdv::IInterfaceAccess* GetValueType() const override;
+   
+       void SetValueTypePtr(const std::shared_ptr<CTypeDeclaration>& rptrValueType);
+   
+       virtual sdv::IInterfaceAccess* GetKeyType() const override;
+   
+       void SetKeyTypePtr(const std::shared_ptr<CTypeDeclaration>& rptrKeyType);
+   
+   private:
+       sdv::idl::EDeclType m_eBaseType = sdv::idl::EDeclType::decltype_unknown;
+       std::string m_ssOriginalType;                     
+       CEntityPtr m_ptrOriginalType;                     
+       uint32_t m_uiFixedLen = 0;                        
+       uint32_t m_uiDecimals = 0;                        
+       std::shared_ptr<CTypeDeclaration> m_ptrValueType; 
+       std::shared_ptr<CTypeDeclaration> m_ptrKeyType;   
+   };
+   
+   // TODO:
+   // - Const complex entities need to be told, that they are const during assignment.
+   // - Deal with the case of forward declaration (why is this needed, there are no references and no pointers)?
+   // - Deal with the case of ambiguity through inheritance:
+   //     struct S1{ const int32 i1 = 10; };
+   //     struct S2{ const int32 i1 = 20; };
+   //     struct S3 : S1, S2 { int32 j1[i1]; }; --> ERROR
+   // - Not allowed to assign dynamic values when the parent value is a const value.
+   
+   class CEntity : public sdv::idl::IEntityInfo, public sdv::idl::IEntityComments, public sdv::idl::IEntityContext,
+       public sdv::idl::IForwardDeclarationEntity, public sdv::IInterfaceAccess, public std::enable_shared_from_this<CEntity>
+   {
+       friend CTypedefEntity;
+   public:
+       CEntity(const CContextPtr& rptrContext, CEntityPtr ptrParent);
+   
+       CEntity(const CContextPtr& rptrContext, CEntityPtr ptrParent, const CTokenList& rlstTokenList);
+   
+   protected:
+       CEntity(CParser& rParser, const CContextPtr& rptrContext);
+   public:
+   
+       virtual ~CEntity() = default;
+   
+       virtual sdv::interface_t GetInterface(sdv::interface_id idInterface) override;
+   
+       virtual sdv::idl::EEntityType GetType() const override;
+   
+       virtual sdv::IInterfaceAccess* GetEntity() override;
+   
+      virtual std::string GetDeclTypeStr(bool bResolveTypedef) const;
+   
+       template <class TEntity>
+       TEntity* Get();
+       template <class TEntity>
+       const TEntity* Get() const;
+       virtual void Process() = 0;
+   
+       virtual sdv::u8string GetName() const override;
+   
+       virtual sdv::u8string GetScopedName() const override;
+   
+       std::string MakeFullScoped(const std::string& rssExpression) const;
+   
+       bool IsEqual(CEntityPtr ptrEntity) { return GetScopedName() == ptrEntity->GetScopedName(); }
+   
+       CContextPtr GetContext() const;
+       CContextPtr GetContext();
+       CEntityPtr GetParentEntity() const;
+       CEntityPtr GetParentEntity();
+       virtual sdv::IInterfaceAccess* GetParent() const override;
+   
+       CEntityPtr GetRootEntity() const;
+       CEntityPtr GetRootEntity();
+       CEntityPtr GetResolvedEntity() const;
+       CEntityPtr GetResolvedEntity();
+       void SetCommentTokens(const CTokenList& rlstComments, bool bPreceeding = true);
+   
+       CTokenList GetPreCommentTokenList();
+   
+       void ProcessPostCommentTokenList(uint32_t uiLine);
+   
+       virtual sdv::u8string GetComments(uint32_t& ruiFlags) const override;
+   
+       virtual sdv::idl::IEntityContext::ELocation GetLocation() const override;
+   
+       virtual sdv::u8string GetSourcePath() const override;
+   
+       virtual void GetPosition(uint32_t& ruiLineBegin, uint32_t& ruiColBegin, uint32_t& ruiLineEnd, uint32_t& ruiColEnd) override;
+   
+       void SetBeginPosition(uint32_t uiLine, uint32_t uiCol) { m_uiLineBegin = uiLine; m_uiColBegin = uiCol; }
+       void SetEndPosition(uint32_t uiLine, uint32_t uiCol) { m_uiLineEnd = uiLine; m_uiColEnd = uiCol; }
+       virtual void CalcHash(CHashObject& rHash) const;
+   
+       const CParser& GetParserRef() const;
+       CParser& GetParserRef();
+   protected:
+       CToken GetToken();
+   
+       CToken GetLastValidToken() const;
+   
+       CToken PeekToken(size_t nIndex = 0);
+   
+       void PrependToken(CToken& rToken);
+   
+       template <class TEntity, typename... TParams>
+       static CEntityPtr CreateChild(const CContextPtr& rptrContext, CEntity* pParent, TParams... tParams);
+   
+   public:
+       CEntityPtr Find(const std::string& rssScopedName, bool bCheckParent = true) const;
+   
+       template <typename TEntity>
+       TEntity* Find(const std::string& rssScopedName) const;
+   
+       CValueNodePtr FindValue(const CTokenList& rlstScopedNameInclMembers) const;
+   
+       CValueNodePtr FindValue(const std::string& rssScopedNameInclMembers) const;
+   
+       template <typename TValueNode>
+       TValueNode* FindValue(const std::string& rssScopedNameInclMembers) const;
+   
+       CConstVariant FindValueVariant(const std::string& rssScopedNameInclMembers) const;
+   
+       virtual uint64_t GetId() const override;
+   
+       virtual bool ForwardDeclaration() const override { return m_bForwardDeclaration; }
+   
+       virtual bool IsRootEntity() const { return false; }
+   
+       virtual bool IsExtendable() const { return false; }
+   
+       virtual bool SupportsChildren() const { return false; }
+   
+       const CValueNodePtr& ValueRef() const { return m_ptrValue; }
+       CValueNodePtr& ValueRef() { return m_ptrValue; }
+       std::pair<std::string, CEntityPtr> ProcessScopedName(bool bNoSearchError = false);
+   
+       std::pair<std::string, CEntityPtr> ProcessScopedName(const CTokenList& rlstExpression, bool bNoSearchError = false) const;
+   
+   protected:
+       std::pair<CConstVariant, bool> ProcessNumericExpression(const CTokenList& rlstExpression, uint32_t uiPrecedence = 100) const;
+   
+       std::pair<CConstVariant, bool> ProcessStringExpression(const CTokenList& rlstExpression) const;
+   
+       CTypeDeclaration ProcessType(bool bNoSearchError = false);
+   
+       void SetName(const std::string& rssName, bool bForwardDeclaration = false, bool bNoInsert = false);
+   
+       void ProcessSystemTypeAssignments();
+   
+       virtual void AddChild(CEntityPtr ptrChild);
+   
+       virtual std::pair<CEntityPtr, bool> FindLocal(const std::string& rssName, bool bDeclaration) const;
+   
+       CEntityPtr FindMember(const std::string& rssScopedName) const;
+   
+       CEntityVector& GetChildrenVector() { return m_vecChildren; }
+   
+       std::string DeclTypeToString(sdv::idl::EDeclType eType) const;
+   
+       sdv::idl::EDeclType StringToDeclType(const std::string& rssType) const;
+   
+       class CEntityIterator : public sdv::idl::IEntityIterator, public sdv::IInterfaceAccess
+       {
+       public:
+           CEntityIterator(CEntityVector& rvecEntities);
+   
+           virtual sdv::interface_t GetInterface(sdv::interface_id idInterface) override;
+   
+           virtual uint32_t GetCount() const override;
+   
+           virtual sdv::IInterfaceAccess* GetEntityByIndex(uint32_t uiIndex) override;
+   
+       private:
+           CEntityVector& m_rvecEntities;    
+       };
+   
+   private:
+       CContextPtr                     m_ptrContext;                   
+       CEntityPtr                      m_ptrParent;                    
+       CParser*                        m_pParser = nullptr;            
+       CTokenList                      m_lstLocalTokenList;            
+       std::string                     m_ssName;                       
+       CEntityVector                   m_vecChildren;                  
+       CEntityList                     m_lstUnassigned;                
+       std::shared_ptr<CEntityMap>     m_ptrChildDefMap;               
+       std::shared_ptr<CEntityMap>     m_ptrChildDeclMap;              
+       bool                            m_bForwardDeclaration = false;  
+       CValueNodePtr                   m_ptrValue;                     
+       std::string                     m_ssComments;                   
+       uint32_t                        m_uiCommentFlags = 0;           
+       uint32_t                        m_uiLineBegin = 0;              
+       uint32_t                        m_uiColBegin = 0;               
+       uint32_t                        m_uiLineEnd = 0;                
+       uint32_t                        m_uiColEnd = 0;                 
+       std::vector<TDeclTypeAssoc>    m_vecDeclTypes;                 
+   };
+   
+   template <class TEntity>
+   TEntity* CEntity::Get()
+   {
+       return dynamic_cast<TEntity*>(this);
+   }
+   
+   template <class TEntity>
+   const TEntity* CEntity::Get() const
+   {
+       return dynamic_cast<const TEntity*>(this);
+   }
+   
+   template <class TEntity, typename... TParams>
+   inline CEntityPtr CEntity::CreateChild(const CContextPtr& rptrContext, CEntity* pParent, TParams... tParams)
+   {
+       // Check to see if TEntity derives from CEntity.
+       static_assert(std::is_base_of_v<CEntity, TEntity>);
+   
+       // Valid parent entity?
+       if (!pParent) throw CCompileException("Internal error: missing parent.");
+   
+       // Is the creation of children allowed?
+       if (!pParent->SupportsChildren())
+           throw CCompileException("Internal error: trying to add an entity to a parent entity that doesn't support this.");
+   
+       // Get the shared pointer
+       CEntityPtr ptrParent = pParent->shared_from_this();
+   
+       // Create the entity class
+       CEntityPtr ptrEntity = std::make_shared<TEntity>(rptrContext, ptrParent, tParams...);
+   
+       // Add the entity to the parent's children list.
+       pParent->AddChild(ptrEntity);
+   
+       return ptrEntity;
+   }
+   
+   template <typename TEntity>
+   TEntity* CEntity::Find(const std::string& rssScopedName) const
+   {
+       return dynamic_cast<TEntity*>(Find(rssScopedName).get());
+   }
+   
+   template <typename TValueNode>
+   TValueNode* CEntity::FindValue(const std::string& rssScopedNameInclMembers) const
+   {
+       auto ptrtValueNode = FindValue(rssScopedNameInclMembers);
+       return dynamic_cast<TValueNode*>(ptrtValueNode.get());
+   }
+   
+   #endif // !defined(ENTITY_BASE_H)

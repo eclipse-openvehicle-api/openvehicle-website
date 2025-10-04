@@ -1,0 +1,83 @@
+
+.. _program_listing_file_interfaces_process.h:
+
+Program Listing for File process.h
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_process.h>` (``interfaces\process.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__PROCESS_H__20251003_130453_853__
+   #define __IDL_GENERATED__PROCESS_H__20251003_130453_853__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   namespace sdv
+   {
+       namespace process
+       {
+           typedef uint32_t TProcessID;
+   
+           /*local*/ interface IProcessLifetimeCallback
+           {
+               static constexpr ::sdv::interface_id _id = 0x035E80AB6E3258FD;
+   
+               virtual void ProcessTerminated(/*in*/ TProcessID tProcessID, /*in*/ int64_t iRetValue) = 0;
+           };
+   
+           /*local*/ interface IProcessLifetime
+           {
+               static constexpr ::sdv::interface_id _id = 0x3872CE0C82A56919;
+   
+               virtual uint32_t RegisterMonitor(/*in*/ TProcessID tProcessID, /*in*/ IInterfaceAccess* pMonitor) = 0;
+   
+               virtual void UnregisterMonitor(/*in*/ uint32_t uiCookie) = 0;
+   
+               virtual bool WaitForTerminate(/*in*/ TProcessID tProcessID, /*in*/ uint32_t uiWaitMs) = 0;
+           };
+   
+           enum class EProcessRights : uint32_t
+           {
+               default_rights = 0,
+   
+               parent_rights = 10,
+   
+               reduced_rights = 20,
+           };
+   
+           /*local*/ interface IProcessControl
+           {
+               static constexpr ::sdv::interface_id _id = 0x8B3DBE60232F8394;
+   
+               virtual TProcessID Execute(/*in*/ const sdv::u8string& ssModule, /*in*/ const sdv::sequence<sdv::u8string>& seqArgs, /*in*/ EProcessRights eRights) = 0;
+   
+               virtual bool Terminate(/*in*/ TProcessID tProcessID) = 0;
+           };
+   
+           /*local*/ interface IProcessInfo
+           {
+               static constexpr ::sdv::interface_id _id = 0x7764DDB9C0AC97F0;
+   
+               virtual TProcessID GetProcessID() const = 0;
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__PROCESS_H__20251003_130453_861__)

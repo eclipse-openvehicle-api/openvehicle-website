@@ -1,0 +1,38 @@
+
+.. _program_listing_file_hardware_ident_hardware_ident.h:
+
+Program Listing for File hardware_ident.h
+=========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_hardware_ident_hardware_ident.h>` (``hardware_ident\hardware_ident.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef HARDWARE_IDENT_H
+   #define HARDWARE_IDENT_H
+   
+   #include <interfaces/hw_ident.h>
+   #include <support/component_impl.h>
+   
+   class CHardwareIdent : public sdv::CSdvObject, public sdv::hardware::IHardwareID
+   {
+   public:
+   
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::hardware::IHardwareID)
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_NAME("HardwareIdentificationService")
+       DECLARE_OBJECT_SINGLETON()
+   
+       
+       uint64_t GetHardwareID() override;
+   };
+   DEFINE_SDV_OBJECT(CHardwareIdent)
+   
+   #endif // !define HARDWARE_IDENT_H

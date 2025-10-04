@@ -1,0 +1,91 @@
+
+.. _program_listing_file_interfaces_dispatch.idl:
+
+Program Listing for File dispatch.idl
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_dispatch.idl>` (``interfaces\dispatch.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core.idl"
+   
+   module sdv
+   {
+       module core
+       {
+           local interface ISignalTransmission
+           {
+               enum ETxTriggerBehavior : uint32
+               {
+                   none = 0,                   
+                   spontaneous = 1,            
+                   periodic_if_active = 2,     
+               };
+   
+               IInterfaceAccess CreateTxTrigger(in uint32 uiCycleTime, in uint32 uiDelayTime, in uint32 uiBehaviorFlags,
+                   in IInterfaceAccess pTriggerCallback);
+   
+               IInterfaceAccess RegisterTxSignal(in u8string ssSignalName, in any anyDefVal);
+   
+               IInterfaceAccess RegisterRxSignal(in u8string ssSignalName);
+           };
+   
+           interface ITxTrigger
+           {
+               boolean AddSignal(in u8string ssSignalName);
+   
+               void RemoveSignal(in u8string ssSignalName);
+           };
+   
+           interface ITxTriggerCallback
+           {
+               void Execute();
+           };
+   
+           enum ESignalDirection
+           {
+               sigdir_tx,         
+               sigdir_rx,         
+           };
+   
+           struct SSignalRegistration
+           {
+               u8string            ssName;     
+               ESignalDirection    eType;      
+           };
+   
+           local interface ISignalAccess
+           {
+               IInterfaceAccess RequestSignalPublisher(in u8string ssSignalName);
+   
+               IInterfaceAccess AddSignalSubscription(in u8string ssSignalName, in IInterfaceAccess pSubscriber);
+   
+               sequence<SSignalRegistration> GetRegisteredSignals() const;
+           };
+   
+           local interface IDispatchTransaction
+           {
+               IInterfaceAccess CreateTransaction();
+           };
+   
+           local interface ISignalWrite
+           {
+               void Write(in any anyVal, in IInterfaceAccess pTransaction);
+           };
+   
+           local interface ISignalRead
+           {
+               any Read(in IInterfaceAccess pTransaction) const;
+           };
+   
+           local interface ISignalReceiveEvent
+           {
+               void Receive(in any anyVal);
+           };
+   
+       };      // core module
+   };      // sdv module

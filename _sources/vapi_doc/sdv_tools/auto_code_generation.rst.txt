@@ -1,0 +1,114 @@
+.. _vapi-auto_code_generation:
+
+Auto Code Generation
+====================
+
+This section describes the tools and process used to automatically generate code artifacts for Software Defined Vehicle (SDV) systems. These artifacts include CAN datalink components, vehicle devices, and basic services, based on standardized signal definitions and vehicle-specific configurations.
+
+Tools Overview
+--------------
+
+**sdv_dbc_util**
+
+Required for:
+
+- Generating CAN datalink component (`can_dl`)
+- Creating FMU-compatible code for simulation (optional)
+
+**sdv_vss_util**
+
+Used for:
+
+- Generating IDL interfaces
+- Creating :term:`Vehicle Device` and :term:`Basic Service` components
+
+.. note:: These tools generate structural code only. Developers must implement the actual logic manually inside the generated methods.
+
+.. tip:: Use comments and clear naming conventions to separate generated code from manually written logic.
+
+**sdv_idl_compiler** *(optionl)*
+Used for:
+
+- Generating communication interfaces for :term:`Complex Service` s and :term:`Application` s. Enables isolated components to interact across process boundaries. 
+
+Input Files
+-----------
+
+To initiate auto code generation, the following input files must be created:
+
+**your_csv_file.csv**
+
+Describes signals and services for Vehicle Devices (VD) and Basic Services (BS). Must include columns such as:
+
+- Device Type (`VD` or `BS`)
+- Class name
+- Function name
+- Signal name
+- VSS path
+- Direction (`RX` or `TX`)
+- Signal value type
+- CAN name or Interface
+
+Formatting rules:
+
+- No spaces in cells
+- Consistent naming conventions
+
+**your_dbc_file.dbc**
+
+Defines the CAN bus layout and message structure. Must include:
+- All signals available on the CAN bus and FMU
+- Consistent naming, units, and scaling
+
+Generated Components
+--------------------
+
+**VD_ (Vehicle Device) Files**
+
+- Represent low-level components that interact directly with VSS signals.
+- Handle publishing or subscribing to raw signal data.
+- Example: `VD_FrontDoorLeft.cpp/.h`
+- Inherit interfaces like `IVSS_WriteLock`
+- Contain signal objects and methods like `WriteLock(bool)` to publish values.
+
+**BS_ (Basic Service) Files**
+
+- Represent high-level service components that expose application-level functionality.
+- Act as wrappers around VD components.
+- Example: `BS_FrontDoorLeft.cpp/.h`
+- Inherit interfaces like `IVSS_SetLock`
+- Contain methods like `SetLock(bool)` that delegate to the corresponding VD device.
+
+Tool Options
+------------
+
+**sdv_vss_util**
+
+Generates IDL files and component code from the VSS CSV file.
+
+Options::
+    --prefix<string>           Adds a prefix to signal identifiers.
+    --enable_components        Generates component code in addition to IDL.
+    --version<string>          Optional version tag.
+    -O<path>                   Required output directory.
+
+**sdv_dbc_util**
+
+Generates CAN datalink code and optionally FMU-compatible code from DBC files.
+
+Options::
+    --dl_lib_name<string>      Name of the generated datalink library.
+    --nodes<string>[,<string>] Specifies which nodes to implement.
+    --module<string>           FMU module identifier.
+    -O<path>                   Output directory.
+
+**sdv_idl_compiler** *(optional)*
+
+Compiles IDL files into proxy/stub code for inter-process communication.
+
+Options::
+    -I<path>                   Include directories.
+    -O<path>                   Output directory.
+    --no_ps                    Skip proxy/stub generation.
+    --ps_lib_name<string>      Name of proxy/stub library.
+    --strict                   Enforce OMG-IDL conformance.

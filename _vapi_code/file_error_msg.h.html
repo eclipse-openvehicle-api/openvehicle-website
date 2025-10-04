@@ -1,0 +1,974 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>File error_msg.h &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/file_error_msg.h';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">File error_msg.h</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="file-error-msg-h">
+<span id="id1"></span><h1>File error_msg.h<a class="headerlink" href="#file-error-msg-h" title="Permalink to this heading">#</a></h1>
+<nav class="contents local" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#definition-error-msg-h" id="id2">Definition (<code class="docutils literal notranslate"><span class="pre">error_msg.h</span></code>)</a></p></li>
+<li><p><a class="reference internal" href="#includes" id="id3">Includes</a></p></li>
+<li><p><a class="reference internal" href="#included-by" id="id4">Included By</a></p></li>
+<li><p><a class="reference internal" href="#defines" id="id5">Defines</a></p></li>
+<li><p><a class="reference internal" href="#variables" id="id6">Variables</a></p></li>
+</ul>
+</nav>
+<section id="definition-error-msg-h">
+<h2>Definition (<code class="docutils literal notranslate"><span class="pre">error_msg.h</span></code>)<a class="headerlink" href="#definition-error-msg-h" title="Permalink to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="program_listing_file_error_msg.h.html">Program Listing for File error_msg.h</a></li>
+</ul>
+</div>
+</section>
+<section id="includes">
+<h2>Includes<a class="headerlink" href="#includes" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">string</span></code> (<a class="reference internal" href="file_support_string.h.html#file-support-string-h"><span class="std std-ref">File string.h</span></a>)</p></li>
+</ul>
+</section>
+<section id="included-by">
+<h2>Included By<a class="headerlink" href="#included-by" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="file_sdv_packager_environment.h.html#file-sdv-packager-environment-h"><span class="std std-ref">File environment.h</span></a></p></li>
+</ul>
+</section>
+<section id="defines">
+<h2>Defines<a class="headerlink" href="#defines" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="define_error__msg_8h_1a6681b8f73a2235c023c88f81e7b575b0.html#exhale-define-error-msg-8h-1a6681b8f73a2235c023c88f81e7b575b0"><span class="std std-ref">Define MAKE_ERROR_MSG</span></a></p></li>
+</ul>
+</section>
+<section id="variables">
+<h2>Variables<a class="headerlink" href="#variables" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a42e21998a7b7a5f9efa7990cd437d4af.html#exhale-variable-error-msg-8h-1a42e21998a7b7a5f9efa7990cd437d4af"><span class="std std-ref">Variable APP_CONTROL_DUPLICATE_INSTANCE</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aac50ca6e5ffe1e5bc1c4b2fbcb7d8147.html#exhale-variable-error-msg-8h-1aac50ca6e5ffe1e5bc1c4b2fbcb7d8147"><span class="std std-ref">Variable APP_CONTROL_DUPLICATE_INSTANCE_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aab4a0926a16246e669820326d62be62f.html#exhale-variable-error-msg-8h-1aab4a0926a16246e669820326d62be62f"><span class="std std-ref">Variable APP_CONTROL_DUPLICATE_INSTANCE_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aa8b1bf69e5e6f36e27a8e75afd90718a.html#exhale-variable-error-msg-8h-1aa8b1bf69e5e6f36e27a8e75afd90718a"><span class="std std-ref">Variable APP_CONTROL_INVALID_ISOLATION_CONFIG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a98c4641ee1be4232e730fe1eb119e260.html#exhale-variable-error-msg-8h-1a98c4641ee1be4232e730fe1eb119e260"><span class="std std-ref">Variable APP_CONTROL_INVALID_ISOLATION_CONFIG_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ad2244a279e3a6a5038a96982d248f226.html#exhale-variable-error-msg-8h-1ad2244a279e3a6a5038a96982d248f226"><span class="std std-ref">Variable APP_CONTROL_INVALID_ISOLATION_CONFIG_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ae83a95633f6014eca12993114a5fe878.html#exhale-variable-error-msg-8h-1ae83a95633f6014eca12993114a5fe878"><span class="std std-ref">Variable APP_CONTROL_SERVICE_ACCESS_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a038b890f13f9824075adc2fe578995be.html#exhale-variable-error-msg-8h-1a038b890f13f9824075adc2fe578995be"><span class="std std-ref">Variable APP_CONTROL_SERVICE_ACCESS_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a42284d667ef807ac198e44ab84532b28.html#exhale-variable-error-msg-8h-1a42284d667ef807ac198e44ab84532b28"><span class="std std-ref">Variable APP_CONTROL_SERVICE_ACCESS_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a152976a99449369e09367c8f0b51f462.html#exhale-variable-error-msg-8h-1a152976a99449369e09367c8f0b51f462"><span class="std std-ref">Variable APP_CONTROL_START_LOOP_FAIELD</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a5d0ce7ff2882da6032cce6b33054ba33.html#exhale-variable-error-msg-8h-1a5d0ce7ff2882da6032cce6b33054ba33"><span class="std std-ref">Variable APP_CONTROL_START_LOOP_FAIELD_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1af9e7f6835371f5967fec73f75e718e8c.html#exhale-variable-error-msg-8h-1af9e7f6835371f5967fec73f75e718e8c"><span class="std std-ref">Variable APP_CONTROL_START_LOOP_FAIELD_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1abcbe6c0553399de3e2bec8ae206ae9da.html#exhale-variable-error-msg-8h-1abcbe6c0553399de3e2bec8ae206ae9da"><span class="std std-ref">Variable APP_CONTROL_STARTUP_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aa655295b48bb2b1dff15a334a6cfed19.html#exhale-variable-error-msg-8h-1aa655295b48bb2b1dff15a334a6cfed19"><span class="std std-ref">Variable APP_CONTROL_STARTUP_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1adccdb43d49359716830091277e3209ef.html#exhale-variable-error-msg-8h-1adccdb43d49359716830091277e3209ef"><span class="std std-ref">Variable APP_CONTROL_STARTUP_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aa4da28a87ef51f5e0498880ddf039047.html#exhale-variable-error-msg-8h-1aa4da28a87ef51f5e0498880ddf039047"><span class="std std-ref">Variable BASIC_SERVICE_DATA_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aba58918a140faf94ff4985cafbf6dc11.html#exhale-variable-error-msg-8h-1aba58918a140faf94ff4985cafbf6dc11"><span class="std std-ref">Variable BASIC_SERVICE_DATA_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1af5a515e84a7decf08a108124fb84171d.html#exhale-variable-error-msg-8h-1af5a515e84a7decf08a108124fb84171d"><span class="std std-ref">Variable BASIC_SERVICE_DATA_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a27d752dba3140e4ce79a437a5d153ce9.html#exhale-variable-error-msg-8h-1a27d752dba3140e4ce79a437a5d153ce9"><span class="std std-ref">Variable CANNOT_FIND_OBJECT</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a4e3ecfa9d321ef0f99f58c7ddb5260fd.html#exhale-variable-error-msg-8h-1a4e3ecfa9d321ef0f99f58c7ddb5260fd"><span class="std std-ref">Variable CANNOT_FIND_OBJECT_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a8c75b31ec4e59e6d3503948fc25b142d.html#exhale-variable-error-msg-8h-1a8c75b31ec4e59e6d3503948fc25b142d"><span class="std std-ref">Variable CANNOT_FIND_OBJECT_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ae99441942da5e383cbb52089cd996244.html#exhale-variable-error-msg-8h-1ae99441942da5e383cbb52089cd996244"><span class="std std-ref">Variable CANNOT_REMOVE_INSTALL_DIR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a641ecdd278d1efe7c4650883ced9c27a.html#exhale-variable-error-msg-8h-1a641ecdd278d1efe7c4650883ced9c27a"><span class="std std-ref">Variable CANNOT_REMOVE_INSTALL_DIR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a31ccdd05761bfd06c5417f0b4212009a.html#exhale-variable-error-msg-8h-1a31ccdd05761bfd06c5417f0b4212009a"><span class="std std-ref">Variable CANNOT_REMOVE_INSTALL_DIR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a83de8fb7dc774d77eacc09d8b93e8fad.html#exhale-variable-error-msg-8h-1a83de8fb7dc774d77eacc09d8b93e8fad"><span class="std std-ref">Variable CMDLN_ARG_ERR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aed5052d072ddd47b068496a967d2e9a2.html#exhale-variable-error-msg-8h-1aed5052d072ddd47b068496a967d2e9a2"><span class="std std-ref">Variable CMDLN_ARG_ERR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a26c0c4b9cfb5af6f9512be6e12518dfa.html#exhale-variable-error-msg-8h-1a26c0c4b9cfb5af6f9512be6e12518dfa"><span class="std std-ref">Variable CMDLN_ARG_ERR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ae3f4d84a8a00e4db01be7ac2b0ded26b.html#exhale-variable-error-msg-8h-1ae3f4d84a8a00e4db01be7ac2b0ded26b"><span class="std std-ref">Variable CMDLN_CREATE_ONLY_MANIFEST_DIRECT_INSTALL_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a499540c77899367d268c84679849ee9c.html#exhale-variable-error-msg-8h-1a499540c77899367d268c84679849ee9c"><span class="std std-ref">Variable CMDLN_CREATE_ONLY_MANIFEST_DIRECT_INSTALL_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1afe7753f2db93e66fb584ac295ca66c36.html#exhale-variable-error-msg-8h-1afe7753f2db93e66fb584ac295ca66c36"><span class="std std-ref">Variable CMDLN_CREATE_ONLY_MANIFEST_DIRECT_INSTALL_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aa10586ff23b52a8276637363c3fe8a07.html#exhale-variable-error-msg-8h-1aa10586ff23b52a8276637363c3fe8a07"><span class="std std-ref">Variable CMDLN_INCOMPATIBLE_ARGUMENTS</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aec7933864f4423bc31960af313cfe710.html#exhale-variable-error-msg-8h-1aec7933864f4423bc31960af313cfe710"><span class="std std-ref">Variable CMDLN_INCOMPATIBLE_ARGUMENTS_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ae944bed89e15d64c603ead56b132810a.html#exhale-variable-error-msg-8h-1ae944bed89e15d64c603ead56b132810a"><span class="std std-ref">Variable CMDLN_INCOMPATIBLE_ARGUMENTS_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a63c2e005636738fa58f57e9dc0e78220.html#exhale-variable-error-msg-8h-1a63c2e005636738fa58f57e9dc0e78220"><span class="std std-ref">Variable CMDLN_INSTALL_NAME_MISSING</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a9fed7722f7ab7cf9dfe6b046a092893f.html#exhale-variable-error-msg-8h-1a9fed7722f7ab7cf9dfe6b046a092893f"><span class="std std-ref">Variable CMDLN_INSTALL_NAME_MISSING_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ab71c7f34a2de8e2423d0ef25b56fd6bc.html#exhale-variable-error-msg-8h-1ab71c7f34a2de8e2423d0ef25b56fd6bc"><span class="std std-ref">Variable CMDLN_INSTALL_NAME_MISSING_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1af61913e36091fae859fe996c548facf0.html#exhale-variable-error-msg-8h-1af61913e36091fae859fe996c548facf0"><span class="std std-ref">Variable CMDLN_INVALID_CONFIG_STRING</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a3a389bc96c07086e89a988183d61f3ae.html#exhale-variable-error-msg-8h-1a3a389bc96c07086e89a988183d61f3ae"><span class="std std-ref">Variable CMDLN_INVALID_CONFIG_STRING_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1af4b2bd84406808675c0784dc745d9be3.html#exhale-variable-error-msg-8h-1af4b2bd84406808675c0784dc745d9be3"><span class="std std-ref">Variable CMDLN_INVALID_CONFIG_STRING_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a86bcbbd76371a73c97f67ac802795d8d.html#exhale-variable-error-msg-8h-1a86bcbbd76371a73c97f67ac802795d8d"><span class="std std-ref">Variable CMDLN_MISSING_SHOW_COMMAND</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1adc28b5d2e2e6744ba7b8b9b45643c0d8.html#exhale-variable-error-msg-8h-1adc28b5d2e2e6744ba7b8b9b45643c0d8"><span class="std std-ref">Variable CMDLN_MISSING_SHOW_COMMAND_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ae530ad7c26487c1857591b61b4e6b2bc.html#exhale-variable-error-msg-8h-1ae530ad7c26487c1857591b61b4e6b2bc"><span class="std std-ref">Variable CMDLN_MISSING_SHOW_COMMAND_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a50663a9eea34eeba13866ce7b2b6fad7.html#exhale-variable-error-msg-8h-1a50663a9eea34eeba13866ce7b2b6fad7"><span class="std std-ref">Variable CMDLN_MULTIPLE_CFG_FILES</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a4e84809eebf287e85831662cddbd9251.html#exhale-variable-error-msg-8h-1a4e84809eebf287e85831662cddbd9251"><span class="std std-ref">Variable CMDLN_MULTIPLE_CFG_FILES_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a68f3e4b85dce3730173391926febd730.html#exhale-variable-error-msg-8h-1a68f3e4b85dce3730173391926febd730"><span class="std std-ref">Variable CMDLN_MULTIPLE_CFG_FILES_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a62ed5cd46bdcc452c5be0622df363b0f.html#exhale-variable-error-msg-8h-1a62ed5cd46bdcc452c5be0622df363b0f"><span class="std std-ref">Variable CMDLN_NOTHING_TO_DO</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a9bcac3ba256d461728c8b8c6873c174c.html#exhale-variable-error-msg-8h-1a9bcac3ba256d461728c8b8c6873c174c"><span class="std std-ref">Variable CMDLN_NOTHING_TO_DO_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1acaa639e9bba8a3a629ed8ec69d395cee.html#exhale-variable-error-msg-8h-1acaa639e9bba8a3a629ed8ec69d395cee"><span class="std std-ref">Variable CMDLN_NOTHING_TO_DO_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a84681197b05f88bbc6a9b54838a21ed7.html#exhale-variable-error-msg-8h-1a84681197b05f88bbc6a9b54838a21ed7"><span class="std std-ref">Variable CMDLN_OUTPUT_LOCATION_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1afeb8a73ead0ed8fca1264573565c462b.html#exhale-variable-error-msg-8h-1afeb8a73ead0ed8fca1264573565c462b"><span class="std std-ref">Variable CMDLN_OUTPUT_LOCATION_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ade58aacc5762ab726889b20d18ca4005.html#exhale-variable-error-msg-8h-1ade58aacc5762ab726889b20d18ca4005"><span class="std std-ref">Variable CMDLN_OUTPUT_LOCATION_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a0098b55aae34838fbc34bce61bc2187a.html#exhale-variable-error-msg-8h-1a0098b55aae34838fbc34bce61bc2187a"><span class="std std-ref">Variable CMDLN_SILENT_VERBOSE</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a90973dada72def8503f05785dadf8278.html#exhale-variable-error-msg-8h-1a90973dada72def8503f05785dadf8278"><span class="std std-ref">Variable CMDLN_SILENT_VERBOSE_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ab55ac9f9b4161cb9cc48d27ada160218.html#exhale-variable-error-msg-8h-1ab55ac9f9b4161cb9cc48d27ada160218"><span class="std std-ref">Variable CMDLN_SILENT_VERBOSE_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a44c7a6fb13d3788a00a4af67fa0f71bf.html#exhale-variable-error-msg-8h-1a44c7a6fb13d3788a00a4af67fa0f71bf"><span class="std std-ref">Variable CMDLN_SOURCE_FILE_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ad41dabd57afbf9853e07592a52c371a7.html#exhale-variable-error-msg-8h-1ad41dabd57afbf9853e07592a52c371a7"><span class="std std-ref">Variable CMDLN_SOURCE_FILE_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a6d08dccdaf5665438f66757d332d01fb.html#exhale-variable-error-msg-8h-1a6d08dccdaf5665438f66757d332d01fb"><span class="std std-ref">Variable CMDLN_SOURCE_FILE_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a7e36644e0618f43ac551978af86d08c6.html#exhale-variable-error-msg-8h-1a7e36644e0618f43ac551978af86d08c6"><span class="std std-ref">Variable CMDLN_SOURCE_FILE_MISSING</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1afa3dda190c02e4d0a5360b2c6f10ea19.html#exhale-variable-error-msg-8h-1afa3dda190c02e4d0a5360b2c6f10ea19"><span class="std std-ref">Variable CMDLN_SOURCE_FILE_MISSING_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a2788eeab703b4f0740e77d341bb0b26b.html#exhale-variable-error-msg-8h-1a2788eeab703b4f0740e77d341bb0b26b"><span class="std std-ref">Variable CMDLN_SOURCE_FILE_MISSING_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a8f813ddcc8a4dd57c3e491ebbce1e7d8.html#exhale-variable-error-msg-8h-1a8f813ddcc8a4dd57c3e491ebbce1e7d8"><span class="std std-ref">Variable CMDLN_SOURCE_LOCATION_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a2cc79e288679b672f622b7b7c5e86924.html#exhale-variable-error-msg-8h-1a2cc79e288679b672f622b7b7c5e86924"><span class="std std-ref">Variable CMDLN_SOURCE_LOCATION_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1acdb6fd164e3711035db23976fa6701ee.html#exhale-variable-error-msg-8h-1acdb6fd164e3711035db23976fa6701ee"><span class="std std-ref">Variable CMDLN_SOURCE_LOCATION_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ac0b7d53a08485705b1ccefa8f2e6f7a6.html#exhale-variable-error-msg-8h-1ac0b7d53a08485705b1ccefa8f2e6f7a6"><span class="std std-ref">Variable CMDLN_TARGET_LOCATION_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aac65682dbdc18218568eae07c6a31d2d.html#exhale-variable-error-msg-8h-1aac65682dbdc18218568eae07c6a31d2d"><span class="std std-ref">Variable CMDLN_TARGET_LOCATION_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a937726c17f10c93575e652bd609795bc.html#exhale-variable-error-msg-8h-1a937726c17f10c93575e652bd609795bc"><span class="std std-ref">Variable CMDLN_TARGET_LOCATION_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a0d60af39934f692f849e752e8bb29aa8.html#exhale-variable-error-msg-8h-1a0d60af39934f692f849e752e8bb29aa8"><span class="std std-ref">Variable CMDLN_TOO_MANY_SOURCE_FILES</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a4b00be8f9f0de3ab9ecda9ec3f13543a.html#exhale-variable-error-msg-8h-1a4b00be8f9f0de3ab9ecda9ec3f13543a"><span class="std std-ref">Variable CMDLN_TOO_MANY_SOURCE_FILES_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a792679fe1ff72faa04b2dad42c3a1c19.html#exhale-variable-error-msg-8h-1a792679fe1ff72faa04b2dad42c3a1c19"><span class="std std-ref">Variable CMDLN_TOO_MANY_SOURCE_FILES_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a6ef4f67b86eae1c960a161a62c584e41.html#exhale-variable-error-msg-8h-1a6ef4f67b86eae1c960a161a62c584e41"><span class="std std-ref">Variable CMDLN_UPDATE_OVERWRITE_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a8e1cace51a30432330648503172dd8c8.html#exhale-variable-error-msg-8h-1a8e1cace51a30432330648503172dd8c8"><span class="std std-ref">Variable CMDLN_UPDATE_OVERWRITE_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a05a3eb9a2e4c157e4d52292ebf49c9fc.html#exhale-variable-error-msg-8h-1a05a3eb9a2e4c157e4d52292ebf49c9fc"><span class="std std-ref">Variable CMDLN_UPDATE_OVERWRITE_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a5bb4613782b3d54c6265e7827887bbdc.html#exhale-variable-error-msg-8h-1a5bb4613782b3d54c6265e7827887bbdc"><span class="std std-ref">Variable COMMUNICATION_CONTROL_SERVICE_ACCESS_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ae6b5ec5971dd9996a7e98d4a37459be0.html#exhale-variable-error-msg-8h-1ae6b5ec5971dd9996a7e98d4a37459be0"><span class="std std-ref">Variable COMMUNICATION_CONTROL_SERVICE_ACCESS_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aaf1e984c6ff0029bb9337574be44c9fb.html#exhale-variable-error-msg-8h-1aaf1e984c6ff0029bb9337574be44c9fb"><span class="std std-ref">Variable COMMUNICATION_CONTROL_SERVICE_ACCESS_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a4591b2f1f288b96ac42a23ac2ee17288.html#exhale-variable-error-msg-8h-1a4591b2f1f288b96ac42a23ac2ee17288"><span class="std std-ref">Variable COMPILE_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ab11bce4f5ffc0af19a18a0d29ee368cf.html#exhale-variable-error-msg-8h-1ab11bce4f5ffc0af19a18a0d29ee368cf"><span class="std std-ref">Variable COMPILE_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a5c20f6c901541f84586a56ccf1a73cdf.html#exhale-variable-error-msg-8h-1a5c20f6c901541f84586a56ccf1a73cdf"><span class="std std-ref">Variable COMPILE_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aa3e5c6bc1c075077d4d4c7bfd735081e.html#exhale-variable-error-msg-8h-1aa3e5c6bc1c075077d4d4c7bfd735081e"><span class="std std-ref">Variable CONFIG_SERVICE_ACCESS_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a9019805432a824a4c0c026dfff2f3239.html#exhale-variable-error-msg-8h-1a9019805432a824a4c0c026dfff2f3239"><span class="std std-ref">Variable CONFIG_SERVICE_ACCESS_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a71ca777128e17f06515fff638bccb93c.html#exhale-variable-error-msg-8h-1a71ca777128e17f06515fff638bccb93c"><span class="std std-ref">Variable CONFIG_SERVICE_ACCESS_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aca87458b34dc6052d22bdd2c31433abf.html#exhale-variable-error-msg-8h-1aca87458b34dc6052d22bdd2c31433abf"><span class="std std-ref">Variable CONNECT_SDV_SERVER_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ae2c7fcd76f18fe23f831fa8bf51dae91.html#exhale-variable-error-msg-8h-1ae2c7fcd76f18fe23f831fa8bf51dae91"><span class="std std-ref">Variable CONNECT_SDV_SERVER_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a7849bc2682f575fe38449bb4e1075e1f.html#exhale-variable-error-msg-8h-1a7849bc2682f575fe38449bb4e1075e1f"><span class="std std-ref">Variable CONNECT_SDV_SERVER_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a49579a5b4b008e88798f3267f151a3a3.html#exhale-variable-error-msg-8h-1a49579a5b4b008e88798f3267f151a3a3"><span class="std std-ref">Variable CORE_NOT_STARTED</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a6c75d2c024a3992c358c4bfce66507de.html#exhale-variable-error-msg-8h-1a6c75d2c024a3992c358c4bfce66507de"><span class="std std-ref">Variable CORE_NOT_STARTED_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a77ae2d8a18ae40ac038bfc91afbf8ca4.html#exhale-variable-error-msg-8h-1a77ae2d8a18ae40ac038bfc91afbf8ca4"><span class="std std-ref">Variable CORE_NOT_STARTED_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a401d887b5e1cc332cfea5cee3d6283e9.html#exhale-variable-error-msg-8h-1a401d887b5e1cc332cfea5cee3d6283e9"><span class="std std-ref">Variable CREATE_CONFIG_DIR_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a6602d2baee7363d439a94f0b2c8d819d.html#exhale-variable-error-msg-8h-1a6602d2baee7363d439a94f0b2c8d819d"><span class="std std-ref">Variable CREATE_CONFIG_DIR_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a2ecc60fdde1e28c257b2782d9ed2b132.html#exhale-variable-error-msg-8h-1a2ecc60fdde1e28c257b2782d9ed2b132"><span class="std std-ref">Variable CREATE_CONFIG_DIR_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a06151f1310a90c046cd2bfbd2b6df3b3.html#exhale-variable-error-msg-8h-1a06151f1310a90c046cd2bfbd2b6df3b3"><span class="std std-ref">Variable CREATE_INSTALL_DIR_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a4e2f80d78220f1d21195a815e0952d68.html#exhale-variable-error-msg-8h-1a4e2f80d78220f1d21195a815e0952d68"><span class="std std-ref">Variable CREATE_INSTALL_DIR_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a6365251fc09aea57bd615bb28442a650.html#exhale-variable-error-msg-8h-1a6365251fc09aea57bd615bb28442a650"><span class="std std-ref">Variable CREATE_INSTALL_DIR_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a556691f54780cb0d308537daab75142f.html#exhale-variable-error-msg-8h-1a556691f54780cb0d308537daab75142f"><span class="std std-ref">Variable CREATE_TARGET_DIR_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ab93848a209af1a4f2db4c360f6544a87.html#exhale-variable-error-msg-8h-1ab93848a209af1a4f2db4c360f6544a87"><span class="std std-ref">Variable CREATE_TARGET_DIR_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a3ac8b4274e7f8431b7ced16389b7daa6.html#exhale-variable-error-msg-8h-1a3ac8b4274e7f8431b7ced16389b7daa6"><span class="std std-ref">Variable CREATE_TARGET_DIR_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ae05f9c09189ff48124059e2226b3b120.html#exhale-variable-error-msg-8h-1ae05f9c09189ff48124059e2226b3b120"><span class="std std-ref">Variable ISOLATION_FAILED</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aeba7b0a5163696e9004b55f4a8ea303c.html#exhale-variable-error-msg-8h-1aeba7b0a5163696e9004b55f4a8ea303c"><span class="std std-ref">Variable ISOLATION_FAILED_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a65bf590f1454e4b49395bbdee92d36b8.html#exhale-variable-error-msg-8h-1a65bf590f1454e4b49395bbdee92d36b8"><span class="std std-ref">Variable ISOLATION_FAILED_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aa88d1ed3653c731911243154b866d835.html#exhale-variable-error-msg-8h-1aa88d1ed3653c731911243154b866d835"><span class="std std-ref">Variable ISOLATION_INVALID_OBJECT_TYPE</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a1e2453ec25d896e1a91ac300af52eec8.html#exhale-variable-error-msg-8h-1a1e2453ec25d896e1a91ac300af52eec8"><span class="std std-ref">Variable ISOLATION_INVALID_OBJECT_TYPE_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a307000c7ee5d9de1e62c5cb5c08f08ae.html#exhale-variable-error-msg-8h-1a307000c7ee5d9de1e62c5cb5c08f08ae"><span class="std std-ref">Variable ISOLATION_INVALID_OBJECT_TYPE_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a6e3a86c838caab6b0626de515b9699a8.html#exhale-variable-error-msg-8h-1a6e3a86c838caab6b0626de515b9699a8"><span class="std std-ref">Variable LINK_REPO_SERVICE_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a8857063489680ef0bb2ee82415910a10.html#exhale-variable-error-msg-8h-1a8857063489680ef0bb2ee82415910a10"><span class="std std-ref">Variable LINK_REPO_SERVICE_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a4a0a7de29e89f90323ec168dc7992a55.html#exhale-variable-error-msg-8h-1a4a0a7de29e89f90323ec168dc7992a55"><span class="std std-ref">Variable LINK_REPO_SERVICE_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a1d5edaee67ddcd14fbf922a71b74d494.html#exhale-variable-error-msg-8h-1a1d5edaee67ddcd14fbf922a71b74d494"><span class="std std-ref">Variable LOAD_DBC_FILE_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aab9e09b389e5f0fd24c15ea2280253fb.html#exhale-variable-error-msg-8h-1aab9e09b389e5f0fd24c15ea2280253fb"><span class="std std-ref">Variable LOAD_DBC_FILE_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ab2eb211c0402fef407cf4d00bfd4715c.html#exhale-variable-error-msg-8h-1ab2eb211c0402fef407cf4d00bfd4715c"><span class="std std-ref">Variable LOAD_DBC_FILE_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a329b1aa0df16ca3653b0e0d600cf8a3d.html#exhale-variable-error-msg-8h-1a329b1aa0df16ca3653b0e0d600cf8a3d"><span class="std std-ref">Variable MODULE_CONTROL_SERVICE_ACCESS_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a9ab2779bf8ae63b51540c274d802e996.html#exhale-variable-error-msg-8h-1a9ab2779bf8ae63b51540c274d802e996"><span class="std std-ref">Variable MODULE_CONTROL_SERVICE_ACCESS_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1adb0bccbe95da634cb6298243ecbe5f82.html#exhale-variable-error-msg-8h-1adb0bccbe95da634cb6298243ecbe5f82"><span class="std std-ref">Variable MODULE_CONTROL_SERVICE_ACCESS_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aac948650cd7efc649430a9d50dd93055.html#exhale-variable-error-msg-8h-1aac948650cd7efc649430a9d50dd93055"><span class="std std-ref">Variable NO_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1afb473a33b1b8dbfb15ee7ae61e7eb908.html#exhale-variable-error-msg-8h-1afb473a33b1b8dbfb15ee7ae61e7eb908"><span class="std std-ref">Variable NO_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a2ae0740d788c5e45d717d7f05d8f1ab2.html#exhale-variable-error-msg-8h-1a2ae0740d788c5e45d717d7f05d8f1ab2"><span class="std std-ref">Variable NO_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a37cc7e12cfb0b7bd6647522c50e4c0cd.html#exhale-variable-error-msg-8h-1a37cc7e12cfb0b7bd6647522c50e4c0cd"><span class="std std-ref">Variable NO_SOURCE_FILES</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a1292063f7e8060fcc6bf89b776cc81c6.html#exhale-variable-error-msg-8h-1a1292063f7e8060fcc6bf89b776cc81c6"><span class="std std-ref">Variable NO_SOURCE_FILES_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a12852e95788c8e49655459c509fbe487.html#exhale-variable-error-msg-8h-1a12852e95788c8e49655459c509fbe487"><span class="std std-ref">Variable NO_SOURCE_FILES_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a83093e93bdfc5d096c1a9291dc220555.html#exhale-variable-error-msg-8h-1a83093e93bdfc5d096c1a9291dc220555"><span class="std std-ref">Variable NOT_IMPLEMENTED</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a50a494596739c08679a245ba3001c707.html#exhale-variable-error-msg-8h-1a50a494596739c08679a245ba3001c707"><span class="std std-ref">Variable NOT_IMPLEMENTED_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a9c2283a296cc442da924179092601b1f.html#exhale-variable-error-msg-8h-1a9c2283a296cc442da924179092601b1f"><span class="std std-ref">Variable NOT_IMPLEMENTED_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a908f5e7ffb5fd65a481cdeaa0e796c43.html#exhale-variable-error-msg-8h-1a908f5e7ffb5fd65a481cdeaa0e796c43"><span class="std std-ref">Variable PACKAGE_CREATION_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aa1489f51795544c4aaafee824f5f7956.html#exhale-variable-error-msg-8h-1aa1489f51795544c4aaafee824f5f7956"><span class="std std-ref">Variable PACKAGE_CREATION_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a69bef1a930a5153c1f0922a3cfb5a4e4.html#exhale-variable-error-msg-8h-1a69bef1a930a5153c1f0922a3cfb5a4e4"><span class="std std-ref">Variable PACKAGE_CREATION_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a3fd2e1638d482da07c1e5249680444e0.html#exhale-variable-error-msg-8h-1a3fd2e1638d482da07c1e5249680444e0"><span class="std std-ref">Variable PACKAGE_READ_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aa0ef20924bfd5dbccf69db57a779ced9.html#exhale-variable-error-msg-8h-1aa0ef20924bfd5dbccf69db57a779ced9"><span class="std std-ref">Variable PACKAGE_READ_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ad83d4954a98ee1f55286e1d1c781be3b.html#exhale-variable-error-msg-8h-1ad83d4954a98ee1f55286e1d1c781be3b"><span class="std std-ref">Variable PACKAGE_READ_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a5138f331e067af014321185906db60bc.html#exhale-variable-error-msg-8h-1a5138f331e067af014321185906db60bc"><span class="std std-ref">Variable PROCESS_CONTROL_SERVICE_ACCESS_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a409c25de6e1fd7f355f3290d1b1c687a.html#exhale-variable-error-msg-8h-1a409c25de6e1fd7f355f3290d1b1c687a"><span class="std std-ref">Variable PROCESS_CONTROL_SERVICE_ACCESS_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ac0f48808695d79f7577648cd82ffa2ae.html#exhale-variable-error-msg-8h-1ac0f48808695d79f7577648cd82ffa2ae"><span class="std std-ref">Variable PROCESS_CONTROL_SERVICE_ACCESS_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a7c639145437accc70f3990fd71f235c5.html#exhale-variable-error-msg-8h-1a7c639145437accc70f3990fd71f235c5"><span class="std std-ref">Variable PROCESS_TIMEOUT</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a7ca963f3a2e2a28fe85d9d26c72ac348.html#exhale-variable-error-msg-8h-1a7ca963f3a2e2a28fe85d9d26c72ac348"><span class="std std-ref">Variable PROCESS_TIMEOUT_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a7a442b2f4ad5c4c05804187a8441fa8d.html#exhale-variable-error-msg-8h-1a7a442b2f4ad5c4c05804187a8441fa8d"><span class="std std-ref">Variable PROCESS_TIMEOUT_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a8386820b4030a4af4b224f11fa98180c.html#exhale-variable-error-msg-8h-1a8386820b4030a4af4b224f11fa98180c"><span class="std std-ref">Variable REGISTER_FOREIGN_OBJECT_FAILED</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1af7233266c5593c35dce5fed14f1017ce.html#exhale-variable-error-msg-8h-1af7233266c5593c35dce5fed14f1017ce"><span class="std std-ref">Variable REGISTER_FOREIGN_OBJECT_FAILED_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ada8268f1b03ca6391824527c3cea9593.html#exhale-variable-error-msg-8h-1ada8268f1b03ca6391824527c3cea9593"><span class="std std-ref">Variable REGISTER_FOREIGN_OBJECT_FAILED_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ad02bb392090d301ad188fe8895eb0e6d.html#exhale-variable-error-msg-8h-1ad02bb392090d301ad188fe8895eb0e6d"><span class="std std-ref">Variable REGISTER_PROCESS_MONITOR_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1af3985457666f34deaba4c044a9b545c3.html#exhale-variable-error-msg-8h-1af3985457666f34deaba4c044a9b545c3"><span class="std std-ref">Variable REGISTER_PROCESS_MONITOR_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a0b8a1d9146a34bea8ee6404d221ba636.html#exhale-variable-error-msg-8h-1a0b8a1d9146a34bea8ee6404d221ba636"><span class="std std-ref">Variable REGISTER_PROCESS_MONITOR_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a076efef04c6b6db0f10ebcc51d219323.html#exhale-variable-error-msg-8h-1a076efef04c6b6db0f10ebcc51d219323"><span class="std std-ref">Variable REPOSITORY_SERVICE_ACCESS_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1af3b473213461594219d4d5d7561208d0.html#exhale-variable-error-msg-8h-1af3b473213461594219d4d5d7561208d0"><span class="std std-ref">Variable REPOSITORY_SERVICE_ACCESS_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ab6ab27fddbdd3d2563d6acdac2a28df9.html#exhale-variable-error-msg-8h-1ab6ab27fddbdd3d2563d6acdac2a28df9"><span class="std std-ref">Variable REPOSITORY_SERVICE_ACCESS_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ae4a50f9406d44f9a85602acb607bb1ba.html#exhale-variable-error-msg-8h-1ae4a50f9406d44f9a85602acb607bb1ba"><span class="std std-ref">Variable SAVE_CONFIG_FILE_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1afc4ac75cfa89c2154a5838b65e97f469.html#exhale-variable-error-msg-8h-1afc4ac75cfa89c2154a5838b65e97f469"><span class="std std-ref">Variable SAVE_CONFIG_FILE_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a43f9594f58dc4aa17f099c7005e5167d.html#exhale-variable-error-msg-8h-1a43f9594f58dc4aa17f099c7005e5167d"><span class="std std-ref">Variable SAVE_CONFIG_FILE_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ab812e637c999201a10260b0e94467460.html#exhale-variable-error-msg-8h-1ab812e637c999201a10260b0e94467460"><span class="std std-ref">Variable SAVE_INSTALL_MANIFEST_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1abf6a98c48d55cfcc0b133c8900b32936.html#exhale-variable-error-msg-8h-1abf6a98c48d55cfcc0b133c8900b32936"><span class="std std-ref">Variable SAVE_INSTALL_MANIFEST_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a6d04f5b048c70b5185d470d60b47d1e6.html#exhale-variable-error-msg-8h-1a6d04f5b048c70b5185d470d60b47d1e6"><span class="std std-ref">Variable SAVE_INSTALL_MANIFEST_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a64064774536528cb9cce67e8a1c73c62.html#exhale-variable-error-msg-8h-1a64064774536528cb9cce67e8a1c73c62"><span class="std std-ref">Variable SAVE_SETTINGS_FILE_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a09ee420c9d8771f07f029c62d85e76a9.html#exhale-variable-error-msg-8h-1a09ee420c9d8771f07f029c62d85e76a9"><span class="std std-ref">Variable SAVE_SETTINGS_FILE_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a8b82b7cf7af129380589605f20a10573.html#exhale-variable-error-msg-8h-1a8b82b7cf7af129380589605f20a10573"><span class="std std-ref">Variable SAVE_SETTINGS_FILE_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a84a5bfb8bc5012f651d4b555acbd6494.html#exhale-variable-error-msg-8h-1a84a5bfb8bc5012f651d4b555acbd6494"><span class="std std-ref">Variable SETTING_FILE_VERSION_INVALID</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ac87949e8bf48615555408dcb96ef2751.html#exhale-variable-error-msg-8h-1ac87949e8bf48615555408dcb96ef2751"><span class="std std-ref">Variable SETTING_FILE_VERSION_INVALID_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a6b6990c16ffa28692dd5b4b58c1f3958.html#exhale-variable-error-msg-8h-1a6b6990c16ffa28692dd5b4b58c1f3958"><span class="std std-ref">Variable SETTING_FILE_VERSION_INVALID_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a8d7e697b80bc0ca18a16141ddf70c30f.html#exhale-variable-error-msg-8h-1a8d7e697b80bc0ca18a16141ddf70c30f"><span class="std std-ref">Variable SHUTDOWN_CORE_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a68ebf1da3a88bf14d1cfc3026ddce9c5.html#exhale-variable-error-msg-8h-1a68ebf1da3a88bf14d1cfc3026ddce9c5"><span class="std std-ref">Variable SHUTDOWN_CORE_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a07b86207ed5741e30924d34f5d4d5b76.html#exhale-variable-error-msg-8h-1a07b86207ed5741e30924d34f5d4d5b76"><span class="std std-ref">Variable SHUTDOWN_CORE_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a9df194dcbb7d1cdec6d681e744318f66.html#exhale-variable-error-msg-8h-1a9df194dcbb7d1cdec6d681e744318f66"><span class="std std-ref">Variable START_OBJECT_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a46f27d2147758597bfbde110b4564063.html#exhale-variable-error-msg-8h-1a46f27d2147758597bfbde110b4564063"><span class="std std-ref">Variable START_OBJECT_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ae835608a2568038560f15dc5e69b8d47.html#exhale-variable-error-msg-8h-1ae835608a2568038560f15dc5e69b8d47"><span class="std std-ref">Variable START_OBJECT_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a6cfedc56a92f2eab4624262b885f09b0.html#exhale-variable-error-msg-8h-1a6cfedc56a92f2eab4624262b885f09b0"><span class="std std-ref">Variable STARTUP_CORE_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a12e5dcd72c3946c21b36021c9e0370d5.html#exhale-variable-error-msg-8h-1a12e5dcd72c3946c21b36021c9e0370d5"><span class="std std-ref">Variable STARTUP_CORE_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a98896ddc081917a9330f351f80d1a235.html#exhale-variable-error-msg-8h-1a98896ddc081917a9330f351f80d1a235"><span class="std std-ref">Variable STARTUP_CORE_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ac08a3842436c4cfa595b1fbfae213d8b.html#exhale-variable-error-msg-8h-1ac08a3842436c4cfa595b1fbfae213d8b"><span class="std std-ref">Variable STOP_OBJECT_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a406d1a01c1bb4cee31558cae6a130c52.html#exhale-variable-error-msg-8h-1a406d1a01c1bb4cee31558cae6a130c52"><span class="std std-ref">Variable STOP_OBJECT_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a585e7fcd8509ce41658146eaea86b684.html#exhale-variable-error-msg-8h-1a585e7fcd8509ce41658146eaea86b684"><span class="std std-ref">Variable STOP_OBJECT_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a55ef4216e76380a88062ff668078bacf.html#exhale-variable-error-msg-8h-1a55ef4216e76380a88062ff668078bacf"><span class="std std-ref">Variable TRACE_MON_FIFO_OPEN_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a2eb4b7a56b7aef7a2c85ab233ebf62bb.html#exhale-variable-error-msg-8h-1a2eb4b7a56b7aef7a2c85ab233ebf62bb"><span class="std std-ref">Variable TRACE_MON_FIFO_OPEN_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1aa82e7d818ec6bd57658a0a530d83f10d.html#exhale-variable-error-msg-8h-1aa82e7d818ec6bd57658a0a530d83f10d"><span class="std std-ref">Variable TRACE_MON_FIFO_OPEN_ERROR_MSG</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a1d9c246c3e140b7670445ea111ffb7c3.html#exhale-variable-error-msg-8h-1a1d9c246c3e140b7670445ea111ffb7c3"><span class="std std-ref">Variable TRACE_MON_REG_HNDLR_ERROR</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1a322880b0bfa51342b494e0b64c4d1423.html#exhale-variable-error-msg-8h-1a322880b0bfa51342b494e0b64c4d1423"><span class="std std-ref">Variable TRACE_MON_REG_HNDLR_ERROR_DESC</span></a></p></li>
+<li><p><a class="reference internal" href="variable_error__msg_8h_1ae5c6e6f8b3cdd40dab464827cb9b6d34.html#exhale-variable-error-msg-8h-1ae5c6e6f8b3cdd40dab464827cb9b6d34"><span class="std std-ref">Variable TRACE_MON_REG_HNDLR_ERROR_MSG</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

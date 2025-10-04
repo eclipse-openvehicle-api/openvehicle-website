@@ -1,0 +1,90 @@
+
+.. _program_listing_file_interfaces_com.h:
+
+Program Listing for File com.h
+==============================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_com.h>` (``interfaces\com.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__COM_H__20251003_130453_959__
+   #define __IDL_GENERATED__COM_H__20251003_130453_959__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   #include "core_ps.h"
+   
+   #include "process.h"
+   
+   // module sdv
+   namespace sdv
+   {
+       namespace com
+       {
+           struct SConnectionID
+           {
+               uint32_t uiIdent;
+   
+               uint32_t uiControl;
+           };
+   
+           typedef SConnectionID TConnectionID;
+   
+           interface IRequestChannel
+           {
+               static constexpr ::sdv::interface_id _id = 0x2489483531D1377D;
+   
+               virtual sdv::u8string RequestChannel(/*in*/ const sdv::u8string& ssConfig) = 0;
+           };
+   
+           interface IClientConnect
+           {
+               static constexpr ::sdv::interface_id _id = 0x36D212B6251B63DD;
+   
+               virtual IInterfaceAccess* Connect(/*in*/ const sdv::u8string& ssConnectString) = 0;
+           };
+   
+           enum class EChannelType : uint32_t
+           {
+               local_channel = 0,
+   
+               remote_channel = 1,
+   
+               custom_channel = 2,
+           };
+   
+           /*local*/ interface IConnectionControl
+           {
+               static constexpr ::sdv::interface_id _id = 0xB497C701C93D7588;
+   
+               virtual TConnectionID CreateServerConnection(/*in*/ EChannelType eChannelType, /*in*/ IInterfaceAccess* pObject, /*in*/ uint32_t uiTimeoutMs, /*out*/ sdv::u8string& ssConnectionString) = 0;
+   
+               virtual TConnectionID CreateClientConnection(/*in*/ const sdv::u8string& ssConnectionString, /*in*/ uint32_t uiTimeoutMs, /*out*/ IInterfaceAccess*& pProxy) = 0;
+   
+               virtual TConnectionID AssignServerEndpoint(/*in*/ IInterfaceAccess* pChannelEndpoint, /*in*/ IInterfaceAccess* pObject, /*in*/ uint32_t uiTimeoutMs, /*in*/ bool bAllowReconnect) = 0;
+   
+               virtual TConnectionID AssignClientEndpoint(/*in*/ IInterfaceAccess* pChannelEndpoint, /*in*/ uint32_t uiTimeoutMs, /*out*/ IInterfaceAccess*& pProxy) = 0;
+   
+               virtual void RemoveConnection(/*in*/ const TConnectionID& tConnectionID) = 0;
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__COM_H__20251003_130453_970__)

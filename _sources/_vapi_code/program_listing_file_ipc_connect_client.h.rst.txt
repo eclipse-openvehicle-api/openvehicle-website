@@ -1,0 +1,82 @@
+
+.. _program_listing_file_ipc_connect_client.h:
+
+Program Listing for File client.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_ipc_connect_client.h>` (``ipc_connect\client.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CLIENT_H
+   #define CLIENT_H
+   
+   #include <support/pssup.h>
+   #include <support/component_impl.h>
+   #include <interfaces/com.h>
+   
+   // Forward declaration.
+   class CClient;
+   
+   class CRepositoryProxy : public sdv::IInterfaceAccess, public sdv::IObjectDestroy
+   {
+   public:
+       CRepositoryProxy(CClient& rClient, sdv::com::TConnectionID tConnection, sdv::IInterfaceAccess* pRepositoryProxy);
+   
+       CRepositoryProxy(const CRepositoryProxy& rRepository) = delete;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
+           SDV_INTERFACE_CHAIN_MEMBER(m_ptrRepositoryProxy)
+       END_SDV_INTERFACE_MAP()
+   
+       CRepositoryProxy& operator=(const CRepositoryProxy& rRepository) = delete;
+   
+       virtual void DestroyObject() override;
+   
+   private:
+       CClient&                        m_rClient;                  
+       sdv::com::TConnectionID         m_tConnection = {};         
+       sdv::TInterfaceAccessPtr        m_ptrRepositoryProxy;       
+   };
+   
+   class CClient : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::com::IClientConnect
+   {
+   public:
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
+           SDV_INTERFACE_ENTRY(sdv::com::IClientConnect)
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declaration
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_NAME("ConnectionService")
+       DECLARE_OBJECT_SINGLETON()
+   
+       
+       void Initialize(const sdv::u8string& ssObjectConfig) override;
+   
+       sdv::EObjectStatus GetStatus() const override;
+   
+       void SetOperationMode(sdv::EOperationMode eMode) override;
+   
+       void Shutdown() override;
+   
+       virtual sdv::IInterfaceAccess* Connect(const sdv::u8string& ssConnectString) override;
+   
+       void Disconnect(sdv::com::TConnectionID tConnectionID);
+   
+   private:
+       sdv::EObjectStatus      m_eObjectStatus = sdv::EObjectStatus::initialization_pending; 
+       std::mutex              m_mtxRepositoryProxies;                             
+       std::map<sdv::com::TConnectionID, CRepositoryProxy> m_mapRepositoryProxies; 
+   };
+   
+   DEFINE_SDV_OBJECT(CClient)
+   
+   
+   #endif // !defined CLIENT_H

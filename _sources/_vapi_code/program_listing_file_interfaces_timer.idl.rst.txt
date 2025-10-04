@@ -1,0 +1,35 @@
+
+.. _program_listing_file_interfaces_timer.idl:
+
+Program Listing for File timer.idl
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_timer.idl>` (``interfaces\timer.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core.idl"
+   
+   module sdv
+   {
+       module core
+       {
+           interface ITaskExecute
+           {
+               void Execute();
+           };
+   
+           interface ITaskTimer
+           {
+               IInterfaceAccess CreateTimer(in uint32 uiPeriod, in IInterfaceAccess pTask);
+           };
+   
+           interface ITimerSimulationStep
+           {
+               void SimulationStep(in uint64 uiSimulationStep);
+           };
+       };
+   };

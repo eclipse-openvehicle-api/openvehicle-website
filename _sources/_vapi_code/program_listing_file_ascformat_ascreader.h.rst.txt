@@ -1,0 +1,82 @@
+
+.. _program_listing_file_ascformat_ascreader.h:
+
+Program Listing for File ascreader.h
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_ascformat_ascreader.h>` (``ascformat\ascreader.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef ASC_FILE_READER_H
+   #define ASC_FILE_READER_H
+   
+   #include <list>
+   #include <functional>
+   #include <filesystem>
+   #include <thread>
+   
+   namespace asc
+   {
+       struct SCanMessage
+       {
+           double      dTimestamp;                         
+           uint32_t    uiChannel;                          
+           uint32_t    uiId;                               
+           bool        bExtended;                          
+           bool        bCanFd;                             
+           enum class EDirection { rx, tx } eDirection;    
+           uint32_t    uiLength;                           
+           uint8_t     rguiData[64];                       
+       };
+   
+       class CAscReader
+       {
+       public:
+           CAscReader();
+   
+           ~CAscReader();
+   
+           bool Read(const std::filesystem::path& rpathFile);
+   
+           std::pair<SCanMessage, bool> Get() const;
+   
+           uint32_t GetLoopCount() const;
+           
+           void JumpBegin();
+   
+           void JumpEnd();
+   
+           CAscReader& operator++();
+           CAscReader& operator++(int);
+           CAscReader& operator--();
+           CAscReader& operator--(int);
+           bool IsBOF() const;
+   
+           bool IsEOF() const;
+   
+           void StartPlayback(std::function<void(const SCanMessage&)> fnCallback, bool bRepeat = true);
+   
+           void StopPlayback();
+   
+           void ResetPlayback();
+   
+           bool PlaybackRunning() const;
+   
+       private:
+           void ProcessSample(const std::string& rssSample);
+   
+           void PlaybackThreadFunc(std::function<void(const SCanMessage&)> fnCallback, std::atomic<uint32_t>& loopCount, bool bRepeat);
+   
+           std::list<SCanMessage>              m_lstMessages;                  
+           std::list<SCanMessage>::iterator    m_itCurrent;                    
+           std::thread                         m_threadPlayback;               
+           bool                                m_bPlaybackThread = false;      
+           bool                                m_bPlayback = false;            
+           std::atomic<uint32_t>               m_uiLoopCount{ 0 };             
+       };
+   }
+   
+   #endif // !defined ASC_FILE_READER_H

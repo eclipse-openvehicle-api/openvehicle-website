@@ -1,0 +1,1035 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>ISO 26262 Compliance and process enhancements &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'vapi_doc/development_process';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">ISO 26262...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="iso-26262-compliance-and-process-enhancements">
+<span id="vapi-iso26262-development"></span><h1>ISO 26262 Compliance and process enhancements<a class="headerlink" href="#iso-26262-compliance-and-process-enhancements" title="Permalink to this heading">#</a></h1>
+<p>A major goal of the Open Vehicel API is decreasing the development time including driving function which of course are safety relevant. So the ISO 26262 is a must to be supported.</p>
+<p>ISO 26262 is an international standard for functional safety in automotive systems. It ensures that electrical and electronic systems in vehicles are developed with safety in mind — from concept to decommissioning.</p>
+<p>Before we start we want to compare 2 different developments to get a common understanding</p>
+<section id="ecu-compared-to-software-development">
+<h2>ECU Compared to Software Development<a class="headerlink" href="#ecu-compared-to-software-development" title="Permalink to this heading">#</a></h2>
+<p>The development of an <strong>ECU (Electronic Control Unit)</strong> differs in several aspects from traditional <strong>software development</strong>, although both disciplines are increasingly converging. Here is a structured comparison:</p>
+<section id="hardware-vs-software-focus">
+<h3>🔧 1. Hardware vs. Software Focus<a class="headerlink" href="#hardware-vs-software-focus" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>ECU Development</p></th>
+<th class="head"><p>Software Development</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Focus</p></td>
+<td><p>Combination of hardware and software</p></td>
+<td><p>Pure software (mostly on standard hardware)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dependencies</p></td>
+<td><p>Strongly dependent on physical components (sensors, actuators)</p></td>
+<td><p>Dependent on operating systems, frameworks, APIs</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="testing-and-validation">
+<h3>🧪 2. Testing and Validation<a class="headerlink" href="#testing-and-validation" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>ECU Development</p></th>
+<th class="head"><p>Software Development</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Test Methods</p></td>
+<td><p>Hardware-in-the-Loop (HiL), simulation, test rigs</p></td>
+<td><p>Unit tests, integration tests, CI/CD</p></td>
+</tr>
+<tr class="row-odd"><td><p>Effort</p></td>
+<td><p>Higher effort due to physical testing</p></td>
+<td><p>More flexible through virtual setups</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="development-processes">
+<h3>📋 3. Development Processes<a class="headerlink" href="#development-processes" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>ECU Development</p></th>
+<th class="head"><p>Software Development</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Methodologies</p></td>
+<td><p>V-Model, ASPICE, ISO 26262</p></td>
+<td><p>Agile, Scrum, DevOps</p></td>
+</tr>
+<tr class="row-odd"><td><p>Documentation</p></td>
+<td><p>Highly regulated, extensive documentation required</p></td>
+<td><p>Varies by industry, often lightweight</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="safety-requirements">
+<h3>🛡️ 4. Safety Requirements<a class="headerlink" href="#safety-requirements" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>ECU Development</p></th>
+<th class="head"><p>Software Development</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Standards</p></td>
+<td><p>ISO 26262 (Functional Safety), AUTOSAR</p></td>
+<td><p>OWASP, ISO/IEC 27001 (IT Security)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Criticality</p></td>
+<td><p>Life-critical systems (e.g., brakes, airbags)</p></td>
+<td><p>Critical depending on application (e.g., banking, medical)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="update-and-maintainability">
+<h3>🔄 5. Update and Maintainability<a class="headerlink" href="#update-and-maintainability" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>ECU Development</p></th>
+<th class="head"><p>Software Development</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Updates</p></td>
+<td><p>Increasingly possible via Over-the-Air (OTA), but complex</p></td>
+<td><p>Easy via app stores, web deployments</p></td>
+</tr>
+<tr class="row-odd"><td><p>Lifecycle</p></td>
+<td><p>Long-term (10–15 years in vehicles)</p></td>
+<td><p>Shorter (often 2–5 years)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="team-structure-and-roles">
+<h3>🤝 6. Team Structure and Roles<a class="headerlink" href="#team-structure-and-roles" title="Permalink to this heading">#</a></h3>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>ECU Development</p></th>
+<th class="head"><p>Software Development</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Roles</p></td>
+<td><p>System engineer, hardware developer, embedded programmer</p></td>
+<td><p>Dev, DevOps, UX/UI</p></td>
+</tr>
+<tr class="row-odd"><td><p>Collaboration</p></td>
+<td><p>Interdisciplinary (mechanics, electronics, software)</p></td>
+<td><p>Cross-functional</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="conclusion">
+<h3>🧠 Conclusion:<a class="headerlink" href="#conclusion" title="Permalink to this heading">#</a></h3>
+<p>ECU development is <strong>more complex and heavily regulated</strong>, as it involves safety-critical systems and hardware integration. There is a big difference to traditional software development as it is <strong>more agile and flexible</strong>, but also subject to strict regulations in safety-critical domains (e.g., medical technology, finance).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>So what we aim for is to get the advantages and flexibility of a general software development process to our ECU development and how Open Vehicle API is supporting this.</p>
+</div>
+</section>
+</section>
+<section id="improved-ecu-development-process">
+<span id="vapi-software-development-process"></span><h2>Improved ECU Development process<a class="headerlink" href="#improved-ecu-development-process" title="Permalink to this heading">#</a></h2>
+<p>The ECU development can be heavily improved by splitting it in multiple parts, mainly extracting the software part so that</p>
+<ul class="simple">
+<li><p>Parts can be developed and tested independent and in parallel</p></li>
+<li><p>Parts can be reused</p></li>
+<li><p>Multiple &amp; different parts can build up different systems to be tested independently, enhancing the test base for automated test dramatically.</p></li>
+<li><p>Parts can easily be tested in different systems under different environments</p></li>
+<li><p>The final and still required test to bring a vehicle in series production will be decreased.</p></li>
+<li><p>Step 1: Local TDD</p></li>
+<li><p>Step 2: FMU to be used in <code class="docutils literal notranslate"><span class="pre">OpenXilEnv</span></code>. To include the vehicle (simulated with <code class="docutils literal notranslate"><span class="pre">IPG</span> <span class="pre">CarMaker</span></code> or <code class="docutils literal notranslate"><span class="pre">Carla</span></code>) another FMU is required to exchange the signal with this vehicle.</p></li>
+<li><p>Step 3: Run with the sdv component based on <code class="docutils literal notranslate"><span class="pre">Vector</span> <span class="pre">SIL</span> <span class="pre">Kit</span></code></p></li>
+<li><p>Step 4: Run with the sdv component based on <code class="docutils literal notranslate"><span class="pre">Vector</span> <span class="pre">SIL</span> <span class="pre">Kit</span></code></p></li>
+<li><p>Step 5: Run with the sdv component with real CAN socket implementation</p></li>
+</ul>
+<figure class="align-default" id="fig-development-process">
+<img alt="../_images/development_process.png" src="../_images/development_process.png" />
+</figure>
+<p>Step 1: Test-Driven Development (TDD)</p>
+<ul>
+<li><p>Goal: Ensure quality from the start by writing tests before implementing features.</p></li>
+<li><p>Activities:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Write unit tests for individual functions or methods.</p></li>
+<li><p>Create component tests to verify interactions between modules.</p></li>
+<li><p>Develop system tests to validate end-to-end functionality.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Outcome: A robust test suite that guides development and prevents regressions.</p></li>
+</ul>
+<p>Step 2: Local Simulation (Developer SIL)</p>
+<ul>
+<li><p>Goal: Validate functionality in a controlled, local environment.</p></li>
+<li><p>Environment: Developer’s machine.</p></li>
+<li><p>Purpose: Run software in a simulated setup to catch early bugs.</p></li>
+<li><p>Activities:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Run the software in a Software-in-the-Loop (SIL) simulation on the developer’s machine.</p></li>
+<li><p>Use mock data or simulated inputs to test behavior.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Outcome: Early detection of logic or integration issues before scaling up.</p></li>
+</ul>
+<p>Step 3: Automated Validation in Virtual Environment (Validation SIL)</p>
+<ul>
+<li><p>Goal: Perform scalable, automated testing.</p></li>
+<li><p>Environment: Virtualized system.</p></li>
+<li><p>Purpose: Validate software behavior across multiple scenarios.</p></li>
+<li><p>Activities:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Run pipeline which includes a virtualized test environment.</p></li>
+<li><p>Run automated test suites to validate behavior across scenarios.</p></li>
+<li></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Benefits: Scalable, repeatable, and fast testing.</p></li>
+<li><p>Outcome: Confirms software stability and correctness in a simulated system-wide context.</p></li>
+</ul>
+<p>Step 4: Automated Validation on Hardware (Hardware SIL)</p>
+<ul>
+<li><p>Goal: Ensure software works on real hardware.</p></li>
+<li><p>Environment: Target hardware.</p></li>
+<li><p>Purpose: Ensure software works correctly on real devices.</p></li>
+<li><p>Focus: Timing, performance, and hardware integration.</p></li>
+<li><p>Activities:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Run the same automated tests on target hardware.</p></li>
+<li><p>Validate timing, performance, and hardware-specific behavior.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Outcome: Confirms software is ready for deployment in real-world conditions.</p></li>
+</ul>
+<p>Step 5: Final Release &amp; Over-the-Air (OTA) Deployment</p>
+<ul>
+<li><p>Goal: Deliver the software to the vehicle fleet.</p></li>
+<li><p>Activities:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Package and sign the release.</p></li>
+<li><p>Deploy via Over-the-Air (OTA) updates to vehicles.</p></li>
+<li><p>Install/Uninstall service/application.</p></li>
+<li><p>Validate system, undo system changes in case of errors.</p></li>
+<li><p>Monitor deployment and installation and collect feedback.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Outcome: Software is live in production, ready for use by end users.</p></li>
+</ul>
+</section>
+<section id="iso-26262-compliance">
+<h2>ISO 26262 Compliance<a class="headerlink" href="#iso-26262-compliance" title="Permalink to this heading">#</a></h2>
+<p>What is ISO 26262?</p>
+<p>As mentioned before, ISO 26262 is an <strong>international standard for functional safety</strong> in automotive systems. It ensures that <strong>electrical and electronic systems</strong> in vehicles are developed with safety in mind — from concept to decommissioning.</p>
+<figure class="align-default">
+<img alt="../_images/v-model_development_process.png" src="../_images/v-model_development_process.png" />
+</figure>
+<p>ISO 26262 is <strong>closely related to the V-Model</strong> in automotive software and system development. Here’s how they connect:</p>
+<p>The <strong>V-Model</strong> is a structured development process that ISO 26262 uses to <strong>organize and align safety activities</strong> across the lifecycle. Here’s how the phases map:</p>
+<p>🔹 Left Side of the V (Development)</p>
+<ul class="simple">
+<li><p><strong>Concept Phase</strong> → Hazard Analysis and Risk Assessment (HARA)</p></li>
+<li><p><strong>System Design</strong> → Functional Safety Concept</p></li>
+<li><p><strong>Architectural Design</strong> → Technical Safety Requirements</p></li>
+<li><p><strong>Module Design &amp; Implementation</strong> → Software Safety Requirements</p></li>
+</ul>
+<p>🔹 Right Side of the V (Testing &amp; Validation)</p>
+<ul class="simple">
+<li><p><strong>Unit Testing</strong> → Verifies software components</p></li>
+<li><p><strong>Integration Testing</strong> → Verifies interaction between components</p></li>
+<li><p><strong>System Testing</strong> → Verifies system-level safety requirements</p></li>
+<li><p><strong>Acceptance Testing</strong> → Confirms safety goals are met</p></li>
+</ul>
+<p>Each development phase has a <strong>corresponding verification activity</strong>, ensuring safety is built in and validated at every step.</p>
+<p>The question arises: how can the ‘Open Vehicle API’ increase safety and supporting ISO 26262 while simultaneously reducing development time?”</p>
+<p>This will be achieved by</p>
+<ul class="simple">
+<li><p><strong>Impact Reduction</strong> (smaller components, reusing already tested components)</p></li>
+<li><p><strong>Increase detection</strong> (test single component in multiple systems as test systems will grow over time).</p></li>
+</ul>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>‘Open Vehicle API’ is not a tool chain. It is a framework with a concept for software development of safety and none safety relevant vehicle functions. It’s aim is to speed up the development process including continuing testing, validation and supporting the V-Model for the ISO 26262.</p>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

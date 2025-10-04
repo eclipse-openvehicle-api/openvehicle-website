@@ -1,0 +1,802 @@
+
+.. _program_listing_file_sdv_idl_compiler_core_idl_backup.h:
+
+Program Listing for File core_idl_backup.h
+==========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_core_idl_backup.h>` (``sdv_idl_compiler\core_idl_backup.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef IDL_PARSER_INTERFACE_H
+   #define IDL_PARSER_INTERFACE_H
+   
+   #define DONT_LOAD_CORE_TYPES
+   #include <support/interface.h>
+   #include <support/except.h>
+   #include <cstdint>
+   #include <typeinfo>
+   #include <map>
+   #include <string>
+   
+   #ifdef _MSC_VER
+       // Prevent bogus warnings about uninitialized members during static code analysis.
+       #pragma warning(push)
+       #pragma warning(disable : 26495)
+   #endif
+   
+   namespace sdv
+   {
+       interface IInterfaceAccess
+       {
+           static constexpr ::sdv::interface_id _id = 0x9D93731520AD52C8;
+   
+           virtual sdv::interface_t GetInterface(/*in*/ sdv::interface_id idInterface) = 0;
+   
+           template <typename TInterface>
+           TInterface* GetInterface()
+           {
+               return GetInterface(sdv::GetInterfaceId<TInterface>()).template get<TInterface>();
+           }
+       };
+   
+       enum class EObjectType : uint32_t
+       {
+           SystemObject = 0,
+   
+           Device = 10,
+   
+           BasicService = 20,
+   
+           ComplexService = 21,
+   
+           Application = 30,
+   
+           Proxy = 100,
+   
+           Stub = 101,
+   
+           Utility = 1000,
+       };
+   
+       /*
+        * @brief Interface that might be exposed by objects to allow self-destruction if the owner doesn't need to object any more.
+        */
+       interface IObjectDestroy
+       {
+           static constexpr ::sdv::interface_id _id = 0xBCE042046AED46D7;
+   
+           virtual void DestroyObject() = 0;
+       };
+   
+       interface IObjectLifetime
+       {
+           static constexpr ::sdv::interface_id _id = 0x8E5315B6428769CA;
+   
+           virtual void Increment() = 0;
+   
+           virtual bool Decrement() = 0;
+   
+           virtual uint32_t GetCount() const = 0;
+       };
+   
+       except XSysExcept
+       {
+           inline static const ::sdv::exception_id _id = 0xE1BCB80EB2F0DCB8;
+   
+           inline static const char _description[] = "XSysExcept exception";
+   
+           virtual const char* what() const noexcept { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept { return _id; }
+       };
+   
+       except XNoInterface : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0xB67CF66C856DCD04;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The interface could not be found.";
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XIndexOutOfRange : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0xCB72D113B2C57CB6;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The supplied index was out of range.";
+   
+           uint32_t uiIndex;
+   
+           uint32_t uiSize;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XInvalidIterator : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0xE12D4F227521A71E;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The supplied iterator was invalid.";
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XNullPointer : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0xEEF0101F215DAB3F;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "A NULL-pointer was supplied.";
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XInvalidRefCount : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x02E02E52488E61DB;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The reference counter has an invalid/unexpected value.";
+   
+           uint32_t uiCount;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XBufferTooSmall : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x3C494554A6187FE2;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The buffer was too small to store the data.";
+   
+           uint64_t uiSize;
+   
+           uint64_t uiCapacity;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XHashNotMatching : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x7618626C6A824D7D;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The provided hash value doesn't match to the calculated hash value.";
+   
+           uint64_t uiCalculated;
+   
+           uint64_t uiProvided;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XOffsetPastBufferSize : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0xD58CE8122B835FCB;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The provided offset doesn't is not pointing to a location within the buffer.";
+   
+           uint64_t uiOffset;
+   
+           uint64_t uiSize;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XUnknownException : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x18504F1A91F6FC94;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "An exception was fired, but no handler found for it.";
+   
+           sdv::exception_id unknown_id;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XUnhandledException : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x560CDFE1BF94C8C1;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "An unhandled exception was caught.";
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       namespace core
+       {
+           except XNoMemMgr : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0xA0CB36340BFEECB3;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "The memory manager could not be accessed.";
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XAllocFailed : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0x48383EE6B2D75A0F;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "The allocation of memory failed.";
+   
+               uint32_t uiSize;
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+       }
+   } // namespace sdv
+   
+   #include <support/iterator.h>
+   #include <support/pointer.h>
+   #include <support/sequence.h>
+   #include <support/string.h>
+   
+   #ifdef __GNUC__
+   #pragma GCC diagnostic push
+   #pragma GCC diagnostic ignored "-Wunused-variable"
+   #endif
+   namespace sdv
+   {
+       namespace idl
+       {
+           except XCompileError
+           {
+               inline static const ::sdv::exception_id _id = 0x650594E6C9489FBB;
+   
+               static constexpr char _description[] = "XCompileError exception";
+   
+               sdv::u8string ssReason;
+   
+               sdv::u8string ssFile;
+   
+               uint32_t uiLine;
+   
+               uint32_t uiCol;
+   
+               sdv::u8string ssToken;
+   
+               sdv::u8string ssLine;
+   
+               virtual const char* what() const noexcept { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept { return _id; }
+           };
+   
+           static const sdv::u8string ssOptionDevEnvDir = u8"DevEnvDir";
+   
+           static const sdv::u8string ssOptionOutDir = u8"OutDir";
+   
+           static const sdv::u8string ssOptionFilename = u8"Filename";
+   
+           static const sdv::u8string ssOptionFilePath = u8"FilePath";
+   
+           static const sdv::u8string ssOptionCodeGen = u8"CodeGen";
+   
+           interface ICompilerOption
+           {
+               static constexpr ::sdv::interface_id _id = 0xC27C1ABDE939E87F;
+   
+               virtual sdv::u8string GetOption(/*in*/ const sdv::u8string& rssOption) const = 0;
+   
+               virtual uint32_t GetOptionCnt(/*in*/ const sdv::u8string& rssOption) const = 0;
+   
+               virtual sdv::u8string GetOptionN(/*in*/ const sdv::u8string& rssOption, /*in*/ uint32_t uiIndex) const = 0;
+           };
+   
+           interface ICompilerInfo
+           {
+               static constexpr ::sdv::interface_id _id = 0x7A9A8C8060A409A2;
+   
+               virtual sdv::u8string GetFilePath() const = 0;
+   
+               virtual sdv::u8string GetOutputDir() const = 0;
+           };
+   
+           enum class EEntityType : uint32_t
+           {
+               type_unknown,
+   
+               type_variable,
+   
+               type_enum,
+   
+               type_struct,
+   
+               type_union,
+   
+               type_module,
+   
+               type_interface,
+   
+               type_exception,
+   
+               type_attribute,
+   
+               type_operation,
+   
+               type_parameter,
+   
+               type_enum_entry,
+   
+               type_case_entry,
+   
+               type_switch_variable,
+   
+               type_typedef,
+   
+               type_meta,
+           };
+   
+           enum class EDeclType : uint32_t
+           {
+               decltype_unknown,
+   
+               decltype_short,
+   
+               decltype_long,
+   
+               decltype_long_long,
+   
+               decltype_octet,
+   
+               decltype_unsigned_short,
+   
+               decltype_unsigned_long,
+   
+               decltype_unsigned_long_long,
+   
+               decltype_float,
+   
+               decltype_double,
+   
+               decltype_long_double,
+   
+               decltype_fixed,
+   
+               decltype_char,
+   
+               decltype_char16,
+   
+               decltype_char32,
+   
+               decltype_wchar,
+   
+               decltype_boolean,
+   
+               decltype_native,
+   
+               decltype_string,
+   
+               decltype_u8string,
+   
+               decltype_u16string,
+   
+               decltype_u32string,
+   
+               decltype_wstring,
+   
+               decltype_enum,
+   
+               decltype_struct,
+   
+               decltype_union,
+   
+               decltype_module,
+   
+               decltype_interface,
+   
+               decltype_exception,
+   
+               decltype_attribute,
+   
+               decltype_operation,
+   
+               decltype_parameter,
+   
+               decltype_enum_entry,
+   
+               decltype_case_entry,
+   
+               decltype_typedef,
+   
+               decltype_void,
+   
+               decltype_meta,
+   
+               decltype_pointer,
+   
+               decltype_sequence,
+   
+               decltype_map,
+   
+               decltype_bitset,
+   
+               decltype_bitfield,
+   
+               decltype_bitmask,
+   
+               decltype_any,
+   
+               decltype_interface_id,
+   
+               decltype_interface_type,
+   
+               decltype_exception_id,
+           };
+   
+           interface IEntityInfo
+           {
+               static constexpr ::sdv::interface_id _id = 0x46BEDE6CC5C91F72;
+   
+               virtual EEntityType GetType() const = 0;
+   
+               virtual sdv::u8string GetName() const = 0;
+   
+               virtual sdv::u8string GetScopedName() const = 0;
+   
+               virtual bool ForwardDeclaration() const = 0;
+   
+               virtual uint64_t GetId() const = 0;
+   
+               virtual IInterfaceAccess* GetParent() const = 0;
+           };
+   
+           interface IEntityIterator
+           {
+               static constexpr ::sdv::interface_id _id = 0x7177BA8E9BF61AA7;
+   
+               virtual uint32_t GetCount() const = 0;
+   
+               virtual IInterfaceAccess* GetEntityByIndex(/*in*/ uint32_t uiIndex) = 0;
+           };
+   
+           interface IEntityContext
+           {
+               static constexpr ::sdv::interface_id _id = 0xCDC79F5E7E643529;
+   
+               enum class ELocation : uint32_t
+               {
+                   source,
+   
+                   local_include,
+   
+                   global_include,
+               };
+   
+               virtual ELocation GetLocation() const = 0;
+   
+               virtual sdv::u8string GetSourcePath() const = 0;
+   
+               virtual void GetPosition(/*out*/ uint32_t& ruiLineBegin, /*out*/ uint32_t& ruiColBegin, /*out*/ uint32_t& ruiLineEnd, /*out*/ uint32_t& ruiColEnd) = 0;
+           };
+   
+           interface IMetaEntity
+           {
+               static constexpr ::sdv::interface_id _id = 0xE33E8D1A971D0D7C;
+   
+               enum class EType : uint32_t
+               {
+                   include_local = 10,
+   
+                   include_global = 11,
+   
+                   define = 20,
+   
+                   undef = 21,
+   
+                   verbatim = 100,
+               };
+   
+               virtual EType GetMetaType() const = 0;
+   
+               virtual sdv::u8string GetContent() const = 0;
+           };
+   
+           interface IEntityComments
+           {
+               static constexpr ::sdv::interface_id _id = 0xEE1AD4FC2B9217BB;
+   
+               enum class ECommentMask : uint32_t
+               {
+                   c_style_javadoc = 0x40001000,
+   
+                   c_style_javadoc_post = 0x40201000,
+   
+                   c_style_qt = 0x40002000,
+   
+                   c_style_qt_post = 0x40202000,
+   
+                   c_style = 0x40000000,
+   
+                   cpp_style_javadoc = 0x80001000,
+   
+                   cpp_style_javadoc_post = 0x80201000,
+   
+                   cpp_style_qt = 0x80002000,
+   
+                   cpp_style_qt_post = 0x80202000,
+   
+                   cpp_style = 0x80000000,
+   
+                   loc_succeeding = 0x00200000,
+   
+                   format_javadoc = 0x00001000,
+   
+                   format_qt = 0x00002000,
+   
+                   format_mask = 0x0000f000,
+               };
+   
+               virtual sdv::u8string GetComments(/*out*/ uint32_t& ruiFlags) const = 0;
+           };
+   
+           interface IDefinitionEntity
+           {
+               static constexpr ::sdv::interface_id _id = 0xC7BB02340D82D7AE;
+   
+               virtual bool IsUnnamed() const = 0;
+   
+               virtual IEntityIterator* GetChildren() = 0;
+   
+               virtual IEntityIterator* GetInheritance() = 0;
+           };
+   
+           interface IForwardDeclarationEntity
+           {
+               static constexpr ::sdv::interface_id _id = 0x3BE934D755332130;
+   
+               virtual IInterfaceAccess* GetEntity() = 0;
+           };
+   
+           interface IDeclarationType
+           {
+               static constexpr ::sdv::interface_id _id = 0x50100506F3C91498;
+   
+               virtual EDeclType GetBaseType() const = 0;
+   
+               virtual sdv::u8string GetTypeString() const = 0;
+   
+               virtual IInterfaceAccess* GetTypeDefinition() const = 0;
+   
+               virtual uint32_t GetFixedLength() const = 0;
+   
+               virtual uint32_t GetDecimals() const = 0;
+   
+               virtual IInterfaceAccess* GetValueType() const = 0;
+   
+               virtual IInterfaceAccess* GetKeyType() const = 0;
+           };
+   
+           struct SArrayDimension
+           {
+               enum class EDimensionType : uint32_t
+               {
+                   bound = 0,
+   
+                   unbound = 2,
+               };
+   
+               EDimensionType eType;
+   
+               sdv::u8string ssExpression;
+           };
+   
+           interface IDeclarationEntity
+           {
+               static constexpr ::sdv::interface_id _id = 0xE0135FBD85B21E86;
+   
+               virtual IInterfaceAccess* GetDeclarationType() const = 0;
+   
+               virtual bool IsReadOnly() const = 0;
+   
+               virtual bool IsAnonymous() const = 0;
+   
+               virtual bool HasArray() const = 0;
+   
+               virtual sdv::sequence<SArrayDimension> GetArrayDimensions() const = 0;
+   
+               virtual bool HasAssignment() const = 0;
+   
+               virtual sdv::u8string GetAssignment() const = 0;
+           };
+   
+           interface IInterfaceEntity
+           {
+               static constexpr ::sdv::interface_id _id = 0x1C7491088C1C6C3F;
+   
+               virtual bool IsLocal() const = 0;
+           };
+   
+           interface IOperationEntity
+           {
+               static constexpr ::sdv::interface_id _id = 0x75F2DA445EB605EE;
+   
+               virtual IEntityIterator* GetParameters() = 0;
+   
+               virtual IEntityIterator* GetExceptions() = 0;
+           };
+   
+           interface IAttributeEntity
+           {
+               static constexpr ::sdv::interface_id _id = 0x492ABA076F15A69B;
+   
+               virtual IEntityIterator* GetReadExceptions() = 0;
+   
+               virtual IEntityIterator* GetWriteExceptions() = 0;
+           };
+   
+           interface IParameterEntity
+           {
+               static constexpr ::sdv::interface_id _id = 0xCF79131CE1B17AA3;
+   
+               enum class EParameterDirection : uint32_t
+               {
+                   unknown,
+   
+                   input,
+   
+                   output,
+   
+                   in_out,
+               };
+   
+               virtual EParameterDirection GetDirection() const = 0;
+           };
+   
+           interface IEnumEntity
+           {
+               static constexpr ::sdv::interface_id _id = 0xCF4D94C9746CA76F;
+   
+               virtual void GetBaseType(/*out*/ EDeclType& reType, /*out*/ IInterfaceAccess*& rpType) const = 0;
+           };
+   
+           interface IUnionEntity
+           {
+               static constexpr ::sdv::interface_id _id = 0x23A3AFF91945A3B3;
+   
+               enum class ESwitchInterpret : uint32_t
+               {
+                   switch_variable,
+   
+                   switch_type,
+               };
+   
+               virtual ESwitchInterpret GetSwitchInterpretation() const = 0;
+   
+               virtual void GetSwitchType(/*out*/ EDeclType& reType, /*out*/ IInterfaceAccess*& rpType) const = 0;
+   
+               virtual void GetSwitchVar(/*out*/ sdv::u8string& rssVarStr, /*out*/ IInterfaceAccess*& rpVarEntity, /*out*/ IInterfaceAccess*& rpVarContainer) const = 0;
+           };
+   
+           interface ICaseEntity
+           {
+               static constexpr ::sdv::interface_id _id = 0x6018B17C44F736F3;
+   
+               virtual sdv::u8string GetLabel() const = 0;
+   
+               virtual bool IsDefault() const = 0;
+           };
+       }
+   }
+   #ifdef __GNUC__
+   #pragma GCC diagnostic pop
+   #endif
+   
+   namespace sdv
+   {
+       namespace core
+       {
+           namespace internal
+           {
+               class CMemMgr : public sdv::internal::IInternalMemAlloc
+               {
+               public:
+                   virtual void* Alloc(size_t nSize) override { return malloc(nSize); }
+   
+                   virtual void* Realloc(void* pData, size_t nSize) override { return realloc(pData, nSize); }
+   
+                   virtual void Free(void* pData) override { return free(pData); }
+               };
+   
+               inline sdv::internal::IInternalMemAlloc* GetMemMgr()
+               {
+                   static CMemMgr memmgr;
+                   return &memmgr;
+               }
+           } // namespace internal
+   
+           inline pointer<uint8_t> AllocMemBytes(size_t nAmount)
+           {
+               return sdv::internal::make_ptr<uint8_t>(internal::GetMemMgr(), nAmount);
+           }
+   
+           template <typename T /*= uint8_t*/>
+           inline pointer<T> AllocMem(size_t nAmount)
+           {
+               return sdv::internal::make_ptr<T>(internal::GetMemMgr(), nAmount);
+           }
+       } // namespace core
+   } // namespace sdv
+   
+   #ifdef interface_defined_locally
+   #undef interface
+   #endif
+   
+   #ifdef _MSC_VER
+       #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(IDL_PARSER_INTERFACE_H)

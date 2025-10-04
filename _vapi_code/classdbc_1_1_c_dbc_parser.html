@@ -1,0 +1,1374 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Class CDbcParser &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/classdbc_1_1_c_dbc_parser';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Class CDbcParser</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-cdbcparser">
+<span id="exhale-class-classdbc-1-1-c-dbc-parser"></span><h1>Class CDbcParser<a class="headerlink" href="#class-cdbcparser" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_dbcparser_dbcparser.h.html#file-dbcparser-dbcparser-h"><span class="std std-ref">File dbcparser.h</span></a></p></li>
+</ul>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this heading">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3dbc10CDbcParserE">
+<span id="_CPPv3N3dbc10CDbcParserE"></span><span id="_CPPv2N3dbc10CDbcParserE"></span><span id="dbc::CDbcParser"></span><span class="target" id="classdbc_1_1_c_dbc_parser"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CDbcParser</span></span></span><a class="headerlink" href="#_CPPv4N3dbc10CDbcParserE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>DBC parser class allowing access to the defined data structures. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3dbc10CDbcParser10CDbcParserEb">
+<span id="_CPPv3N3dbc10CDbcParser10CDbcParserEb"></span><span id="_CPPv2N3dbc10CDbcParser10CDbcParserEb"></span><span id="dbc::CDbcParser::CDbcParser__b"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1adaa97820153987b81581edf56fc0d40f"></span><span class="sig-name descname"><span class="n"><span class="pre">CDbcParser</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bNoDefaultDef</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3dbc10CDbcParser10CDbcParserEb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Default constructor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bNoDefaultDef</strong> – <strong>[in]</strong> When set, no default definitions should be made. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3dbc10CDbcParser5ParseER10CDbcSource">
+<span id="_CPPv3N3dbc10CDbcParser5ParseER10CDbcSource"></span><span id="_CPPv2N3dbc10CDbcParser5ParseER10CDbcSource"></span><span id="dbc::CDbcParser::Parse__CDbcSourceR"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1aef73ae99888636cc3c622af7bf4dec3b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Parse</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classdbc_1_1_c_dbc_source.html#_CPPv4N3dbc10CDbcSourceE" title="dbc::CDbcSource"><span class="n"><span class="pre">CDbcSource</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rSource</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3dbc10CDbcParser5ParseER10CDbcSource" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Parse the DBC content. The current content will be concatenated to the already existing content. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rSource</strong> – <strong>[in]</strong> Reference to the DBC source. The position within the source will be updated. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3dbc10CDbcParser5ClearEv">
+<span id="_CPPv3N3dbc10CDbcParser5ClearEv"></span><span id="_CPPv2N3dbc10CDbcParser5ClearEv"></span><span id="dbc::CDbcParser::Clear"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a1962c11fbf24730727bf6ec9d407d383"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Clear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3dbc10CDbcParser5ClearEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Clears the DBC information. Allowing new content to be added. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser10GetSourcesEv">
+<span id="_CPPv3NK3dbc10CDbcParser10GetSourcesEv"></span><span id="_CPPv2NK3dbc10CDbcParser10GetSourcesEv"></span><span id="dbc::CDbcParser::GetSourcesC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a2f9ed8e7c0034a82ccb21339f54d48ed"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classdbc_1_1_c_dbc_source.html#_CPPv4N3dbc10CDbcSourceE" title="dbc::CDbcSource"><span class="n"><span class="pre">CDbcSource</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetSources</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser10GetSourcesEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return a reference to the list of sources. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The reference to the vector containing the sources. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser11GetVersionsEv">
+<span id="_CPPv3NK3dbc10CDbcParser11GetVersionsEv"></span><span id="_CPPv2NK3dbc10CDbcParser11GetVersionsEv"></span><span id="dbc::CDbcParser::GetVersionsC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1ad5c5f840a2e25a0b5bc4f4ba61a8f8fa"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetVersions</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser11GetVersionsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the vector containing the version strings of all parsed DBC sources. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference to the vector containing the version strings. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser10HasNodeDefERKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser10HasNodeDefERKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser10HasNodeDefERKNSt6stringE"></span><span id="dbc::CDbcParser::HasNodeDef__ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a10936b9c1e2114097a7a54e7b74d6bd4"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasNodeDef</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssNodeDefName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser10HasNodeDefERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Has a node been defined? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssNodeDefName</strong> – <strong>[in]</strong> Reference to the string containing the name of the node. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when a node has been defined; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser15GetNodeDefNamesEv">
+<span id="_CPPv3NK3dbc10CDbcParser15GetNodeDefNamesEv"></span><span id="_CPPv2NK3dbc10CDbcParser15GetNodeDefNamesEv"></span><span id="dbc::CDbcParser::GetNodeDefNamesC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a3a4947c143dc5a9fb1f59743f28900d8"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetNodeDefNames</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser15GetNodeDefNamesEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the vector containing the node definitions of all parsed DBC sources. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Vector containing the node definition strings. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser10GetNodeDefERKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser10GetNodeDefERKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser10GetNodeDefERKNSt6stringE"></span><span id="dbc::CDbcParser::GetNodeDef__ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a4f9742a940a3a21bf91b60573302b8d3"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structdbc_1_1_s_node_def.html#_CPPv4N3dbc8SNodeDefE" title="dbc::SNodeDef"><span class="n"><span class="pre">SNodeDef</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetNodeDef</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssNodeDefName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser10GetNodeDefERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the node definition with the supplied name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssNodeDefName</strong> – <strong>[in]</strong> Reference to the string containing the name of the node. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pair of the node and a boolean indicating whether the node exists. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser13HasValueTableERKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser13HasValueTableERKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser13HasValueTableERKNSt6stringE"></span><span id="dbc::CDbcParser::HasValueTable__ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1af5f90f13e9c4ef073aefb083aa904fc4"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasValueTable</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser13HasValueTableERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Is the value table with the supplied name defined? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssName</strong> – <strong>[in]</strong> Reference to the table name string. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when the table with the supplied name has been defined; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser8HasValueERKNSt6stringE8uint32_t">
+<span id="_CPPv3NK3dbc10CDbcParser8HasValueERKNSt6stringE8uint32_t"></span><span id="_CPPv2NK3dbc10CDbcParser8HasValueERKNSt6stringE8uint32_t"></span><span id="dbc::CDbcParser::HasValue__ssCR.uint32_tC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a87eccb47af34e1e2aa6d38c1ad4d70cc"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasValue</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssTableName</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiValue</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser8HasValueERKNSt6stringE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Is the value within the value table with the supplied table name defined? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssTableName</strong> – <strong>[in]</strong> Reference to the table name string. </p></li>
+<li><p><strong>uiValue</strong> – <strong>[in]</strong> Value within the table. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when the value within the table has been defined; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser8GetValueERKNSt6stringE8uint32_t">
+<span id="_CPPv3NK3dbc10CDbcParser8GetValueERKNSt6stringE8uint32_t"></span><span id="_CPPv2NK3dbc10CDbcParser8GetValueERKNSt6stringE8uint32_t"></span><span id="dbc::CDbcParser::GetValue__ssCR.uint32_tC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a7528f4257e5bcc35e7091321bbd73859"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetValue</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssTableName</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiValue</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser8GetValueERKNSt6stringE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the value within the value table with the supplied table name defined? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssTableName</strong> – <strong>[in]</strong> Reference to the table name string. </p></li>
+<li><p><strong>uiValue</strong> – <strong>[in]</strong> Value within the table. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the string when the value within the table has been defined; an empty string otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser18GetValueTableNamesEv">
+<span id="_CPPv3NK3dbc10CDbcParser18GetValueTableNamesEv"></span><span id="_CPPv2NK3dbc10CDbcParser18GetValueTableNamesEv"></span><span id="dbc::CDbcParser::GetValueTableNamesC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1ae776e5bf3ab1dae490ea57980d3d3818"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetValueTableNames</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser18GetValueTableNamesEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a vector with all the value tables defined. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Vector with value table names. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser9GetValuesERKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser9GetValuesERKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser9GetValuesERKNSt6stringE"></span><span id="dbc::CDbcParser::GetValues__ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a057a24b874136b46c62067b264ced912"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">uint32_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetValues</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssTableName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser9GetValuesERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a vector with all values for a value table. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssTableName</strong> – <strong>[in]</strong> Reference to the table name string. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Pair of a vector with values and a boolean indicating whether the table exists. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser9HasMsgDefERKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser9HasMsgDefERKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser9HasMsgDefERKNSt6stringE"></span><span id="dbc::CDbcParser::HasMsgDef__ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1ae37ed35679cc839be53647bf7f726f8a"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasMsgDef</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser9HasMsgDefERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Has a message been defined? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssName</strong> – <strong>[in]</strong> Reference to the string containing the name of the message. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when a message has been defined; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser9HasMsgDefE8uint32_t">
+<span id="_CPPv3NK3dbc10CDbcParser9HasMsgDefE8uint32_t"></span><span id="_CPPv2NK3dbc10CDbcParser9HasMsgDefE8uint32_t"></span><span id="dbc::CDbcParser::HasMsgDef__uint32_tC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a1160b423cf1f827a9501d78136603bec"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasMsgDef</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiRawId</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser9HasMsgDefE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Has a message been defined? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiRawId</strong> – <strong>[in]</strong> ID of the message (covers both standard and extended ID). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when a message has been defined; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser14HasMsgDefStdIdE8uint32_t">
+<span id="_CPPv3NK3dbc10CDbcParser14HasMsgDefStdIdE8uint32_t"></span><span id="_CPPv2NK3dbc10CDbcParser14HasMsgDefStdIdE8uint32_t"></span><span id="dbc::CDbcParser::HasMsgDefStdId__uint32_tC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1abfaa62a9350f8fa6bfb2ecaff7dd2b01"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasMsgDefStdId</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiStdId</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser14HasMsgDefStdIdE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Has a message been defined (lookup with standard ID)? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiStdId</strong> – <strong>[in]</strong> ID of the message (max 11 bits). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when a message has been defined; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser14HasMsgDefExtIdE8uint32_t">
+<span id="_CPPv3NK3dbc10CDbcParser14HasMsgDefExtIdE8uint32_t"></span><span id="_CPPv2NK3dbc10CDbcParser14HasMsgDefExtIdE8uint32_t"></span><span id="dbc::CDbcParser::HasMsgDefExtId__uint32_tC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a3a12b703e767fc390d677529fd7ddc1a"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasMsgDefExtId</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiExtId</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser14HasMsgDefExtIdE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Has a message been defined (lookup with extended ID)? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiExtId</strong> – <strong>[in]</strong> ID of the message (max 29 bits). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when a message has been defined; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser13GetMessageIDsEv">
+<span id="_CPPv3NK3dbc10CDbcParser13GetMessageIDsEv"></span><span id="_CPPv2NK3dbc10CDbcParser13GetMessageIDsEv"></span><span id="dbc::CDbcParser::GetMessageIDsC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a77d21d42d90a3347e6ff1c64098ecbad"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">uint32_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetMessageIDs</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser13GetMessageIDsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the currently stored message IDs. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Vector containing the raw message IDs (covering both standard and extended IDs). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser9GetMsgDefERKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser9GetMsgDefERKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser9GetMsgDefERKNSt6stringE"></span><span id="dbc::CDbcParser::GetMsgDef__ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1ae79fde9bc63e920bc0fd97f89d552cc8"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structdbc_1_1_s_message_def.html#_CPPv4N3dbc11SMessageDefE" title="dbc::SMessageDef"><span class="n"><span class="pre">SMessageDef</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetMsgDef</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser9GetMsgDefERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the message definition. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssName</strong> – <strong>[in]</strong> Reference to the string containing the name of the message. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair containing the message and a boolean. If the message was found, the boolean is ‘true’; otherwise the boolean was ‘false’ and an empty message was returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser9GetMsgDefE8uint32_t">
+<span id="_CPPv3NK3dbc10CDbcParser9GetMsgDefE8uint32_t"></span><span id="_CPPv2NK3dbc10CDbcParser9GetMsgDefE8uint32_t"></span><span id="dbc::CDbcParser::GetMsgDef__uint32_tC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a0789ce797ce5500b8579f7dbe2b1de3f"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structdbc_1_1_s_message_def.html#_CPPv4N3dbc11SMessageDefE" title="dbc::SMessageDef"><span class="n"><span class="pre">SMessageDef</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetMsgDef</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiRawId</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser9GetMsgDefE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the message definition. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiRawId</strong> – <strong>[in]</strong> ID of the message (covers both standard and extended ID). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair containing the message and a boolean. If the message was found, the boolean is ‘true’; otherwise the boolean was ‘false’ and an empty message was returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser14GetMsgDefStdIdE8uint32_t">
+<span id="_CPPv3NK3dbc10CDbcParser14GetMsgDefStdIdE8uint32_t"></span><span id="_CPPv2NK3dbc10CDbcParser14GetMsgDefStdIdE8uint32_t"></span><span id="dbc::CDbcParser::GetMsgDefStdId__uint32_tC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a84af17e87aa212d798acd5ebff83e827"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structdbc_1_1_s_message_def.html#_CPPv4N3dbc11SMessageDefE" title="dbc::SMessageDef"><span class="n"><span class="pre">SMessageDef</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetMsgDefStdId</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiStdId</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser14GetMsgDefStdIdE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the message definition (lookup with standard ID)? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiStdId</strong> – <strong>[in]</strong> ID of the message (max 11 bits). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair containing the message and a boolean. If the message was found, the boolean is ‘true’; otherwise the boolean was ‘false’ and an empty message was returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser14GetMsgDefExtIdE8uint32_t">
+<span id="_CPPv3NK3dbc10CDbcParser14GetMsgDefExtIdE8uint32_t"></span><span id="_CPPv2NK3dbc10CDbcParser14GetMsgDefExtIdE8uint32_t"></span><span id="dbc::CDbcParser::GetMsgDefExtId__uint32_tC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1ab9ebad90e7cc1b9544ed91e2536201ee"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structdbc_1_1_s_message_def.html#_CPPv4N3dbc11SMessageDefE" title="dbc::SMessageDef"><span class="n"><span class="pre">SMessageDef</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetMsgDefExtId</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiExtId</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser14GetMsgDefExtIdE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the message definition (lookup with extended ID)? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiExtId</strong> – <strong>[in]</strong> ID of the message (max 29 bits). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when a message has been defined; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser12HasSignalDefERKNSt6stringERKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser12HasSignalDefERKNSt6stringERKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser12HasSignalDefERKNSt6stringERKNSt6stringE"></span><span id="dbc::CDbcParser::HasSignalDef__ssCR.ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1acd66ef4abe7d0550ce2dcda8e975dc5e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasSignalDef</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssMsgName</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssSignalName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser12HasSignalDefERKNSt6stringERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Has a signal been defined? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssMsgName</strong> – <strong>[in]</strong> Reference to the string containing the name of the message. </p></li>
+<li><p><strong>rssSignalName</strong> – <strong>[in]</strong> Reference to the string containing the name of the signal. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when a signal has been defined; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser12HasSignalDefE8uint32_tRKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser12HasSignalDefE8uint32_tRKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser12HasSignalDefE8uint32_tRKNSt6stringE"></span><span id="dbc::CDbcParser::HasSignalDef__uint32_t.ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a61dee4e03cdf756522b405821b87b060"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasSignalDef</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiRawMsgId</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssSignalName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser12HasSignalDefE8uint32_tRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Has a signal been defined? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uiRawMsgId</strong> – <strong>[in]</strong> ID of the message (covers both standard and extended ID). </p></li>
+<li><p><strong>rssSignalName</strong> – <strong>[in]</strong> Reference to the string containing the name of the signal. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when a signal has been defined; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser17HasSignalDefStdIdE8uint32_tRKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser17HasSignalDefStdIdE8uint32_tRKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser17HasSignalDefStdIdE8uint32_tRKNSt6stringE"></span><span id="dbc::CDbcParser::HasSignalDefStdId__uint32_t.ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1aefbc31f958efacda412e4150c8639de6"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasSignalDefStdId</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiStdMsgId</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssSignalName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser17HasSignalDefStdIdE8uint32_tRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Has a signal been defined? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uiStdMsgId</strong> – <strong>[in]</strong> ID of the message (max 11 bits). </p></li>
+<li><p><strong>rssSignalName</strong> – <strong>[in]</strong> Reference to the string containing the name of the signal. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when a signal has been defined; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser17HasSignalDefExtIdE8uint32_tRKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser17HasSignalDefExtIdE8uint32_tRKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser17HasSignalDefExtIdE8uint32_tRKNSt6stringE"></span><span id="dbc::CDbcParser::HasSignalDefExtId__uint32_t.ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1af160638dea5f05428f8ad9d848fd0dd0"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasSignalDefExtId</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiExtMsgId</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssSignalName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser17HasSignalDefExtIdE8uint32_tRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Has a signal been defined? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uiExtMsgId</strong> – <strong>[in]</strong> ID of the message (max 29 bits). </p></li>
+<li><p><strong>rssSignalName</strong> – <strong>[in]</strong> Reference to the string containing the name of the signal. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when a signal has been defined; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser14GetSignalNamesE8uint32_t">
+<span id="_CPPv3NK3dbc10CDbcParser14GetSignalNamesE8uint32_t"></span><span id="_CPPv2NK3dbc10CDbcParser14GetSignalNamesE8uint32_t"></span><span id="dbc::CDbcParser::GetSignalNames__uint32_tC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1aab4e20570ca504e7b73815a775a482f2"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetSignalNames</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiRawMsgId</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser14GetSignalNamesE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the currently stored signal names for the supplied message. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiRawMsgId</strong> – <strong>[in]</strong> ID of the message (covers both standard and extended ID). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Vector containing the signal names. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser12GetSignalDefERKNSt6stringERKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser12GetSignalDefERKNSt6stringERKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser12GetSignalDefERKNSt6stringERKNSt6stringE"></span><span id="dbc::CDbcParser::GetSignalDef__ssCR.ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a5ba8981e92003907412fc9048ba91592"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structdbc_1_1_s_signal_def.html#_CPPv4N3dbc10SSignalDefE" title="dbc::SSignalDef"><span class="n"><span class="pre">SSignalDef</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetSignalDef</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssMsgName</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssSignalName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser12GetSignalDefERKNSt6stringERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the message definition. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssMsgName</strong> – <strong>[in]</strong> Reference to the string containing the name of the message. </p></li>
+<li><p><strong>rssSignalName</strong> – <strong>[in]</strong> Reference to the string containing the name of the signal. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair containing the message and a boolean. If the message was found, the boolean is ‘true’; otherwise the boolean was ‘false’ and an empty message was returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser12GetSignalDefE8uint32_tRKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser12GetSignalDefE8uint32_tRKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser12GetSignalDefE8uint32_tRKNSt6stringE"></span><span id="dbc::CDbcParser::GetSignalDef__uint32_t.ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1abbd358e3acd03f7cae144381f9f88b64"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structdbc_1_1_s_signal_def.html#_CPPv4N3dbc10SSignalDefE" title="dbc::SSignalDef"><span class="n"><span class="pre">SSignalDef</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetSignalDef</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiRawMsgId</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssSignalName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser12GetSignalDefE8uint32_tRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the message definition. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uiRawMsgId</strong> – <strong>[in]</strong> ID of the message (covers both standard and extended ID). </p></li>
+<li><p><strong>rssSignalName</strong> – <strong>[in]</strong> Reference to the string containing the name of the signal. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair containing the message and a boolean. If the message was found, the boolean is ‘true’; otherwise the boolean was ‘false’ and an empty message was returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser17GetSignalDefStdIdE8uint32_tRKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser17GetSignalDefStdIdE8uint32_tRKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser17GetSignalDefStdIdE8uint32_tRKNSt6stringE"></span><span id="dbc::CDbcParser::GetSignalDefStdId__uint32_t.ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a637b9b378626a6415b13734dc7989f56"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structdbc_1_1_s_signal_def.html#_CPPv4N3dbc10SSignalDefE" title="dbc::SSignalDef"><span class="n"><span class="pre">SSignalDef</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetSignalDefStdId</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiStdMsgId</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssSignalName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser17GetSignalDefStdIdE8uint32_tRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the message definition. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uiStdMsgId</strong> – <strong>[in]</strong> ID of the message (max 11 bits). </p></li>
+<li><p><strong>rssSignalName</strong> – <strong>[in]</strong> Reference to the string containing the name of the signal. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair containing the message and a boolean. If the message was found, the boolean is ‘true’; otherwise the boolean was ‘false’ and an empty message was returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser17GetSignalDefExtIdE8uint32_tRKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser17GetSignalDefExtIdE8uint32_tRKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser17GetSignalDefExtIdE8uint32_tRKNSt6stringE"></span><span id="dbc::CDbcParser::GetSignalDefExtId__uint32_t.ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a128196455c5f72488781342d8ab67451"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structdbc_1_1_s_signal_def.html#_CPPv4N3dbc10SSignalDefE" title="dbc::SSignalDef"><span class="n"><span class="pre">SSignalDef</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetSignalDefExtId</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiExtMsgId</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssSignalName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser17GetSignalDefExtIdE8uint32_tRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the message definition. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uiExtMsgId</strong> – <strong>[in]</strong> ID of the message (max 29 bits). </p></li>
+<li><p><strong>rssSignalName</strong> – <strong>[in]</strong> Reference to the string containing the name of the signal. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair containing the message and a boolean. If the message was found, the boolean is ‘true’; otherwise the boolean was ‘false’ and an empty message was returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser14GetEnvVarNamesEv">
+<span id="_CPPv3NK3dbc10CDbcParser14GetEnvVarNamesEv"></span><span id="_CPPv2NK3dbc10CDbcParser14GetEnvVarNamesEv"></span><span id="dbc::CDbcParser::GetEnvVarNamesC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a001535cd808bb1ef69c6cf1c5f513fe3"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetEnvVarNames</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser14GetEnvVarNamesEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a vector with the environment variable names. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Vector with name strings. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser12GetEnvVarDefERKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser12GetEnvVarDefERKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser12GetEnvVarDefERKNSt6stringE"></span><span id="dbc::CDbcParser::GetEnvVarDef__ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a3a1f1c0ad190269e6dd0e1ac98d4a530"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structdbc_1_1_s_env_var_def.html#_CPPv4N3dbc10SEnvVarDefE" title="dbc::SEnvVarDef"><span class="n"><span class="pre">SEnvVarDef</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetEnvVarDef</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssVarName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser12GetEnvVarDefERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the environment variable definition. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssVarName</strong> – <strong>[in]</strong> Reference to the string containing the name of the environment variable. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair containing the variable and a boolean. If the message was found, the boolean is ‘true’; otherwise the boolean is ‘false’ and an empty variable is returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser21GetSignalTypeDefNamesEv">
+<span id="_CPPv3NK3dbc10CDbcParser21GetSignalTypeDefNamesEv"></span><span id="_CPPv2NK3dbc10CDbcParser21GetSignalTypeDefNamesEv"></span><span id="dbc::CDbcParser::GetSignalTypeDefNamesC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a66b8cc7b9aa64a16c63f4ee3d716cdd2"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetSignalTypeDefNames</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser21GetSignalTypeDefNamesEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a vector with the names of the signal type definitions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Vector with name strings. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser16GetSignalTypeDefERKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser16GetSignalTypeDefERKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser16GetSignalTypeDefERKNSt6stringE"></span><span id="dbc::CDbcParser::GetSignalTypeDef__ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1af50f1df917da0e968fcd680f59c836a9"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structdbc_1_1_s_signal_type_def.html#_CPPv4N3dbc14SSignalTypeDefE" title="dbc::SSignalTypeDef"><span class="n"><span class="pre">SSignalTypeDef</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetSignalTypeDef</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssSignalTypeDefName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser16GetSignalTypeDefERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the signal type definition belonging to the provided definition name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssSignalTypeDefName</strong> – <strong>[in]</strong> Reference to the string containing the name of the signal type definition to return. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair containing the signal type definition and a boolean. If the type definition was found, the boolean is ‘true’; otherwise the boolean is ‘false’ and an empty type definition is returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser22GetSignalGroupDefNamesE8uint32_t">
+<span id="_CPPv3NK3dbc10CDbcParser22GetSignalGroupDefNamesE8uint32_t"></span><span id="_CPPv2NK3dbc10CDbcParser22GetSignalGroupDefNamesE8uint32_t"></span><span id="dbc::CDbcParser::GetSignalGroupDefNames__uint32_tC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a3808a328f964374f56b8c2d4aeed68cc"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetSignalGroupDefNames</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiRawMsgId</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser22GetSignalGroupDefNamesE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a vector with the names of the signal groups definitions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiRawMsgId</strong> – <strong>[in]</strong> ID of the message (covers both standard and extended ID). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Vector with name strings. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser17GetSignalGroupDefE8uint32_tRKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser17GetSignalGroupDefE8uint32_tRKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser17GetSignalGroupDefE8uint32_tRKNSt6stringE"></span><span id="dbc::CDbcParser::GetSignalGroupDef__uint32_t.ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a780f5aa21f0d5653563ab5997c5bb7a8"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structdbc_1_1_s_signal_group_def.html#_CPPv4N3dbc15SSignalGroupDefE" title="dbc::SSignalGroupDef"><span class="n"><span class="pre">SSignalGroupDef</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetSignalGroupDef</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiRawMsgId</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssSignalGroupDefName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser17GetSignalGroupDefE8uint32_tRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the signal group definition belonging to the provided name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uiRawMsgId</strong> – <strong>[in]</strong> ID of the message (covers both standard and extended ID). </p></li>
+<li><p><strong>rssSignalGroupDefName</strong> – <strong>[in]</strong> Reference to the string containing the name of the signal group definition to return. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair containing the signal group definition and a boolean. If the group definition was found, the boolean is ‘true’; otherwise the boolean is ‘false’ and an empty group definition is returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser11GetCommentsEv">
+<span id="_CPPv3NK3dbc10CDbcParser11GetCommentsEv"></span><span id="_CPPv2NK3dbc10CDbcParser11GetCommentsEv"></span><span id="dbc::CDbcParser::GetCommentsC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1af4f3a3f69cc14b98fae3fd739deab613"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetComments</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser11GetCommentsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the global DBC file comments. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference to the vector with comment strings. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser20GetAttributeDefNamesEv">
+<span id="_CPPv3NK3dbc10CDbcParser20GetAttributeDefNamesEv"></span><span id="_CPPv2NK3dbc10CDbcParser20GetAttributeDefNamesEv"></span><span id="dbc::CDbcParser::GetAttributeDefNamesC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a306536d3d5b0e47e0a1e5e9227139817"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetAttributeDefNames</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser20GetAttributeDefNamesEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a vector with the names of the global attribute definitions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Vector with name strings. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser15GetAttributeDefERKNSt6stringE">
+<span id="_CPPv3NK3dbc10CDbcParser15GetAttributeDefERKNSt6stringE"></span><span id="_CPPv2NK3dbc10CDbcParser15GetAttributeDefERKNSt6stringE"></span><span id="dbc::CDbcParser::GetAttributeDef__ssCRC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a457c6f3d10457a695ea6635235d7ba08"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structdbc_1_1_s_attribute_def.html#_CPPv4N3dbc13SAttributeDefE" title="dbc::SAttributeDef"><span class="n"><span class="pre">SAttributeDef</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetAttributeDef</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssAttributeDefName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser15GetAttributeDefERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the attribute definition belonging to the provided name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssAttributeDefName</strong> – <strong>[in]</strong> Reference to the string containing the name of the attribute definition to return. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair containing the attribute definition and a boolean. If the attribute definition was found, the boolean is ‘true’; otherwise the boolean is ‘false’ and an empty attribute definition is returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3dbc10CDbcParser13GetAttributesEv">
+<span id="_CPPv3NK3dbc10CDbcParser13GetAttributesEv"></span><span id="_CPPv2NK3dbc10CDbcParser13GetAttributesEv"></span><span id="dbc::CDbcParser::GetAttributesC"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1aa332107aeba29fd2dd5c5e146dd0006c"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="structdbc_1_1_s_attribute_value.html#_CPPv4N3dbc15SAttributeValueE" title="dbc::SAttributeValue"><span class="n"><span class="pre">SAttributeValue</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetAttributes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3dbc10CDbcParser13GetAttributesEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get global attributes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference to the vector with attribute values. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3dbc10CDbcParser12ExtractMsgIdE8uint32_t">
+<span id="_CPPv3N3dbc10CDbcParser12ExtractMsgIdE8uint32_t"></span><span id="_CPPv2N3dbc10CDbcParser12ExtractMsgIdE8uint32_t"></span><span id="dbc::CDbcParser::ExtractMsgId__uint32_t"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a6edd6a81a0ac2c893b3cc7fcc46043c7"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">uint32_t</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExtractMsgId</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiRawId</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3dbc10CDbcParser12ExtractMsgIdE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the message ID from a raw ID. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiRawId</strong> – <strong>[in]</strong> ID of the message (covers both standard and extended ID). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair with the message ID and a boolean indicating whether the ID is extended or not. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3dbc10CDbcParser12ComposeRawIdE8uint32_tb">
+<span id="_CPPv3N3dbc10CDbcParser12ComposeRawIdE8uint32_tb"></span><span id="_CPPv2N3dbc10CDbcParser12ComposeRawIdE8uint32_tb"></span><span id="dbc::CDbcParser::ComposeRawId__uint32_t.b"></span><span class="target" id="classdbc_1_1_c_dbc_parser_1a32a69f8bde742bcee301109990ce0ac3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ComposeRawId</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiMsgId</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bExtended</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3dbc10CDbcParser12ComposeRawIdE8uint32_tb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Compose a raw ID from a message ID. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uiMsgId</strong> – <strong>[in]</strong> The ID of the message. </p></li>
+<li><p><strong>bExtended</strong> – <strong>[in]</strong> When set, the message ID is an extended ID (29 bits); otherwise it is a standard ID (11 bits). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the raw ID. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

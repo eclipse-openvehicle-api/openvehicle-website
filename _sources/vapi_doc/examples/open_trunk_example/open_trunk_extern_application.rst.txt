@@ -1,0 +1,31 @@
+.. _vapi-open_trunk_mixed-criticality:
+
+Open Trunk Extern Application
+=============================
+
+.. note:: 
+   | Start instance:
+   | sdv_control STARTUP --instance3005
+   | Connect to this instance:
+   | open_trunk_example 3005
+
+.. note:: 
+
+   - A :term:`Complex Service` offers an :term:`Interface` to open the trunk.
+   - Before the command is forwarded to the :term:`Basic Service` the vehicle speed is checked and denied accordingly.
+   - Therefore the :term:`Complex Service` can be seen as an ASIL A component.  
+   - The :term:`Basic Service` must offer its :term:`Interface` over the process border: That's why the :term:`Proxy` & :term:`Stub` code is required.
+   - If there is a second VAPI instance which represent a QM instance the connection to the :term:`Basic Service` can be prevented in general for :term:`QM Function` s.
+   - In that case opening the trunk can not be triggered when the vehicle is moving.
+   
+.. image:: ../../../vapi_media/examples/open_trunk_example/open_trunk_screenshot_3005.png
+
+The Speed signal is coming via CAN bus by using the :term:`VAPI Component` ``can_com_sim.sdv`` from the framework. The :term:`VAPI Component` reads the CAN messages from a text file and sends these messages to the :term:`Data Link` The :term:`Data Link` component is created from a dbc file with the help of the helper tool ``sdv_bcd_util``.
+
+.. Attention:: To prevent the bypassing of the :term:`Complex Service` we need :term:`Mixed-Criticality`. That can be done when we run two Instances, one in QM Mode, the other in Safety Mode. The connection from The QM instance to the :term:`Basic Service` can be prevented.
+   
+In the example we still run only one instance, that's why we still have direct access to the :term:`Basic Service`.
+
+.. image:: ../../../vapi_media/examples/open_trunk_example/open_trunk_mixed-critical.png
+
+.. seealso::  :ref:`Mixed-Criticality <vapi-mixed_criticality>`

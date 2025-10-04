@@ -1,0 +1,131 @@
+.. _vapi-components_services:
+
+Components & Services
+=====================
+
+Logger
+------
+
+For logging the following macros can be used: ``SDV_LOG_TRACE(...)``, ``SDV_LOG_DEBUG(...)``, ``SDV_LOG_INFO(...)``, ``SDV_LOG_WARNING(...)``, ``SDV_LOG_ERROR(...)`` or ``SDV_LOG(...)``.
+In the log itself, additional information such as file, line and timestamp are recorded.
+Before usage, the sdv::app::CAppControl must be initialized.
+
+**Output File:**
+
+**Windows:** In Windows, the log file is available in the project's build output folder. The file name is started with the program tag, includes timestamp and file extension is *.log*.
+
+For example: *VAPI_LOG_2023.07.10_09-59-05.log*.
+
+**Linux:** In Linux *syslogd* is used for logging. If *syslog* is not available in system it needs to installed by using following commands:
+
+* Get the update first: ``sudo apt-get update``
+* Install syslogd: ``sudo apt-get install inetutils-syslogd``
+* Restart the syslogd: ``sudo service inetutils-syslogd restart``
+
+To see the log you need to navigate to */var/* folder in the root. There *syslog* file might be directly available, otherwise it's located in */var/log/* directory.
+
+.. _vapi-tasktimer:
+
+TaskTimer
+---------
+
+The :ref:`ITaskTimer <exhale_struct_structsdv_1_1core_1_1_i_task_timer>` functionality, which is implemented as part of the VAPI :term:`Platform Abstraction`, allows for periodic execution/scheduling of tasks. It can be accessed via the  :ref:`CTaskTimerService <exhale_class_class_c_task_timer_service>`.
+A task in this context is any object (living on the heap) implementing the :ref:`ITaskExecute::Execute <exhale_struct_structsdv_1_1core_1_1_i_task_execute>` - the implementation of ITaskExecute::Execute may contain arbitrary user-defined code.
+
+
+To define and schedule one's own task, ITaskExecute is to be implemented and provided to core::ITaskTimer::CreateTimer as an argument alongside the desired period between executions.
+Afterwards, the provided interface is called periodically until core::ITaskTimer::ShutDownTask is called with the task-id assigned by core::ITaskTimer::CreateTimer.
+After a call to core::ITaskTimer::ShutDownTask no more calls to ITaskExecute::Execute for the task of the given task-id are made.
+
+During this execution period, the ITaskExecute pointer provided to core::ITaskTimer::CreateTimer may not be invalidated and the object must be kept alive.
+When managing multiple tasks, it is recommended to use smart pointers for storage of tasks in containers, such as vectors or maps, to prevent a move and delete sequence from affecting the underlying task objects.
+
+Following is a code snippet of a SDV object, which implements ITaskExecute and schedules its own execution. Included is only Initialize() and Execute(), the full code can be found in examples. The example code, as well as an executable running it, is contained in the projects 'task_timer_example' and 'task_timer_component_example'.
+
+.. code-block:: c
+
+    #include <iostream>
+    #include <chrono>
+    #include <interfaces/core.h>
+    #include <interfaces/timer.h>
+    #include <support/component_impl.h>
+
+    class DemoTimerComponent : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::core::ITaskExecute
+    {
+    public:
+        DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::Device)
+        DECLARE_OBJECT_CLASS_NAME("Timer_Example")
+
+        void Initialize() override
+        {
+            std::cout << "Initializing..." << std::endl;
+            // Getting the platform abstraction interface access pointer via GetObject.
+            sdv::TInterfaceAccessPtr ptrTaskTimer = sdv::core::GetObject("TaskTimerService");
+            // Getting access to the task timer interface.
+            auto taskTimerIfc = ptrTaskTimer.GetInterface<sdv::core::ITaskTimer>();
+
+            // Checking if the interface is available
+            if (taskTimerIfc)
+            {
+                // Call to the 'CreateTimer' function to execute the task every 500 ms.
+                // 'Execute' function is implemented in this class which is printing the current
+                // timestamp while executing the task.
+                m_pTimer = taskTimerIfc->CreateTimer(500, this);
+
+                //updating the object status to running.
+                m_status = sdv::EObjectStatus::running;
+            }
+            else
+            {
+                // If not initialized properly prints the error message to the console and update the
+                // object status to the initialization_failure.
+                std::cout << "Initialization failure: Cannot access task timer interface" << std::endl;
+                m_status = sdv::EObjectStatus::initialization_failure;
+            }
+
+        /**
+        * @brief Execute function contains the task to be executed in provided period.
+        * This function will be called periodically. Currently it's kept simple which just prints the current timestamp to the console.
+        */
+        virtual void Execute() override
+        {
+            std::cout << "Executing the task with timestamp:" << std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) << std::endl;
+        };
+
+    private:
+        sdv::IInterfaceAccess m_pTimer = nullptr; //!< Timer object returned by CreateTimer and later used to ShutDownTask.
+    };  
+
+.. caution:: A Tasktimer is crucial for safety and accuracy. It cannot be created or recreated in runtime mode. A tasktimer must be created in configuration mode. Any timing which must be deleted and recreated at runtime like in the example doors must be iimplemented in an own thread.
+
+Simulation TaskTimer
+--------------------
+
+For the Open Source Simulation Software ``OpenXilEnv`` we implemented another :ref:`Class CSimulationTimer <exhale_class_class_c_simulation_timer>`. The 
+simulation Software runs in 'cycles' with defined steps. The :ref:`CTaskTimerService <exhale_class_class_c_task_timer_service>` runs must faster so the simulation gets out of context.
+
+To synchronize the simulation with the :term:`VAPI Framework`: the simulation timer expects to get the :ref:`Struct ITimerSimulationStep <exhale_struct_structsdv_1_1core_1_1_i_timer_simulation_step>`, how much time was passed since the last cycle. The full code can be found in examples. 
+
+.. code-block:: c
+
+	// Get the task timer service.
+	sdv::core::ITimerSimulationStep* pTimerSimulationStep = sdv::core::GetObject<sdv::core::ITimerSimulationStep>("SimulationTaskTimerService");
+	if (!pTimerSimulationStep)
+	{
+		std::cout << "Error, Simulation timer available " << std::endl;
+	}
+
+	//run for 3 seconds - in that time task timer callbacks in the module get triggered
+	uint32_t counter = 3000;
+	std::chrono::milliseconds sleepDuration (5);
+	while (counter-- > 0)
+	{
+		if (pTimerSimulationStep)
+		{
+			pTimerSimulationStep->SimulationStep(1000);
+		}
+
+		std::this_thread::sleep_for(sleepDuration);
+	}
+
+

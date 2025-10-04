@@ -1,0 +1,177 @@
+
+.. _program_listing_file_core_toml_parser_lexer_toml.h:
+
+Program Listing for File lexer_toml.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_toml_parser_lexer_toml.h>` (``core\toml_parser\lexer_toml.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LEXER_TOML_H
+   #define LEXER_TOML_H
+   
+   #include <algorithm>
+   #include <stack>
+   #include "character_reader_utf_8.h"
+   
+   class CLexerTOML
+   {
+   public:
+       enum class ETokenCategory : uint8_t
+       {
+           token_none,                         
+           token_syntax_assignment,            
+           token_syntax_array_open,            
+           token_syntax_array_close,           
+           token_syntax_table_open,            
+           token_syntax_table_close,           
+           token_syntax_table_array_open,      
+           token_syntax_table_array_close,     
+           token_syntax_inline_table_open,     
+           token_syntax_inline_table_close,    
+           token_syntax_comma,                 
+           token_syntax_dot,                   
+           token_syntax_new_line,              
+           token_key,                          
+           token_string,                       
+           token_integer,                      
+           token_float,                        
+           token_boolean,                      
+           token_time_local,                   
+           token_date_time_offset,             
+           token_date_time_local,              
+           token_date_local,                   
+           token_eof,                          
+           token_error,                        
+           token_empty,                        
+           token_terminated,                   
+       };
+   
+       struct SToken
+       {
+           SToken() = default;
+   
+           explicit SToken(ETokenCategory category) : eCategory(category)
+           {}
+   
+           std::string    ssContentString;                         
+           int64_t        iContentInteger{};                       
+           double         dContentFloatingpoint{};                 
+           bool           bContentBoolean{};                       
+           ETokenCategory eCategory{ETokenCategory::token_none};   
+       };
+   
+       CLexerTOML() = default;
+   
+       CLexerTOML(const std::string& rssString);
+   
+       void Feed(const std::string& rssString);
+   
+       void Reset();
+   
+       SToken Peek() const;
+   
+       SToken Consume();
+   
+       SToken Peek(int32_t n);
+   
+       SToken Consume(int32_t n);
+   
+       bool IsEnd() const;
+   
+   private:
+       void GenerateTokens();
+   
+       bool IsBasicQuotedKey();
+   
+       void ReadBasicQuotedKey();
+   
+       bool IsLiteralQuotedKey();
+   
+       void ReadLiteralQuotedKey();
+   
+       bool IsBareKey();
+   
+       void ReadBareKey();
+   
+       bool IsBasicString();
+   
+       void ReadBasicString();
+   
+       bool IsBasicMultilineString();
+   
+       void ReadBasicMultilineString();
+   
+       bool IsLiteralString();
+   
+       void ReadLiteralString();
+   
+       bool IsLiteralMultilineString();
+   
+       void ReadLiteralMultilineString();
+   
+       bool IsInteger();
+   
+       void ReadInteger();
+   
+       bool IsFloat();
+   
+       void ReadFloat();
+   
+       bool IsBool();
+   
+       void ReadBool();
+   
+       bool IsWhitespace();
+   
+       void ReadWhitespace();
+   
+       bool IsSyntaxElement();
+   
+       void ReadSyntaxElement();
+   
+       bool IsComment();
+   
+       void ReadComment();
+   
+       void ReadUnknownSequence();
+   
+       std::string Unescape();
+   
+       std::string Unicode4DigitToUTF8();
+   
+       std::string Unicode8DigitToUTF8();
+   
+       std::string UnicodeToUTF8(uint8_t numCharacters);
+   
+       static uint32_t HexToDecimal(const char character);
+   
+       static uint32_t DecimalToDecimal(const char character);
+   
+       static uint32_t OctalToDecimal(const char character);
+   
+       static uint32_t BinaryToDecimal(const char character);
+   
+       CCharacterReaderUTF8 m_reader;
+       std::vector<SToken> m_vecTokens;
+       std::size_t         m_nCursor{0};
+   
+       enum class EExpectation
+       {
+           expect_key,         
+           expect_value,       
+           expect_value_once,  
+       };
+       std::stack<EExpectation> m_stackExpectations; 
+       // int32_t m_LineCount{0};
+   
+       const std::vector<std::string> m_vecKeyDelimiters{
+           "\n", "\t", "\r", " ", "", ".", "=", "]"}; 
+       const std::vector<std::string> m_vecValueDelimiters{
+           "\n", "\t", "\r", " ", ",", "", "]", "}"}; 
+   };
+   
+   #endif // LEXER_TOML_H

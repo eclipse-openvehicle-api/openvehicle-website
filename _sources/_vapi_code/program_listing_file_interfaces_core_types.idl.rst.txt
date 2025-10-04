@@ -1,0 +1,164 @@
+
+.. _program_listing_file_interfaces_core_types.idl:
+
+Program Listing for File core_types.idl
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_core_types.idl>` (``interfaces\core_types.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   const uint32 SDVFrameworkInterfaceVersion = 100;
+   
+   const uint32 SDVFrameworkBuildVersion = 100;
+   
+   const uint32 SDVFrameworkSubbuildVersion = 100;
+   
+   #verbatim_begin
+   /* Define SDV_SYMBOL_PUBLIC attribute for exported functions. */
+   #if !defined(SDV_SYMBOL_PUBLIC) || !defined(SDV_SYMBOL_HIDDEN)
+   #if defined _WIN32 || defined __CYGWIN__
+   #ifdef __GNUC__
+   #define SDV_SYMBOL_PUBLIC __attribute__((dllexport))
+   #else \
+   #define SDV_SYMBOL_PUBLIC __declspec(dllexport)
+   #endif
+   #define SDV_SYMBOL_HIDDEN
+   #else
+   #if __GNUC__ >= 4
+   #define SDV_SYMBOL_PUBLIC __attribute__((visibility("default"))) __attribute__((used))
+   #define SDV_SYMBOL_HIDDEN __attribute__((visibility("hidden")))
+   #else
+   #define SDV_SYMBOL_PUBLIC 
+   #define SDV_SYMBOL_HIDDEN  
+   #endif
+   #endif
+   #endif /* !defined(SDV_SYMBOL_PUBLIC) || !defined(SDV_SYMBOL_HIDDEN) */
+   
+   #ifdef __unix__
+   #if _POSIX_C_SOURCE < 200809L
+   #error POSIX version POSIX.1-2008 or higher needed
+   #endif
+   #endif
+   #verbatim_end
+   
+   #verbatim_begin
+   #include "../support/interface.h"
+   #include "../support/except.h"
+   #verbatim_end
+   
+   module sdv
+   {
+       enum EEndian : uint8
+       {
+           big_endian    = 0,
+           little_endian = 1,
+       };
+   
+       exception XSysExcept
+       {};
+   
+       exception XAccessDenied : XSysExcept
+       {
+           const char _description[] = "Access denied.";
+       };
+   
+       exception XNotFound : XSysExcept
+       {
+           const char _description[] = "Resource not found.";
+       };
+   
+       exception XInvalidState : XSysExcept
+       {
+           const char _description[] = "The system is in an invalid state.";
+       };
+   
+       exception XTimeout : XSysExcept
+       {
+           const char _description[] = "A timeout occurred.";
+       };
+   
+       exception XNoInterface : XSysExcept
+       {
+           const char _description[] = "The interface could not be found.";
+       };
+   
+       exception XIndexOutOfRange : XSysExcept
+       {
+           const char _description[] = "The supplied index was out of range.";
+   
+           uint32 uiIndex;  
+           uint32 uiSize;   
+       };
+   
+       exception XInvalidIterator : XSysExcept
+       {
+           const char _description[] = "The supplied iterator was invalid.";
+       };
+   
+       exception XNullPointer : XSysExcept
+       {
+           const char _description[] = "A NULL-pointer was supplied.";
+       };
+   
+       exception XInvalidRefCount : XSysExcept
+       {
+           const char _description[] = "The reference counter has an invalid/unexpected value.";
+   
+           uint32 uiCount; 
+       };
+   
+       exception XBufferTooSmall : XSysExcept
+       {
+           const char _description[] = "The buffer was too small to store the data.";
+   
+           uint64 uiSize;      
+           uint64 uiCapacity;  
+       };
+   
+       exception XHashNotMatching : XSysExcept
+       {
+           const char _description[] = "The provided hash value doesn't match to the calculated hash value.";
+   
+           uint64 uiCalculated;        
+           uint64 uiProvided;          
+       };
+   
+       exception XOffsetPastBufferSize : XSysExcept
+       {
+           const char _description[] = "The provided offset doesn't is not pointing to a location within the buffer.";
+   
+           uint64 uiOffset;         
+           uint64 uiSize;           
+       };
+   
+       exception XUnknownException : XSysExcept
+       {
+           const char _description[] = "An exception was fired, but no handler found for it.";
+   
+           exception_id unknown_id;        
+       };
+   
+       exception XUnhandledException : XSysExcept
+       {
+           const char _description[] = "An unhandled exception was caught.";
+       };
+   
+       module core
+       {
+           exception XNoMemMgr : XSysExcept
+           {
+               const char _description[] = "The memory manager could not be accessed.";
+           };
+   
+           exception XAllocFailed : XSysExcept
+           {
+               const char _description[] = "The allocation of memory failed.";
+   
+               uint32 uiSize; 
+           };
+       };
+   };

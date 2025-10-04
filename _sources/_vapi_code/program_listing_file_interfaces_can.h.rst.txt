@@ -1,0 +1,103 @@
+
+.. _program_listing_file_interfaces_can.h:
+
+Program Listing for File can.h
+==============================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_can.h>` (``interfaces\can.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__CAN_H__20251003_130453_854__
+   #define __IDL_GENERATED__CAN_H__20251003_130453_854__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   namespace sdv
+   {
+       namespace can
+       {
+           struct SMessage
+           {
+               uint32_t uiID;
+   
+               bool bExtended;
+   
+               bool bCanFd;
+   
+               sdv::sequence<uint8_t> seqData;
+           };
+   
+           enum class EError : uint32_t
+           {
+               no_error = 0,
+   
+               bit_error = 1,
+   
+               stuff_error = 2,
+   
+               form_error = 3,
+   
+               crc_error = 4,
+   
+               ack_error = 5,
+           };
+   
+           struct SErrorFrame
+           {
+               uint32_t uiID;
+   
+               EError eError;
+           };
+   
+           /*local*/ interface IReceive
+           {
+               static constexpr ::sdv::interface_id _id = 0xFF054F70A01E17CC;
+   
+               virtual void Receive(/*in*/ const SMessage& sMsg, /*in*/ uint32_t uiIfcIndex) = 0;
+   
+               virtual void Error(/*in*/ const SErrorFrame& sError, /*in*/ uint32_t uiIfcIndex) = 0;
+           };
+   
+           /*local*/ interface IRegisterReceiver
+           {
+               static constexpr ::sdv::interface_id _id = 0x3BAD041C94E7FE89;
+   
+               virtual void RegisterReceiver(/*in*/ IReceive* pReceiver) = 0;
+   
+               virtual void UnregisterReceiver(/*in*/ IReceive* pReceiver) = 0;
+           };
+   
+           /*local*/ interface ISend
+           {
+               static constexpr ::sdv::interface_id _id = 0xB584826CA143EA1B;
+   
+               virtual void Send(/*in*/ const SMessage& sMsg, /*in*/ uint32_t uiIfcIndex) = 0;
+           };
+   
+           /*local*/ interface IInformation
+           {
+               static constexpr ::sdv::interface_id _id = 0x395E2D5C274ADA2C;
+   
+               virtual sdv::sequence<sdv::u8string> GetInterfaces() const = 0;
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__CAN_H__20251003_130453_863__)

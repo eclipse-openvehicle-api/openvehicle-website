@@ -1,0 +1,190 @@
+
+.. _program_listing_file_sdv_idl_compiler_environment.h:
+
+Program Listing for File environment.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_environment.h>` (``sdv_idl_compiler\environment.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef ENV_H
+   #define ENV_H
+   
+   #include <filesystem>
+   #include <set>
+   #include <stack>
+   
+   #include "logger.h"
+   #include "core_idl_backup.h"
+   #include "../global/cmdlnparser/cmdlnparser.h"
+   #include "includes.h"
+   #include "macro.h"
+   #include "token.h"
+   #include "exception.h"
+   
+   class CIdlCompilerEnvironment
+       : public sdv::idl::ICompilerOption
+       , public sdv::IInterfaceAccess
+   {
+   public:
+       CIdlCompilerEnvironment();
+   
+       CIdlCompilerEnvironment(const std::vector<std::string>& rvecArgs);
+   
+       template <typename TCharType>
+       CIdlCompilerEnvironment(size_t nArgs, const TCharType** rgszArgs);
+   
+       virtual sdv::interface_t GetInterface(sdv::interface_id idInterface) override;
+   
+       std::filesystem::path GetNextFile();
+   
+       bool Help() const { return m_bCLHelp; }
+   
+       void ShowHelp() const { m_cmdln.PrintHelp(std::cout); }
+   
+       bool Version() const { return m_bCLVersion; }
+   
+       const std::vector<std::filesystem::path>& GetIncludeDirs() const { return m_vecIncludeDirs; }
+   
+       std::filesystem::path GetOutputDir() const { return m_pathOutputDir; }
+   
+       void AddDefinition(const char* szDefinition);
+   
+       void AddDefinition(const CToken& rtoken, const CMacro& rMacro);
+   
+       void RemoveDefinition(const char* szMacro);
+   
+       bool Defined(const char* szMacro) const;
+   
+       bool TestAndExpand(const std::string&   rssIdentifier,
+                          CCodePos&            rcode,
+                          bool                 bInMacroExpansion,
+                          CUsedMacroSet&       rsetPreviousExpanded) const;
+   
+       bool TestAndExpand(const std::string& rssIdentifier, CCodePos& rcode, bool bInMacroExpansion = false) const
+       {
+           CUsedMacroSet setDummy;
+           return TestAndExpand(rssIdentifier, rcode, bInMacroExpansion, setDummy);
+       }
+   
+       bool ResolveConst() const;
+   
+       bool NoProxyStub() const;
+   
+       const std::string& GetProxStubCMakeTarget() const;
+   
+       virtual sdv::u8string GetOption(/*in*/ const sdv::u8string& rssOption) const override;
+   
+       virtual uint32_t GetOptionCnt(/*in*/ const sdv::u8string& rssOption) const override;
+   
+       virtual sdv::u8string GetOptionN(/*in*/ const sdv::u8string& rssOption, /*in*/ uint32_t uiIndex) const override;
+   
+       bool InterfaceTypeExtension() const { return m_bEnableInterfaceTypeExtension; }
+       bool ExceptionTypeExtension() const { return m_bEnableExceptionTypeExtension; }
+       bool PointerTypeExtension() const { return m_bEnablePointerTypeExtension; }
+       bool UnicodeExtension() const { return m_bEnableUnicodeExtension; }
+       bool CaseSensitiveTypeExtension() const { return m_bEnableCaseSensitiveNameExtension; }
+       bool ContextDependentNamesExtension() const { return m_bEnableContextDependentNamesExtension; }
+       bool MultiDimArrayExtension() const { return m_bEnableMultiDimArrayExtension; }
+   private:
+       CCommandLine m_cmdln;                                   
+       CMacroMap m_mapMacros;                                  
+       std::vector<std::filesystem::path> m_vecIncludeDirs;    
+       std::vector<std::filesystem::path> m_vecFileNames;      
+       std::filesystem::path m_pathOutputDir;                  
+       mutable CUsedMacroSet m_setMacrosUsedInExpansion;       
+       bool m_bCLHelp       = false;                           
+       bool m_bCLVersion    = false;                           
+       bool m_bResolveConst = false;                           
+       bool m_bNoPS = false;                                   
+       std::string m_ssProxyStubLibName = "proxystub";         
+       std::filesystem::path m_pathCompilerPath;               
+       int32_t m_iFileIndex = -1;                              
+       bool m_bEnableInterfaceTypeExtension = true;            
+       bool m_bEnableExceptionTypeExtension = true;            
+       bool m_bEnablePointerTypeExtension = true;              
+       bool m_bEnableUnicodeExtension = true;                  
+       bool m_bEnableCaseSensitiveNameExtension = true;        
+       bool m_bEnableContextDependentNamesExtension = true;    
+       bool m_bEnableMultiDimArrayExtension = true;            
+   };
+   
+   template <typename TCharType>
+   CIdlCompilerEnvironment::CIdlCompilerEnvironment(size_t nArgs, const TCharType** rgszArgs) :
+       m_cmdln(static_cast<uint32_t>(CCommandLine::EParseFlags::no_assignment_character))
+   {
+       try
+       {
+           bool bSilent = false;
+           bool bVerbose = false;
+           bool bStrict = false;
+           std::vector<std::string> vecMacros;
+           auto& rArgHelpDef = m_cmdln.DefineOption("?", m_bCLHelp, "Show help");
+           rArgHelpDef.AddSubOptionName("help");
+           auto& rArgSilentDef = m_cmdln.DefineOption("s", bSilent, "Do not show any information on STDOUT. Not compatible with 'verbose'.");
+           rArgSilentDef.AddSubOptionName("silent");
+           auto& rArgVerboseDef = m_cmdln.DefineOption("v", bVerbose, "Provide verbose information. Not compatible with 'silent'.");
+           rArgVerboseDef.AddSubOptionName("verbose");
+           m_cmdln.DefineSubOption("version", m_bCLVersion, "Show version information");
+           m_cmdln.DefineOption("I", m_vecIncludeDirs, "Set include directory");
+           m_cmdln.DefineOption("O", m_pathOutputDir, "Set output directory");
+           m_cmdln.DefineOption("D", vecMacros, "Set a macro definition in the form of macro, macro=<value>, macro(arg1,...)=<value>");
+           m_cmdln.DefineSubOption("resolve_const", m_bResolveConst, "Use the calculated value for const values, instead of the defined expression.");
+           m_cmdln.DefineSubOption("no_ps", m_bNoPS, "Do not create any proxy and stub code (interface definitions only).");
+           m_cmdln.DefineSubOption("ps_lib_name", m_ssProxyStubLibName, "Proxy and stub library target name in the generated cmake file (default=\"proxystub\").");
+   
+           m_cmdln.DefineGroup("Extensions", "Enable/disable compatibility extensions.");
+           m_cmdln.DefineFlagSubOption("interface_type", m_bEnableInterfaceTypeExtension, "Enable/disable support of the interface type extensions 'interface_t' and 'interface_id'.Default enabled.");
+           m_cmdln.DefineFlagSubOption("exception_type", m_bEnableExceptionTypeExtension, "Enable/disable support of the exception type extension 'exception_id'. Default enabled.");
+           m_cmdln.DefineFlagSubOption("pointer_type", m_bEnablePointerTypeExtension, "Enable/disable support of the pointer type extension 'pointer'. Default enabled.");
+           m_cmdln.DefineFlagSubOption("unicode_char", m_bEnableUnicodeExtension, "Enable/disable support of the UTF-8, UTF-16 and UTF-32 Unicode extensions. Default enabled.");
+           m_cmdln.DefineFlagSubOption("case_sensitive", m_bEnableCaseSensitiveNameExtension, "Enable/disable case sensitive name restriction extension. Default enabled.");
+           m_cmdln.DefineFlagSubOption("context_names", m_bEnableContextDependentNamesExtension, "Enable/disable the use of context dependent names in declarations. Default enabled.");
+           m_cmdln.DefineFlagSubOption("multi_dimensional_array", m_bEnableMultiDimArrayExtension, "Enable/disable support of multi-dimensional arrays extension. Default enabled.");
+           m_cmdln.DefineSubOption("strict", bStrict, "Strictly maintaining OMG-IDL conformance; disabling extensions.");
+   
+           m_cmdln.DefineDefaultArgument(m_vecFileNames, "IDL files");
+           m_cmdln.Parse(nArgs, rgszArgs);
+   
+           // Add the macros.
+           for (const std::string& rssMacro : vecMacros)
+           {
+               try
+               {
+                   AddDefinition(rssMacro.c_str());
+               }
+               catch (const sdv::idl::XCompileError&)
+               {
+                   throw CCompileException("Invalid command line option: -D");
+               }
+           }
+   
+           // If strict, disable all extensions.
+           if (bStrict)
+           {
+               m_bEnableInterfaceTypeExtension = false;
+               m_bEnableExceptionTypeExtension = false;
+               m_bEnablePointerTypeExtension = false;
+               m_bEnableUnicodeExtension = false;
+               m_bEnableCaseSensitiveNameExtension = false;
+               m_bEnableContextDependentNamesExtension = false;
+               m_bEnableMultiDimArrayExtension = false;
+           }
+   
+           // Set the verbosity mode.
+           if (bSilent)
+               g_log_control.SetVerbosityMode(EVerbosityMode::report_none);
+           else if (bVerbose)
+               g_log_control.SetVerbosityMode(EVerbosityMode::report_all);
+       }
+       catch (const SArgumentParseException& rsExcept)
+       {
+           m_bCLHelp = true;
+           throw CCompileException(rsExcept.what());
+       }
+   }
+   
+   #endif // !defined ENV_H

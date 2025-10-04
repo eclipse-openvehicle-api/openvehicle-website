@@ -1,0 +1,1457 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Class CSdvPackagerEnvironment &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/class_c_sdv_packager_environment';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Class...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-csdvpackagerenvironment">
+<span id="exhale-class-class-c-sdv-packager-environment"></span><h1>Class CSdvPackagerEnvironment<a class="headerlink" href="#class-csdvpackagerenvironment" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_sdv_packager_environment.h.html#file-sdv-packager-environment-h"><span class="std std-ref">File environment.h</span></a></p></li>
+</ul>
+<section id="nested-relationships">
+<h2>Nested Relationships<a class="headerlink" href="#nested-relationships" title="Permalink to this heading">#</a></h2>
+<section id="nested-types">
+<h3>Nested Types<a class="headerlink" href="#nested-types" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="struct_c_sdv_packager_environment_1_1_s_environment_exception.html#exhale-struct-struct-c-sdv-packager-environment-1-1-s-environment-exception"><span class="std std-ref">Struct CSdvPackagerEnvironment::SEnvironmentException</span></a></p></li>
+<li><p><a class="reference internal" href="struct_c_sdv_packager_environment_1_1_s_module.html#exhale-struct-struct-c-sdv-packager-environment-1-1-s-module"><span class="std std-ref">Struct CSdvPackagerEnvironment::SModule</span></a></p></li>
+<li><p><a class="reference internal" href="struct_c_sdv_packager_environment_1_1_s_version.html#exhale-struct-struct-c-sdv-packager-environment-1-1-s-version"><span class="std std-ref">Struct CSdvPackagerEnvironment::SVersion</span></a></p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this heading">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv423CSdvPackagerEnvironment">
+<span id="_CPPv323CSdvPackagerEnvironment"></span><span id="_CPPv223CSdvPackagerEnvironment"></span><span id="CSdvPackagerEnvironment"></span><span class="target" id="class_c_sdv_packager_environment"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CSdvPackagerEnvironment</span></span></span><a class="headerlink" href="#_CPPv423CSdvPackagerEnvironment" title="Permalink to this definition">#</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment14EOperatingModeE">
+<span id="_CPPv3N23CSdvPackagerEnvironment14EOperatingModeE"></span><span id="_CPPv2N23CSdvPackagerEnvironment14EOperatingModeE"></span><span class="target" id="class_c_sdv_packager_environment_1afb9b2dd28706ce29302161cd98c786e0"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EOperatingMode</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment14EOperatingModeE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Operation mode the packager utility is running in. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment14EOperatingMode4noneE">
+<span id="_CPPv3N23CSdvPackagerEnvironment14EOperatingMode4noneE"></span><span id="_CPPv2N23CSdvPackagerEnvironment14EOperatingMode4noneE"></span><span class="target" id="class_c_sdv_packager_environment_1afb9b2dd28706ce29302161cd98c786e0a334c4a4c42fdb79d7ebc3e73b517e6f8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">none</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment14EOperatingMode4noneE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>No mode selected. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment14EOperatingMode4packE">
+<span id="_CPPv3N23CSdvPackagerEnvironment14EOperatingMode4packE"></span><span id="_CPPv2N23CSdvPackagerEnvironment14EOperatingMode4packE"></span><span class="target" id="class_c_sdv_packager_environment_1afb9b2dd28706ce29302161cd98c786e0ab484857901742afc9e9d4e9853596ce2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pack</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment14EOperatingMode4packE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Packing operation (default) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment14EOperatingMode14direct_installE">
+<span id="_CPPv3N23CSdvPackagerEnvironment14EOperatingMode14direct_installE"></span><span id="_CPPv2N23CSdvPackagerEnvironment14EOperatingMode14direct_installE"></span><span class="target" id="class_c_sdv_packager_environment_1afb9b2dd28706ce29302161cd98c786e0abf2c367a03710e5118aba2cea2aab60c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">direct_install</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment14EOperatingMode14direct_installE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Direct installation. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment14EOperatingMode7installE">
+<span id="_CPPv3N23CSdvPackagerEnvironment14EOperatingMode7installE"></span><span id="_CPPv2N23CSdvPackagerEnvironment14EOperatingMode7installE"></span><span class="target" id="class_c_sdv_packager_environment_1afb9b2dd28706ce29302161cd98c786e0a19ad89bc3e3c9d7ef68b89523eff1987"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">install</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment14EOperatingMode7installE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Installation. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment14EOperatingMode9uninstallE">
+<span id="_CPPv3N23CSdvPackagerEnvironment14EOperatingMode9uninstallE"></span><span id="_CPPv2N23CSdvPackagerEnvironment14EOperatingMode9uninstallE"></span><span class="target" id="class_c_sdv_packager_environment_1afb9b2dd28706ce29302161cd98c786e0afe98497efedbe156ecc4b953aea77e07"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uninstall</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment14EOperatingMode9uninstallE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Remove an installed package. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment14EOperatingMode6verifyE">
+<span id="_CPPv3N23CSdvPackagerEnvironment14EOperatingMode6verifyE"></span><span id="_CPPv2N23CSdvPackagerEnvironment14EOperatingMode6verifyE"></span><span class="target" id="class_c_sdv_packager_environment_1afb9b2dd28706ce29302161cd98c786e0ae8418d1d706cd73548f9f16f1d55ad6e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">verify</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment14EOperatingMode6verifyE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Verify integrity. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment14EOperatingMode4showE">
+<span id="_CPPv3N23CSdvPackagerEnvironment14EOperatingMode4showE"></span><span id="_CPPv2N23CSdvPackagerEnvironment14EOperatingMode4showE"></span><span class="target" id="class_c_sdv_packager_environment_1afb9b2dd28706ce29302161cd98c786e0aa7dd12b1dab17d25467b0b0a4c8d4a92"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">show</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment14EOperatingMode4showE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Show content. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment9EShowMaskE">
+<span id="_CPPv3N23CSdvPackagerEnvironment9EShowMaskE"></span><span id="_CPPv2N23CSdvPackagerEnvironment9EShowMaskE"></span><span class="target" id="class_c_sdv_packager_environment_1a63bcfbe0cc8877a0c0071b20b44921ba"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EShowMask</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment9EShowMaskE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Show information mask (multiple can be combined). </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment9EShowMask3allE">
+<span id="_CPPv3N23CSdvPackagerEnvironment9EShowMask3allE"></span><span id="_CPPv2N23CSdvPackagerEnvironment9EShowMask3allE"></span><span class="target" id="class_c_sdv_packager_environment_1a63bcfbe0cc8877a0c0071b20b44921baaa181a603769c1f98ad927e7367c7aa51"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">all</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment9EShowMask3allE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Show all information. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment9EShowMask4infoE">
+<span id="_CPPv3N23CSdvPackagerEnvironment9EShowMask4infoE"></span><span id="_CPPv2N23CSdvPackagerEnvironment9EShowMask4infoE"></span><span class="target" id="class_c_sdv_packager_environment_1a63bcfbe0cc8877a0c0071b20b44921baacaf9b6b99962bf5c2264824231d7a40c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">info</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment9EShowMask4infoE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Show package information. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment9EShowMask7modulesE">
+<span id="_CPPv3N23CSdvPackagerEnvironment9EShowMask7modulesE"></span><span id="_CPPv2N23CSdvPackagerEnvironment9EShowMask7modulesE"></span><span class="target" id="class_c_sdv_packager_environment_1a63bcfbe0cc8877a0c0071b20b44921baa0eb9b3af2e4a00837a1b1a854c9ea18c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">modules</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment9EShowMask7modulesE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Show modules. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment9EShowMask10componentsE">
+<span id="_CPPv3N23CSdvPackagerEnvironment9EShowMask10componentsE"></span><span id="_CPPv2N23CSdvPackagerEnvironment9EShowMask10componentsE"></span><span class="target" id="class_c_sdv_packager_environment_1a63bcfbe0cc8877a0c0071b20b44921baa4725dcf446a342f1473a8228e42dfa48"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">components</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment9EShowMask10componentsE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Show components. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment9EShowMask7consoleE">
+<span id="_CPPv3N23CSdvPackagerEnvironment9EShowMask7consoleE"></span><span id="_CPPv2N23CSdvPackagerEnvironment9EShowMask7consoleE"></span><span class="target" id="class_c_sdv_packager_environment_1a63bcfbe0cc8877a0c0071b20b44921baabfafd813d7ea65ee4db1f09d7c8ffbf4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">console</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment9EShowMask7consoleE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Show as console output (extended form) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment9EShowMask14console_simpleE">
+<span id="_CPPv3N23CSdvPackagerEnvironment9EShowMask14console_simpleE"></span><span id="_CPPv2N23CSdvPackagerEnvironment9EShowMask14console_simpleE"></span><span class="target" id="class_c_sdv_packager_environment_1a63bcfbe0cc8877a0c0071b20b44921baa16bbcf2c1b32c83384a8136ae7237659"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">console_simple</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment9EShowMask14console_simpleE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Show as console output (simple form) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment9EShowMask3xmlE">
+<span id="_CPPv3N23CSdvPackagerEnvironment9EShowMask3xmlE"></span><span id="_CPPv2N23CSdvPackagerEnvironment9EShowMask3xmlE"></span><span class="target" id="class_c_sdv_packager_environment_1a63bcfbe0cc8877a0c0071b20b44921baa0f635d0e0f3874fff8b581c132e6c7a7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xml</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment9EShowMask3xmlE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Provide as XML. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment9EShowMask4jsonE">
+<span id="_CPPv3N23CSdvPackagerEnvironment9EShowMask4jsonE"></span><span id="_CPPv2N23CSdvPackagerEnvironment9EShowMask4jsonE"></span><span class="target" id="class_c_sdv_packager_environment_1a63bcfbe0cc8877a0c0071b20b44921baa466deec76ecdf5fca6d38571f6324d54"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">json</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment9EShowMask4jsonE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Provide as JSON. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment23CSdvPackagerEnvironmentEv">
+<span id="_CPPv3N23CSdvPackagerEnvironment23CSdvPackagerEnvironmentEv"></span><span id="_CPPv2N23CSdvPackagerEnvironment23CSdvPackagerEnvironmentEv"></span><span id="CSdvPackagerEnvironment::CSdvPackagerEnvironment"></span><span class="target" id="class_c_sdv_packager_environment_1af072ec3564a91f85f39246452ce25b53"></span><span class="sig-name descname"><span class="n"><span class="pre">CSdvPackagerEnvironment</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment23CSdvPackagerEnvironmentEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Default constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment23CSdvPackagerEnvironmentERKNSt6vectorINSt6stringEEE">
+<span id="_CPPv3N23CSdvPackagerEnvironment23CSdvPackagerEnvironmentERKNSt6vectorINSt6stringEEE"></span><span id="_CPPv2N23CSdvPackagerEnvironment23CSdvPackagerEnvironmentERKNSt6vectorINSt6stringEEE"></span><span id="CSdvPackagerEnvironment::CSdvPackagerEnvironment__std::vector:ss:CR"></span><span class="target" id="class_c_sdv_packager_environment_1ae2caab0f5294f47f2f52d47f8d6ede01"></span><span class="sig-name descname"><span class="n"><span class="pre">CSdvPackagerEnvironment</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rvecArgs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment23CSdvPackagerEnvironmentERKNSt6vectorINSt6stringEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructor with program arguments. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rvecArgs</strong> – <strong>[in]</strong> Reference to the vector with program arguments </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN23CSdvPackagerEnvironment23CSdvPackagerEnvironmentE6size_tPPK9TCharType">
+<span id="_CPPv3I0EN23CSdvPackagerEnvironment23CSdvPackagerEnvironmentE6size_tPPK9TCharType"></span><span id="_CPPv2I0EN23CSdvPackagerEnvironment23CSdvPackagerEnvironmentE6size_tPPK9TCharType"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TCharType</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_c_sdv_packager_environment_1a8be424fca5e14e31006e1eeee3b37a0b"></span><span class="sig-name descname"><span class="n"><span class="pre">CSdvPackagerEnvironment</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nArgs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN23CSdvPackagerEnvironment23CSdvPackagerEnvironmentE6size_tPPK9TCharType" title="CSdvPackagerEnvironment::CSdvPackagerEnvironment::TCharType"><span class="n"><span class="pre">TCharType</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">rgszArgs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN23CSdvPackagerEnvironment23CSdvPackagerEnvironmentE6size_tPPK9TCharType" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructor with program arguments. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TCharType</strong> – Character type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>nArgs</strong> – <strong>[in]</strong> The amount of arguments. </p></li>
+<li><p><strong>rgszArgs</strong> – <strong>[in]</strong> Array of arguments. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment4HelpEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment4HelpEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment4HelpEv"></span><span id="CSdvPackagerEnvironment::HelpC"></span><span class="target" id="class_c_sdv_packager_environment_1a506397eb0b7b200f6925975e966df21f"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Help</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment4HelpEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Help was requested on the command line. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns ‘true’ when help was requested. Otherwise returns ‘false’. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment8ShowHelpEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment8ShowHelpEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment8ShowHelpEv"></span><span id="CSdvPackagerEnvironment::ShowHelpC"></span><span class="target" id="class_c_sdv_packager_environment_1adf179070ac3c0dca428e17e6c01e254d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ShowHelp</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment8ShowHelpEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Show command line help. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment10ReportInfoEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment10ReportInfoEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment10ReportInfoEv"></span><span id="CSdvPackagerEnvironment::ReportInfoC"></span><span class="target" id="class_c_sdv_packager_environment_1ad6668968909bf74c5c3fc1f0f140b964"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReportInfo</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment10ReportInfoEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Report information about the command and the settings dependable on the reporting flag. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment6SilentEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment6SilentEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment6SilentEv"></span><span id="CSdvPackagerEnvironment::SilentC"></span><span class="target" id="class_c_sdv_packager_environment_1a86d06c387c6bbe02424d47ea2ed4a2b2"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Silent</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment6SilentEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return whether silent mode was requested for the console output. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether the silent mode is switched on. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment7VerboseEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment7VerboseEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment7VerboseEv"></span><span id="CSdvPackagerEnvironment::VerboseC"></span><span class="target" id="class_c_sdv_packager_environment_1a1d7505a30de88c4fdadcf3f3b3d3f598"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Verbose</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment7VerboseEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return whether verbose mode was requested for the console output. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether the verbose mode is switched on. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment7VersionEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment7VersionEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment7VersionEv"></span><span id="CSdvPackagerEnvironment::VersionC"></span><span class="target" id="class_c_sdv_packager_environment_1a71e79206a525e30b77fa3338f02962d6"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Version</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment7VersionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Version information was requested on the command line. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns ‘true’ when version info was requested. Otherwise returns ‘false’. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment18CreateManifestOnlyEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment18CreateManifestOnlyEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment18CreateManifestOnlyEv"></span><span id="CSdvPackagerEnvironment::CreateManifestOnlyC"></span><span class="target" id="class_c_sdv_packager_environment_1a937a9449453b2ff6e7f8d01cf7097bcd"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CreateManifestOnly</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment18CreateManifestOnlyEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Create a manifest during the creation phase. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether a manifest should be the only output of the creation. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment13OperatingModeEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment13OperatingModeEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment13OperatingModeEv"></span><span id="CSdvPackagerEnvironment::OperatingModeC"></span><span class="target" id="class_c_sdv_packager_environment_1a70bf0d2fb35f5d5f34937af3ab53363e"></span><a class="reference internal" href="#_CPPv4N23CSdvPackagerEnvironment14EOperatingModeE" title="CSdvPackagerEnvironment::EOperatingMode"><span class="n"><span class="pre">EOperatingMode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OperatingMode</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment13OperatingModeEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The operating mode the packager is running in. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the current operating mode based on the command line settings. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment13KeepStructureEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment13KeepStructureEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment13KeepStructureEv"></span><span id="CSdvPackagerEnvironment::KeepStructureC"></span><span class="target" id="class_c_sdv_packager_environment_1acf813185425bc272b409371778f1b35b"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeepStructure</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment13KeepStructureEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Keep the current structure during the installation. This requires a source input directory to be set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether a structure should be kept relative to the source directory. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment10ModuleListEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment10ModuleListEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment10ModuleListEv"></span><span id="CSdvPackagerEnvironment::ModuleListC"></span><span class="target" id="class_c_sdv_packager_environment_1ab125a41b74f1fdec89b76a7d4f4ddd58"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N23CSdvPackagerEnvironment7SModuleE" title="CSdvPackagerEnvironment::SModule"><span class="n"><span class="pre">SModule</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">ModuleList</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment10ModuleListEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>List of modules or packages to create or install respectively. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the list of modules or packages. Could contain wildcards and regular expression strings. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment11PackagePathEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment11PackagePathEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment11PackagePathEv"></span><span id="CSdvPackagerEnvironment::PackagePathC"></span><span class="target" id="class_c_sdv_packager_environment_1a58db0535d752c1ef392669a0b0018c91"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">PackagePath</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment11PackagePathEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the package path. Available for installation, uninstallation, verification and content showing commands. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the package path. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment14SourceLocationEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment14SourceLocationEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment14SourceLocationEv"></span><span id="CSdvPackagerEnvironment::SourceLocationC"></span><span class="target" id="class_c_sdv_packager_environment_1a74ce0a2a754471831727b1dd72563471"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">SourceLocation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment14SourceLocationEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>During package creation, the source location of the modules and files to create the package for (or directly install). During package installation, source location of the package. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the source location. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment14OutputLocationEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment14OutputLocationEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment14OutputLocationEv"></span><span id="CSdvPackagerEnvironment::OutputLocationC"></span><span class="target" id="class_c_sdv_packager_environment_1a1737f2c1ad0907f822fc1cf3743fcaf2"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">OutputLocation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment14OutputLocationEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>During package creation, the output location of the package file. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the output location. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment14TargetLocationEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment14TargetLocationEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment14TargetLocationEv"></span><span id="CSdvPackagerEnvironment::TargetLocationC"></span><span class="target" id="class_c_sdv_packager_environment_1a8304e209babfcc3abaf1e986bbe98757"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">TargetLocation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment14TargetLocationEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>During package installation, base path to the package target location. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the target location. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment12RootLocationEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment12RootLocationEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment12RootLocationEv"></span><span id="CSdvPackagerEnvironment::RootLocationC"></span><span class="target" id="class_c_sdv_packager_environment_1a9d430a7baa904e23da5ce6dec5504a54"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">RootLocation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment12RootLocationEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>During package installation, base path to the package root location (including instance). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the root location. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment15InstallLocationEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment15InstallLocationEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment15InstallLocationEv"></span><span id="CSdvPackagerEnvironment::InstallLocationC"></span><span class="target" id="class_c_sdv_packager_environment_1a242eb437e6c04f74c4e13e7d6bde1ec0"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">InstallLocation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment15InstallLocationEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>During package installation, base path to the package installation location (including package name). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the installation location. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment5LocalEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment5LocalEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment5LocalEv"></span><span id="CSdvPackagerEnvironment::LocalC"></span><span class="target" id="class_c_sdv_packager_environment_1ae8351dc82b703816abfddd677eda592d"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Local</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment5LocalEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set when the local flag has been supplied on the command line. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether local system operation is enabled. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment10InstanceIDEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment10InstanceIDEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment10InstanceIDEv"></span><span id="CSdvPackagerEnvironment::InstanceIDC"></span><span class="target" id="class_c_sdv_packager_environment_1ab6e1db87ef4a809b16b22f6fdac5a1f4"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InstanceID</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment10InstanceIDEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The instance to use to install the package to. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The instance ID. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment6UpdateEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment6UpdateEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment6UpdateEv"></span><span id="CSdvPackagerEnvironment::UpdateC"></span><span class="target" id="class_c_sdv_packager_environment_1a066f68b6567dc461c428eaa8652cbbf4"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Update</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment6UpdateEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Update if an older version has been found. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether the update flag was specified. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment9OverwriteEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment9OverwriteEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment9OverwriteEv"></span><span id="CSdvPackagerEnvironment::OverwriteC"></span><span class="target" id="class_c_sdv_packager_environment_1a1d7fde1cf2c188d9d9f72dd7044f9ad0"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Overwrite</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment9OverwriteEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Overwrite any version that might be installed before. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether the overwrite flags was specified. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment15LocalConfigFileERNSt6vectorINSt6stringEEE">
+<span id="_CPPv3NK23CSdvPackagerEnvironment15LocalConfigFileERNSt6vectorINSt6stringEEE"></span><span id="_CPPv2NK23CSdvPackagerEnvironment15LocalConfigFileERNSt6vectorINSt6stringEEE"></span><span id="CSdvPackagerEnvironment::LocalConfigFile__std::vector:ss:RC"></span><span class="target" id="class_c_sdv_packager_environment_1a4e58a486ebdad21a7a06ecf124571780"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">LocalConfigFile</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rvecComponents</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment15LocalConfigFileERNSt6vectorINSt6stringEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the configuration file to create or update during the installation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rvecComponents</strong> – <strong>[out]</strong> Reference to a list of component names to add to the configuration. If no components are listed, all components are to be added (if a configuration file was supplied). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a reference to the variable containing the path to the configuration file or empty when no file was supplied. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment20LocalConfigLocationsEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment20LocalConfigLocationsEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment20LocalConfigLocationsEv"></span><span id="CSdvPackagerEnvironment::LocalConfigLocationsC"></span><span class="target" id="class_c_sdv_packager_environment_1a7f7ef46adfdfb1e33db276b49d844925"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">LocalConfigLocations</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment20LocalConfigLocationsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>During package installation, the configuration file locations during local operation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the vector with configuration locations. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment19ActivateLocalConfigEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment19ActivateLocalConfigEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment19ActivateLocalConfigEv"></span><span id="CSdvPackagerEnvironment::ActivateLocalConfigC"></span><span class="target" id="class_c_sdv_packager_environment_1a8ee5b5586fb041eecfcc88315baec7fc"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ActivateLocalConfig</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment19ActivateLocalConfigEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Activate the local configuration in the settings file of the system. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether a configuration is requested. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment20InsertIntoUserConfigERNSt6vectorINSt6stringEEE">
+<span id="_CPPv3NK23CSdvPackagerEnvironment20InsertIntoUserConfigERNSt6vectorINSt6stringEEE"></span><span id="_CPPv2NK23CSdvPackagerEnvironment20InsertIntoUserConfigERNSt6vectorINSt6stringEEE"></span><span id="CSdvPackagerEnvironment::InsertIntoUserConfig__std::vector:ss:RC"></span><span class="target" id="class_c_sdv_packager_environment_1a710676aff8736a0b7d848ff0e7d2c97f"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InsertIntoUserConfig</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rvecComponents</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment20InsertIntoUserConfigERNSt6vectorINSt6stringEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Add the components to the user configuration. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>Only complex services will be inserted. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rvecComponents</strong> – <strong>[out]</strong> Reference to a list of component names to add to the configuration. If no components are listed, all components are to be added (if a the function returns true). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns true if a configuration update is requested; false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment24InsertIntoPlatformConfigERNSt6vectorINSt6stringEEE">
+<span id="_CPPv3NK23CSdvPackagerEnvironment24InsertIntoPlatformConfigERNSt6vectorINSt6stringEEE"></span><span id="_CPPv2NK23CSdvPackagerEnvironment24InsertIntoPlatformConfigERNSt6vectorINSt6stringEEE"></span><span id="CSdvPackagerEnvironment::InsertIntoPlatformConfig__std::vector:ss:RC"></span><span class="target" id="class_c_sdv_packager_environment_1a549e4fd652fddbe971c1d4a6f69318cb"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InsertIntoPlatformConfig</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rvecComponents</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment24InsertIntoPlatformConfigERNSt6vectorINSt6stringEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Add the components to the platform configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rvecComponents</strong> – <strong>[out]</strong> Reference to a list of component names to add to the configuration. If no components are listed, all components are to be added (if a the function returns true). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns true if a configuration update is requested; false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment32InsertIntoVehicleInterfaceConfigERNSt6vectorINSt6stringEEE">
+<span id="_CPPv3NK23CSdvPackagerEnvironment32InsertIntoVehicleInterfaceConfigERNSt6vectorINSt6stringEEE"></span><span id="_CPPv2NK23CSdvPackagerEnvironment32InsertIntoVehicleInterfaceConfigERNSt6vectorINSt6stringEEE"></span><span id="CSdvPackagerEnvironment::InsertIntoVehicleInterfaceConfig__std::vector:ss:RC"></span><span class="target" id="class_c_sdv_packager_environment_1ad639118619cfbcfd867c9020ada4dfff"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InsertIntoVehicleInterfaceConfig</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rvecComponents</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment32InsertIntoVehicleInterfaceConfigERNSt6vectorINSt6stringEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Add the components to the vehicle interface configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rvecComponents</strong> – <strong>[out]</strong> Reference to a list of component names to add to the configuration. If no components are listed, all components are to be added (if a the function returns true). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns true if a configuration update is requested; false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment34InsertIntoVehicleAbstractionConfigERNSt6vectorINSt6stringEEE">
+<span id="_CPPv3NK23CSdvPackagerEnvironment34InsertIntoVehicleAbstractionConfigERNSt6vectorINSt6stringEEE"></span><span id="_CPPv2NK23CSdvPackagerEnvironment34InsertIntoVehicleAbstractionConfigERNSt6vectorINSt6stringEEE"></span><span id="CSdvPackagerEnvironment::InsertIntoVehicleAbstractionConfig__std::vector:ss:RC"></span><span class="target" id="class_c_sdv_packager_environment_1a1531df98e31a3ecfc3a4e74fbdb837ae"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InsertIntoVehicleAbstractionConfig</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rvecComponents</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment34InsertIntoVehicleAbstractionConfigERNSt6vectorINSt6stringEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Add the components to the vehicle abstraction configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rvecComponents</strong> – <strong>[out]</strong> Reference to a list of component names to add to the configuration. If no components are listed, all components are to be added (if a the function returns true). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns true if a configuration update is requested; false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment11InstallNameEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment11InstallNameEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment11InstallNameEv"></span><span id="CSdvPackagerEnvironment::InstallNameC"></span><span class="target" id="class_c_sdv_packager_environment_1a9a9a00a103deac17b5a55fee169979cb"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">InstallName</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment11InstallNameEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The installation name for the package creation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the installation name. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment11ProductNameEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment11ProductNameEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment11ProductNameEv"></span><span id="CSdvPackagerEnvironment::ProductNameC"></span><span class="target" id="class_c_sdv_packager_environment_1a45c2613acae0edf00232c9e29685e53d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">ProductName</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment11ProductNameEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the product name. If not explicitly provided, this will be the installation name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the product name. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment11DescriptionEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment11DescriptionEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment11DescriptionEv"></span><span id="CSdvPackagerEnvironment::DescriptionC"></span><span class="target" id="class_c_sdv_packager_environment_1a723e6bdf1478c3be066bc1b315d1d690"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">Description</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment11DescriptionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the product description. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the product description or empty if no description was provided. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment6AuthorEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment6AuthorEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment6AuthorEv"></span><span id="CSdvPackagerEnvironment::AuthorC"></span><span class="target" id="class_c_sdv_packager_environment_1a6afed35854689fc00038afed9e95f09e"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">Author</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment6AuthorEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the product author. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the product author or empty if no author was provided. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment7AddressEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment7AddressEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment7AddressEv"></span><span id="CSdvPackagerEnvironment::AddressC"></span><span class="target" id="class_c_sdv_packager_environment_1ab5a0e5afdf154eede4bc78f657e1c079"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">Address</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment7AddressEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the product author’s address. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the product author’s address or empty if no address was provided. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment10CopyrightsEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment10CopyrightsEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment10CopyrightsEv"></span><span id="CSdvPackagerEnvironment::CopyrightsC"></span><span class="target" id="class_c_sdv_packager_environment_1abe01d94457db2f2325d736c896ace233"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">Copyrights</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment10CopyrightsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the product copyrights. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the product copyrights or empty if no copyrights were provided. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment14PackageVersionEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment14PackageVersionEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment14PackageVersionEv"></span><span id="CSdvPackagerEnvironment::PackageVersionC"></span><span class="target" id="class_c_sdv_packager_environment_1ab438c2231661e5ed469d56564009f5cc"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">PackageVersion</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment14PackageVersionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the package version string (format: major.minor.patch). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the package version string or empty if no version string was provided. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment9ShowFlagsEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment9ShowFlagsEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment9ShowFlagsEv"></span><span id="CSdvPackagerEnvironment::ShowFlagsC"></span><span class="target" id="class_c_sdv_packager_environment_1a54d59aa3aa53e9e930533c19c2dab1f9"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ShowFlags</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment9ShowFlagsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the show flags. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The shhow flags. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment13CheckShowFlagE9EShowMask">
+<span id="_CPPv3NK23CSdvPackagerEnvironment13CheckShowFlagE9EShowMask"></span><span id="_CPPv2NK23CSdvPackagerEnvironment13CheckShowFlagE9EShowMask"></span><span id="CSdvPackagerEnvironment::CheckShowFlag__EShowMaskC"></span><span class="target" id="class_c_sdv_packager_environment_1a504e5d99c47a6f95821755c5b38339c9"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CheckShowFlag</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N23CSdvPackagerEnvironment9EShowMaskE" title="CSdvPackagerEnvironment::EShowMask"><span class="n"><span class="pre">EShowMask</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eMask</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment13CheckShowFlagE9EShowMask" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Check whether the show flags contain certain flags. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>eMask</strong> – <strong>[in]</strong> Show flag mask to check for. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns true when the flags contaion exactly the provided mask. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment5ErrorEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment5ErrorEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment5ErrorEv"></span><span id="CSdvPackagerEnvironment::ErrorC"></span><span class="target" id="class_c_sdv_packager_environment_1a406b93b61bf033419840725190ded0b2"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Error</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment5ErrorEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Was a commandline parse error or a logical error with command line arguments detected? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the result of the command line parsing. If no error occurs, NO_ERROR is returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment8ArgErrorEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment8ArgErrorEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment8ArgErrorEv"></span><span id="CSdvPackagerEnvironment::ArgErrorC"></span><span class="target" id="class_c_sdv_packager_environment_1a59ddc64d0d74ecc8c94b8fa38137addd"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">ArgError</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment8ArgErrorEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Parse error that might have occurred. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the variable containing the error text. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment21SEnvironmentExceptionE">
+<span id="_CPPv3N23CSdvPackagerEnvironment21SEnvironmentExceptionE"></span><span id="_CPPv2N23CSdvPackagerEnvironment21SEnvironmentExceptionE"></span><span id="CSdvPackagerEnvironment::SEnvironmentException"></span><span class="target" id="struct_c_sdv_packager_environment_1_1_s_environment_exception"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SEnvironmentException</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">exception</span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment21SEnvironmentExceptionE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Environment exception triggered on error during command line processing. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment21SEnvironmentException21SEnvironmentExceptionEiRKNSt6stringE">
+<span id="_CPPv3N23CSdvPackagerEnvironment21SEnvironmentException21SEnvironmentExceptionEiRKNSt6stringE"></span><span id="_CPPv2N23CSdvPackagerEnvironment21SEnvironmentException21SEnvironmentExceptionEiRKNSt6stringE"></span><span id="CSdvPackagerEnvironment::SEnvironmentException::SEnvironmentException__i.ssCR"></span><span class="target" id="struct_c_sdv_packager_environment_1_1_s_environment_exception_1ad25dda828006323c9f2f6b52e2382c96"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SEnvironmentException</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nCodeParam</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssDescriptionParam</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment21SEnvironmentException21SEnvironmentExceptionEiRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nCodeParam</strong> – <strong>[in]</strong> Exception code </p></li>
+<li><p><strong>rssDescriptionParam</strong> – <strong>[in]</strong> Reference to the exception description text. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CSdvPackagerEnvironment21SEnvironmentException4whatEv">
+<span id="_CPPv3NK23CSdvPackagerEnvironment21SEnvironmentException4whatEv"></span><span id="_CPPv2NK23CSdvPackagerEnvironment21SEnvironmentException4whatEv"></span><span id="CSdvPackagerEnvironment::SEnvironmentException::whatC"></span><span class="target" id="struct_c_sdv_packager_environment_1_1_s_environment_exception_1a5271c6ffe4d0dcad496a213ee0e4527a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">what</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK23CSdvPackagerEnvironment21SEnvironmentException4whatEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the explanatory string. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pointer to the explanatory string as C-string. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment21SEnvironmentException5nCodeE">
+<span id="_CPPv3N23CSdvPackagerEnvironment21SEnvironmentException5nCodeE"></span><span id="_CPPv2N23CSdvPackagerEnvironment21SEnvironmentException5nCodeE"></span><span id="CSdvPackagerEnvironment::SEnvironmentException::nCode__i"></span><span class="target" id="struct_c_sdv_packager_environment_1_1_s_environment_exception_1aef505980bb4de9d88355296c25964eef"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nCode</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment21SEnvironmentException5nCodeE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Exception code. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment21SEnvironmentException13ssDescriptionE">
+<span id="_CPPv3N23CSdvPackagerEnvironment21SEnvironmentException13ssDescriptionE"></span><span id="_CPPv2N23CSdvPackagerEnvironment21SEnvironmentException13ssDescriptionE"></span><span id="CSdvPackagerEnvironment::SEnvironmentException::ssDescription__ss"></span><span class="target" id="struct_c_sdv_packager_environment_1_1_s_environment_exception_1a0e48fd907730eb9e84ab68a74ec5b415"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ssDescription</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment21SEnvironmentException13ssDescriptionE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Exception description. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment7SModuleE">
+<span id="_CPPv3N23CSdvPackagerEnvironment7SModuleE"></span><span id="_CPPv2N23CSdvPackagerEnvironment7SModuleE"></span><span id="CSdvPackagerEnvironment::SModule"></span><span class="target" id="struct_c_sdv_packager_environment_1_1_s_module"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SModule</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment7SModuleE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Module structure containing the module search string and relative target path. </p>
+<p>The module structure is used for module selection during packing and direct installation - hence the search string and potential target directory. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment7SModule14ssSearchStringE">
+<span id="_CPPv3N23CSdvPackagerEnvironment7SModule14ssSearchStringE"></span><span id="_CPPv2N23CSdvPackagerEnvironment7SModule14ssSearchStringE"></span><span id="CSdvPackagerEnvironment::SModule::ssSearchString__ss"></span><span class="target" id="struct_c_sdv_packager_environment_1_1_s_module_1aefad213e441a874e9a21ca3ee11d8c7f"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ssSearchString</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment7SModule14ssSearchStringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Module path; can contain wildcards and regular expression (therefore of type std::string). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment7SModule13pathRelTargetE">
+<span id="_CPPv3N23CSdvPackagerEnvironment7SModule13pathRelTargetE"></span><span id="_CPPv2N23CSdvPackagerEnvironment7SModule13pathRelTargetE"></span><span id="CSdvPackagerEnvironment::SModule::pathRelTarget__std::filesystem::path"></span><span class="target" id="struct_c_sdv_packager_environment_1_1_s_module_1a7b0bea9f6fee527d73f34a61d2bb6110"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pathRelTarget</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment7SModule13pathRelTargetE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Relative target path. Default is empty. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment8SVersionE">
+<span id="_CPPv3N23CSdvPackagerEnvironment8SVersionE"></span><span id="_CPPv2N23CSdvPackagerEnvironment8SVersionE"></span><span id="CSdvPackagerEnvironment::SVersion"></span><span class="target" id="struct_c_sdv_packager_environment_1_1_s_version"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SVersion</span></span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment8SVersionE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Product version structure. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment8SVersion6nMajorE">
+<span id="_CPPv3N23CSdvPackagerEnvironment8SVersion6nMajorE"></span><span id="_CPPv2N23CSdvPackagerEnvironment8SVersion6nMajorE"></span><span id="CSdvPackagerEnvironment::SVersion::nMajor__s"></span><span class="target" id="struct_c_sdv_packager_environment_1_1_s_version_1aae7de1c49c23696f8b6ef942c0f4f796"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nMajor</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment8SVersion6nMajorE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Major version number. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment8SVersion6nMinorE">
+<span id="_CPPv3N23CSdvPackagerEnvironment8SVersion6nMinorE"></span><span id="_CPPv2N23CSdvPackagerEnvironment8SVersion6nMinorE"></span><span id="CSdvPackagerEnvironment::SVersion::nMinor__s"></span><span class="target" id="struct_c_sdv_packager_environment_1_1_s_version_1a795aea863e7c60cdde71b31600030e63"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nMinor</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment8SVersion6nMinorE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Minor version number. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N23CSdvPackagerEnvironment8SVersion6nPatchE">
+<span id="_CPPv3N23CSdvPackagerEnvironment8SVersion6nPatchE"></span><span id="_CPPv2N23CSdvPackagerEnvironment8SVersion6nPatchE"></span><span id="CSdvPackagerEnvironment::SVersion::nPatch__s"></span><span class="target" id="struct_c_sdv_packager_environment_1_1_s_version_1a59de0b4f6aeb7c06de8b0505862c3cac"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nPatch</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N23CSdvPackagerEnvironment8SVersion6nPatchE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Patch level. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

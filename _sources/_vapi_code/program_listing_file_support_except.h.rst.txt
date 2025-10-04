@@ -1,0 +1,34 @@
+
+.. _program_listing_file_support_except.h:
+
+Program Listing for File except.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_except.h>` (``support\except.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SDV_EXCEPT_H
+   #define SDV_EXCEPT_H
+   
+   #include <cstdint>
+   
+   #ifndef except
+   #define except struct
+   #endif
+   
+   namespace sdv
+   {
+       using exception_id = uint64_t;
+   
+       template <typename TExcept>
+       constexpr inline exception_id GetExceptionId() noexcept
+       {
+           // Return the exception ID.
+           return TExcept::_id;
+       }
+   }
+   
+   #endif // !defined SDV_EXCEPT_H

@@ -1,0 +1,24 @@
+.. _vapi-system_example_simulate:
+
+Application in simulation mode
+==============================
+
+In ``<outputfolder>/examples/bin`` start the application with following parameter: ``sys_demo_example -f../../bin --simulate``.
+
+The path is the path to the :term:`VAPI Framework` binaries e.g. ``sdv_control``.
+
+
+.. image:: ../../../vapi_media/examples/system_demo_example/system_demo_screnshot_simulation.png
+
+
+First, we have the Initialization phase, where we have to load the required components. During loading of the components, the core system is in configuration mode. That means, the components are loaded and configured. After every component is loaded, we have to switch to running mode.
+
+The example in simulation mode does not load the Data Link, therefore there are no signals. In this case, we have to create them (registering) in the dispatch service and before shutdown to reset them.
+
+
+.. image:: ../../../vapi_media/examples/system_demo_example/system_demo_simulation_mode.png
+
+After testrun we have to unregister the signals for a graeefull shutdown.
+
+.. image:: ../../../vapi_media/examples/system_demo_example/System_demo_shutdown.png
+

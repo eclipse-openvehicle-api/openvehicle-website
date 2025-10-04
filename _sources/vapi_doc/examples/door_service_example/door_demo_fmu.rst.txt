@@ -1,0 +1,42 @@
+.. _vapi-door_example_fmu:
+
+How the two FMUs are build and used
+===================================
+
+The fmu code & cmake project is created by the ``sdv_dbc_util``. The example contains 2 FMUs and can be found ere: <outpufolder>/examples/door_demo_example/fmu_Doors2ExampleFMU/fmus
+
+Before the project can be used, following steps needs to be done:
+
+- required configuration files have to be put into the subfolder.
+- function OpenAPILoad() needs to be updated in the model.cpp file.
+
+.. seealso:: :ref:`vapi-simulation`
+
+The following describes how the fmu is loaded and used in ``OpenXilEnv``.
+
+- Open XilEnvGui.exe
+- Generate new INI file
+- Recommended: in upper menu click on RT-Factor Icon to switch from fast to slow: Instead of a high (cycling) number the number should be around 1.
+
+.. figure:: ../../../vapi_media/openxilenv/rt-factor.png
+
+- in XiLEnv Control Panel: Click on 'Add...' in 'Process'
+
+.. figure:: ../../../vapi_media/openxilenv/control_panel.png
+
+- 'Start process' window opens, click on 'start an external process'
+- Select file 'DemoExampleFMU.fmu'
+- Right-Click somewhere 'New > Text' and open 'Blackboard'
+
+.. figure:: ../../../vapi_media/openxilenv/blackboard.png
+
+- Right-Click and open 'config'
+  
+.. figure:: ../../../vapi_media/examples/door_service_example/simulation_adding_variables.png
+
+- Add the 4 signals
+- in XiLEnv Control Panel: Click on 'File...' in 'Internal Process Control' and add script file 'vapi_demo.scr'
+- in XiLEnv Control Panel: Click on 'Run' in 'Internal Process Control'
+
+.. figure:: ../../../vapi_media/examples/door_service_example/simulation_changing_variables.png
+

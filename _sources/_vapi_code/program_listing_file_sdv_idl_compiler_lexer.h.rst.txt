@@ -1,0 +1,123 @@
+
+.. _program_listing_file_sdv_idl_compiler_lexer.h:
+
+Program Listing for File lexer.h
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_lexer.h>` (``sdv_idl_compiler\lexer.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LEXER_H
+   #define LEXER_H
+   
+   #include "lexerbase.h"
+   #include "token.h"
+   #include "tokenlist.h"
+   #include "codepos.h"
+   #include <cinttypes>
+   #include <exception>
+   #include <string>
+   #include <cassert>
+   
+   const std::vector<std::string> g_vecOmgIdlKeywords = {
+       "abstract", "any", "alias", "attribute", "bitfield", "bitmask", "bitset", "boolean", "case", "char", "component", "connector",
+       "const", "consumes", "context", "custom", "default", "double", "exception", "emits", "enum", "eventtype", "factory", "finder",
+       "fixed", "float", "getraises", "home", "import", "in", "inout", "interface", "local", "long", "manages", "map", "mirrorport",
+       "module", "multiple", "native", "Object", "octet", "oneway", "out", "primarykey", "private", "port", "porttype", "provides",
+       "public", "publishes", "raises", "readonly", "setraises", "sequence", "short", "string", "struct", "supports", "switch",
+       "truncatable", "typedef", "typeid", "typename", "typeprefix", "unsigned", "union", "uses", "ValueBase", "valuetype", "void",
+       "wchar", "wstring", "int8", "uint8", "int16", "int32", "int64", "uint16", "uint32", "uint64"
+   };
+   
+   class CLexer
+   {
+   public:
+       enum class ELexingMode
+       {
+           lexing_idl,         
+           lexing_preproc,     
+       };
+   
+       CLexer(ILexerCallback* pCallback, bool bCaseSensitive, ELexingMode eLexingMode = ELexingMode::lexing_idl);
+   
+       virtual ~CLexer() = default;
+   
+       void AddKeyword(const std::string& rssKeyword);
+   
+       CToken GetToken(CCodePos& rCode, const CContextPtr& rptrContext) const;
+   
+       const CToken& GetLastValidToken() const;
+   
+       CToken GetCustom(CCodePos& rCode, char cSymbol) const;
+   
+       void SkipLine(CCodePos& rCode) const;
+   
+       void EnablePreprocProcessing();
+   
+   private:
+       CToken GetWhitespace(CCodePos& rCode, bool& rbNewline) const;
+   
+       CToken GetComments(CCodePos& rCode) const;
+   
+       CToken GetIdentifierOrKeyword(CCodePos& rCode) const;
+   
+       CToken GetSeparator(CCodePos& rCode) const;
+   
+       CToken GetOperator(CCodePos& rCode) const;
+   
+       CToken GetLiteral(CCodePos& rCode) const;
+   
+       ILexerCallback*             m_pLexerCallback = nullptr;                 
+       bool                        m_bCaseSensitive = true;                    
+       ELexingMode                 m_eLexingMode = ELexingMode::lexing_idl;    
+       mutable bool                m_bNewlineOccurred = true;                  
+       mutable CToken              m_tokenLastValid;                           
+       std::vector<std::string>    m_vecReservedKeywords;                      
+   };
+   
+   CTokenList Tokenize(const char* szCode, const CContextPtr& rptrContext);
+   
+   CTokenList Tokenize(const std::string& rssCode, const CContextPtr& rptrContext);
+   
+   struct SLexerDummyCallback : public ILexerCallback
+   {
+       virtual void InsertWhitespace(const CToken& /*rtoken*/) override {}
+   
+       virtual void InsertComment(const CToken& /*rtoken*/) override {}
+   
+       virtual void ProcessPreprocDirective(CCodePos& rCode) override
+       { SLexerDummyCallback sCallback; CLexer(&sCallback, true).SkipLine(rCode); }
+   };
+   
+   struct SLexerStoreCallback : public ILexerCallback
+   {
+       void Clear()
+       {
+           tokenWhitespace = CToken();
+           tokenComment = CToken();
+           ssPreprocLine.clear();
+       }
+   
+       virtual void InsertWhitespace(const CToken &rtoken) override { tokenWhitespace = rtoken; }
+   
+       virtual void InsertComment(const CToken &rtoken) override { tokenComment = rtoken; }
+   
+       virtual void ProcessPreprocDirective(CCodePos &rCode) override
+       {
+           SLexerDummyCallback sCallback;
+           CLexer lexer(&sCallback, true);
+           CToken token = rCode.GetLocation();
+           lexer.SkipLine(rCode);
+           rCode.UpdateLocation(token);
+           ssPreprocLine = static_cast<std::string>(token);
+       }
+   
+       CToken tokenWhitespace;     
+       CToken tokenComment;        
+       std::string ssPreprocLine;  
+   };
+   
+   #endif // !defined LEXER_H

@@ -1,0 +1,45 @@
+.. _vapi-for_developers:
+
+For Developers
+==============
+
+As shown in :ref:`vapi-key_features`, the ``Open Vehicle Framework`` is a comprehensive concept designed to address emerging challenges and requirements in future software development. While the foundation for much of the future functionality has already been established, many aspects are still under development.
+Therefore, this document does not cover all topics of the framework, as some areas are subject to ongoing refinement and may change as the framework evolves.
+
+.. Attention::  Create your own project, do not put your code below the the framework core file structure as it will change. :ref:`see Create Your Own Project <vapi-create-your-own_project>`
+
+- The ``Open Vehicle Framework`` is an event-based system. The current examples demonstrate the integration and development of a signal-based system via the :term:`Data Link Layer` . However, this approach would not be necessary in environments that are already event-driven.
+
+- Running ``Open Vehicle Framework`` on multiple instances (key-word :term:`Mixed-Criticality` ) is currently under development. That's why it is not included in the documentation yet.
+
+.. tip:: Focus on :term:`Standalone Application` s, Vehicle abstraction ( :term:`Vehicle Device` s and :term:`Basic Service` s ) and the developing of :term:`Vehicle Function` s in :term:`Complex Service` s as it's shown in the examples.
+
+- Platform Abstraction: ``Open Vehicle Framework`` is meant to run above a middle ware. The underlying :term:`Platform Abstraction` needs to implement required Interface.
+
+  - interprocess communication
+
+  - loading and unloading of shared libraries
+
+  - starting and stopping processes
+
+  - file reads and writes
+
+  - timed triggers
+
+It is not described in the current documentation.
+
+.. tip:: Beside the function examples do not forget to have a close look at the :ref:`vapi-how_to_create` as they explain the code of one topic in detail.
+
+.. important:: To implement your your own components you may use the utilities to auto generate code but it is not required. :ref:`vapi-door_service_example` for example does not, the other examples use auto generate code starting with a ``dbc`` and ``cvs`` file.
+
+The ``Open Vehicle Framework`` contains:
+
+.. figure:: ../vapi_media/architecture/overview/tools.png
+   :name: fig-overview-tools
+
+* several executables and helper tools
+* a lot of core services ready to be used
+* Hardware abstraction components e.g. access to CAN bus.
+* Helper tools to auto generate several layers to access Can bus, FMU creation for Siumlation and more.
+
+more to come...

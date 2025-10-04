@@ -1,0 +1,502 @@
+
+.. _program_listing_file_support_interface_ptr.h:
+
+Program Listing for File interface_ptr.h
+========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_interface_ptr.h>` (``support\interface_ptr.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef INTERFACE_IMPL_H
+   #define INTERFACE_IMPL_H
+   
+   #include <atomic>
+   #include <memory>
+   #include <mutex>
+   #include <stdexcept>
+   #include <typeinfo> // AXIVION Same Line AutosarC++19_03-A16.2.2
+   
+   #ifndef DONT_LOAD_CORE_TYPES
+   #include "../interfaces/core.h"
+   #endif
+   
+   // NOLINTBEGIN(cppcoreguidelines-macro-usage)
+   
+   namespace sdv
+   {
+       namespace internal
+       {
+           class CSectionSelector
+           {
+           public:
+               void DefineDefaultSection()
+               {
+                   m_uiSection = -1;
+               }
+   
+               void DefineSection(int uiSection)
+               {
+                   m_uiSection = uiSection;
+               }
+   
+               void Select(int uiSection)
+               {
+                   m_uiUseSection = uiSection;
+               }
+   
+               bool Selected() const
+               {
+                   return m_uiSection < 0 || m_uiSection == m_uiUseSection;
+               }
+   
+           private:
+               int m_uiUseSection = -1;        
+               int m_uiSection    = -1;        
+           };
+       }
+   }
+   
+   
+   #define BEGIN_SDV_INTERFACE_MAP()                                                                                                  \
+   
+                                                                                                                               \
+       sdv::interface_t GetInterface(sdv::interface_id idInterface) override                                                          \
+       {                                                                                                                              \
+           if (!idInterface) return nullptr;                                                                                          \
+           ::sdv::internal::CSectionSelector selector;                                                                                \
+           if (selector.Selected())                                                                                                   \
+           {
+   
+   #define SDV_INTERFACE_USE_NAMESPACE(namespace_name) using namespace namespace_name;
+   
+   #define SDV_INTERFACE_ENTRY(ifc)                                                                                                   \
+               if (idInterface == sdv::GetInterfaceId<ifc>())                                                                         \
+                   return static_cast<ifc*>(this);
+   
+   #define SDV_INTERFACE_ENTRY_MEMBER(ifc, member_or_pointer)                                                                         \
+               {                                                                                                                      \
+                   sdv::interface_t tifc = sdv::SInterfaceMemberHelper<ifc>::InterfaceMapEntryHelper(member_or_pointer, idInterface); \
+                   if (tifc)                                                                                                          \
+                       return tifc;                                                                                                   \
+               }
+   
+   #define SDV_INTERFACE_ENTRY_INDIRECT(ifc, ifc_cast)                                                                                \
+               if (idInterface == sdv::GetInterfaceId<ifc>())                                                                         \
+                   return static_cast<ifc*>(static_cast<ifc_cast*>(this));
+   
+   #define SDV_INTERFACE_DENY_ENTRY(ifc)                                                                                              \
+               if (idInterface == sdv::GetInterfaceId<ifc>())                                                                         \
+                   return nullptr;
+   
+   #define SDV_INTERFACE_CHAIN_BASE(base_class)                                                                                       \
+               {                                                                                                                      \
+                   sdv::interface_t ifc = base_class::GetInterface(idInterface);                                                      \
+                   if (ifc)                                                                                                           \
+                       return ifc;                                                                                                    \
+               }
+   
+   #define SDV_INTERFACE_CHAIN_MEMBER(member_or_pointer)                                                                              \
+               {                                                                                                                      \
+                   sdv::interface_t ifc = sdv::InterfaceMapChainHelper(member_or_pointer, idInterface);                               \
+                   if (ifc)                                                                                                           \
+                       return ifc;                                                                                                    \
+               }
+   
+   #define SDV_INTERFACE_CHECK_CONDITION(condition)                                                                                   \
+               if (!(condition))                                                                                                      \
+                   return nullptr;
+   
+   #define SDV_INTERFACE_SET_SECTION_CONDITION(condition, section_number)                                                             \
+               if (condition)                                                                                                         \
+                   selector.Select(section_number);                                                                                   \
+           }                                                                                                                          \
+           if (selector.Selected())                                                                                                   \
+           {
+   
+   #define SDV_INTERFACE_SET_SECTION(section_number)                                                                                  \
+               selector.Select(section_number);                                                                                       \
+           }                                                                                                                          \
+           if (selector.Selected())                                                                                                   \
+           {
+   
+   
+   #define SDV_INTERFACE_DEFAULT_SECTION()                                                                                            \
+           }                                                                                                                          \
+           selector.DefineDefaultSection();                                                                                           \
+           if (selector.Selected())                                                                                                   \
+           {
+   
+   #define SDV_INTERFACE_SECTION(section_number)                                                                                      \
+           }                                                                                                                          \
+           selector.DefineSection(section_number);                                                                                    \
+           if (selector.Selected())                                                                                                   \
+           {
+   
+   
+   #define END_SDV_INTERFACE_MAP()                                                                                                    \
+           }                                                                                                                          \
+           return nullptr; /* None found */                                                                                           \
+       }
+   
+   // NOLINTEND(cppcoreguidelines-macro-usage)
+   
+   namespace sdv
+   {
+       class CInterfacePtr
+       {
+       public:
+           CInterfacePtr(IInterfaceAccess* pInterface = nullptr) : m_pInterface(pInterface)
+           {}
+   
+           CInterfacePtr(const CInterfacePtr& rptrInterface) : m_pInterface(rptrInterface.m_pInterface.load())
+           {}
+   
+           CInterfacePtr(CInterfacePtr&& rptrInterface) noexcept
+           {
+               IInterfaceAccess* pInterface = rptrInterface.m_pInterface.load();
+               rptrInterface.m_pInterface = nullptr;
+               m_pInterface = pInterface;
+           }
+   
+           virtual ~CInterfacePtr() = default;
+   
+           CInterfacePtr& operator=(IInterfaceAccess* pInterface)
+           {
+               m_pInterface = pInterface;
+               return *this;
+           }
+   
+           CInterfacePtr& operator=(const CInterfacePtr& rptrInterface)
+           {
+               m_pInterface = rptrInterface.m_pInterface.load();
+               return *this;
+           }
+   
+           CInterfacePtr& operator=(CInterfacePtr&& rptrInterface) noexcept
+           {
+               IInterfaceAccess* pInterface = rptrInterface.m_pInterface.load();
+               rptrInterface.m_pInterface = nullptr;
+               m_pInterface = pInterface;
+               return *this;
+           }
+   
+           operator IInterfaceAccess*()
+           {
+               return m_pInterface;
+           }
+   
+           operator const IInterfaceAccess*() const
+           {
+               return m_pInterface;
+           }
+   
+           operator bool() const
+           {
+               return static_cast<bool>(m_pInterface);
+           }
+   
+           bool IsValid() const
+           {
+               return static_cast<bool>(m_pInterface);
+           }
+   
+           template <typename TIfc>
+           TIfc* GetInterface() const
+           {
+               return m_pInterface ? m_pInterface.load()->GetInterface(GetInterfaceId<TIfc>()).template get<TIfc>() : nullptr;
+           }
+   
+       private:
+           std::atomic<IInterfaceAccess*> m_pInterface{nullptr};
+       };
+   
+       template <>
+       inline IInterfaceAccess* CInterfacePtr::GetInterface<IInterfaceAccess>() const
+       {
+           return m_pInterface;
+       }
+   
+       using TInterfaceAccessPtr = CInterfacePtr;
+   
+       template <typename TMember>
+       inline sdv::interface_t InterfaceMapChainHelper(TMember& rtMember, interface_id idInterface)
+       {
+           return rtMember.GetInterface(idInterface);
+       }
+   
+       // Warning of cppchgeck for a potential const variable cannot be applied due to the non-const nature of interfaces. Suppress
+       // warning.
+       // cppcheck-suppress constParameterReference
+       inline sdv::interface_t InterfaceMapChainHelper(CInterfacePtr& rptrMember, interface_id idInterface)
+       {
+           return rptrMember ? static_cast<IInterfaceAccess*>(rptrMember)->GetInterface(idInterface) : nullptr;
+       }
+   
+       template <typename TMember>
+       inline sdv::interface_t InterfaceMapChainHelper(TMember* ptMember, interface_id idInterface)
+       {
+           return ptMember ? ptMember->GetInterface(idInterface) : nullptr;
+       }
+   
+       template <typename TMember>
+       inline sdv::interface_t InterfaceMapChainHelper(std::shared_ptr<TMember>& rptrMember, interface_id idInterface)
+       {
+           return rptrMember ? rptrMember->GetInterface(idInterface) : nullptr;
+       }
+   
+       template <typename TMember>
+       inline sdv::interface_t InterfaceMapChainHelper(std::weak_ptr<TMember>& rweakMember, interface_id idInterface)
+       {
+           std::shared_ptr<TMember> ptrMember = rweakMember.lock();
+           return InterfaceMapChainHelper(ptrMember, idInterface);
+       }
+   
+       template <typename TInterface>
+       struct SInterfaceMemberHelper
+       {
+           template <typename TMember>
+           static sdv::interface_t InterfaceMapEntryHelper(TMember& rtMember, interface_id idInterface)
+           {
+               static_assert(std::is_same_v<TInterface, TMember> || std::is_base_of_v<TInterface, TMember>);
+               if (sdv::GetInterfaceId<TInterface>() == idInterface)
+               {
+                   return static_cast<TInterface*>(&rtMember);
+               }
+               return nullptr;
+           }
+   
+           template <typename TMember>
+           static sdv::interface_t InterfaceMapEntryHelper(TMember* ptMember, interface_id idInterface)
+           {
+               static_assert(std::is_same_v<TInterface, TMember> || std::is_base_of_v<TInterface, TMember>);
+               if (sdv::GetInterfaceId<TInterface>() == idInterface)
+               {
+                   return static_cast<TInterface*>(ptMember);
+               }
+               return nullptr;
+           }
+   
+           template <typename TMember>
+           static sdv::interface_t InterfaceMapEntryHelper(std::shared_ptr<TMember>& rptrMember, interface_id idInterface)
+           {
+               static_assert(std::is_same_v<TInterface, TMember> || std::is_base_of_v<TInterface, TMember>);
+               if (sdv::GetInterfaceId<TInterface>() == idInterface)
+               {
+                   return static_cast<TInterface*>(rptrMember.get());
+               }
+               return nullptr;
+           }
+   
+           template <typename TMember>
+           static sdv::interface_t InterfaceMapEntryHelper(std::weak_ptr<TMember>& rweakMember, interface_id idInterface)
+           {
+               static_assert(std::is_same_v<TInterface, TMember> || std::is_base_of_v<TInterface, TMember>);
+               std::shared_ptr<TMember> ptrMember = rweakMember.lock();
+               return InterfaceMapEntryHelper<TMember>(ptrMember, idInterface);
+           }
+       };
+   
+       class CObjectLifetimeWrapper : public IInterfaceAccess, public IObjectLifetime, public IObjectDestroy
+       {
+       public:
+           CObjectLifetimeWrapper() = default;
+   
+           ~CObjectLifetimeWrapper()
+           {}
+   
+           // Interface map
+           BEGIN_SDV_INTERFACE_MAP()
+               SDV_INTERFACE_ENTRY(IObjectLifetime)
+               SDV_INTERFACE_ENTRY(IObjectDestroy)
+               SDV_INTERFACE_CHAIN_MEMBER(m_pObject)
+           END_SDV_INTERFACE_MAP()
+   
+           static IInterfaceAccess* CreateWrapper(IInterfaceAccess* pObject)
+           {
+               if (!pObject) return nullptr;   // Nothing to manage
+               std::unique_ptr<CObjectLifetimeWrapper> ptrWrapper = std::make_unique<CObjectLifetimeWrapper>();
+               // Ignore cppcheck warning; normally the returned pointer should always have a value at this stage (otherwise an
+               // exception was triggered).
+               // cppcheck-suppress knownConditionTrueFalse
+               if (!ptrWrapper)
+                   return nullptr;
+               ptrWrapper->Increment();
+               ptrWrapper->m_pObject = pObject;
+   
+               // Store the pointer internally - this will keep the pointer alive, but invalidates ptrWrapper.
+               std::unique_ptr<CObjectLifetimeWrapper>& rptrKeepAlive = ptrWrapper->m_ptrKeepAlive;
+               rptrKeepAlive = std::move(ptrWrapper);
+   
+               // Return the interface pointer
+               return rptrKeepAlive.get();
+           }
+   
+           virtual void Increment() override
+           {
+               m_iCounter++;
+           }
+   
+           virtual bool Decrement() override
+           {
+               if (!m_iCounter) return false;
+               m_iCounter--;
+               if (!m_iCounter)
+               {
+                   IObjectDestroy* pObjectDestroy = CInterfacePtr(m_pObject).GetInterface<IObjectDestroy>();
+                   if (pObjectDestroy) pObjectDestroy->DestroyObject();
+                   m_pObject = nullptr;
+                   m_ptrKeepAlive.reset();
+                   return true;
+               }
+               return false;
+           }
+   
+           virtual uint32_t GetCount() const override
+           {
+               return static_cast<uint32_t>(m_iCounter);
+           }
+   
+           virtual void DestroyObject() override
+           {
+               // Destroy object is only allowed when the counter is 1.
+               if (static_cast<int32_t>(m_iCounter) != 1)
+                   std::cerr << "Trying to destroy an object having references." << std::endl;
+               if (static_cast<int32_t>(m_iCounter) > 0)
+                   Decrement();
+           }
+   
+           IInterfaceAccess*                       m_pObject = nullptr;    
+           std::atomic<int32_t>                    m_iCounter = 0;         
+           std::unique_ptr<CObjectLifetimeWrapper> m_ptrKeepAlive;         
+       };
+   
+       class CObjectPtr
+       {
+       public:
+           CObjectPtr(IInterfaceAccess* pInterface = nullptr)
+           {
+               Assign(pInterface);
+           }
+   
+           CObjectPtr(const CObjectPtr& rptrInterface) : m_ptrObject(rptrInterface.m_ptrObject)
+           {
+               IObjectLifetime* pObjectLifetime = GetInterface<IObjectLifetime>();
+               if (pObjectLifetime) pObjectLifetime->Increment();
+           }
+   
+           CObjectPtr(CObjectPtr&& rptrInterface) noexcept : m_ptrObject(std::move(rptrInterface.m_ptrObject))
+           {}
+   
+           virtual ~CObjectPtr()
+           {
+               Clear();
+           }
+   
+           CObjectPtr& operator=(IInterfaceAccess* pInterface)
+           {
+               Assign(pInterface);
+               return *this;
+           }
+   
+           CObjectPtr& operator=(const CObjectPtr& rptrInterface)
+           {
+               Clear();
+               m_ptrObject = rptrInterface.m_ptrObject;
+               IObjectLifetime* pObjectLifetime = GetInterface<IObjectLifetime>();
+               if (pObjectLifetime) pObjectLifetime->Increment();
+               return *this;
+           }
+   
+           CObjectPtr& operator=(CObjectPtr&& rptrInterface) noexcept
+           {
+               Attach(rptrInterface.Detach());
+               return *this;
+           }
+   
+           operator IInterfaceAccess*()
+           {
+               return m_ptrObject;
+           }
+   
+           operator const IInterfaceAccess*() const
+           {
+               return m_ptrObject;
+           }
+   
+           operator CInterfacePtr() const
+           {
+               return m_ptrObject;
+           }
+   
+           operator bool() const
+           {
+               return IsValid();
+           }
+   
+           bool IsValid() const
+           {
+               return static_cast<bool>(m_ptrObject);
+           }
+   
+           template <typename TIfc>
+           TIfc* GetInterface() const
+           {
+               return m_ptrObject.GetInterface<TIfc>();
+           }
+   
+           void Assign(IInterfaceAccess* pObject)
+           {
+               Clear();
+               if (!pObject) return;
+   
+               IObjectLifetime* pLifetime = CInterfacePtr(pObject).GetInterface<IObjectLifetime>();
+               if (pLifetime)  // Object provides lifetime management. Use this...
+               {
+                   m_ptrObject = pObject;
+                   pLifetime->Increment();
+               }
+               else // Create a lifetime management wrapper. Do not increase count... this has already been done during creation
+                   m_ptrObject = CObjectLifetimeWrapper::CreateWrapper(pObject);
+           }
+   
+           void Clear()
+           {
+               IObjectLifetime* pLifetime = m_ptrObject.GetInterface<IObjectLifetime>();
+               if (pLifetime)  // Object provides lifetime management. Use this...
+                   pLifetime->Decrement();
+               m_ptrObject = nullptr;
+           }
+   
+           void Attach(IInterfaceAccess* pObject)
+           {
+               Clear();
+               if (CInterfacePtr(pObject).GetInterface<IObjectLifetime>())
+                   m_ptrObject = pObject;
+           }
+   
+           CInterfacePtr Detach()
+           {
+               if (!m_ptrObject) return CInterfacePtr();
+               CInterfacePtr ptr = std::move(m_ptrObject);
+               m_ptrObject = nullptr;
+               return ptr;
+           }
+   
+       private:
+           CInterfacePtr   m_ptrObject;    
+       };
+   
+       using TObjectPtr = CObjectPtr;
+   
+   } // namespace sdv
+   
+   
+   #ifndef DONT_LOAD_CORE_TYPES
+   #include "mem_access.h"
+   #endif
+   
+   #endif // !defined INTERFACE_IMPL_H

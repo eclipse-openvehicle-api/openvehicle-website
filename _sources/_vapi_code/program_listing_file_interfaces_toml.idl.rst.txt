@@ -1,0 +1,63 @@
+
+.. _program_listing_file_interfaces_toml.idl:
+
+Program Listing for File toml.idl
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_toml.idl>` (``interfaces\toml.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core.idl"
+   
+   module sdv
+   {
+       module toml
+       {
+           exception XTOMLParseException : XSysExcept
+           {
+               const char _description[] = "TOML parse exception.";
+   
+               u8string ssMessage;     
+           };
+   
+           enum ENodeType : uint8
+           {
+               node_table,             
+               node_array,             
+               node_integer,           
+               node_floating_point,    
+               node_boolean,           
+               node_string,            
+               node_invalid            
+           };
+   
+           interface INodeInfo
+           {
+               u8string GetName() const;
+   
+               ENodeType GetType() const;
+   
+               any GetValue() const;
+   
+               u8string GetTOML() const;
+           };
+   
+           interface INodeCollection
+           {
+               uint32 GetCount() const;
+   
+               IInterfaceAccess GetNode(in uint32 uiIndex) const;
+   
+               IInterfaceAccess GetNodeDirect(in u8string ssPath) const;
+           };
+   
+           interface ITOMLParser
+           {
+               boolean Process(in u8string ssContent) raises(XTOMLParseException);
+           };
+       };
+   };

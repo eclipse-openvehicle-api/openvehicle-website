@@ -1,0 +1,916 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>File string.h &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/file_support_string.h';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">File string.h</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="file-string-h">
+<span id="file-support-string-h"></span><h1>File string.h<a class="headerlink" href="#file-string-h" title="Permalink to this heading">#</a></h1>
+<p>↰ <a class="reference internal" href="dir_support.html#dir-support"><span class="std std-ref">Parent directory</span></a> (<code class="docutils literal notranslate"><span class="pre">support</span></code>)</p>
+<nav class="contents local" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#definition-support-string-h" id="id1">Definition (<code class="docutils literal notranslate"><span class="pre">support\string.h</span></code>)</a></p></li>
+<li><p><a class="reference internal" href="#includes" id="id2">Includes</a></p></li>
+<li><p><a class="reference internal" href="#included-by" id="id3">Included By</a></p></li>
+<li><p><a class="reference internal" href="#namespaces" id="id4">Namespaces</a></p></li>
+<li><p><a class="reference internal" href="#classes" id="id5">Classes</a></p></li>
+<li><p><a class="reference internal" href="#functions" id="id6">Functions</a></p></li>
+<li><p><a class="reference internal" href="#typedefs" id="id7">Typedefs</a></p></li>
+</ul>
+</nav>
+<section id="definition-support-string-h">
+<h2>Definition (<code class="docutils literal notranslate"><span class="pre">support\string.h</span></code>)<a class="headerlink" href="#definition-support-string-h" title="Permalink to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="program_listing_file_support_string.h.html">Program Listing for File string.h</a></li>
+</ul>
+</div>
+</section>
+<section id="includes">
+<h2>Includes<a class="headerlink" href="#includes" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">algorithm</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filesystem</span></code> (<a class="reference internal" href="file_filesystem_helper.h.html#file-filesystem-helper-h"><span class="std std-ref">File filesystem_helper.h</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">istream</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iterator.h</span></code> (<a class="reference internal" href="file_support_iterator.h.html#file-support-iterator-h"><span class="std std-ref">File iterator.h</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ostream</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pointer.h</span></code> (<a class="reference internal" href="file_support_pointer.h.html#file-support-pointer-h"><span class="std std-ref">File pointer.h</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string</span></code> (<a class="reference internal" href="#file-support-string-h"><span class="std std-ref">File string.h</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string.inl</span></code></p></li>
+</ul>
+</section>
+<section id="included-by">
+<h2>Included By<a class="headerlink" href="#included-by" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="file_cmdlnparser_cmdlnparser.h.html#file-cmdlnparser-cmdlnparser-h"><span class="std std-ref">File cmdlnparser.h</span></a></p></li>
+<li><p><a class="reference internal" href="file_interfaces_config.h.html#file-interfaces-config-h"><span class="std std-ref">File config.h</span></a></p></li>
+<li><p><a class="reference internal" href="file_interfaces_config.idl.html#file-interfaces-config-idl"><span class="std std-ref">File config.idl</span></a></p></li>
+<li><p><a class="reference internal" href="file_interfaces_core.h.html#file-interfaces-core-h"><span class="std std-ref">File core.h</span></a></p></li>
+<li><p><a class="reference internal" href="file_sdv_control_context.h.html#file-sdv-control-context-h"><span class="std std-ref">File context.h</span></a></p></li>
+<li><p><a class="reference internal" href="file_sdv_control_installation.h.html#file-sdv-control-installation-h"><span class="std std-ref">File installation.h</span></a></p></li>
+<li><p><a class="reference internal" href="file_sdv_control_list_elements.h.html#file-sdv-control-list-elements-h"><span class="std std-ref">File list_elements.h</span></a></p></li>
+<li><p><a class="reference internal" href="file_sdv_control_start_stop_service.h.html#file-sdv-control-start-stop-service-h"><span class="std std-ref">File start_stop_service.h</span></a></p></li>
+<li><p><a class="reference internal" href="file_sdv_control_startup_shutdown.h.html#file-sdv-control-startup-shutdown-h"><span class="std std-ref">File startup_shutdown.h</span></a></p></li>
+<li><p><a class="reference internal" href="file_sdv_idl_compiler_core_idl_backup.h.html#file-sdv-idl-compiler-core-idl-backup-h"><span class="std std-ref">File core_idl_backup.h</span></a></p></li>
+<li><p><a class="reference internal" href="file_support_any.h.html#file-support-any-h"><span class="std std-ref">File any.h</span></a></p></li>
+<li><p><a class="reference internal" href="file_support_serdes.h.html#file-support-serdes-h"><span class="std std-ref">File serdes.h</span></a></p></li>
+</ul>
+</section>
+<section id="namespaces">
+<h2>Namespaces<a class="headerlink" href="#namespaces" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="namespace_sdv.html#namespace-sdv"><span class="std std-ref">Namespace sdv</span></a></p></li>
+</ul>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="classsdv_1_1string__base.html#exhale-class-classsdv-1-1string-base"><span class="std std-ref">Template Class string_base</span></a></p></li>
+</ul>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="function_namespacesdv_1aca13f87c0cdc678255a9ba640109269b.html#exhale-function-namespacesdv-1aca13f87c0cdc678255a9ba640109269b"><span class="std std-ref">Template Function sdv::getline(std::basic_istream&lt;TCharType, std::char_traits&lt;TCharType&gt;&gt;&amp;, string_base&lt;TCharType, bUnicode, nFixedSize&gt;&amp;, TCharType)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a808ee7bba2f5927917a7d9588ebf2b95.html#exhale-function-namespacesdv-1a808ee7bba2f5927917a7d9588ebf2b95"><span class="std std-ref">Template Function sdv::getline(std::basic_istream&lt;TCharType, std::char_traits&lt;TCharType&gt;&gt;&amp;&amp;, string_base&lt;TCharType, bUnicode, nFixedSize&gt;&amp;, TCharType)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a2f957ccc8183eeeec2fe1fae41a72a37.html#exhale-function-namespacesdv-1a2f957ccc8183eeeec2fe1fae41a72a37"><span class="std std-ref">Template Function sdv::getline(std::basic_istream&lt;TCharType, std::char_traits&lt;TCharType&gt;&gt;&amp;, string_base&lt;TCharType, bUnicode, nFixedSize&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a631106aeb61a81da0d03d506212696b8.html#exhale-function-namespacesdv-1a631106aeb61a81da0d03d506212696b8"><span class="std std-ref">Template Function sdv::getline(std::basic_istream&lt;TCharType, std::char_traits&lt;TCharType&gt;&gt;&amp;&amp;, string_base&lt;TCharType, bUnicode, nFixedSize&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1aebaf8d30c104f4080b781f9a00b7cff9.html#exhale-function-namespacesdv-1aebaf8d30c104f4080b781f9a00b7cff9"><span class="std std-ref">Template Function sdv::MakeAnsiString(const TCharType *, size_t, char)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1ae74a4bdea818f989e4835a243ccb87b3.html#exhale-function-namespacesdv-1ae74a4bdea818f989e4835a243ccb87b3"><span class="std std-ref">Template Function sdv::MakeAnsiString(const string_base&lt;TCharType, bUnicode, nFixedSize&gt;&amp;, char)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1af13bba99ae4e275ab3bade9f227c8f0c.html#exhale-function-namespacesdv-1af13bba99ae4e275ab3bade9f227c8f0c"><span class="std std-ref">Template Function sdv::MakeAnsiString(const std::basic_string&lt;TCharType&gt;&amp;, char)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a884cbaf89dfa4eda462e5397c1f677c4.html#exhale-function-namespacesdv-1a884cbaf89dfa4eda462e5397c1f677c4"><span class="std std-ref">Template Function sdv::MakePath</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a5f2e06439fa2615e39e5efa5d76cac60.html#exhale-function-namespacesdv-1a5f2e06439fa2615e39e5efa5d76cac60"><span class="std std-ref">Template Function sdv::MakeString(const std::basic_string&lt;TCharTypeSrc&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1ab2362ba4be5f4e3e7389d663d5f7499a.html#exhale-function-namespacesdv-1ab2362ba4be5f4e3e7389d663d5f7499a"><span class="std std-ref">Template Function sdv::MakeString(const string_base&lt;TCharTypeSrc, bUnicodeSrc, nFixedSizeSrc&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1aae8d9ad07b095195d5bcdc3e0a4f7e65.html#exhale-function-namespacesdv-1aae8d9ad07b095195d5bcdc3e0a4f7e65"><span class="std std-ref">Template Function sdv::MakeUtf16String(const std::basic_string&lt;TCharType&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1ae31fe488e8fa43739e8bf0a165adb54a.html#exhale-function-namespacesdv-1ae31fe488e8fa43739e8bf0a165adb54a"><span class="std std-ref">Template Function sdv::MakeUtf16String(const TCharType *, size_t)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1aebaa1b475b46c721327c272ae583d303.html#exhale-function-namespacesdv-1aebaa1b475b46c721327c272ae583d303"><span class="std std-ref">Template Function sdv::MakeUtf16String(const string_base&lt;TCharType, bUnicode, nFixedSize&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1ae3d790f508550f26f5fc08c25424aad4.html#exhale-function-namespacesdv-1ae3d790f508550f26f5fc08c25424aad4"><span class="std std-ref">Template Function sdv::MakeUtf32String(const std::basic_string&lt;TCharType&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1aaa36e35df72e05402fe3722a86fca834.html#exhale-function-namespacesdv-1aaa36e35df72e05402fe3722a86fca834"><span class="std std-ref">Template Function sdv::MakeUtf32String(const TCharType *, size_t)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a36c1004ec03b0ec30edf753beb4ee61c.html#exhale-function-namespacesdv-1a36c1004ec03b0ec30edf753beb4ee61c"><span class="std std-ref">Template Function sdv::MakeUtf32String(const string_base&lt;TCharType, bUnicode, nFixedSize&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a1045218e743f747c85216b8ebc0a3f32.html#exhale-function-namespacesdv-1a1045218e743f747c85216b8ebc0a3f32"><span class="std std-ref">Template Function sdv::MakeUtf8String(const std::basic_string&lt;TCharType&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a227e584876bb576ec4d2f7e59eda4df4.html#exhale-function-namespacesdv-1a227e584876bb576ec4d2f7e59eda4df4"><span class="std std-ref">Template Function sdv::MakeUtf8String(const TCharType *, size_t)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a664c15a09612a979540b970a2e23ecdd.html#exhale-function-namespacesdv-1a664c15a09612a979540b970a2e23ecdd"><span class="std std-ref">Template Function sdv::MakeUtf8String(const string_base&lt;TCharType, bUnicode, nFixedSize&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a917b8745b67bc97b9fe6165be7ffefef.html#exhale-function-namespacesdv-1a917b8745b67bc97b9fe6165be7ffefef"><span class="std std-ref">Template Function sdv::MakeWString(const TCharType *, size_t)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a07f0a50d3cce8a53090322867ac9be6a.html#exhale-function-namespacesdv-1a07f0a50d3cce8a53090322867ac9be6a"><span class="std std-ref">Template Function sdv::MakeWString(const string_base&lt;TCharType, bUnicode, nFixedSize&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1acb605c13ed80f281ca1d897a74dfbe29.html#exhale-function-namespacesdv-1acb605c13ed80f281ca1d897a74dfbe29"><span class="std std-ref">Template Function sdv::MakeWString(const std::basic_string&lt;TCharType&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a9ae4a8f45ea4f5ab1f67cc30822b6fa2.html#exhale-function-namespacesdv-1a9ae4a8f45ea4f5ab1f67cc30822b6fa2"><span class="std std-ref">Template Function sdv::operator!=(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a82b025e580d872e601d6d8140e24c80a.html#exhale-function-namespacesdv-1a82b025e580d872e601d6d8140e24c80a"><span class="std std-ref">Template Function sdv::operator!=(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const std::basic_string&lt;TCharType&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1ace1af8181ea6810c86edc50668053693.html#exhale-function-namespacesdv-1ace1af8181ea6810c86edc50668053693"><span class="std std-ref">Template Function sdv::operator!=(const std::basic_string&lt;TCharType&gt;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1aef02cf855da8d9dab8512ce0340d3131.html#exhale-function-namespacesdv-1aef02cf855da8d9dab8512ce0340d3131"><span class="std std-ref">Template Function sdv::operator!=(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const TCharType *)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a508caccb095ad73ddee5320f779ceb1e.html#exhale-function-namespacesdv-1a508caccb095ad73ddee5320f779ceb1e"><span class="std std-ref">Template Function sdv::operator!=(const TCharType *, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a9d9e8a4ef73672f6a5f4eabfcad7fb69.html#exhale-function-namespacesdv-1a9d9e8a4ef73672f6a5f4eabfcad7fb69"><span class="std std-ref">Template Function sdv::operator+(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a6cb69f86433195b39490f8e1bfd6edfa.html#exhale-function-namespacesdv-1a6cb69f86433195b39490f8e1bfd6edfa"><span class="std std-ref">Template Function sdv::operator+(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const std::basic_string&lt;TCharType&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a97167a8a688847786ebe3e807e398be3.html#exhale-function-namespacesdv-1a97167a8a688847786ebe3e807e398be3"><span class="std std-ref">Template Function sdv::operator+(const std::basic_string&lt;TCharType&gt;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a16dae8483146d89ef06adcf5401665c4.html#exhale-function-namespacesdv-1a16dae8483146d89ef06adcf5401665c4"><span class="std std-ref">Template Function sdv::operator+(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const TCharType *)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1aebb408b9170b20b9999412489bb19a02.html#exhale-function-namespacesdv-1aebb408b9170b20b9999412489bb19a02"><span class="std std-ref">Template Function sdv::operator+(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, TCharType)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a1bac2f946797d9382163b71179dbe2ea.html#exhale-function-namespacesdv-1a1bac2f946797d9382163b71179dbe2ea"><span class="std std-ref">Template Function sdv::operator+(const TCharType *, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1abc7aee2e803befb29e7fbe02c2a9a83e.html#exhale-function-namespacesdv-1abc7aee2e803befb29e7fbe02c2a9a83e"><span class="std std-ref">Template Function sdv::operator+(TCharType, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1aa23d358c57c97904dd1ba27e796c21af.html#exhale-function-namespacesdv-1aa23d358c57c97904dd1ba27e796c21af"><span class="std std-ref">Template Function sdv::operator+(string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;&amp;, string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a0c3679da11f538bf0a5ba5a8ec411843.html#exhale-function-namespacesdv-1a0c3679da11f538bf0a5ba5a8ec411843"><span class="std std-ref">Template Function sdv::operator+(string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a07abab923cc41aa3d2096d8d213652b8.html#exhale-function-namespacesdv-1a07abab923cc41aa3d2096d8d213652b8"><span class="std std-ref">Template Function sdv::operator+(string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;&amp;, const std::basic_string&lt;TCharType&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a0d4149266767efffd7d757122fbf2734.html#exhale-function-namespacesdv-1a0d4149266767efffd7d757122fbf2734"><span class="std std-ref">Template Function sdv::operator+(string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;&amp;, const TCharType *)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1ad5099d682e151901473676df0cee91f6.html#exhale-function-namespacesdv-1ad5099d682e151901473676df0cee91f6"><span class="std std-ref">Template Function sdv::operator+(string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;&amp;, TCharType)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1ae2a93f3b30adad85231510326408fe56.html#exhale-function-namespacesdv-1ae2a93f3b30adad85231510326408fe56"><span class="std std-ref">Template Function sdv::operator+(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1af698eabb8de23ab52d25189fab2c774e.html#exhale-function-namespacesdv-1af698eabb8de23ab52d25189fab2c774e"><span class="std std-ref">Template Function sdv::operator+(const std::basic_string&lt;TCharType&gt;&amp;, string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a2d2d87d520b8f8f98639bb2cad0de5d0.html#exhale-function-namespacesdv-1a2d2d87d520b8f8f98639bb2cad0de5d0"><span class="std std-ref">Template Function sdv::operator+(const TCharType *, string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a4ea40883cfd3162cea65da38bd723cd4.html#exhale-function-namespacesdv-1a4ea40883cfd3162cea65da38bd723cd4"><span class="std std-ref">Template Function sdv::operator+(TCharType, string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a18256b6b0ae412ff11d295b39dc4c10e.html#exhale-function-namespacesdv-1a18256b6b0ae412ff11d295b39dc4c10e"><span class="std std-ref">Template Function sdv::operator&lt;(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a013352c0c28fa7ec3f540db96132cd19.html#exhale-function-namespacesdv-1a013352c0c28fa7ec3f540db96132cd19"><span class="std std-ref">Template Function sdv::operator&lt;(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const std::basic_string&lt;TCharType&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a39d4dd2382579fa223e98fef932efc1b.html#exhale-function-namespacesdv-1a39d4dd2382579fa223e98fef932efc1b"><span class="std std-ref">Template Function sdv::operator&lt;(const std::basic_string&lt;TCharType&gt;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1acbe7dcac0a01d03555135dca1100240e.html#exhale-function-namespacesdv-1acbe7dcac0a01d03555135dca1100240e"><span class="std std-ref">Template Function sdv::operator&lt;(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const TCharType *)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a59e5aa5abb1ac678554e2965dd52e5f0.html#exhale-function-namespacesdv-1a59e5aa5abb1ac678554e2965dd52e5f0"><span class="std std-ref">Template Function sdv::operator&lt;(const TCharType *, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1ac08edcb339a4d1f9d0b940bface216ef.html#exhale-function-namespacesdv-1ac08edcb339a4d1f9d0b940bface216ef"><span class="std std-ref">Template Function sdv::operator&lt;&lt;(std::basic_ostream&lt;TCharType, std::char_traits&lt;TCharType&gt;&gt;&amp;, const string_base&lt;TCharType, bUnicode, nFixedSize&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1afd180059c8efcd8c71cc48b74bd895ed.html#exhale-function-namespacesdv-1afd180059c8efcd8c71cc48b74bd895ed"><span class="std std-ref">Template Function sdv::operator&lt;=(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1afb10653fa41737446fe6c1f9fb3e43b6.html#exhale-function-namespacesdv-1afb10653fa41737446fe6c1f9fb3e43b6"><span class="std std-ref">Template Function sdv::operator&lt;=(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const std::basic_string&lt;TCharType&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a84ecfc6ea9c7b05ac141582fe65d0cad.html#exhale-function-namespacesdv-1a84ecfc6ea9c7b05ac141582fe65d0cad"><span class="std std-ref">Template Function sdv::operator&lt;=(const std::basic_string&lt;TCharType&gt;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a11b3456744fe5047273ee1d2821573c0.html#exhale-function-namespacesdv-1a11b3456744fe5047273ee1d2821573c0"><span class="std std-ref">Template Function sdv::operator&lt;=(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const TCharType *)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a1dbc24126967c553beacffb9f6bb1bdf.html#exhale-function-namespacesdv-1a1dbc24126967c553beacffb9f6bb1bdf"><span class="std std-ref">Template Function sdv::operator&lt;=(const TCharType *, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a4809ca1a18cfda3fea3d21d3a0c955fc.html#exhale-function-namespacesdv-1a4809ca1a18cfda3fea3d21d3a0c955fc"><span class="std std-ref">Template Function sdv::operator==(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a1dbf96ab10e90e56f5575dc620afabea.html#exhale-function-namespacesdv-1a1dbf96ab10e90e56f5575dc620afabea"><span class="std std-ref">Template Function sdv::operator==(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const std::basic_string&lt;TCharType&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1ac194d807a445ad1e6390a0d4e1b9e6a0.html#exhale-function-namespacesdv-1ac194d807a445ad1e6390a0d4e1b9e6a0"><span class="std std-ref">Template Function sdv::operator==(const std::basic_string&lt;TCharType&gt;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a09db0724c9533d6243beb2bb8451d6b5.html#exhale-function-namespacesdv-1a09db0724c9533d6243beb2bb8451d6b5"><span class="std std-ref">Template Function sdv::operator==(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const TCharType *)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a505fc7b3ab6222c78ce8c6a7faad367f.html#exhale-function-namespacesdv-1a505fc7b3ab6222c78ce8c6a7faad367f"><span class="std std-ref">Template Function sdv::operator==(const TCharType *, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1aa85455e23d13feed41eebbc33758a5bf.html#exhale-function-namespacesdv-1aa85455e23d13feed41eebbc33758a5bf"><span class="std std-ref">Template Function sdv::operator&gt;(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a29abea468d4c94e83d0923bab7ebac15.html#exhale-function-namespacesdv-1a29abea468d4c94e83d0923bab7ebac15"><span class="std std-ref">Template Function sdv::operator&gt;(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const std::basic_string&lt;TCharType&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1afa597854e787440c44aeb5d43a092742.html#exhale-function-namespacesdv-1afa597854e787440c44aeb5d43a092742"><span class="std std-ref">Template Function sdv::operator&gt;(const std::basic_string&lt;TCharType&gt;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a3c3d9211f7bfaa664d8005f2dcae2276.html#exhale-function-namespacesdv-1a3c3d9211f7bfaa664d8005f2dcae2276"><span class="std std-ref">Template Function sdv::operator&gt;(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const TCharType *)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a7074519bf499591c0ae80c292d0b0968.html#exhale-function-namespacesdv-1a7074519bf499591c0ae80c292d0b0968"><span class="std std-ref">Template Function sdv::operator&gt;(const TCharType *, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a8b6b2effe811ce206d1d1443deecc622.html#exhale-function-namespacesdv-1a8b6b2effe811ce206d1d1443deecc622"><span class="std std-ref">Template Function sdv::operator&gt;=(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a513b4b2245b08f6d2a2dee0475162919.html#exhale-function-namespacesdv-1a513b4b2245b08f6d2a2dee0475162919"><span class="std std-ref">Template Function sdv::operator&gt;=(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const std::basic_string&lt;TCharType&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a14d6d1058bb6404f0eac06a94576e479.html#exhale-function-namespacesdv-1a14d6d1058bb6404f0eac06a94576e479"><span class="std std-ref">Template Function sdv::operator&gt;=(const std::basic_string&lt;TCharType&gt;&amp;, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1abf768705cc0fc540d34791c75cc30254.html#exhale-function-namespacesdv-1abf768705cc0fc540d34791c75cc30254"><span class="std std-ref">Template Function sdv::operator&gt;=(const string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, const TCharType *)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a34c850ee4fbf1c826a95e437dc0f9a4f.html#exhale-function-namespacesdv-1a34c850ee4fbf1c826a95e437dc0f9a4f"><span class="std std-ref">Template Function sdv::operator&gt;=(const TCharType *, const string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1ab06bd81140d74818779f60a31c94537e.html#exhale-function-namespacesdv-1ab06bd81140d74818779f60a31c94537e"><span class="std std-ref">Template Function sdv::operator&gt;&gt;</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1a6b158b75c1e0309a431a115ec794bb04.html#exhale-function-namespacesdv-1a6b158b75c1e0309a431a115ec794bb04"><span class="std std-ref">Template Function sdv::swap(string_base&lt;TCharType, bUnicodeLeft, nFixedSizeLeft&gt;&amp;, string_base&lt;TCharType, bUnicodeRight, nFixedSizeRight&gt;&amp;)</span></a></p></li>
+</ul>
+</section>
+<section id="typedefs">
+<h2>Typedefs<a class="headerlink" href="#typedefs" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="typedef_namespacesdv_1a930d7667f97c888ec11c4716075885e0.html#exhale-typedef-namespacesdv-1a930d7667f97c888ec11c4716075885e0"><span class="std std-ref">Typedef sdv::fixed_string</span></a></p></li>
+<li><p><a class="reference internal" href="typedef_namespacesdv_1aed588d4d0832ed13dd69abb5b86516e2.html#exhale-typedef-namespacesdv-1aed588d4d0832ed13dd69abb5b86516e2"><span class="std std-ref">Typedef sdv::fixed_u16string</span></a></p></li>
+<li><p><a class="reference internal" href="typedef_namespacesdv_1ab19ad008e4be9f89cdea84fb97cf7542.html#exhale-typedef-namespacesdv-1ab19ad008e4be9f89cdea84fb97cf7542"><span class="std std-ref">Typedef sdv::fixed_u32string</span></a></p></li>
+<li><p><a class="reference internal" href="typedef_namespacesdv_1aa9bb06c26ff8df9ae5f0253c98db70aa.html#exhale-typedef-namespacesdv-1aa9bb06c26ff8df9ae5f0253c98db70aa"><span class="std std-ref">Typedef sdv::fixed_u8string</span></a></p></li>
+<li><p><a class="reference internal" href="typedef_namespacesdv_1ae3cda997d422c41af16e7852b1915a98.html#exhale-typedef-namespacesdv-1ae3cda997d422c41af16e7852b1915a98"><span class="std std-ref">Typedef sdv::fixed_wstring</span></a></p></li>
+<li><p><a class="reference internal" href="typedef_namespacesdv_1a4270c7d81a6c6125f9b222c2274e1b48.html#exhale-typedef-namespacesdv-1a4270c7d81a6c6125f9b222c2274e1b48"><span class="std std-ref">Typedef sdv::string</span></a></p></li>
+<li><p><a class="reference internal" href="typedef_namespacesdv_1a394c618e06b593396e1841b258adb81d.html#exhale-typedef-namespacesdv-1a394c618e06b593396e1841b258adb81d"><span class="std std-ref">Typedef sdv::u16string</span></a></p></li>
+<li><p><a class="reference internal" href="typedef_namespacesdv_1a4c65493a1d02f704decb090fb319dc07.html#exhale-typedef-namespacesdv-1a4c65493a1d02f704decb090fb319dc07"><span class="std std-ref">Typedef sdv::u32string</span></a></p></li>
+<li><p><a class="reference internal" href="typedef_namespacesdv_1ad4584b9d3937ef91dc3661773c068362.html#exhale-typedef-namespacesdv-1ad4584b9d3937ef91dc3661773c068362"><span class="std std-ref">Typedef sdv::u8string</span></a></p></li>
+<li><p><a class="reference internal" href="typedef_namespacesdv_1a304b531a3a7128d5cc18cbf8a18db7ea.html#exhale-typedef-namespacesdv-1a304b531a3a7128d5cc18cbf8a18db7ea"><span class="std std-ref">Typedef sdv::wstring</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

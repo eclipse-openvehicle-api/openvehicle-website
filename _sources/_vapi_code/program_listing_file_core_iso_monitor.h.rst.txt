@@ -1,0 +1,47 @@
+
+.. _program_listing_file_core_iso_monitor.h:
+
+Program Listing for File iso_monitor.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_iso_monitor.h>` (``core\iso_monitor.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef ISOLATION_OBJECT_MONITOR_H
+   #define ISOLATION_OBJECT_MONITOR_H
+   
+   #include <support/component_impl.h>
+   
+   class CIsoMonitor : public sdv::IInterfaceAccess, public sdv::IObjectControl
+   {
+   public:
+       CIsoMonitor(sdv::IInterfaceAccess* pObject);
+   
+       ~CIsoMonitor();
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
+           SDV_INTERFACE_CHAIN_MEMBER(m_ptrObject)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual void Initialize(/*in*/ const sdv::u8string& ssObjectConfig) override;
+   
+       virtual sdv::EObjectStatus GetStatus() const override;
+   
+       virtual void SetOperationMode(/*in*/ sdv::EOperationMode eMode) override;
+   
+       virtual void Shutdown() override;
+   
+       sdv::IInterfaceAccess* GetContainedObject();
+   
+   private:
+       sdv::TInterfaceAccessPtr        m_ptrObject;                    
+       sdv::IObjectControl*            m_pObjectControl = nullptr;     
+       sdv::EObjectStatus              m_eObjectStatus = sdv::EObjectStatus::initialization_pending; 
+   };
+   
+   #endif // !defined ISOLATION_OBJECT_MONITOR_H

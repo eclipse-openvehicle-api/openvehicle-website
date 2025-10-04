@@ -1,0 +1,204 @@
+
+.. _program_listing_file_interfaces_core.h:
+
+Program Listing for File core.h
+===============================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_core.h>` (``interfaces\core.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__CORE_H__20251003_130453_884__
+   #define __IDL_GENERATED__CORE_H__20251003_130453_884__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core_types.h"
+   
+   #include "../support/pointer.h"
+   
+   #include "../support/iterator.h"
+   
+   #include "../support/string.h"
+   
+   #include "../support/sequence.h"
+   
+   #include "../support/any.h"
+   
+   #if defined(_WIN32) && defined(GetClassInfo)
+   #undef GetClassinfo
+   #endif
+   #ifdef _MSC_VER
+   #pragma warning(disable: 4190)  // Disable C-linkage warning when using C++ objects.
+   #endif
+   
+   namespace sdv
+   {
+       interface IInterfaceAccess
+       {
+           static constexpr ::sdv::interface_id _id = 0x9D93731520AD52C8;
+   
+           virtual sdv::interface_t GetInterface(/*in*/ sdv::interface_id idInterface) = 0;
+   
+   template <typename TInterface>
+   TInterface* GetInterface()
+   {
+       return GetInterface(sdv::GetInterfaceId<TInterface>()).template get<TInterface>();
+   }
+       };
+   
+       enum class EObjectType : uint32_t
+       {
+           SystemObject = 0,
+   
+           Device = 10,
+   
+           BasicService = 20,
+   
+           ComplexService = 21,
+   
+           Application = 30,
+   
+           Proxy = 100,
+   
+           Stub = 101,
+   
+           Utility = 1000,
+       };
+   
+       enum class EObjectFlags : uint32_t
+       {
+           singleton = 256,
+       };
+   
+       struct SClassInfo
+       {
+           sdv::u8string ssModulePath;
+   
+           sdv::u8string ssClassName;
+   
+           sdv::sequence<sdv::u8string> seqClassAliases;
+   
+           sdv::u8string ssDefaultObjectName;
+   
+           EObjectType eType;
+   
+           uint32_t uiFlags;
+   
+           sdv::sequence<sdv::u8string> seqDependencies;
+       };
+   
+       interface IObjectFactory
+       {
+           static constexpr ::sdv::interface_id _id = 0xD44C24E971FFB2F0;
+   
+           virtual IInterfaceAccess* CreateObject(/*in*/ const sdv::u8string& ssClassName) = 0;
+   
+           virtual void DestroyObject(/*in*/ IInterfaceAccess* sdvObject) = 0;
+   
+           virtual void DestroyAllObjects() = 0;
+       };
+   
+       enum class EObjectStatus : uint32_t
+       {
+           initialization_pending = 0,
+   
+           initializing = 10,
+   
+           initialization_failure = 11,
+   
+           initialized = 12,
+   
+           configuring = 20,
+   
+           config_error = 21,
+   
+           running = 30,
+   
+           runtime_error = 31,
+   
+           shutdown_in_progress = 90,
+   
+           destruction_pending = 99,
+       };
+   
+       enum class EOperationMode : uint32_t
+       {
+           configuring = 20,
+   
+           running = 30,
+       };
+   
+       interface IObjectControl
+       {
+           static constexpr ::sdv::interface_id _id = 0xD8AE1C98934FBA73;
+   
+           virtual void Initialize(/*in*/ const sdv::u8string& ssObjectConfig) = 0;
+   
+           virtual EObjectStatus GetStatus() const = 0;
+   
+           virtual void SetOperationMode(/*in*/ EOperationMode eMode) = 0;
+   
+           virtual void Shutdown() = 0;
+       };
+   
+       interface IObjectDestroy
+       {
+           static constexpr ::sdv::interface_id _id = 0xBCE042046AED46D7;
+   
+           virtual void DestroyObject() = 0;
+       };
+   
+       interface IObjectLifetime
+       {
+           static constexpr ::sdv::interface_id _id = 0x8E5315B6428769CA;
+   
+           virtual void Increment() = 0;
+   
+           virtual bool Decrement() = 0;
+   
+           virtual uint32_t GetCount() const = 0;
+       };
+   
+       enum class EAttributeFlags : uint32_t
+       {
+           read_only = 0x100,
+       };
+   
+       interface IAttributes
+       {
+           static constexpr ::sdv::interface_id _id = 0x57C6485BC65354B3;
+   
+           virtual sdv::sequence<sdv::u8string> GetNames() const = 0;
+   
+           virtual sdv::any_t Get(/*in*/ const sdv::u8string& ssAttribute) const = 0;
+   
+           virtual bool Set(/*in*/ const sdv::u8string& ssAttribute, /*in*/ sdv::any_t anyAttribute) = 0;
+   
+           virtual uint32_t GetFlags(/*in*/ const sdv::u8string& ssAttribute) const = 0;
+       };
+   }
+   
+   extern "C" SDV_SYMBOL_PUBLIC bool HasActiveObjects();
+   
+   extern "C" SDV_SYMBOL_PUBLIC sdv::IInterfaceAccess* GetModuleFactory(uint32_t interfaceVersion);
+   
+   extern "C" SDV_SYMBOL_PUBLIC const char* GetManifest();
+   
+   #include "mem.h"
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__CORE_H__20251003_130453_900__)

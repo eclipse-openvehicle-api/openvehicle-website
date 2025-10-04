@@ -1,0 +1,700 @@
+
+.. _program_listing_file_interfaces_config.h:
+
+Program Listing for File config.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_config.h>` (``interfaces\config.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__CONFIG_H__20251003_130454_122__
+   #define __IDL_GENERATED__CONFIG_H__20251003_130454_122__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   namespace sdv
+   {
+   #include "../support/string.h"
+   
+       except XCannotOpenFile : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0xE957A7B53B21B6E5;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "Cannot open a file.";
+   
+           sdv::u8string ssPath;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XFileCorrupt : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x771AE153DF805691;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The inetrnal structure of the file is not as expected.";
+   
+           sdv::u8string ssPath;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XCannotReadFileTimesOrAttributes : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x3C2CFAFEDE7ADCF0;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "Cannot read file times or attributes.";
+   
+           sdv::u8string ssPath;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XCannotChangeFileTimesOrAttributes : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x54E140D2F6FD93CF;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "Cannot change file times or attributes.";
+   
+           sdv::u8string ssPath;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XCannotCreateDir : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0xC1658E8DEB47D2D5;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "Cannot create a directory.";
+   
+           sdv::u8string ssPath;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XCannotRemoveDir : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x87D32557D2BF187A;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "Cannot remove a directory.";
+   
+           sdv::u8string ssPath;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XInvalidPath : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x26E67C607CDECD56;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "An invalid path was supplied.";
+   
+           sdv::u8string ssPath;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XDuplicateFile : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0xDA7E5CEEE2659193;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "A file with the same path already exists.";
+   
+           sdv::u8string ssFilePath;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       namespace core
+       {
+           enum class EConfigProcessResult : int32_t
+           {
+               failed = 0,
+   
+               successful = 1,
+   
+               partially_successful = - 1,
+           };
+   
+           /*local*/ interface IConfig
+           {
+               static constexpr ::sdv::interface_id _id = 0x8A3E712D61F4105D;
+   
+               virtual EConfigProcessResult ProcessConfig(/*in*/ const sdv::u8string& ssContent) = 0;
+   
+               virtual EConfigProcessResult LoadConfig(/*in*/ const sdv::u8string& ssConfigPath) = 0;
+   
+               virtual bool SaveConfig(/*in*/ const sdv::u8string& ssConfigPath) const = 0;
+   
+               virtual bool AddConfigSearchDir(/*in*/ const sdv::u8string& ssDir) = 0;
+   
+               virtual void ResetConfigBaseline() = 0;
+           };
+       }
+   
+       namespace installation
+       {
+           struct SPackageVersion
+           {
+               uint32_t uiMajor;
+   
+               uint32_t uiMinor;
+   
+               uint32_t uiPatch;
+           };
+   
+           struct SPackageHeader
+           {
+               EEndian eEndian;
+   
+               uint8_t uiReserved;
+   
+               uint16_t uiVersion;
+   
+               uint32_t uiOffset;
+   
+               uint8_t rguiSignature[8];
+   
+               uint64_t uiCreationDate;
+   
+               sdv::u8string ssManifest;
+           };
+   
+           struct SPackageHeaderChecksum
+           {
+               uint32_t uiChecksum;
+           };
+   
+           struct SPackageFooter
+           {
+               uint32_t uiChecksum;
+           };
+   
+           struct SFileDesc
+           {
+               sdv::u8string ssFileName;
+   
+               uint64_t uiCreationDate;
+   
+               uint64_t uiChangeDate;
+   
+               bool bAttrReadonly;
+   
+               bool bAttrExecutable;
+   
+               sdv::pointer<uint8_t> ptrContent;
+           };
+   
+           enum class EPackageBLOBType : uint32_t
+           {
+               binary_file = 1,
+   
+               final_entry = 0xffffffff,
+           };
+   
+           struct SPackageBLOB
+           {
+               // No initialization of variables is done in the constructor; suppress cppcheck warning.
+               // cppcheck-suppress uninitMemberVar
+               SPackageBLOB()
+               {
+                   construct_eBLOBType();
+               }
+   
+               // No initialization of variables is done in the constructor; suppress cppcheck warning.
+               // cppcheck-suppress uninitMemberVar
+               SPackageBLOB(const SPackageBLOB& rvar)
+               {
+                   // Construct content based on eBLOBType
+                   eBLOBType = rvar.eBLOBType;
+                   switch (rvar.eBLOBType)
+                   {
+                   case sdv::installation::EPackageBLOBType::binary_file:
+                       new (&sFileDesc) SFileDesc(rvar.sFileDesc);
+                       break;
+                   case sdv::installation::EPackageBLOBType::final_entry:
+                       break;
+                   default:
+                       break;
+                   }
+               }
+   
+               // No initialization of variables is done in the constructor; suppress cppcheck warning.
+               // cppcheck-suppress uninitMemberVar
+               SPackageBLOB(SPackageBLOB&& rvar) noexcept
+               {
+                   // Construct content based on eBLOBType
+                   eBLOBType = rvar.eBLOBType;
+                   switch (rvar.eBLOBType)
+                   {
+                   case sdv::installation::EPackageBLOBType::binary_file:
+                       new (&sFileDesc) SFileDesc(std::move(rvar.sFileDesc));
+                       break;
+                   case sdv::installation::EPackageBLOBType::final_entry:
+                       break;
+                   default:
+                       break;
+                   }
+               }
+   
+               ~SPackageBLOB()
+               {
+                   destruct_eBLOBType();
+               }
+   
+               // Assignment of variables is done in a member function; suppress cppcheck warning.
+               // cppcheck-suppress operatorEqVarError
+               SPackageBLOB& operator=(const SPackageBLOB & rvar)
+               {
+                   // Destroy previous allocation.
+                   destruct_eBLOBType();
+   
+                   // Construct content based on eBLOBType
+                   eBLOBType = rvar.eBLOBType;
+                   switch (rvar.eBLOBType)
+                   {
+                   case sdv::installation::EPackageBLOBType::binary_file:
+                       new (&sFileDesc) SFileDesc(rvar.sFileDesc);
+                       break;
+                   case sdv::installation::EPackageBLOBType::final_entry:
+                       break;
+                   default:
+                       break;
+                   }
+   
+                   return *this;
+               }
+   
+               // Assignment of variables is done in a member function; suppress cppcheck warning.
+               // cppcheck-suppress operatorEqVarError
+               SPackageBLOB& operator=(SPackageBLOB&& rvar) noexcept
+               {
+                   // Destroy previous allocation.
+                   destruct_eBLOBType();
+   
+                   // Construct content based on eBLOBType
+                   eBLOBType = rvar.eBLOBType;
+                   switch (rvar.eBLOBType)
+                   {
+                   case sdv::installation::EPackageBLOBType::binary_file:
+                       new (&sFileDesc) SFileDesc(std::move(rvar.sFileDesc));
+                       break;
+                   case sdv::installation::EPackageBLOBType::final_entry:
+                       break;
+                   default:
+                       break;
+                   }
+   
+                   return *this;
+               }
+   
+           private:
+               void construct_eBLOBType(sdv::installation::EPackageBLOBType val = sdv::installation::EPackageBLOBType{})
+               {
+                   eBLOBType = val;
+                   switch (val)
+                   {
+                   case sdv::installation::EPackageBLOBType::binary_file:
+                       new (&sFileDesc) SFileDesc;
+                       break;
+                   case sdv::installation::EPackageBLOBType::final_entry:
+                       break;
+                   default:
+                       break;
+                   }
+               }
+   
+               void destruct_eBLOBType()
+               {
+                   switch (eBLOBType)
+                   {
+                   case sdv::installation::EPackageBLOBType::binary_file:
+                       sFileDesc.~SFileDesc();
+                       break;
+                   case sdv::installation::EPackageBLOBType::final_entry:
+                       break;
+                   default:
+                       break;
+                   }
+               }
+   
+           public:
+               void switch_to(sdv::installation::EPackageBLOBType val)
+               {
+                   // Anything to do?
+                   if (eBLOBType == val) return;
+                   
+                   // Destruct and construct eBLOBType...
+                   destruct_eBLOBType();
+                   construct_eBLOBType(val);
+               }
+   
+               sdv::installation::EPackageBLOBType get_switch() const
+               {
+                   return eBLOBType;
+               }
+   
+           private:
+               EPackageBLOBType eBLOBType;
+   
+           public:
+               uint32_t uiChecksumInit;
+   
+               uint32_t uiBLOBSize;
+   
+   
+               union /*switch(eBLOBType)*/
+               {
+                   // case sdv::installation::EPackageBLOBType::binary_file:
+                   SFileDesc sFileDesc;
+   
+                   // case sdv::installation::EPackageBLOBType::final_entry:
+               };
+           };
+   
+           struct SPackageBLOBChecksum
+           {
+               uint32_t uiChecksum;
+           };
+   
+           except XFailedToCompose : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0xAF65B1AA9849D6D1;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "Faled to compose an installation package.";
+   
+               sdv::u8string ssInstallName;
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XNoManifest : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0x9DF51B28A9A8CFFB;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "The installation manifest could not be found or created.";
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XInvalidManifest : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0xE837FD9C32B7C73F;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "The installation manifest could not be loaded.";
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XFailedSaveManifest : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0x6FD3D6DE500AE718;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "The installation manifest could not be saved.";
+   
+               sdv::u8string ssInstallName;
+   
+               sdv::u8string ssPath;
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XFailedManifestCreation : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0x6D180B8B839CDA65;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "The installation manifest could not be created.";
+   
+               sdv::u8string ssInstallName;
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XDuplicateManifest : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0x2D637D6033DC73C4;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "A duplicate installation manifest was found.";
+   
+               sdv::u8string ssInstallName1;
+   
+               sdv::u8string ssInstallName2;
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XDuplicateInstall : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0xF5BB504D360C9CBB;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "An installation exists already.";
+   
+               sdv::u8string ssInstallName;
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XModuleNotFound : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0x3DFF673EC1879478;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "A module with the supplied name could not be found.";
+   
+               sdv::u8string ssPath;
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XComponentNotLoadable : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0xAD019D0412A2C0E7;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "One or more components cannot be loaded.";
+   
+               sdv::sequence<sdv::u8string> seqComponents;
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XIncorrectCRC : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0xCC6EB3FA7C75C499;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "The installation package has an invalid CRC.";
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XIncompatiblePackage : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0x54372F0E4E603F17;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "The installation package is incompatible.";
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XIncorrectPath : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0xB9B31DD25526E71D;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "Invalid module target path.";
+   
+               sdv::u8string ssPath;
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XMissingBasePath : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0xF9D5EB422102B8D4;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "A base path is required for processing.";
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XInstallationNotFound : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0xE38D5C998B3EFBD7;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "THe installation was not found.";
+   
+               sdv::u8string ssInstallName;
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XUninstallCouldNotUnload : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0xD7E0C24A6307E789;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "Unable to unload the installation.";
+   
+               sdv::u8string ssInstallName;
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           interface IAppInstall
+           {
+               static constexpr ::sdv::interface_id _id = 0x85324A06C3821218;
+   
+               virtual bool Install(/*in*/ const sdv::u8string& ssInstallName, /*in*/ const sdv::sequence<SFileDesc>& seqFiles) = 0;
+   
+               virtual bool Update(/*in*/ const sdv::u8string& ssInstallName, /*in*/ const sdv::sequence<SFileDesc>& seqFiles) = 0;
+   
+               virtual bool Uninstall(/*in*/ const sdv::u8string& ssInstallName) = 0;
+   
+               virtual sdv::sequence<sdv::u8string> GetInstallations() const = 0;
+   
+               virtual sdv::sequence<SFileDesc> GetInstallationFiles(/*in*/ const sdv::u8string& ssInstallName) const = 0;
+           };
+       }
+   
+       namespace helper
+       {
+           interface IModuleManifestHelper
+           {
+               static constexpr ::sdv::interface_id _id = 0x9D583AEE4DA12C0B;
+   
+               virtual sdv::u8string ReadModuleManifest(/*in*/ const sdv::u8string& ssModule) = 0;
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__CONFIG_H__20251003_130454_154__)

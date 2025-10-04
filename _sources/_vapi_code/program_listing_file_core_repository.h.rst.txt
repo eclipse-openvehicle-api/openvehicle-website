@@ -1,0 +1,187 @@
+
+.. _program_listing_file_core_repository.h:
+
+Program Listing for File repository.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_repository.h>` (``core\repository.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef VAPI_REPOSITORY_H
+   #define VAPI_REPOSITORY_H
+   
+   #include <list>
+   #include <map>
+   #include <mutex>
+   #include <string>
+   #include <set>
+   #include <shared_mutex>
+   #include <interfaces/repository.h>
+   #include <support/component_impl.h>
+   #include <condition_variable>
+   #include "module.h"
+   #include "object_lifetime_control.h"
+   #include "iso_monitor.h"
+   
+   class CRepository :
+       public sdv::IInterfaceAccess, public sdv::core::IObjectAccess, public sdv::core::IRepositoryUtilityCreate,
+       public sdv::core::IRepositoryMarshallCreate, public sdv::core::IRepositoryControl, public sdv::core::IRegisterForeignObject,
+       public sdv::core::IRepositoryInfo, public IObjectDestroyHandler, public sdv::core::ILinkCoreRepository
+   {
+   public:
+       CRepository() = default;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::core::IObjectAccess)
+           SDV_INTERFACE_ENTRY(sdv::core::IRepositoryMarshallCreate)
+           SDV_INTERFACE_ENTRY(sdv::core::IRepositoryUtilityCreate)
+       END_SDV_INTERFACE_MAP()
+   
+       void SetConfigMode();
+   
+       void SetRunningMode();
+   
+       virtual sdv::IInterfaceAccess* GetObject(/*in*/ const sdv::u8string& ssObjectName) override;
+   
+       virtual sdv::IInterfaceAccess* GetObjectByID(/*in*/ sdv::core::TObjectID tObjectID) override;
+   
+       virtual sdv::IInterfaceAccess* CreateUtility(/*in*/ const sdv::u8string& ssClassName,
+           /*in*/ const sdv::u8string& ssObjectConfig) override;
+   
+       virtual sdv::IInterfaceAccess* CreateProxyObject(/*in*/ sdv::interface_id id) override;
+   
+       virtual sdv::IInterfaceAccess* CreateStubObject(/*in*/ sdv::interface_id id) override;
+   
+   protected:
+       virtual sdv::core::TObjectID CreateObject(/*in*/ const sdv::u8string& ssClassName, /*in*/ const sdv::u8string& ssObjectName,
+           /*in*/ const sdv::u8string& ssObjectConfig) override;
+   public:
+       virtual sdv::core::TObjectID CreateObjectFromModule(/*in*/ sdv::core::TModuleID tModuleID,
+           /*in*/ const sdv::u8string& ssClassName, /*in*/ const sdv::u8string& ssObjectName,
+           /*in*/ const sdv::u8string& ssObjectConfig) override;
+   
+   protected:
+       virtual bool DestroyObject(/*in*/ const sdv::u8string& ssObjectName) override;
+   
+   public:
+       sdv::core::TObjectID CreateObject2(/*in*/ const sdv::u8string& ssClassName, /*in*/ const sdv::u8string& ssObjectName,
+           /*in*/ const sdv::u8string& ssObjectConfig);
+   
+       bool DestroyObject2(/*in*/ const sdv::u8string& ssObjectName);
+   
+       virtual sdv::core::TObjectID RegisterObject(/*in*/ sdv::IInterfaceAccess* pObjectIfc,
+           /*in*/ const sdv::u8string& ssObjectName) override;
+   
+       virtual void LinkCoreRepository(/*in*/ sdv::IInterfaceAccess* pCoreRepository) override;
+   
+       virtual void UnlinkCoreRepository() override;
+   
+       virtual sdv::SClassInfo FindClass(/*in*/ const sdv::u8string& ssClassName) const override;
+   
+       virtual sdv::sequence<sdv::core::SObjectInfo> GetObjectList() const override;
+   
+       virtual sdv::core::SObjectInfo GetObjectInfo(/*in*/ sdv::core::TObjectID tObjectID) const override;
+   
+       virtual sdv::core::SObjectInfo FindObject(/*in*/ const sdv::u8string& ssObjectName) const override;
+   
+       virtual void OnDestroyObject(sdv::IInterfaceAccess* pObject) override;
+   
+       void DestroyModuleObjects(sdv::core::TModuleID tModuleID);
+   
+       void DestroyAllObjects(const std::vector<std::string>&rvecIgnoreObjects, bool bForce = false);
+   
+       void ResetConfigBaseline();
+   
+       std::string SaveConfig();
+   
+   private:
+       sdv::core::TObjectID CreateIsolatedObject(const sdv::SClassInfo& rsClassInfo, const sdv::u8string& rssObjectName,
+           const sdv::u8string& rssObjectConfig);
+   
+       sdv::core::TObjectID InternalCreateObject(const std::shared_ptr<CModuleInst>& rptrModule, const sdv::SClassInfo& rsClassInfo,
+           const sdv::u8string& rssObjectName, const sdv::u8string& rssObjectConfig);
+   
+       static sdv::core::TObjectID CreateObjectID();
+   
+       std::vector<sdv::core::TObjectID> GetDependingObjectInstancesByClass(const std::string& rssClass);
+   
+       struct SObjectEntry
+       {
+           sdv::core::TObjectID                tObjectID = 0;          
+           sdv::SClassInfo                     sClassInfo;             
+           std::string                         ssName;                 
+           std::string                         ssConfig;               
+           sdv::TInterfaceAccessPtr            ptrObject;              
+           std::shared_ptr<CModuleInst>        ptrModule;              
+           bool                                bControlled = false;    
+           bool                                bIsolated = false;      
+           std::mutex                          mtxConnect;             
+           std::condition_variable             cvConnect;              
+           std::shared_ptr<CIsoMonitor>        ptrIsoMon;              
+       };
+   
+       using TObjectMap = std::map<sdv::core::TObjectID, std::shared_ptr<SObjectEntry>>;
+       using TOrderedObjectList = std::list<std::shared_ptr<SObjectEntry>>;
+       using TObjectIDList = std::list<std::shared_ptr<SObjectEntry>>;
+       using TServiceMap = std::map<std::string, TOrderedObjectList::iterator>;
+       using TIsolationMap = std::map<std::string, std::shared_ptr<SObjectEntry>>;
+       using TLocalObjectMap = std::map<sdv::IInterfaceAccess*, std::shared_ptr<SObjectEntry>>;
+       using TConfigSet = std::set<sdv::core::TObjectID>;
+       mutable std::shared_mutex       m_mtxObjects;                   
+       TOrderedObjectList              m_lstOrderedServiceObjects;     
+       TServiceMap                     m_mapServiceObjects;            
+       TLocalObjectMap                 m_mapLocalObjects;              
+       TIsolationMap                   m_mapIsolatedObjects;           
+       TObjectMap                      m_mapObjects;                   
+       TConfigSet                      m_setConfigObjects;             
+       sdv::TInterfaceAccessPtr        m_ptrCoreRepoAccess;            
+       bool                            m_bIsoObjectLoaded = false;     
+   };
+   
+   #ifndef DO_NOT_INCLUDE_IN_UNIT_TEST
+   
+   class CRepositoryService : public sdv::CSdvObject
+   {
+   public:
+       CRepositoryService() = default;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_CHAIN_MEMBER(GetRepository())
+           SDV_INTERFACE_ENTRY_MEMBER(sdv::core::IRepositoryInfo, GetRepository())
+           SDV_INTERFACE_SET_SECTION_CONDITION(EnableRepositoryObjectControl(), 1)
+           SDV_INTERFACE_SECTION(1)
+           SDV_INTERFACE_ENTRY_MEMBER(sdv::core::IRepositoryControl, GetRepository())
+           SDV_INTERFACE_DEFAULT_SECTION()
+           SDV_INTERFACE_SET_SECTION_CONDITION(EnableRepositoryRegisterForeignApp(), 2)
+           SDV_INTERFACE_SECTION(2)
+           SDV_INTERFACE_ENTRY_MEMBER(sdv::core::IRegisterForeignObject, GetRepository())
+           SDV_INTERFACE_DEFAULT_SECTION()
+           SDV_INTERFACE_SET_SECTION_CONDITION(EnableRepositoryLink(), 3)
+           SDV_INTERFACE_SECTION(3)
+           SDV_INTERFACE_ENTRY_MEMBER(sdv::core::ILinkCoreRepository, GetRepository())
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_NAME("RepositoryService")
+       DECLARE_OBJECT_SINGLETON()
+   
+       static CRepository& GetRepository();
+   
+       static bool EnableRepositoryObjectControl();
+   
+       static bool EnableRepositoryRegisterForeignApp();
+   
+       static bool EnableRepositoryLink();
+   };
+   
+   DEFINE_SDV_OBJECT_NO_EXPORT(CRepositoryService)
+   #endif
+   
+   #endif // !define VAPI_REPOSITORY_H

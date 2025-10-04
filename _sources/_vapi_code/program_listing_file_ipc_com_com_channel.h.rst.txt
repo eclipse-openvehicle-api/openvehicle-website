@@ -1,0 +1,84 @@
+
+.. _program_listing_file_ipc_com_com_channel.h:
+
+Program Listing for File com_channel.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_ipc_com_com_channel.h>` (``ipc_com\com_channel.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef COM_CHANNEL_H
+   #define COM_CHANNEL_H
+   
+   #include <support/pssup.h>
+   #include <interfaces/ipc.h>
+   #include "../../global/scheduler/scheduler.h"
+   
+   // Forward declaration
+   class CCommunicationControl;
+   class CMarshallObject;
+   
+   class CChannelConnector : public sdv::IInterfaceAccess, public sdv::ipc::IConnectEventCallback,
+       public sdv::ipc::IDataReceiveCallback
+   {
+   public:
+       CChannelConnector(CCommunicationControl& rcontrol, uint32_t uiIndex, sdv::IInterfaceAccess* pChannelEndpoint);
+   
+       ~CChannelConnector();
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::ipc::IDataReceiveCallback)
+           SDV_INTERFACE_ENTRY(sdv::ipc::IConnectEventCallback)
+       END_SDV_INTERFACE_MAP()
+   
+       bool ServerConnect(sdv::IInterfaceAccess* pObject, bool bAllowReconnect);
+   
+       sdv::IInterfaceAccess* ClientConnect(uint32_t uiTimeoutMs);
+   
+       bool IsConnected() const;
+   
+       virtual void SetStatus(/*in*/ sdv::ipc::EConnectStatus eConnectStatus) override;
+   
+       virtual void ReceiveData(/*inout*/ sdv::sequence<sdv::pointer<uint8_t>>& seqData) override;
+   
+       void DecoupledReceiveData(/*inout*/ sdv::sequence<sdv::pointer<uint8_t>>& seqData);
+   
+       sdv::sequence<sdv::pointer<uint8_t>> MakeCall(sdv::ps::TMarshallID tProxyID, sdv::ps::TMarshallID tStubID,
+           sdv::sequence<sdv::pointer<uint8_t>>& rseqInputData);
+   
+       std::shared_ptr<CMarshallObject> GetOrCreateProxy(sdv::interface_id id, sdv::ps::TMarshallID tStubID);
+   
+       sdv::com::TConnectionID GetConnectionID() const;
+   
+   private:
+       enum class EEndpointType {server, client};
+   
+       struct SCallEntry
+       {
+           sdv::sequence<sdv::pointer<uint8_t>>    seqResult;          
+           std::mutex                              mtxWaitForResult;   
+           std::condition_variable                 cvWaitForResult;    
+           bool                                    bCancel = false;    
+       };
+   
+       CCommunicationControl&              m_rcontrol;                     
+       sdv::TObjectPtr                     m_ptrChannelEndpoint;           
+       uint64_t                            m_uiConnectionStatusCookie = 0; 
+       std::shared_ptr<CMarshallObject>    m_ptrInitialMarshallObject;     
+       sdv::ipc::EConnectStatus            m_eConnectStatus = sdv::ipc::EConnectStatus::uninitialized;     
+       bool                                m_bAllowReconnect = false;      
+       EEndpointType                       m_eEndpointType = EEndpointType::client;    
+       std::recursive_mutex                m_mtxMarshallObjects;           
+       std::map<sdv::ps::TMarshallID, std::shared_ptr<CMarshallObject>> m_mapProxyObjects;    
+       sdv::com::TConnectionID             m_tConnectionID{};              
+       sdv::ipc::IDataSend*                m_pDataSend = nullptr;          
+       std::mutex                          m_mtxCalls;                     
+       std::map<uint64_t, SCallEntry&>     m_mapCalls;                     
+       CTaskScheduler                      m_scheduler;                    
+   };
+   
+   #endif // !defined COM_CHANNEL_H

@@ -1,0 +1,75 @@
+
+.. _program_listing_file_core_toml_parser_character_reader_utf_8.h:
+
+Program Listing for File character_reader_utf_8.h
+=================================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_toml_parser_character_reader_utf_8.h>` (``core\toml_parser\character_reader_utf_8.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CHARACTER_READER_UTF_8_H
+   #define CHARACTER_READER_UTF_8_H
+   
+   #include <sstream>
+   #include <stdexcept>
+   #include <vector>
+   #include <cstdint>
+   
+   class CCharacterReaderUTF8
+   {
+   public:
+       CCharacterReaderUTF8();
+   
+       CCharacterReaderUTF8(const std::string& rssString);
+   
+       void Feed(const std::string& rssString);
+   
+       void Reset();
+   
+       std::string Peek();
+   
+       std::string Peek(std::size_t n);
+   
+       std::string PeekUntil(const std::vector<std::string>& lstCollection);
+   
+       std::string Consume();
+   
+       std::string Consume(std::size_t n);
+   
+       std::string ConsumeUntil(const std::vector<std::string>& lstCollection);
+   
+       bool IsEOF() const;
+   
+   private:
+       void CheckForInvalidUTF8Bytes() const;
+   
+       void CheckForInvalidUTF8Sequences() const;
+   
+       std::string GetNextCharacter();
+   
+       std::string GetNextCharacter(std::size_t offset);
+   
+       size_t GetLengthOfNextCharacter() const;
+   
+       size_t GetLengthOfNextCharacter(std::size_t offset) const;
+   
+       static const uint8_t m_uiOneByteCheckMask{0b10000000};  
+       static const uint8_t m_OneByteCheckValue{0b00000000}; 
+       static const uint8_t m_uiFollowByteCheckMask{0b11000000}; 
+       static const uint8_t m_uiFollowByteValue{0b10000000};     
+       static const uint8_t m_uiTwoByteCheckMask{0b11100000};  
+       static const uint8_t m_uiTwoByteCheckValue{0b11000000}; 
+       static const uint8_t m_uiThreeByteCheckMask{0b11110000};    
+       static const uint8_t m_uiThreeByteCheckValue{0b11100000}; 
+       static const uint8_t m_uiFourByteCheckMask{0b11111000}; 
+       static const uint8_t m_uiFourByteCheckValue{0b11110000};    
+   
+       std::string m_ssString;
+       std::size_t m_nDataLength;
+       std::size_t m_nCursor;
+   };
+   
+   #endif // CHARACTER_READER_UTF_8_H

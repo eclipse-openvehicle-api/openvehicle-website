@@ -1,0 +1,63 @@
+
+.. _program_listing_file_data_dispatch_service_transaction.h:
+
+Program Listing for File transaction.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_data_dispatch_service_transaction.h>` (``data_dispatch_service\transaction.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef TRANSACTION_H
+   #define TRANSACTION_H
+   
+   #include <support/interface_ptr.h>
+   
+   // Forward declaration
+   class CDispatchService;
+   class CSignal;
+   
+   class CTransaction : public sdv::IInterfaceAccess, public sdv::IObjectDestroy
+   {
+   public:
+       explicit CTransaction(CDispatchService& rDispatchSvc);
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IInterfaceAccess)
+           SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual void DestroyObject() override;
+   
+       uint64_t GetReadTransactionID() const;
+   
+       void DeferWrite(CSignal& rSignal, sdv::any_t& ranyVal);
+   
+       void FinalizeWrite();
+   
+       void SetIterator(std::list<CTransaction>::iterator itTransaction);
+   
+       std::list<CTransaction>::iterator GetIterator() const;
+   
+   private:
+   
+       enum class ETransactionType
+       {
+           undefined = 0,          
+           read_transaction = 1,   
+           write_transaction = 2,  
+       };
+   
+       sdv::CLifetimeCookie                m_cookie = sdv::CreateLifetimeCookie();             
+       CDispatchService&                   m_rDispatchSvc;                                     
+       mutable ETransactionType            m_eTransactionType = ETransactionType::undefined;   
+       std::mutex                          m_mtxDeferredWriteSignalMap;                        
+       std::map<CSignal*, sdv::any_t>      m_mapDeferredWriteSignalMap;                        
+       uint64_t                            m_uiReadTransactionID = 0ull;                       
+       std::list<CTransaction>::iterator m_itTransaction{};                                    
+   };
+   
+   #endif // !defined TRANSACTION_H

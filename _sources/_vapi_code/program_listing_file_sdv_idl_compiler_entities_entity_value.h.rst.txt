@@ -1,0 +1,220 @@
+
+.. _program_listing_file_sdv_idl_compiler_entities_entity_value.h:
+
+Program Listing for File entity_value.h
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_entities_entity_value.h>` (``sdv_idl_compiler\entities\entity_value.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef ENTITIY_VALUE_H
+   #define ENTITIY_VALUE_H
+   
+   #include "entity_base.h"
+   #include "../constvariant.h"
+   #include "../token.h"
+   #include "../tokenlist.h"
+   #include <vector>
+   #include <memory>
+   
+   // Forward declarations
+   class CDeclarationEntity;
+   
+   class CEntityValueNode : public std::enable_shared_from_this<CEntityValueNode>
+   {
+   public:
+       CEntityValueNode(CEntityPtr ptrEntity, const CValueNodePtr ptrParent);
+   
+       CEntityValueNode(const CEntityValueNode& rValueNode, CEntityPtr ptrEntity, const CValueNodePtr ptrParent);
+   
+       virtual ~CEntityValueNode() = default;
+   
+       virtual CValueNodePtr CreateCopy(CEntityPtr ptrEntity, const CValueNodePtr ptrParent) const = 0;
+   
+       virtual void ProcessValueAssignment(const CTokenList& rlstExpression) = 0;
+   
+       virtual void ProcessChildNodes(const CTokenList& rlstExpression);
+   
+       template <class TValue>
+       TValue* Get();
+       template <class TValue>
+       const TValue* Get() const;
+       void AddChild(CValueNodePtr ptrChild);
+   
+       const CValueNodePtr& GetParentNode() const { return m_ptrParent; }
+   
+       const CDeclarationEntity* GetDeclEntity() const { return m_ptrEntity->Get<CDeclarationEntity>(); }
+       CDeclarationEntity* GetDeclEntity() { return m_ptrEntity->Get<CDeclarationEntity>(); }
+       virtual std::string GetDeclTypeStr(bool bResolveTypedef) const;
+   
+       virtual bool IsArray() const { return false; }
+       virtual bool IsUnbound() const { return false; }
+       virtual bool IsConst() const;
+       virtual bool IsDeclaration() const;
+       virtual bool IsDynamic() const { return false; }
+       virtual bool IsLiteral() const { return false; }
+       virtual bool IsComplex() const { return false; }
+       virtual bool HasParent() const{ return m_ptrParent ? true : false; }
+       virtual bool HasChildren() const{ return !m_vecChildren.empty(); }
+   protected:
+       CEntityPtr                  m_ptrEntity;        
+       const CValueNodePtr         m_ptrParent;        
+       std::vector<CValueNodePtr>  m_vecChildren;      
+   };
+   
+   class CSimpleTypeValueNode : public CEntityValueNode
+   {
+   public:
+       CSimpleTypeValueNode(CEntityPtr ptrEntity, const CValueNodePtr ptrParent);
+   
+       CSimpleTypeValueNode(const CSimpleTypeValueNode& rValueNode, CEntityPtr ptrEntity, const CValueNodePtr ptrParent);
+   
+       virtual ~CSimpleTypeValueNode() override = default;
+   
+       virtual CValueNodePtr CreateCopy(CEntityPtr ptrEntity, const CValueNodePtr ptrParent) const override;
+   
+       virtual void ProcessValueAssignment(const CTokenList& rlstExpression) override;
+   
+       void SetFixedValue(const CConstVariant& rvarValue, const CTokenList& rlstExpression);
+   
+       void SetDynamicValue(const CTokenList& rlstExpression);
+   
+       virtual bool IsDefined() const { return m_eValueDef != EValueDef::not_defined; }
+   
+       virtual bool IsDynamic() const override { return m_eValueDef != EValueDef::dynamic; }
+   
+       const CConstVariant &Variant() const { return m_varValue; }
+   
+   private:
+       enum class EValueDef
+       {
+           not_defined,            
+           fixed,                  
+           dynamic,                
+       };
+   
+       CConstVariant   m_varValue;                             
+       CTokenList      m_lstExpression;                        
+       EValueDef       m_eValueDef = EValueDef::not_defined;   
+   };
+   
+   class CArrayValueNode : public CEntityValueNode
+   {
+   public:
+       CArrayValueNode(CEntityPtr ptrEntity, const CValueNodePtr ptrParent);
+   
+       CArrayValueNode(const CArrayValueNode& rValueNode, CEntityPtr ptrEntity, const CValueNodePtr ptrParent);
+   
+       virtual ~CArrayValueNode() override = default;
+   
+       virtual CValueNodePtr CreateCopy(CEntityPtr ptrEntity, const CValueNodePtr ptrParent) const override;
+   
+       virtual void ProcessValueAssignment(const CTokenList& rlstExpression) override;
+   
+       void ProcessChildNodes(const CTokenList& rlstExpression) override;
+   
+       void ProcessStringNode(const CToken& rToken);
+   
+       void SetFixedSize(size_t nSize, const CTokenList& rlstExpression);
+   
+       void SetDynamicSize(size_t nSize, const CTokenList& rlstExpression);
+   
+       void SetFixedSizeUnbound();
+   
+       const CValueNodePtr& operator[](size_t nIndex) const;
+       CValueNodePtr& operator[](size_t nIndex);
+       size_t GetSize() const;
+   
+       virtual bool IsArray() const override;
+   
+       virtual bool IsUnbound() const override;
+   
+       std::string GetSizeExpression() const;
+   
+       virtual std::string GetDeclTypeStr(bool bResolveTypedef) const override;
+   
+   private:
+       enum class ESizeDef
+       {
+           not_defined,            
+           fixed,                  
+           dynamic,                
+           fixed_unbound,          
+       };
+   
+       CTokenList          m_lstArraySizeExpression;               
+       ESizeDef            m_eSizeDef = ESizeDef::not_defined;     
+    };
+   
+   class CCompoundTypeValueNode : public CEntityValueNode
+   {
+   public:
+       CCompoundTypeValueNode(CEntityPtr ptrEntity, const CValueNodePtr ptrParent);
+   
+       CCompoundTypeValueNode(const CCompoundTypeValueNode& rValueNode, CEntityPtr ptrEntity, const CValueNodePtr ptrParent);
+   
+       virtual ~CCompoundTypeValueNode() override = default;
+   
+       virtual CValueNodePtr CreateCopy(CEntityPtr ptrEntity, const CValueNodePtr ptrParent) const override;
+   
+       virtual void ProcessValueAssignment(const CTokenList& rlstExpression) override;
+   
+       CValueNodePtr Member(const std::string& rssName) const;
+   };
+   
+   class CInterfaceValueNode : public CEntityValueNode
+   {
+   public:
+       CInterfaceValueNode(CEntityPtr ptrEntity, const CValueNodePtr ptrParent);
+   
+       CInterfaceValueNode(const CInterfaceValueNode& rValueNode, CEntityPtr ptrEntity, const CValueNodePtr ptrParent);
+   
+       virtual ~CInterfaceValueNode() override = default;
+   
+       virtual CValueNodePtr CreateCopy(CEntityPtr ptrEntity, const CValueNodePtr ptrParent) const override;
+   
+       virtual void ProcessValueAssignment(const CTokenList& rlstExpression) override;
+   
+       virtual bool IsDynamic() const override { return true; }
+   };
+   
+   class CEnumValueNode : public CEntityValueNode
+   {
+   public:
+       CEnumValueNode(CEntityPtr ptrEntity, const CValueNodePtr ptrParent);
+   
+       CEnumValueNode(const CEnumValueNode& rValueNode, CEntityPtr ptrEntity, const CValueNodePtr ptrParent);
+   
+       virtual ~CEnumValueNode() override = default;
+   
+       virtual CValueNodePtr CreateCopy(CEntityPtr ptrEntity, const CValueNodePtr ptrParent) const override;
+   
+       virtual void ProcessValueAssignment(const CTokenList& rlstExpression) override;
+   
+       virtual bool IsDefined() const { return m_ptrEntryVal ? true : false; }
+   
+       const CConstVariant& Variant() const;
+   
+       std::string String() const;
+   
+   private:
+       CEntityPtr      m_ptrEntryVal;      
+       CTokenList      m_lstExpression;    
+   };
+   
+   template <class TValue>
+   TValue* CEntityValueNode::Get()
+   {
+       return dynamic_cast<TValue*>(this);
+   }
+   
+   template <class TValue>
+   const TValue* CEntityValueNode::Get() const
+   {
+       return dynamic_cast<const TValue*>(this);
+   }
+   
+   #endif // !define(ENTITY_VALUE_H)

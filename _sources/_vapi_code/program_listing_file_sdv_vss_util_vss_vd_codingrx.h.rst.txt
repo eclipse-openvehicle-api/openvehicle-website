@@ -1,0 +1,71 @@
+
+.. _program_listing_file_sdv_vss_util_vss_vd_codingrx.h:
+
+Program Listing for File vss_vd_codingrx.h
+==========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_vss_util_vss_vd_codingrx.h>` (``sdv_vss_util\vss_vd_codingrx.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef VSS_VD_CODING_RX_H
+   #define VSS_VD_CODING_RX_H
+   
+   #include <iostream>
+   #include <vector>
+   #include <algorithm>
+   #include <string>
+   #include <sstream>
+   #include <interfaces/dispatch.h>
+   
+   #include "codegen_base.h"
+   #include "vss_helper.h"
+   #include "vss_rx_templates.h"
+   #include "vss_coding.h"
+   
+      
+   class CVSSVDCodingRX :  public CCodeGeneratorBase, CVSSHelper
+   {
+   
+   public:
+       CVSSVDCodingRX(const std::string& rsPrefix) : m_ssPrefix(rsPrefix) {}
+   
+       std::string Code_RXIDLDeviceList(const std::vector<std::string>& vssParts, const std::vector <SFunctionVDDefinition>& vecFunctions) const;
+   
+       std::string Code_RXIDLServiceList(const std::vector<std::string>& vssParts, const std::vector <SFunctionVDDefinition>& vecFunctions) const;
+   
+       void GetKeyWordMap(const SSignalVDDefinition& signal, CKeywordMap& mapKeywords) const;
+   
+   protected:
+       std::string Code_VD_RXIncludes(const std::string& vssOriginalNoDot) const;
+   
+       std::string Code_VD_RXInterface(const std::string& functionName, const std::string& vssShortenWithColons) const;
+   
+       std::string Code_VD_RXInterfaceEntry(const std::string& functionName, const std::string& vssWithColons) const;
+   
+       std::string Code_VD_RXReAndUnregisterEvent(const std::string& vssWithColons, const SFunctionVDDefinition& function) const;
+   
+       std::string Code_VD_RXPrivateHeaderPart(const SFunctionVDDefinition& function, const std::string& vssWithColons, 
+           const std::string& class_name) const;
+   
+       std::string Code_RXIDLDeviceInterface(const std::string& spaces, const SFunctionVDDefinition& function) const;
+   
+       std::string Code_RXIDLServiceInterface(const std::string& spaces, const std::string& vssWithColons, 
+           const SFunctionVDDefinition& function) const;
+   
+       std::string Code_VD_RXSubscribeSignal(const std::string& class_name, const SFunctionVDDefinition& function) const;
+   
+       std::string Code_VD_RXCheckSignalSubscribtions(const std::vector <SFunctionVDDefinition>& vecFunctions) const;
+   
+       std::string Code_VD_RXResetSignal(const SFunctionVDDefinition& function) const;
+   
+       std::string Code_VD_RXRegister(const std::string& class_name, const SFunctionVDDefinition& function, 
+           const std::string& vssWithColons) const;
+   
+       std::string m_ssPrefix; 
+   };
+   
+   #endif // !defined VSS_VD_CODING_RX_H
+   

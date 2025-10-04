@@ -1,0 +1,48 @@
+
+.. _program_listing_file_sdv_control_context.h:
+
+Program Listing for File context.h
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_control_context.h>` (``sdv_control\context.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CONTEXT_H
+   #define CONTEXT_H
+   
+   #include <cstdint>
+   #include <filesystem>
+   #include <support/string.h>
+   #include <support/sequence.h>
+   
+   struct SContext
+   {
+       bool                            bSilent = false;            
+       bool                            bVerbose = false;           
+       bool                            bServerSilent = false;      
+       bool                            bServerVerbose = false;     
+       uint32_t                        uiInstanceID = 1000;        
+       bool                            bListNoHdr = false;         
+       bool                            bListShort = false;         
+       sdv::sequence<sdv::u8string>    seqCmdLine;                 
+       std::filesystem::path           pathInstallDir;             
+   };
+   
+   #include <cctype>    // std::tolower
+   #include <algorithm> // std::equal
+   
+   inline bool ichar_equals(char cLeft, char cRight)
+   {
+       return std::tolower(static_cast<unsigned char>(cLeft)) ==
+           std::tolower(static_cast<unsigned char>(cRight));
+   }
+   
+   inline bool iequals(const std::string& rssLeft, const std::string& rssRight)
+   {
+       return std::equal(rssLeft.begin(), rssLeft.end(), rssRight.begin(), rssRight.end(), ichar_equals);
+   }
+   
+   #endif // !defined CONTEXT_H

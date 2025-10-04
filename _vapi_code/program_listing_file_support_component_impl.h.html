@@ -1,0 +1,1430 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Program Listing for File component_impl.h &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/program_listing_file_support_component_impl.h';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Program...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="program-listing-for-file-component-impl-h">
+<span id="program-listing-file-support-component-impl-h"></span><h1>Program Listing for File component_impl.h<a class="headerlink" href="#program-listing-for-file-component-impl-h" title="Permalink to this heading">#</a></h1>
+<p>↰ <a class="reference internal" href="file_support_component_impl.h.html#file-support-component-impl-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">support\component_impl.h</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef COMPONENT_IMPL_H</span>
+<span class="cp">#define COMPONENT_IMPL_H</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstring&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mutex&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;shared_mutex&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../interfaces/core_types.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../interfaces/core.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../interfaces/repository.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;interface_ptr.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;local_service_access.h&quot;</span>
+
+<span class="c1">// NOLINTBEGIN(cppcoreguidelines-macro-usage)</span>
+
+<span class="cp">#define SDV_STRINGIZE_HELPER2(txt) #txt</span>
+<span class="cp">#define SDV_STRINGIZE_HELPER(txt) SDV_STRINGIZE_HELPER2(txt)</span>
+
+<span class="w"> </span><span class="c1">// NOLINTEND(cppcoreguidelines-macro-usage)</span>
+
+<span class="cp">#ifdef _WIN32</span>
+
+<span class="c1">// Resolve conflict</span>
+<span class="cp">#pragma push_macro(&quot;interface&quot;)</span>
+<span class="cp">#undef interface</span>
+<span class="cp">#pragma push_macro(&quot;GetObject&quot;)</span>
+<span class="cp">#undef GetObject</span>
+
+<span class="cp">#ifndef NOMINMAX</span>
+<span class="cp">#define NOMINMAX</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WinSock2.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Windows.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;objbase.h&gt;</span>
+
+<span class="c1">// Resolve conflict</span>
+<span class="cp">#pragma pop_macro(&quot;GetObject&quot;)</span>
+<span class="cp">#pragma pop_macro(&quot;interface&quot;)</span>
+<span class="cp">#ifdef GetClassInfo</span>
+<span class="cp">#undef GetClassInfo</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#elif defined __unix__</span>
+<span class="cp">#else</span>
+<span class="cp">#error OS is not supported!</span>
+<span class="cp">#endif </span><span class="c1">// defined _MSC_VER</span>
+
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">sdv</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Forward declarations</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CSdvObject</span><span class="p">;</span>
+
+
+<span class="w">    </span><span class="c1">// Object control classes         //</span>
+
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">ISdvObjectClassInfo</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">SClassInfo</span><span class="w"> </span><span class="n">GetClassInfo</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">CSdvObject</span><span class="o">&gt;</span><span class="w"> </span><span class="n">CreateObject</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CSdvObjectAccess</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IInterfaceAccess</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">CSdvObjectAccess</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CSdvObjectAccess</span><span class="p">(</span><span class="n">CSdvObjectAccess</span><span class="o">&amp;</span><span class="p">)</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CSdvObjectAccess</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">CSdvObjectAccess</span><span class="o">&amp;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CSdvObjectAccess</span><span class="p">(</span><span class="n">CSdvObjectAccess</span><span class="o">&amp;&amp;</span><span class="p">)</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CSdvObjectAccess</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">CSdvObjectAccess</span><span class="o">&amp;&amp;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">CSdvObjectAccess</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="nf">GetObjectAccess</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">IInterfaceAccess</span><span class="o">*&gt;</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// Interface map</span>
+<span class="w">        </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">        </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CLifetimeCookie</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">CLifetimeCookie</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CLifetimeCookie</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span><span class="n">fnLifetimeIncr</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span><span class="n">fnLifetimeDecr</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
+<span class="w">            </span><span class="n">m_fnLifetimeIncr</span><span class="p">(</span><span class="n">fnLifetimeIncr</span><span class="p">),</span><span class="w"> </span><span class="n">m_fnLifetimeDecr</span><span class="p">(</span><span class="n">fnLifetimeDecr</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_fnLifetimeIncr</span><span class="p">)</span><span class="w"> </span><span class="n">m_fnLifetimeIncr</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">CLifetimeCookie</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CLifetimeCookie</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rCookie</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
+<span class="w">            </span><span class="n">m_fnLifetimeIncr</span><span class="p">(</span><span class="n">rCookie</span><span class="p">.</span><span class="n">m_fnLifetimeIncr</span><span class="p">),</span><span class="w"> </span><span class="n">m_fnLifetimeDecr</span><span class="p">(</span><span class="n">rCookie</span><span class="p">.</span><span class="n">m_fnLifetimeDecr</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_fnLifetimeIncr</span><span class="p">)</span><span class="w"> </span><span class="n">m_fnLifetimeIncr</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">CLifetimeCookie</span><span class="p">(</span><span class="n">CLifetimeCookie</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">rCookie</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="o">:</span>
+<span class="w">            </span><span class="n">m_fnLifetimeIncr</span><span class="p">(</span><span class="n">rCookie</span><span class="p">.</span><span class="n">m_fnLifetimeIncr</span><span class="p">),</span><span class="w"> </span><span class="n">m_fnLifetimeDecr</span><span class="p">(</span><span class="n">rCookie</span><span class="p">.</span><span class="n">m_fnLifetimeDecr</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">rCookie</span><span class="p">.</span><span class="n">m_fnLifetimeIncr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">            </span><span class="n">rCookie</span><span class="p">.</span><span class="n">m_fnLifetimeDecr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="o">~</span><span class="n">CLifetimeCookie</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_fnLifetimeDecr</span><span class="p">)</span><span class="w"> </span><span class="n">m_fnLifetimeDecr</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">CLifetimeCookie</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CLifetimeCookie</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rCookie</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_fnLifetimeDecr</span><span class="p">)</span><span class="w"> </span><span class="n">m_fnLifetimeDecr</span><span class="p">();</span>
+<span class="w">            </span><span class="n">m_fnLifetimeIncr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rCookie</span><span class="p">.</span><span class="n">m_fnLifetimeIncr</span><span class="p">;</span>
+<span class="w">            </span><span class="n">m_fnLifetimeDecr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rCookie</span><span class="p">.</span><span class="n">m_fnLifetimeDecr</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_fnLifetimeIncr</span><span class="p">)</span><span class="w"> </span><span class="n">m_fnLifetimeIncr</span><span class="p">();</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">CLifetimeCookie</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">CLifetimeCookie</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">rCookie</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_fnLifetimeDecr</span><span class="p">)</span><span class="w"> </span><span class="n">m_fnLifetimeDecr</span><span class="p">();</span>
+<span class="w">            </span><span class="n">m_fnLifetimeIncr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rCookie</span><span class="p">.</span><span class="n">m_fnLifetimeIncr</span><span class="p">;</span>
+<span class="w">            </span><span class="n">m_fnLifetimeDecr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rCookie</span><span class="p">.</span><span class="n">m_fnLifetimeDecr</span><span class="p">;</span>
+<span class="w">            </span><span class="n">rCookie</span><span class="p">.</span><span class="n">m_fnLifetimeIncr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">            </span><span class="n">rCookie</span><span class="p">.</span><span class="n">m_fnLifetimeDecr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span><span class="w">   </span><span class="n">m_fnLifetimeIncr</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span><span class="w">   </span><span class="n">m_fnLifetimeDecr</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CObjectFactory</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IInterfaceAccess</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IObjectFactory</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Friend class SDV object and definition</span>
+<span class="w">        </span><span class="k">friend</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CSdvObject</span><span class="p">;</span>
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TSdvObject</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="k">friend</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CSdvObjectClass</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">CObjectFactory</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">            </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">IObjectFactory</span><span class="p">)</span>
+<span class="w">        </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+
+<span class="w">        </span><span class="n">CLifetimeCookie</span><span class="w"> </span><span class="n">CreateLifetimeCookie</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">CLifetimeCookie</span><span class="p">([</span><span class="k">this</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">m_uiActiveObjectCount</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">                </span><span class="p">[</span><span class="k">this</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_uiActiveObjectCount</span><span class="p">)</span><span class="w"> </span><span class="n">m_uiActiveObjectCount</span><span class="o">--</span><span class="p">;</span><span class="w"> </span><span class="p">});</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">GetActiveObjects</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">m_uiActiveObjectCount</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">GetManifest</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_ssManifest</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">                </span><span class="n">BuildManifest</span><span class="p">();</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">m_ssManifest</span><span class="p">.</span><span class="n">c_str</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="n">CreateObject</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssClassName</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">DestroyObject</span><span class="p">(</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="n">object</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">DestroyAllObjects</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">protected</span><span class="o">:</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">BuildManifest</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">stringstream</span><span class="w"> </span><span class="n">sstream</span><span class="p">;</span>
+<span class="w">            </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sa">R</span><span class="s">&quot;</span><span class="dl">code(</span><span class="s"># Module manifest</span>
+
+<span class="s">[Interface]</span>
+<span class="s">Version = </span><span class="dl">)code</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">SDVFrameworkInterfaceVersion</span>
+<span class="w">                    </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sa">R</span><span class="s">&quot;</span><span class="dl">code(</span>
+
+<span class="dl">)code</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">shared_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lock</span><span class="p">(</span><span class="n">m_mtxObjectClasses</span><span class="p">);</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ISdvObjectClassInfo</span><span class="o">*</span><span class="w"> </span><span class="n">pClassInfo</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">m_vecObjectClasses</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">sdv</span><span class="o">::</span><span class="n">SClassInfo</span><span class="w"> </span><span class="n">sInfo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pClassInfo</span><span class="o">-&gt;</span><span class="n">GetClassInfo</span><span class="p">();</span>
+<span class="w">                </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;[[Component]]&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Class=</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">sInfo</span><span class="p">.</span><span class="n">ssClassName</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">sInfo</span><span class="p">.</span><span class="n">seqClassAliases</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Aliases=[&quot;</span><span class="p">;</span>
+<span class="w">                    </span><span class="kt">bool</span><span class="w"> </span><span class="n">bInitialAlias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssAlias</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">sInfo</span><span class="p">.</span><span class="n">seqClassAliases</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">bInitialAlias</span><span class="p">)</span>
+<span class="w">                            </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;, &quot;</span><span class="p">;</span>
+<span class="w">                        </span><span class="n">bInitialAlias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">                        </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">rssAlias</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;]&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">sInfo</span><span class="p">.</span><span class="n">ssDefaultObjectName</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">                    </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;DefaultName=</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">sInfo</span><span class="p">.</span><span class="n">ssDefaultObjectName</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                </span><span class="kt">bool</span><span class="w"> </span><span class="n">bSkip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">                </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">sInfo</span><span class="p">.</span><span class="n">eType</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EObjectType</span><span class="o">::</span><span class="no">SystemObject</span><span class="p">:</span>
+<span class="w">                    </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Type=</span><span class="se">\&quot;</span><span class="s">&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;System&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EObjectType</span><span class="o">::</span><span class="no">Device</span><span class="p">:</span>
+<span class="w">                    </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Type=</span><span class="se">\&quot;</span><span class="s">&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Device&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EObjectType</span><span class="o">::</span><span class="no">BasicService</span><span class="p">:</span>
+<span class="w">                    </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Type=</span><span class="se">\&quot;</span><span class="s">&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;BasicService&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EObjectType</span><span class="o">::</span><span class="no">ComplexService</span><span class="p">:</span>
+<span class="w">                    </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Type=</span><span class="se">\&quot;</span><span class="s">&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;ComplexService&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EObjectType</span><span class="o">::</span><span class="no">Application</span><span class="p">:</span>
+<span class="w">                    </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Type=</span><span class="se">\&quot;</span><span class="s">&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;App&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EObjectType</span><span class="o">::</span><span class="no">Proxy</span><span class="p">:</span>
+<span class="w">                    </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Type=</span><span class="se">\&quot;</span><span class="s">&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Proxy&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EObjectType</span><span class="o">::</span><span class="no">Stub</span><span class="p">:</span>
+<span class="w">                    </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Type=</span><span class="se">\&quot;</span><span class="s">&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Stub&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EObjectType</span><span class="o">::</span><span class="no">Utility</span><span class="p">:</span>
+<span class="w">                    </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Type=</span><span class="se">\&quot;</span><span class="s">&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Utility&quot;</span>
+<span class="w">                            </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">default</span><span class="o">:</span>
+<span class="w">                    </span><span class="n">bSkip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bSkip</span><span class="p">)</span>
+<span class="w">                    </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sInfo</span><span class="p">.</span><span class="n">uiFlags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectFlags</span><span class="o">::</span><span class="n">singleton</span><span class="p">))</span>
+<span class="w">                    </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Singleton=true&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">sInfo</span><span class="p">.</span><span class="n">seqDependencies</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Dependencies=[&quot;</span><span class="p">;</span>
+<span class="w">                    </span><span class="kt">bool</span><span class="w"> </span><span class="n">bInitialDependency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssDependsOn</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">sInfo</span><span class="p">.</span><span class="n">seqDependencies</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">bInitialDependency</span><span class="p">)</span>
+<span class="w">                            </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;, &quot;</span><span class="p">;</span>
+<span class="w">                        </span><span class="n">bInitialDependency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">                        </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">rssDependsOn</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="n">sstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;]&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="n">m_ssManifest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sstream</span><span class="p">.</span><span class="n">str</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">ExposeObjectClass</span><span class="p">(</span><span class="n">ISdvObjectClassInfo</span><span class="o">*</span><span class="w"> </span><span class="n">pObjectClassInfo</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pObjectClassInfo</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lock</span><span class="p">(</span><span class="n">m_mtxObjectClasses</span><span class="p">);</span>
+<span class="w">                </span><span class="n">m_vecObjectClasses</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">pObjectClassInfo</span><span class="p">);</span>
+
+<span class="w">                </span><span class="c1">// Attention: pObjectClass is a pointer to ISdvObjectClassInfo even if the class was derived.</span>
+<span class="w">                </span><span class="c1">// Virtual functions are not available yet at this stage.</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">RevokeObjectClass</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ISdvObjectClassInfo</span><span class="o">*</span><span class="w"> </span><span class="n">pObjectClassInfo</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lock</span><span class="p">(</span><span class="n">m_mtxObjectClasses</span><span class="p">);</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">itObjectClass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">find</span><span class="p">(</span><span class="n">m_vecObjectClasses</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">m_vecObjectClasses</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">pObjectClassInfo</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">itObjectClass</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">m_vecObjectClasses</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+<span class="w">                </span><span class="n">m_vecObjectClasses</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">itObjectClass</span><span class="p">);</span>
+<span class="w">            </span><span class="c1">// TODO EVE: Updated through cppcheck warning</span>
+<span class="w">            </span><span class="c1">//for (auto objectClassIter = m_vecObjectClasses.begin(); objectClassIter != m_vecObjectClasses.end();</span>
+<span class="w">            </span><span class="c1">//     objectClassIter++)</span>
+<span class="w">            </span><span class="c1">//{</span>
+<span class="w">            </span><span class="c1">//    if (*objectClassIter == pObjectClassInfo)</span>
+<span class="w">            </span><span class="c1">//    {</span>
+<span class="w">            </span><span class="c1">//        m_vecObjectClasses.erase(objectClassIter);</span>
+<span class="w">            </span><span class="c1">//        break;</span>
+<span class="w">            </span><span class="c1">//    }</span>
+<span class="w">            </span><span class="c1">//}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="w">                       </span><span class="n">m_uiActiveObjectCount</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+
+<span class="w">        </span><span class="k">mutable</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w">                          </span><span class="n">m_mtxActiveObjects</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">CSdvObject</span><span class="o">&gt;&gt;</span><span class="w">    </span><span class="n">m_vecActiveObjects</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">mutable</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_mutex</span><span class="w">                   </span><span class="n">m_mtxObjectClasses</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">ISdvObjectClassInfo</span><span class="o">*&gt;</span><span class="w">           </span><span class="n">m_vecObjectClasses</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">                                 </span><span class="n">m_ssManifest</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="c1">// Framework module classes       //</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CModule</span>
+<span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">CSdvObjectAccess</span>
+<span class="w">        </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">CObjectFactory</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">CModule</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">            </span><span class="n">SDV_INTERFACE_CHAIN_BASE</span><span class="p">(</span><span class="n">CObjectFactory</span><span class="p">)</span>
+<span class="w">        </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+
+<span class="w">        </span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="n">GetModuleControl</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">interfaceVersion</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// No compatibility interfacing available yet.</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">interfaceVersion</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">SDVFrameworkInterfaceVersion</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">GetObjectAccess</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="n">CModule</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">GetModule</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">CModule</span><span class="w"> </span><span class="k">module</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">module</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="n">CLifetimeCookie</span><span class="w"> </span><span class="nf">CreateLifetimeCookie</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">GetModule</span><span class="p">().</span><span class="n">CreateLifetimeCookie</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Component object class //</span>
+
+<span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TSdvObject</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CSdvObjectClass</span>
+<span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISdvObjectClassInfo</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">CSdvObjectClass</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Add this object definition to the definition list.</span>
+<span class="w">            </span><span class="n">GetModule</span><span class="p">().</span><span class="n">ExposeObjectClass</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">CSdvObjectClass</span><span class="p">(</span><span class="n">CSdvObjectClass</span><span class="o">&amp;</span><span class="p">)</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CSdvObjectClass</span><span class="p">(</span><span class="n">CSdvObjectClass</span><span class="o">&amp;&amp;</span><span class="p">)</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CSdvObjectClass</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">CSdvObjectClass</span><span class="o">&amp;</span><span class="p">)</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CSdvObjectClass</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">CSdvObjectClass</span><span class="o">&amp;&amp;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">CSdvObjectClass</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">GetModule</span><span class="p">().</span><span class="n">RevokeObjectClass</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="w"> </span><span class="n">GetClassName</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">TSdvObject</span><span class="o">::</span><span class="n">GetClassNameStatic</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">sequence</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetClassAliases</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">TSdvObject</span><span class="o">::</span><span class="n">GetClassAliasesStatic</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="w"> </span><span class="n">GetDefaultObjectName</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">TSdvObject</span><span class="o">::</span><span class="n">GetDefaultObjectNameStatic</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">IsSingleton</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">TSdvObject</span><span class="o">::</span><span class="n">IsSingletonStatic</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">sequence</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetObjectDependencies</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">TSdvObject</span><span class="o">::</span><span class="n">GetObjectDependenciesStatic</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">EObjectType</span><span class="w"> </span><span class="n">GetObjectType</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">TSdvObject</span><span class="o">::</span><span class="n">GetObjectType</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">protected</span><span class="o">:</span>
+<span class="w">        </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">GetObjectFlags</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">IsSingleton</span><span class="p">())</span><span class="w"> </span><span class="n">flags</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">EObjectFlags</span><span class="o">::</span><span class="n">singleton</span><span class="p">);</span>
+
+<span class="w">            </span><span class="c1">// Currently no other flags known.</span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">flags</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">sdv</span><span class="o">::</span><span class="n">SClassInfo</span><span class="w"> </span><span class="n">GetClassInfo</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">SClassInfo</span><span class="w"> </span><span class="n">classInfo</span><span class="p">{};</span>
+<span class="w">            </span><span class="n">classInfo</span><span class="p">.</span><span class="n">ssClassName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetClassName</span><span class="p">();</span>
+<span class="w">            </span><span class="n">classInfo</span><span class="p">.</span><span class="n">seqClassAliases</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetClassAliases</span><span class="p">();</span>
+<span class="w">            </span><span class="n">classInfo</span><span class="p">.</span><span class="n">ssDefaultObjectName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetDefaultObjectName</span><span class="p">();</span>
+<span class="w">            </span><span class="n">classInfo</span><span class="p">.</span><span class="n">eType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetObjectType</span><span class="p">();</span>
+<span class="w">            </span><span class="n">classInfo</span><span class="p">.</span><span class="n">uiFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetObjectFlags</span><span class="p">();</span>
+<span class="w">            </span><span class="n">classInfo</span><span class="p">.</span><span class="n">seqDependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetObjectDependencies</span><span class="p">();</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">classInfo</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">CSdvObject</span><span class="o">&gt;</span><span class="w"> </span><span class="n">CreateObject</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">CSdvObject</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="w">            </span><span class="k">try</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">TSdvObject</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">catch</span><span class="p">(...)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">SDV_LOG</span><span class="p">(</span><span class="n">core</span><span class="o">::</span><span class="n">ELogSeverity</span><span class="o">::</span><span class="n">error</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Failed to instantiate object of class &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">GetClassName</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot; - exception thrown during construction! &quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CSdvObject</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">CSdvObjectAccess</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TSdvObject</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="k">using</span><span class="w"> </span><span class="n">TSdvObjectCreator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CSdvObjectClass</span><span class="o">&lt;</span><span class="n">TSdvObject</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CSdvObject</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CSdvObject</span><span class="p">(</span><span class="n">CSdvObject</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CSdvObject</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">CSdvObject</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CSdvObject</span><span class="p">(</span><span class="n">CSdvObject</span><span class="o">&amp;&amp;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CSdvObject</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">CSdvObject</span><span class="o">&amp;&amp;</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+
+<span class="w">        </span><span class="o">~</span><span class="n">CSdvObject</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">        </span><span class="p">{}</span>
+
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">sequence</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetClassAliasesStatic</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="w"> </span><span class="n">GetDefaultObjectNameStatic</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">IsSingletonStatic</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">sequence</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetObjectDependenciesStatic</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">sequence</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&gt;</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">        </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="c1">// Object control class implementation //</span>
+
+<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="nf">CObjectFactory::CreateObject</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssClassName</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ssClassName</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">shared_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lock</span><span class="p">(</span><span class="n">m_mtxObjectClasses</span><span class="p">);</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ISdvObjectClassInfo</span><span class="o">*</span><span class="w"> </span><span class="n">pObjectClassInfo</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">m_vecObjectClasses</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pObjectClassInfo</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="k">continue</span><span class="p">;</span>
+<span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">SClassInfo</span><span class="w"> </span><span class="n">sClassInfo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pObjectClassInfo</span><span class="o">-&gt;</span><span class="n">GetClassInfo</span><span class="p">();</span>
+
+<span class="w">            </span><span class="c1">// Check for the class name.</span>
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="n">bFound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sClassInfo</span><span class="p">.</span><span class="n">ssClassName</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ssClassName</span><span class="p">;</span>
+
+<span class="w">            </span><span class="c1">// If not found, check for all aliases.</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">itAlias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sClassInfo</span><span class="p">.</span><span class="n">seqClassAliases</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="w"> </span><span class="o">!</span><span class="n">bFound</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">itAlias</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">sClassInfo</span><span class="p">.</span><span class="n">seqClassAliases</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="n">itAlias</span><span class="o">++</span><span class="p">)</span>
+<span class="w">                </span><span class="n">bFound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">itAlias</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ssClassName</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">bFound</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
+
+<span class="w">            </span><span class="o">++</span><span class="n">m_uiActiveObjectCount</span><span class="p">;</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">object</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pObjectClassInfo</span><span class="o">-&gt;</span><span class="n">CreateObject</span><span class="p">();</span>
+<span class="w">            </span><span class="n">lock</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">object</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="o">--</span><span class="n">m_uiActiveObjectCount</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">object</span><span class="p">.</span><span class="n">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">GetObjectAccess</span><span class="p">();</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lockObjects</span><span class="w"> </span><span class="p">(</span><span class="n">m_mtxActiveObjects</span><span class="p">);</span>
+<span class="w">            </span><span class="n">m_vecActiveObjects</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">object</span><span class="p">));</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">CObjectFactory::DestroyObject</span><span class="p">(</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="n">object</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">object</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lockObjects</span><span class="p">(</span><span class="n">m_mtxActiveObjects</span><span class="p">);</span>
+<span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">iter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_vecActiveObjects</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span><span class="w"> </span><span class="n">iter</span><span class="o">!=</span><span class="w"> </span><span class="n">m_vecActiveObjects</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="o">++</span><span class="n">iter</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">iter</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">GetObjectAccess</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">object</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">auto</span><span class="w"> </span><span class="n">objectPtr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="o">*</span><span class="n">iter</span><span class="p">);</span>
+<span class="w">                </span><span class="n">m_vecActiveObjects</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span>
+<span class="w">                </span><span class="n">lockObjects</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>
+<span class="w">                </span><span class="n">objectPtr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_uiActiveObjectCount</span><span class="p">)</span><span class="w"> </span><span class="o">--</span><span class="n">m_uiActiveObjectCount</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">CObjectFactory::DestroyAllObjects</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lockObjects</span><span class="p">(</span><span class="n">m_mtxActiveObjects</span><span class="p">);</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">objects</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">m_vecActiveObjects</span><span class="p">);</span>
+<span class="w">        </span><span class="n">lockObjects</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>
+<span class="w">        </span><span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">objects</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">objects</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_uiActiveObjectCount</span><span class="p">)</span><span class="w"> </span><span class="o">--</span><span class="n">m_uiActiveObjectCount</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace sdv</span>
+
+<span class="c1">// NOLINTBEGIN(cppcoreguidelines-macro-usage)</span>
+
+<span class="cp">#define DEFINE_SDV_OBJECT(sdv_object_class)                                                                                        \</span>
+<span class="cp">    struct SObjectClassInstance_##sdv_object_class                                                                                 \</span>
+<span class="cp">    {                                                                                                                              \</span>
+<span class="cp">    public:                                                                                                                        \</span>
+<span class="cp">        SObjectClassInstance_##sdv_object_class()                                                                                  \</span>
+<span class="cp">        {                                                                                                                          \</span>
+<span class="cp">            </span><span class="cm">/* Enforce derivation of sdv::CSdvObject. */</span><span class="cp">                                                                           \</span>
+<span class="cp">            static_assert(std::is_base_of&lt;sdv::CSdvObject, sdv_object_class&gt;::value,                                               \</span>
+<span class="cp">                          &quot;CSdvObject is not base of sdv_object_class&quot;);                                                           \</span>
+<span class="cp">            </span><span class="cm">/* Call the static function once to instantiate the definition. */</span><span class="cp">                                                     \</span>
+<span class="cp">            GetObjectClassInstance();                                                                                              \</span>
+<span class="cp">        }                                                                                                                          \</span>
+<span class="cp">        static sdv_object_class::TSdvObjectCreator&lt;sdv_object_class&gt;&amp; GetObjectClassInstance()                                     \</span>
+<span class="cp">        {                                                                                                                          \</span>
+<span class="cp">            static sdv_object_class::TSdvObjectCreator&lt;sdv_object_class&gt; object_class;                                             \</span>
+<span class="cp">            return object_class;                                                                                                   \</span>
+<span class="cp">        }                                                                                                                          \</span>
+<span class="cp">    };                                                                                                                             \</span>
+<span class="cp">    static SObjectClassInstance_##sdv_object_class g_##sdv_object_class;                                                           \</span>
+<span class="cp">    extern &quot;C&quot; SDV_SYMBOL_PUBLIC bool HasActiveObjects();                                                                          \</span>
+<span class="cp">    extern &quot;C&quot; SDV_SYMBOL_PUBLIC sdv::IInterfaceAccess* GetModuleFactory(uint32_t uiInterfaceVersion);                             \</span>
+<span class="cp">    extern &quot;C&quot; SDV_SYMBOL_PUBLIC const char* GetManifest();</span>
+
+<span class="cp">#define DEFINE_SDV_OBJECT_NO_EXPORT(sdv_object_class)                                                                              \</span>
+<span class="cp">    struct SObjectClassInstance_##sdv_object_class                                                                                 \</span>
+<span class="cp">    {                                                                                                                              \</span>
+<span class="cp">    public:                                                                                                                        \</span>
+<span class="cp">        SObjectClassInstance_##sdv_object_class()                                                                                  \</span>
+<span class="cp">        {                                                                                                                          \</span>
+<span class="cp">            </span><span class="cm">/* Enforce derivation of sdv::CSdvObject. */</span><span class="cp">                                                                           \</span>
+<span class="cp">            static_assert(std::is_base_of&lt;sdv::CSdvObject, sdv_object_class&gt;::value,                                               \</span>
+<span class="cp">                          &quot;CSdvObject is not base of sdv_object_class&quot;);                                                           \</span>
+<span class="cp">            </span><span class="cm">/* Call the static function once to instantiate the definition. */</span><span class="cp">                                                     \</span>
+<span class="cp">            GetObjectClassInstance();                                                                                              \</span>
+<span class="cp">        }                                                                                                                          \</span>
+<span class="cp">        static sdv_object_class::TSdvObjectCreator&lt;sdv_object_class&gt;&amp; GetObjectClassInstance()                                     \</span>
+<span class="cp">        {                                                                                                                          \</span>
+<span class="cp">            static sdv_object_class::TSdvObjectCreator&lt;sdv_object_class&gt; object_class;                                             \</span>
+<span class="cp">            return object_class;                                                                                                   \</span>
+<span class="cp">        }                                                                                                                          \</span>
+<span class="cp">    };                                                                                                                             \</span>
+<span class="cp">    static SObjectClassInstance_##sdv_object_class g_##sdv_object_class;                                                           \</span>
+<span class="cp">    bool HasActiveObjects();                                                                                                       \</span>
+<span class="cp">    sdv::IInterfaceAccess* GetModuleFactory(uint32_t uiInterfaceVersion);                                                          \</span>
+<span class="cp">    const char* GetManifest();</span>
+
+<span class="cp">#define DECLARE_OBJECT_CLASS_TYPE(class_type)                                                                                      \</span>
+
+<span class="w">                                                                                                                            </span>\
+<span class="w">    </span><span class="k">constexpr</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="w"> </span><span class="n">GetObjectType</span><span class="p">()</span><span class="w">                                                                              </span>\
+<span class="w">    </span><span class="p">{</span><span class="w">                                                                                                                              </span>\
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">class_type</span><span class="p">;</span><span class="w">                                                                                                         </span>\
+<span class="w">    </span><span class="p">}</span>
+
+<span class="cp">#define DECLARE_OBJECT_CLASS_NAME(class_name_string)                                                                               \</span>
+<span class="cp">    static sdv::u8string GetClassNameStatic()                                                                                      \</span>
+<span class="cp">    {                                                                                                                              \</span>
+<span class="cp">        return class_name_string;                                                                                                  \</span>
+<span class="cp">    }</span>
+
+<span class="cp">#define DECLARE_OBJECT_CLASS_ALIAS(...)                                                                                            \</span>
+<span class="cp">    static sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()                                                                    \</span>
+<span class="cp">    {                                                                                                                              \</span>
+<span class="cp">        return sdv::sequence&lt;sdv::u8string&gt;({__VA_ARGS__});                                                                        \</span>
+<span class="cp">    }</span>
+
+<span class="cp">#define DECLARE_DEFAULT_OBJECT_NAME(object_name_string)                                                                            \</span>
+<span class="cp">    static sdv::u8string GetDefaultObjectNameStatic()                                                                              \</span>
+<span class="cp">    {                                                                                                                              \</span>
+<span class="cp">        return object_name_string;                                                                                                 \</span>
+<span class="cp">    }</span>
+
+<span class="cp">#define DECLARE_OBJECT_SINGLETON()                                                                                                 \</span>
+<span class="cp">    static bool IsSingletonStatic() { return true; }</span>
+
+<span class="cp">#define DECLARE_OBJECT_DEPENDENCIES(...)                                                                                           \</span>
+<span class="cp">    static sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic() { return sdv::sequence&lt;sdv::u8string&gt;({__VA_ARGS__}); }</span>
+
+<span class="w"> </span><span class="c1">// NOLINTEND(cppcoreguidelines-macro-usage)</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * @brief Returns whether or not instances of objects implemented by this module are running. If none, the module can be unloaded.</span>
+<span class="cm"> * @remarks Unloading the module with running instances could cause a crash and should be prevented at all costs. Unloading the</span>
+<span class="cm"> * module removes the code of the objects still running.</span>
+<span class="cm"> * @return Returns true when object instances are running; otherwise returns &#39;false&#39;.</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">extern</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">HasActiveObjects</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">GetModule</span><span class="p">().</span><span class="n">GetActiveObjects</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * @brief Get the module factory interface with a specific version.</span>
+<span class="cm"> * @details This function provides access to the objects being implemented in this module.</span>
+<span class="cm"> * @param[in] interfaceVersion Request the module factory for a specific interface version. Using another interface version than</span>
+<span class="cm"> * the one returned from the manifest, might cause the function to fail.</span>
+<span class="cm"> * @return Returns pointer to the IInterfaceAccess interface of the module factory object.</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">extern</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="n">GetModuleFactory</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">interfaceVersion</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">GetModule</span><span class="p">().</span><span class="n">GetModuleControl</span><span class="p">(</span><span class="n">interfaceVersion</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * @brief Get the the module manifest.</span>
+<span class="cm"> * @details Each module contains a manifest containing general information as well as information about the component classes. This</span>
+<span class="cm"> * allows installing the component without having to instantiate the classes.</span>
+<span class="cm"> * @return Returns the pointer to a zero terminated string containing the module manifest or NULL when there is no string.</span>
+<span class="cm"> */</span>
+<span class="kr">inline</span><span class="w"> </span><span class="k">extern</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">GetManifest</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">GetModule</span><span class="p">().</span><span class="n">GetManifest</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#endif </span><span class="c1">// !defined COMPONENT_IMPL_H</span>
+</pre></div>
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

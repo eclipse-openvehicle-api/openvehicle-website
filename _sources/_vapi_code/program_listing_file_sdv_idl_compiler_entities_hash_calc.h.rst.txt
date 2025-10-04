@@ -1,0 +1,46 @@
+
+.. _program_listing_file_sdv_idl_compiler_entities_hash_calc.h:
+
+Program Listing for File hash_calc.h
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_entities_hash_calc.h>` (``sdv_idl_compiler\entities\hash_calc.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef HASH_CALC_H
+   #define HASH_CALC_H
+   
+   #ifdef _MSC_VER
+       // Prevent warnings for XXHash during static code analysis.
+       #pragma warning(push)
+       #pragma warning(disable : 26812 26451)
+   #endif
+   
+   #define XXH_INLINE_ALL
+   #include <xxhash.h>
+   
+   #ifdef _MSC_VER
+       #pragma warning(pop)
+   #endif
+   
+   #include <string>
+   
+   class CHashObject
+   {
+   public:
+       CHashObject();
+   
+       ~CHashObject();
+   
+       CHashObject& operator<<(const std::string& rssString);
+   
+       uint64_t GetHash() const;
+   
+   private:
+       XXH64_state_t* m_state = nullptr;   
+   };
+   
+   #endif // !defined(HASH_CALC_H)

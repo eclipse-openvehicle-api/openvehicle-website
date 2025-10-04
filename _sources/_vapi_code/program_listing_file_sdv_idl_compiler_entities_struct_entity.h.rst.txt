@@ -1,0 +1,44 @@
+
+.. _program_listing_file_sdv_idl_compiler_entities_struct_entity.h:
+
+Program Listing for File struct_entity.h
+========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_entities_struct_entity.h>` (``sdv_idl_compiler\entities\struct_entity.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef STRUCT_ENTITY_H
+   #define STRUCT_ENTITY_H
+   
+   #include "definition_entity.h"
+   
+   class CStructEntity : public CDefinitionEntity
+   {
+   public:
+       CStructEntity(const CContextPtr& rptrContext, CEntityPtr ptrParent);
+   
+       virtual ~CStructEntity() override = default;
+   
+       virtual sdv::idl::EEntityType GetType() const override { return sdv::idl::EEntityType::type_struct; }
+   
+       virtual std::string GetDeclTypeStr(bool bResolveTypedef) const override;
+   
+       // Suppress cppcheck warning of a useless override. The function is here for better understanding.
+       // cppcheck-suppress uselessOverride
+       virtual void Process() override;
+   
+       virtual bool Supports(EDefinitionSupport eSupport) const override;
+   
+       virtual bool SupportsInheritance() const override { return true; }
+   
+       // Suppress cppcheck warning of a useless override. The function is here for better understanding.
+       // cppcheck-suppress uselessOverride
+       virtual bool SupportsAnonymous() const override { return false; }
+   
+       virtual void CreateValueNode() override;
+   };
+   
+   #endif // !defined(STRUCT_ENTITY_H)

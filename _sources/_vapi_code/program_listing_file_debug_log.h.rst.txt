@@ -1,0 +1,147 @@
+
+.. _program_listing_file_debug_log.h:
+
+Program Listing for File debug_log.h
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_debug_log.h>` (``debug_log.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef DEBUG_LOG_H
+   #define DEBUG_LOG_H
+   
+   #include <iostream>
+   #include <ostream>
+   #include <fstream>
+   #include <mutex>
+   #include <filesystem>
+   #include <string>
+   #include <sstream>
+   #include "exec_dir_helper.h"
+   
+   #define ENABLE_DEBUG_LOG 1
+   
+   namespace debug
+   {
+       class CLogger
+       {
+       public:
+           CLogger()
+           {
+               m_pathLogFile = GetExecDirectory() / GetExecFilename().replace_extension(".log");
+               std::unique_lock<std::mutex> lock(m_mtxLogger);
+               std::ofstream fstream(m_pathLogFile, std::ios_base::out | std::ios_base::trunc);
+               if (fstream.is_open())
+               {
+                   fstream << "Starting log of " << GetExecFilename().generic_u8string() << std::endl;
+                   fstream.close();
+               }
+               std::clog << "Starting log of " << GetExecFilename().generic_u8string() << std::flush << std::endl;
+           }
+   
+           ~CLogger()
+           {
+               std::unique_lock<std::mutex> lock(m_mtxLogger);
+               std::ofstream fstream(m_pathLogFile, std::ios_base::out | std::ios_base::app);
+               if (fstream.is_open())
+               {
+                   fstream << "End of log..." << std::endl;
+                   fstream.close();
+               }
+               std::clog << "End of log..." << std::flush << std::endl;
+           }
+   
+           void Log(const std::string& rss)
+           {
+               std::unique_lock<std::mutex> lock(m_mtxLogger);
+               std::ofstream fstream(m_pathLogFile, std::ios_base::out | std::ios_base::app);
+               std::string ssIndent(m_nDepth, '>');
+               if (!ssIndent.empty()) ssIndent += ' ';
+               if (fstream.is_open())
+               {
+                   fstream << ssIndent << rss << std::endl;
+                   fstream.close();
+               }
+               std::clog << ssIndent << rss << std::flush << std::endl;
+           }
+   
+           void IncrDepth()
+           {
+               m_nDepth++;
+           }
+   
+           void DecrDepth()
+           {
+               if (m_nDepth)
+                   m_nDepth--;
+           }
+       private:
+           std::filesystem::path   m_pathLogFile;  
+           std::mutex              m_mtxLogger;    
+           size_t                  m_nDepth;       
+       };
+   
+       inline CLogger& GetLogger()
+       {
+           static CLogger logger;
+           return logger;
+       }
+   
+       class CFuncLogger
+       {
+       public:
+           CFuncLogger(const std::string& rssFunc, const std::string& rssFile, size_t nLine) : m_ssFunc(rssFunc)
+           {
+               GetLogger().Log(std::string("Enter function:") + rssFunc + " - file " + rssFile + " - line " + std::to_string(nLine));
+               GetLogger().IncrDepth();
+           }
+   
+           ~CFuncLogger()
+           {
+               GetLogger().DecrDepth();
+               GetLogger().Log(std::string("Leave function:") + m_ssFunc);
+           }
+   
+           void Checkpoint(size_t nLine)
+           {
+               GetLogger().Log(std::string("Checkpoint #") + std::to_string(m_nCounter++) + " - line " + std::to_string(nLine));
+           }
+   
+           void Log(const std::string& rss) const
+           {
+               GetLogger().Log(rss);
+           }
+   
+       private:
+           std::string     m_ssFunc;           
+           size_t          m_nCounter = 1;     
+       };
+   
+   } // namespace debug
+   
+   #if ENABLE_DEBUG_LOG == 1
+   
+   #ifdef _MSC_VER
+   #define FUNC_LOGGER() debug::CFuncLogger logger(__FUNCSIG__, __FILE__, __LINE__)
+   #else
+   #define FUNC_LOGGER() debug::CFuncLogger logger(__PRETTY_FUNCTION__, __FILE__, __LINE__)
+   #endif
+   
+   #define CHECKPOINT() logger.Checkpoint(__LINE__)
+   
+   #define FUNC_LOG(msg) logger.Log(msg)
+   
+   #else
+   #define FUNC_LOGGER()
+   
+   #define CHECKPOINT()
+   
+   #define FUNC_LOG(msg)
+   
+   #endif
+   
+   
+   #endif // !defined DEBUG_LOG_H

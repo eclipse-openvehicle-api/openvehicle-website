@@ -1,0 +1,127 @@
+
+.. _program_listing_file_interfaces_dispatch.h:
+
+Program Listing for File dispatch.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_dispatch.h>` (``interfaces\dispatch.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__DISPATCH_H__20251003_130453_878__
+   #define __IDL_GENERATED__DISPATCH_H__20251003_130453_878__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   namespace sdv
+   {
+       namespace core
+       {
+           /*local*/ interface ISignalTransmission
+           {
+               static constexpr ::sdv::interface_id _id = 0xF90BC6A344DB2275;
+   
+               enum class ETxTriggerBehavior : uint32_t
+               {
+                   none = 0,
+   
+                   spontaneous = 1,
+   
+                   periodic_if_active = 2,
+               };
+   
+               virtual IInterfaceAccess* CreateTxTrigger(/*in*/ uint32_t uiCycleTime, /*in*/ uint32_t uiDelayTime, /*in*/ uint32_t uiBehaviorFlags, /*in*/ IInterfaceAccess* pTriggerCallback) = 0;
+   
+               virtual IInterfaceAccess* RegisterTxSignal(/*in*/ const sdv::u8string& ssSignalName, /*in*/ sdv::any_t anyDefVal) = 0;
+   
+               virtual IInterfaceAccess* RegisterRxSignal(/*in*/ const sdv::u8string& ssSignalName) = 0;
+           };
+   
+           interface ITxTrigger
+           {
+               static constexpr ::sdv::interface_id _id = 0xDB06CD60F82C907C;
+   
+               virtual bool AddSignal(/*in*/ const sdv::u8string& ssSignalName) = 0;
+   
+               virtual void RemoveSignal(/*in*/ const sdv::u8string& ssSignalName) = 0;
+           };
+   
+           interface ITxTriggerCallback
+           {
+               static constexpr ::sdv::interface_id _id = 0x6CE52FD790AF9C91;
+   
+               virtual void Execute() = 0;
+           };
+   
+           enum class ESignalDirection : int32_t
+           {
+               sigdir_tx,
+   
+               sigdir_rx,
+           };
+   
+           struct SSignalRegistration
+           {
+               sdv::u8string ssName;
+   
+               ESignalDirection eType;
+           };
+   
+           /*local*/ interface ISignalAccess
+           {
+               static constexpr ::sdv::interface_id _id = 0xB7E35E4C8AAED273;
+   
+               virtual IInterfaceAccess* RequestSignalPublisher(/*in*/ const sdv::u8string& ssSignalName) = 0;
+   
+               virtual IInterfaceAccess* AddSignalSubscription(/*in*/ const sdv::u8string& ssSignalName, /*in*/ IInterfaceAccess* pSubscriber) = 0;
+   
+               virtual sdv::sequence<SSignalRegistration> GetRegisteredSignals() const = 0;
+           };
+   
+           /*local*/ interface IDispatchTransaction
+           {
+               static constexpr ::sdv::interface_id _id = 0x2B983A42777B1AA4;
+   
+               virtual IInterfaceAccess* CreateTransaction() = 0;
+           };
+   
+           /*local*/ interface ISignalWrite
+           {
+               static constexpr ::sdv::interface_id _id = 0x3F0D463FAA1B795B;
+   
+               virtual void Write(/*in*/ sdv::any_t anyVal, /*in*/ IInterfaceAccess* pTransaction) = 0;
+           };
+   
+           /*local*/ interface ISignalRead
+           {
+               static constexpr ::sdv::interface_id _id = 0x29324E45BD52B74F;
+   
+               virtual sdv::any_t Read(/*in*/ IInterfaceAccess* pTransaction) const = 0;
+           };
+   
+           /*local*/ interface ISignalReceiveEvent
+           {
+               static constexpr ::sdv::interface_id _id = 0x7D0DD92A85FA0CB4;
+   
+               virtual void Receive(/*in*/ sdv::any_t anyVal) = 0;
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__DISPATCH_H__20251003_130453_891__)

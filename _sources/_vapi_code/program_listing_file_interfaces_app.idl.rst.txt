@@ -1,0 +1,94 @@
+
+.. _program_listing_file_interfaces_app.idl:
+
+Program Listing for File app.idl
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_app.idl>` (``interfaces\app.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core.idl"
+   #include "toml.idl"
+   
+   module sdv
+   {
+       module app
+       {
+   
+           enum EAppOperationState
+           {
+               not_started = 0,            
+               starting = 1,               
+               started = 2,                
+               initializing = 10,          
+               initialized = 12,           
+               configuring = 20,           
+               running = 30,               
+               shutting_down = 90,         
+           };
+   
+           struct SAppEvent
+           {
+               uint32      uiEventID;  
+               uint32      uiInfo;     
+           };
+   
+           const uint32 EVENT_OPERATION_STATE_CHANGED = 1;     
+   
+           const uint32 EVENT_RUNNING_LOOP = 8;                
+   
+           local interface IAppEvent
+           {
+               void ProcessEvent(inout SAppEvent sEvent);
+           };
+   
+           enum EAppContext : uint32
+           {
+               no_context = 0,     
+               standalone = 10,    
+               external = 20,      
+               isolated = 30,      
+               main = 100,         
+               essential = 5,      
+               maintenance = 80,   
+           };
+   
+           local interface IAppContext
+           {
+               EAppContext GetContextType() const;
+   
+               uint32 GetInstanceID() const;
+   
+               uint32 GetRetries() const;
+           };
+   
+           local interface IAppControl
+           {
+               boolean Startup(in u8string ssConfig, in IInterfaceAccess pEventHandler)
+                   raises(XAccessDenied, toml::XTOMLParseException);
+   
+               void RunLoop() raises(XAccessDenied, XInvalidState);
+   
+               void Shutdown(in boolean bForce) raises(XAccessDenied, XInvalidState, XTimeout);
+           };
+   
+           interface IAppOperation
+           {
+               EAppOperationState GetOperationState() const;
+   
+               void SetConfigMode() raises(XAccessDenied, XInvalidState);
+   
+               void SetRunningMode() raises(XAccessDenied, XInvalidState);
+           };
+   
+           interface IAppShutdownRequest
+           {
+               void RequestShutdown() raises(XAccessDenied, XInvalidState);
+           };
+   
+       }; // module app
+   }; // module sdv

@@ -1,0 +1,64 @@
+
+.. _program_listing_file_sdv_vss_util_vss_vd_codingtx.h:
+
+Program Listing for File vss_vd_codingtx.h
+==========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_vss_util_vss_vd_codingtx.h>` (``sdv_vss_util\vss_vd_codingtx.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef VSS_CODING_TX_H
+   #define VSS_CODING_TX_H
+   
+   #include <iostream>
+   #include <vector>
+   #include <algorithm>
+   #include <string>
+   #include <sstream>
+   #include <interfaces/dispatch.h>
+   
+   #include "codegen_base.h"
+   #include "vss_helper.h"
+   #include "vss_tx_templates.h"   
+   #include "vss_coding.h"
+   
+   class CVSSVDCodingTX : public CCodeGeneratorBase, CVSSHelper
+   {
+   
+   public:
+       CVSSVDCodingTX(const std::string& rsPrefix) : m_ssPrefix(rsPrefix) {}
+   
+       std::string Code_VD_TXIDLList(const std::vector<std::string>& vssParts, 
+           const std::vector <SFunctionVDDefinition>& vecFunctions) const;
+   
+       void GetKeyWordMap(const SSignalVDDefinition& signal, CKeywordMap& mapKeywords) const;
+   
+   protected:
+       std::string Code_VD_TXIncludes(const std::string& vssOriginalNoDot) const;
+   
+       std::string Code_VD_TXInterface(const std::string& functionName, const std::string& vssWithColons) const;
+   
+       std::string Code_VD_TXInterfaceEntry(const std::string& functionName, const std::string& vssWithColons) const;
+   
+       std::string Code_VD_TXIDLInterface(const std::string& spaces, const SFunctionVDDefinition& function) const;
+   
+       std::string Code_VD_TXFunction(const SFunctionVDDefinition& function) const;
+   
+       std::string Code_VD_TXResetSignal(const SFunctionVDDefinition& function) const;
+   
+       std::string Code_VD_TXFunctionImplementation(const SFunctionVDDefinition& function, const std::string& className) const;
+   
+       std::string Code_VD_TXVariable(const std::string& signalName) const;
+   
+       std::string Code_VD_TXVariableInitialization(const SFunctionVDDefinition& function) const;
+   
+       std::string Code_VD_TXVariableCheckInitialization(const std::vector <SFunctionVDDefinition>& vecFunctions) const;
+   
+       std::string m_ssPrefix; 
+   };
+   
+   #endif // !defined VSS_CODING_TX_H
+   

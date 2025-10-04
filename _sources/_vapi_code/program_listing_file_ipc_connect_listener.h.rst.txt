@@ -1,0 +1,73 @@
+
+.. _program_listing_file_ipc_connect_listener.h:
+
+Program Listing for File listener.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_ipc_connect_listener.h>` (``ipc_connect\listener.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LISTENER_H
+   #define LISTENER_H
+   
+   #include <support/component_impl.h>
+   #include <interfaces/com.h>
+   #include <interfaces/ipc.h>
+   
+   // Forward declarations
+   class CListener;
+   
+   class CChannelBroker : public sdv::IInterfaceAccess, public sdv::com::IRequestChannel
+   {
+   public:
+       CChannelBroker(CListener& rListener);
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::com::IRequestChannel)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual sdv::u8string RequestChannel(/*in*/ const sdv::u8string& ssConfig) override;
+   
+   private:
+       CListener& m_rListener;         
+   };
+   
+   class CListener : public sdv::CSdvObject, public sdv::IObjectControl
+   {
+   public:
+       CListener();
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declaration
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_NAME("ConnectionListenerService")
+   
+       void Initialize(const sdv::u8string& ssObjectConfig) override;
+   
+       sdv::EObjectStatus GetStatus() const override;
+   
+       void SetOperationMode(sdv::EOperationMode eMode) override;
+   
+       void Shutdown() override;
+   
+       bool IsLocalListener() const;
+   
+   private:
+       sdv::EObjectStatus          m_eObjectStatus = sdv::EObjectStatus::initialization_pending; 
+       sdv::TObjectPtr             m_ptrConnection;            
+       CChannelBroker              m_broker;                   
+       bool                        m_bLocalListener = true;    
+       sdv::com::TConnectionID     m_tConnection = {};         
+   };
+   
+   DEFINE_SDV_OBJECT(CListener)
+   
+   #endif // ! defined LISTENER_H

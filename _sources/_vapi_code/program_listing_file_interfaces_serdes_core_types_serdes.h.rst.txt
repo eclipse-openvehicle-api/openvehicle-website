@@ -1,0 +1,556 @@
+
+.. _program_listing_file_interfaces_serdes_core_types_serdes.h:
+
+Program Listing for File core_types_serdes.h
+============================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_serdes_core_types_serdes.h>` (``interfaces\serdes\core_types_serdes.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__CORE_TYPES_SERDES_H__20251003_130453_954__
+   #define __IDL_GENERATED__CORE_TYPES_SERDES_H__20251003_130453_954__
+   
+   // Includes...
+   #include <cstdint>
+   #include <support/serdes.h>
+   #include <support/local_service_access.h>
+   #include <interfaces/com.h>
+   #include <interfaces/serdes/core_ps_serdes.h>
+   #include "../core_types.h"
+   
+   
+   // Serializer / deserializer namespace
+   namespace serdes
+   {
+       template <>
+       class CSerdes<sdv::EEndian>
+       {
+       public:
+           static void CalcSize(const sdv::EEndian& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of EEndian
+               sdv::ser_size(static_cast<uint8_t>(rVar), rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::EEndian& rVar)
+           {
+               // Serializing members of EEndian
+               rSerializer << static_cast<uint8_t>(rVar);
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::EEndian& rVar)
+           {
+               // Deserializing members of EEndian
+               uint8_t base = 0;
+               rDeserializer >> base;
+               rVar = static_cast<sdv::EEndian>(base);
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XSysExcept>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] const sdv::XSysExcept& rVar, [[maybe_unused]] size_t& rnSize)
+           {
+   
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, [[maybe_unused]] const sdv::XSysExcept& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XSysExcept>();
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, [[maybe_unused]] sdv::XSysExcept& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XSysExcept>()) throw sdv::ps::XMarshallIntegrity{};
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XAccessDenied>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] const sdv::XAccessDenied& rVar, [[maybe_unused]] size_t& rnSize)
+           {
+   
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, [[maybe_unused]] const sdv::XAccessDenied& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XAccessDenied>();
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, [[maybe_unused]] sdv::XAccessDenied& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XAccessDenied>()) throw sdv::ps::XMarshallIntegrity{};
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XNotFound>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] const sdv::XNotFound& rVar, [[maybe_unused]] size_t& rnSize)
+           {
+   
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, [[maybe_unused]] const sdv::XNotFound& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XNotFound>();
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, [[maybe_unused]] sdv::XNotFound& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XNotFound>()) throw sdv::ps::XMarshallIntegrity{};
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XInvalidState>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] const sdv::XInvalidState& rVar, [[maybe_unused]] size_t& rnSize)
+           {
+   
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, [[maybe_unused]] const sdv::XInvalidState& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XInvalidState>();
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, [[maybe_unused]] sdv::XInvalidState& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XInvalidState>()) throw sdv::ps::XMarshallIntegrity{};
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XTimeout>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] const sdv::XTimeout& rVar, [[maybe_unused]] size_t& rnSize)
+           {
+   
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, [[maybe_unused]] const sdv::XTimeout& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XTimeout>();
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, [[maybe_unused]] sdv::XTimeout& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XTimeout>()) throw sdv::ps::XMarshallIntegrity{};
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XNoInterface>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] const sdv::XNoInterface& rVar, [[maybe_unused]] size_t& rnSize)
+           {
+   
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, [[maybe_unused]] const sdv::XNoInterface& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XNoInterface>();
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, [[maybe_unused]] sdv::XNoInterface& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XNoInterface>()) throw sdv::ps::XMarshallIntegrity{};
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XIndexOutOfRange>
+       {
+       public:
+           static void CalcSize(const sdv::XIndexOutOfRange& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of XIndexOutOfRange
+               sdv::ser_size(rVar.uiIndex, rnSize);
+               sdv::ser_size(rVar.uiSize, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::XIndexOutOfRange& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XIndexOutOfRange>();
+               // Serializing members of XIndexOutOfRange
+               rSerializer << rVar.uiIndex;
+               rSerializer << rVar.uiSize;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::XIndexOutOfRange& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XIndexOutOfRange>()) throw sdv::ps::XMarshallIntegrity{};
+               // Deserializing members of XIndexOutOfRange
+               rDeserializer >> rVar.uiIndex;
+               rDeserializer >> rVar.uiSize;
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XInvalidIterator>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] const sdv::XInvalidIterator& rVar, [[maybe_unused]] size_t& rnSize)
+           {
+   
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, [[maybe_unused]] const sdv::XInvalidIterator& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XInvalidIterator>();
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, [[maybe_unused]] sdv::XInvalidIterator& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XInvalidIterator>()) throw sdv::ps::XMarshallIntegrity{};
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XNullPointer>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] const sdv::XNullPointer& rVar, [[maybe_unused]] size_t& rnSize)
+           {
+   
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, [[maybe_unused]] const sdv::XNullPointer& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XNullPointer>();
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, [[maybe_unused]] sdv::XNullPointer& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XNullPointer>()) throw sdv::ps::XMarshallIntegrity{};
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XInvalidRefCount>
+       {
+       public:
+           static void CalcSize(const sdv::XInvalidRefCount& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of XInvalidRefCount
+               sdv::ser_size(rVar.uiCount, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::XInvalidRefCount& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XInvalidRefCount>();
+               // Serializing members of XInvalidRefCount
+               rSerializer << rVar.uiCount;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::XInvalidRefCount& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XInvalidRefCount>()) throw sdv::ps::XMarshallIntegrity{};
+               // Deserializing members of XInvalidRefCount
+               rDeserializer >> rVar.uiCount;
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XBufferTooSmall>
+       {
+       public:
+           static void CalcSize(const sdv::XBufferTooSmall& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of XBufferTooSmall
+               sdv::ser_size(rVar.uiSize, rnSize);
+               sdv::ser_size(rVar.uiCapacity, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::XBufferTooSmall& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XBufferTooSmall>();
+               // Serializing members of XBufferTooSmall
+               rSerializer << rVar.uiSize;
+               rSerializer << rVar.uiCapacity;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::XBufferTooSmall& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XBufferTooSmall>()) throw sdv::ps::XMarshallIntegrity{};
+               // Deserializing members of XBufferTooSmall
+               rDeserializer >> rVar.uiSize;
+               rDeserializer >> rVar.uiCapacity;
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XHashNotMatching>
+       {
+       public:
+           static void CalcSize(const sdv::XHashNotMatching& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of XHashNotMatching
+               sdv::ser_size(rVar.uiCalculated, rnSize);
+               sdv::ser_size(rVar.uiProvided, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::XHashNotMatching& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XHashNotMatching>();
+               // Serializing members of XHashNotMatching
+               rSerializer << rVar.uiCalculated;
+               rSerializer << rVar.uiProvided;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::XHashNotMatching& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XHashNotMatching>()) throw sdv::ps::XMarshallIntegrity{};
+               // Deserializing members of XHashNotMatching
+               rDeserializer >> rVar.uiCalculated;
+               rDeserializer >> rVar.uiProvided;
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XOffsetPastBufferSize>
+       {
+       public:
+           static void CalcSize(const sdv::XOffsetPastBufferSize& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of XOffsetPastBufferSize
+               sdv::ser_size(rVar.uiOffset, rnSize);
+               sdv::ser_size(rVar.uiSize, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::XOffsetPastBufferSize& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XOffsetPastBufferSize>();
+               // Serializing members of XOffsetPastBufferSize
+               rSerializer << rVar.uiOffset;
+               rSerializer << rVar.uiSize;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::XOffsetPastBufferSize& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XOffsetPastBufferSize>()) throw sdv::ps::XMarshallIntegrity{};
+               // Deserializing members of XOffsetPastBufferSize
+               rDeserializer >> rVar.uiOffset;
+               rDeserializer >> rVar.uiSize;
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XUnknownException>
+       {
+       public:
+           static void CalcSize(const sdv::XUnknownException& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of XUnknownException
+               sdv::ser_size(rVar.unknown_id, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::XUnknownException& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XUnknownException>();
+               // Serializing members of XUnknownException
+               rSerializer << rVar.unknown_id;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::XUnknownException& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XUnknownException>()) throw sdv::ps::XMarshallIntegrity{};
+               // Deserializing members of XUnknownException
+               rDeserializer >> rVar.unknown_id;
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::XUnhandledException>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] const sdv::XUnhandledException& rVar, [[maybe_unused]] size_t& rnSize)
+           {
+   
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, [[maybe_unused]] const sdv::XUnhandledException& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::XUnhandledException>();
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, [[maybe_unused]] sdv::XUnhandledException& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::XUnhandledException>()) throw sdv::ps::XMarshallIntegrity{};
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::core::XNoMemMgr>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] const sdv::core::XNoMemMgr& rVar, [[maybe_unused]] size_t& rnSize)
+           {
+   
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, [[maybe_unused]] const sdv::core::XNoMemMgr& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::core::XNoMemMgr>();
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, [[maybe_unused]] sdv::core::XNoMemMgr& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::core::XNoMemMgr>()) throw sdv::ps::XMarshallIntegrity{};
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::core::XAllocFailed>
+       {
+       public:
+           static void CalcSize(const sdv::core::XAllocFailed& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of XAllocFailed
+               sdv::ser_size(rVar.uiSize, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::core::XAllocFailed& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::core::XAllocFailed>();
+               // Serializing members of XAllocFailed
+               rSerializer << rVar.uiSize;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::core::XAllocFailed& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::core::XAllocFailed>()) throw sdv::ps::XMarshallIntegrity{};
+               // Deserializing members of XAllocFailed
+               rDeserializer >> rVar.uiSize;
+               return rDeserializer;
+           }
+       };
+   } // serdes namespace
+   
+   #endif // !defined(__IDL_GENERATED__CORE_TYPES_SERDES_H__20251003_130453_975__)

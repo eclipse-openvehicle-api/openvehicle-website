@@ -1,0 +1,96 @@
+
+.. _program_listing_file_sdv_idl_compiler_source.h:
+
+Program Listing for File source.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_source.h>` (``sdv_idl_compiler\source.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SOURCE_H
+   #define SOURCE_H
+   
+   #include <string>
+   #include <filesystem>
+   
+   class CSource
+   {
+   public:
+       CSource();
+   
+       CSource(const std::filesystem::path& rpath);
+   
+       CSource(const char* szCode);
+   
+       CSource(const CSource& rSource) = delete;
+   
+       CSource(CSource&& rSource) noexcept;
+   
+       CSource& operator=(const CSource& rSource) = delete;
+   
+       CSource& operator=(CSource&& rSource) noexcept;
+   
+       const std::filesystem::path& GetPathRef() const;
+   
+       const std::string& GetCodeRef() const;
+   
+       void ReadFile(const std::filesystem::path& rpath);
+   
+   private:
+       constexpr static bool IsSystemBigEndian();
+   
+       constexpr static bool IsSystemLittleEndian();
+   
+       static void EndianSwap(char16_t& rc16);
+   
+       static void EndianSwap(char32_t& rc32);
+   
+       template <typename TChar>
+       void PotentialSwapBuffer(TChar* szBuffer, size_t nSize, bool bIsSourceBigEndian);
+   
+       static std::string ConvertToUTF8(const char16_t* szBuffer, size_t nSize);
+   
+       static std::string ConvertToUTF8(const char32_t* szBuffer, size_t nSize);
+   
+       std::filesystem::path   m_path;         
+       std::string             m_ssSource;     
+   };
+   
+   inline void CSource::EndianSwap(char16_t& rc16)
+   {
+       uint8_t uiTemp = reinterpret_cast<uint8_t*>(&rc16)[0];
+       reinterpret_cast<uint8_t*>(&rc16)[0] = reinterpret_cast<uint8_t*>(&rc16)[1];
+       reinterpret_cast<uint8_t*>(&rc16)[1] = uiTemp;
+   }
+   
+   inline void CSource::EndianSwap(char32_t& rc32)
+   {
+       uint8_t uiTemp = reinterpret_cast<uint8_t*>(&rc32)[0];
+       reinterpret_cast<uint8_t*>(&rc32)[0] = reinterpret_cast<uint8_t*>(&rc32)[3];
+       reinterpret_cast<uint8_t*>(&rc32)[3] = uiTemp;
+       reinterpret_cast<uint8_t*>(&rc32)[1] = reinterpret_cast<uint8_t*>(&rc32)[2];
+       reinterpret_cast<uint8_t*>(&rc32)[2] = uiTemp;
+   }
+   
+   template <typename TChar>
+   inline void CSource::PotentialSwapBuffer(TChar* szBuffer, size_t nSize, bool bIsSourceBigEndian)
+   {
+       // Only works for two or four byte characters
+       static_assert(sizeof(TChar) == 2 || sizeof(TChar) == 4);
+   
+       // Check for a valid buffer
+       if (!szBuffer) return;
+   
+       // Only swap when the endianness of the data is not corresponding to the character endianness of the system.
+       if (bIsSourceBigEndian == IsSystemBigEndian()) return;
+   
+       // Swap all bytes
+       for (size_t nIndex = 0; nIndex < nSize; nIndex++)
+           EndianSwap(szBuffer[nIndex]);
+   }
+   
+   
+   #endif // !defined SOURCE_H

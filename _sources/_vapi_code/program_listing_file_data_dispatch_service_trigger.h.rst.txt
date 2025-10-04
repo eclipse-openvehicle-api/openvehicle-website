@@ -1,0 +1,95 @@
+
+.. _program_listing_file_data_dispatch_service_trigger.h:
+
+Program Listing for File trigger.h
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_data_dispatch_service_trigger.h>` (``data_dispatch_service\trigger.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef TRIGGER_H
+   #define TRIGGER_H
+   
+   #include <support/interface_ptr.h>
+   #include <support/timer.h>
+   
+   // Forward declaration
+   class CDispatchService;
+   class CSignal;
+   class CTrigger;
+   
+   enum class EExecutionFlag
+   {
+       periodic,       
+       spontaneous     
+   };
+   
+   class CScheduler
+   {
+   public:
+       CScheduler() = default;
+   
+       ~CScheduler();
+   
+       void Start();
+   
+       void Stop();
+   
+       void Schedule(CTrigger* pTrigger, EExecutionFlag eExecFlag, std::chrono::high_resolution_clock::time_point tpDue);
+   
+       void RemoveFromSchedule(const CTrigger* pTrigger);
+   
+   private:
+       void EvaluateAndExecute();
+   
+       using CObjectMap = std::map<CTrigger*, EExecutionFlag>;
+   
+       using CSchedulerMMap = std::multimap<std::chrono::high_resolution_clock::time_point, CObjectMap::iterator>;
+   
+       sdv::core::CTaskTimer       m_timer;                
+       std::mutex                  m_mtxScheduler;         
+       CObjectMap                  m_mapTriggers;          
+       CSchedulerMMap              m_mmapScheduleList;     
+   };
+   
+   class CTrigger : public sdv::IInterfaceAccess, public sdv::core::ITxTrigger, public sdv::IObjectDestroy
+   {
+   public:
+       CTrigger(CDispatchService& rDispatchSvc, uint32_t uiCycleTime, uint32_t uiDelayTime, uint32_t uiBehaviorFlags,
+           sdv::core::ITxTriggerCallback* pCallback);
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IInterfaceAccess)
+           SDV_INTERFACE_ENTRY(sdv::core::ITxTrigger)
+           SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
+       END_SDV_INTERFACE_MAP()
+   
+       bool IsValid() const;
+   
+       virtual void DestroyObject() override;
+   
+       virtual bool AddSignal(/*in*/ const sdv::u8string& ssSignalName) override;
+   
+       virtual void RemoveSignal(/*in*/ const sdv::u8string& ssSignalName) override;
+   
+       void Execute(EExecutionFlag eExecFlag = EExecutionFlag::spontaneous);
+   
+   private:
+       sdv::CLifetimeCookie                m_cookie = sdv::CreateLifetimeCookie(); 
+       CDispatchService&                   m_rDispatchSvc;                         
+       sdv::core::CTaskTimer               m_timer;                                
+       std::chrono::high_resolution_clock::time_point      m_tpLast;               
+       size_t                              m_nPeriod = 0ull;                       
+       size_t                              m_nDelay = 0ull;                        
+       uint32_t                            m_uiBehaviorFlags = 0ul;                
+       size_t                              m_nInactiveRepetition = 0ull;           
+       sdv::core::ITxTriggerCallback*      m_pCallback = nullptr;                  
+       std::mutex                          m_mtxSignals;                           
+       std::map<sdv::u8string, CSignal*>   m_mapSignals;                           
+   };
+   
+   #endif // ! defined TRIGGER_H

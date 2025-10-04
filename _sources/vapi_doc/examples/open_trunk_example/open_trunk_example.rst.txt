@@ -1,0 +1,30 @@
+.. _vapi-open_trunk_example:
+
+Open Trunk Example
+==================
+
+
+.. attention:: Purpose: Demonstration safety topic, demonstration :term:`Mixed-Criticallity` and why we need two instances: safety and non-safety instance.
+
+.. note:: 
+   | Example can be found in ``<output-folder>/examples/bin``:
+   | open_trunk_example <parameter>
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Sub pages of the Open Trunk Example
+
+   open_trunk_standalone_application
+   open_trunk_extern_application
+
+.. hint:: 
+   
+   The :term:`Vehicle Function` will open the trunk. This should be blocked when the vehicle is moving:
+
+   - Required: TX signal to open the trunk, RX signal representing the speed of the vehicle.  
+   - A complex service offers an interface to open the trunk.
+   - Before the command is forwarded to the basic service the vehicle speed is checked and denied accordingly to prevent the opening of the trunk.
+   - Therefore the complex service can be seen as an ASIL A component.  
+   
+.. image:: ../../../vapi_media/examples/open_trunk_example/open_trunk_overview.png
+

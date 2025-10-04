@@ -1,0 +1,119 @@
+
+.. _program_listing_file_can_communication_silkit_can_com_silkit.h:
+
+Program Listing for File can_com_silkit.h
+=========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_can_communication_silkit_can_com_silkit.h>` (``can_communication_silkit\can_com_silkit.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CAN_COM_SILKIT_H
+   #define CAN_COM_SILKIT_H
+   
+   #include <iostream>
+   #include <thread>
+   #include <mutex>
+   #include <queue>
+   #include <set>
+   
+   //VAPI includes
+   #include <interfaces/can.h>
+   #include <support/component_impl.h>
+   #include <support/timer.h>
+   
+   //SilKit includes
+   #include "silkit/SilKit.hpp"
+   
+   class CCANSilKit : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::can::IRegisterReceiver,
+       public sdv::can::ISend, sdv::can::IInformation
+   {
+   public:
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
+           SDV_INTERFACE_ENTRY(sdv::can::IRegisterReceiver)
+           SDV_INTERFACE_ENTRY(sdv::can::ISend)
+           SDV_INTERFACE_ENTRY(sdv::can::IInformation)
+       END_SDV_INTERFACE_MAP()
+   
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::Device)
+       DECLARE_OBJECT_CLASS_NAME("CAN_Com_SilKit")
+       DECLARE_DEFAULT_OBJECT_NAME("CAN_Communication_Object")
+       DECLARE_OBJECT_SINGLETON()
+   
+       
+       virtual void Initialize(const sdv::u8string& ssObjectConfig) override;
+   
+       virtual sdv::EObjectStatus GetStatus() const override;
+   
+       void SetOperationMode(sdv::EOperationMode eMode) override;
+   
+       virtual void Shutdown() override;
+   
+       virtual void RegisterReceiver(/*in*/ sdv::can::IReceive* pReceiver) override;
+   
+       virtual void UnregisterReceiver(/*in*/ sdv::can::IReceive* pReceiver) override;
+   
+       virtual void Send(/*in*/ const sdv::can::SMessage& sSDVCanMessage, /*in*/ uint32_t uiIfcIndex) override;
+   
+       virtual sdv::sequence<sdv::u8string> GetInterfaces() const override;
+   
+   private:
+   
+       struct SAcknowledgeSync : public SilKit::Services::Can::CanFrameTransmitEvent
+       {
+           // False positive warning of CppCheck concerning the initialization of member variables. Suppress warning.
+           // cppcheck-suppress uninitDerivedMemberVar
+          SAcknowledgeSync() : SilKit::Services::Can::CanFrameTransmitEvent{} {}
+   
+          std::mutex mtx;
+   
+          std::condition_variable cv;
+   
+          bool bProcessed = false;
+       };
+   
+       std::shared_ptr<SilKit::Config::IParticipantConfiguration> GetSilKitConfig(const std::string& ssSilKitJSONConfigContent);
+   
+       std::unique_ptr<SilKit::IParticipant> CreateParticipantFromJSONConfig(const std::string& ssSilKitJSONConfigContent, const std::string& ssSilKitRegistryUri);
+   
+      SilKit::Services::Can::ICanController* CreateController(const std::string& ssSilKitNetwork);
+   
+      bool ValidateConfiguration(const std::string& ssSilKitJSONConfigContent, const std::string& ssSilKitNetwork, const std::string& ssSilKitRegistryUri);
+   
+       void SetupTimeSyncService();
+   
+       bool CreateSilKitConnection(const std::string& ssSilKitJSONConfigContent, const std::string& ssSilKitNetwork, const std::string& ssSilKitRegistryUri);
+       
+       SilKit::Services::Orchestration::ILifecycleService* CreateSilKitLifecycleService();
+   
+       bool SetHandlerFunctions(SilKit::Services::Orchestration::ILifecycleService* silKitlifeCyleService);
+   
+       void SilKitReceiveMessageHandler(const SilKit::Services::Can::CanFrame& rsSilKitCanFrame);
+   
+       void SilKitTransmitAcknowledgeHandler(const SilKit::Services::Can::CanFrameTransmitEvent& rsSilKitTransmitAcknowledge);
+   
+       std::mutex                                           m_ReceiversMtx;                     
+       std::set<sdv::can::IReceive*>                        m_SetReceivers;                     
+        
+       std::queue<sdv::can::SMessage>                       m_MessageQueue;                     
+       std::mutex                                           m_QueueMutex;                       
+       
+       SilKit::Services::Orchestration::ILifecycleService*  m_SilKitLifeCycleService = nullptr; 
+       SilKit::Services::Can::ICanController*               m_SilKitCanController = nullptr;    
+       sdv::core::ITimerSimulationStep*                     m_TimerSimulationStep = nullptr;    
+       std::unique_ptr<SilKit::IParticipant>                m_SilKitParticipant = nullptr;      
+       std::string                                          m_SilKitParticipantName;            
+       bool                                                 m_SilKitIsSynchronousMode = false;  
+   
+       uint32_t                                             m_maxCanDataLength = 8;             
+       std::atomic<sdv::EObjectStatus>                      m_eStatus = sdv::EObjectStatus::initialization_pending;  
+   };
+   
+   DEFINE_SDV_OBJECT(CCANSilKit)
+   
+   #endif // ! defined CAN_COM_SILKIT_H

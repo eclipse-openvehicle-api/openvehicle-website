@@ -1,0 +1,60 @@
+
+.. _program_listing_file_core_object_lifetime_control.h:
+
+Program Listing for File object_lifetime_control.h
+==================================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_object_lifetime_control.h>` (``core\object_lifetime_control.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef OBJECT_LIFETIME_CONTROL_H
+   #define OBJECT_LIFETIME_CONTROL_H
+   
+   #include <support/interface_ptr.h>
+   
+   interface IObjectDestroyHandler
+   {
+       virtual void OnDestroyObject(sdv::IInterfaceAccess* pObject) = 0;
+   };
+   
+   class CObjectLifetimeControl : public sdv::IInterfaceAccess, public sdv::IObjectDestroy, public sdv::IObjectLifetime
+   {
+   public:
+       CObjectLifetimeControl(sdv::IInterfaceAccess* pObject, IObjectDestroyHandler& rHandler, bool bAutoDestroy = true);
+   
+       virtual ~CObjectLifetimeControl() = default;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_SET_SECTION_CONDITION(!m_pObjectLifetime, 1)
+           SDV_INTERFACE_SECTION(1)
+           SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
+           SDV_INTERFACE_DEFAULT_SECTION()
+           SDV_INTERFACE_SET_SECTION_CONDITION(m_pObjectLifetime, 2)
+           SDV_INTERFACE_SECTION(2)
+           SDV_INTERFACE_ENTRY(sdv::IObjectLifetime)
+           SDV_INTERFACE_DEFAULT_SECTION()
+           SDV_INTERFACE_DENY_ENTRY(sdv::IObjectControl)   // Do not allow users to directly access the object control.
+           SDV_INTERFACE_CHAIN_MEMBER(m_ptrObject)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual void DestroyObject() override;
+   
+       virtual void Increment() override;
+   
+       virtual bool Decrement() override;
+   
+       virtual uint32_t GetCount() const override;
+   
+   private:
+       IObjectDestroyHandler&      m_rHandler;                     
+       sdv::IObjectDestroy*        m_pObjectDestroy = nullptr;     
+       sdv::IObjectLifetime*       m_pObjectLifetime = nullptr;    
+       sdv::TInterfaceAccessPtr    m_ptrObject;                    
+       bool                        m_bAutoDestroy = false;         
+   };
+   
+   #endif // !defined OBJECT_LIFETIME_CONTROL_H

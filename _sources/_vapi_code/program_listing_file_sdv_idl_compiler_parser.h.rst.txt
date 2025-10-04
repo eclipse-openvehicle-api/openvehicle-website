@@ -1,0 +1,115 @@
+
+.. _program_listing_file_sdv_idl_compiler_parser.h:
+
+Program Listing for File parser.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_parser.h>` (``sdv_idl_compiler\parser.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef PARSER_H
+   #define PARSER_H
+   
+   #include "lexer.h"
+   #include "preproc.h"
+   #include "source.h"
+   #include "environment.h"
+   #include <stack>
+   #include <thread>
+   #include <vector>
+   #include <map>
+   #include <set>
+   #include <filesystem>
+   #include "entities/root_entity.h"
+   #include "parsecontext.h"
+   
+   enum class EEntityType : uint32_t
+   {
+       entity_comment,
+       entity_include,
+       entity_module,
+       entity_interface,   // Part of a module
+       entity_valuetype,   // Part of an interface
+       entity_function,    // part of an interface
+       entity_typedef,     // Part of an interface
+       entity_eof
+   };
+   
+   class CParser : public CPreprocessor, public ILexerCallback, public sdv::idl::ICompilerInfo, public sdv::IInterfaceAccess
+   {
+   public:
+       CParser(const char* szCode, const CIdlCompilerEnvironment& renv = CIdlCompilerEnvironment());
+   
+       CParser(const std::filesystem::path& rpath, const CIdlCompilerEnvironment& renv = CIdlCompilerEnvironment());
+   
+       virtual ~CParser() = default;
+   
+       virtual sdv::interface_t GetInterface(sdv::interface_id idInterface) override;
+   
+       virtual sdv::u8string GetFilePath() const override;
+   
+       virtual sdv::u8string GetOutputDir() const override;
+   
+       const CLexer& GetLexer() const;
+   
+       virtual void IncludeFile(const std::filesystem::path& rpath, bool bLocal) override;
+   
+       virtual CIdlCompilerEnvironment& GetEnvironment() override;
+   
+       CToken GetToken();
+   
+       CToken GetLastValidToken() const;
+   
+       CToken PeekToken(size_t nIndex = 0);
+   
+       CTokenList GetComments();
+   
+       void PrependToken(const CToken& rToken);
+   
+       void SkipAdjacentComments();
+   
+       CParser& LexicalCheck();
+   
+       CParser& Parse();
+   
+       const CRootEntity* Root() const;
+   
+       std::string GenerateAnonymousEntityName(const std::string& rssPrefix);
+   
+       struct SMetaToken
+       {
+           CToken      tokenMeta;      
+           CTokenList  lstComments;    
+       };
+   
+       std::list<SMetaToken> GetAndRemoveMeta();
+   
+   private:
+       void ParserPrepare(CContextPtr& rptrContext);
+   
+       virtual void InsertWhitespace(const CToken &rtoken) override;
+   
+       virtual void InsertComment(const CToken& rtoken) override;
+   
+       virtual void ProcessPreprocDirective(CCodePos& rCode) override;
+   
+       CToken GetTokenFromLexer(bool bPeekOnly);
+   
+       CLexer                                      m_lexer;                    
+       std::stack<CContextPtr>                     m_stackCode;                
+       std::set<std::filesystem::path>             m_setProcessedFiles;        
+       std::vector<std::filesystem::path>          m_vecSearchDirs;            
+       const size_t                                m_nMaxDepth = 48;           
+       CIdlCompilerEnvironment                                m_environment;              
+       CEntityPtr                                  m_ptrRoot;                  
+       std::map<std::string, size_t>               m_mapAutoNameCount;         
+       CTokenList                                  m_lstCacheTokenList;        
+       std::filesystem::path                       m_pathFile;                 
+       CTokenList                                  m_lstComments;              
+       std::list<SMetaToken>                       m_lstMeta;                  
+   };
+   
+   #endif // !defined PARSER_H

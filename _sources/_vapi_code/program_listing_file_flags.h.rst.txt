@@ -1,0 +1,81 @@
+
+.. _program_listing_file_flags.h:
+
+Program Listing for File flags.h
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_flags.h>` (``flags.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef FLAGS_HELPER_H
+   #define FLAGS_HELPER_H
+   
+   #include <type_traits>
+   #include <initializer_list>
+   
+   namespace hlpr
+   {
+       template <typename TEnum>
+       struct flags
+       {
+           // Only works with enums.
+           static_assert(std::is_enum_v<TEnum>);
+   
+           using enum_type = std::underlying_type_t<TEnum>;
+   
+           flags() = default;
+   
+           flags(const flags& rflags) = default;
+   
+           flags(flags&& rflags) : _tValue(rflags._tValue) { rflags._tValue = 0; }
+   
+           explicit flags(enum_type tValue) : _tValue(tValue) {}
+   
+           flags(TEnum eValue) : _tValue(static_cast<enum_type>(eValue)) {}
+   
+           flags(std::initializer_list<TEnum> init)
+           {
+               for (TEnum eValue : init)
+                   _tValue |= static_cast<enum_type>(eValue);
+           }
+   
+           flags& operator=(const flags& rflags) = default;
+   
+           flags& operator=(flags&& rflags) { _tValue = rflags._tValue; rflags._tValue = 0; return *this; }
+   
+           flags& operator=(enum_type tValue) { _tValue = tValue; return *this; }
+   
+           flags& operator=(TEnum eValue) { _tValue = static_cast<enum_type>(eValue); return *this; }
+   
+           operator enum_type() const { return _tValue; }
+   
+           flags& operator+=(TEnum eValue) { _tValue |= static_cast<enum_type>(eValue); return *this; }
+   
+           flags& operator-=(TEnum eValue) { _tValue &= ~static_cast<enum_type>(eValue); return *this; }
+   
+           flags operator+(TEnum eValue) { flags flagsCopy(_tValue); flagsCopy.add(eValue); return flagsCopy; }
+   
+           flags operator-(TEnum eValue) { flags flagsCopy(_tValue); flagsCopy.remove(eValue); return flagsCopy; }
+   
+           bool operator&(TEnum eValue) const { return (_tValue & static_cast<enum_type>(eValue)) ? true : false; }
+   
+           enum_type get() const { return _tValue; }
+   
+           void add(TEnum eValue) { _tValue |= static_cast<enum_type>(eValue); }
+   
+           void remove(TEnum eValue) { _tValue &= ~static_cast<enum_type>(eValue); }
+   
+           bool check(TEnum eValue) const { return _tValue & static_cast<enum_type>(eValue); }
+   
+           bool check_any(flags flagsValue) const { return _tValue & flagsValue._tValue; }
+   
+           bool check_all(flags flagsValue) const { return (_tValue & flagsValue._tValue) == flagsValue._tValue; }
+   
+           enum_type _tValue = 0;      
+       };
+   }
+   
+   #endif // !defined FLAGS_HELPER_H

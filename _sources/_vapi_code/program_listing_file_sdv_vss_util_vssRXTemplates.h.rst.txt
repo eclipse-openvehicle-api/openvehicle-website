@@ -1,0 +1,163 @@
+
+.. _program_listing_file_sdv_vss_util_vssRXTemplates.h:
+
+Program Listing for File vssRXTemplates.h
+=========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_vss_util_vssRXTemplates.h>` (``sdv_vss_util\vssRXTemplates.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   const char szRXVehicleDeviceHeaderTemplate[] = R"code(
+   #ifndef %vd_safeguard%
+   #define %vd_safeguard%
+   
+   #include <iostream>
+   #include <set>
+   #include <support/component_impl.h>
+   #include <support/signal_support.h>
+   %rx_vd_includes_list%
+   #include "../SignalIdentifier.h"
+   
+   class CVehicleDevice%class_name%
+       : public sdv::CSdvObject
+       , public sdv::IObjectControl
+   %rx_vd_interface_list%{
+   public:
+   
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
+   %rx_vd_interface_entry_list%    END_SDV_INTERFACE_MAP()
+   
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::Device)
+       DECLARE_OBJECT_CLASS_NAME("%vss_original%_Device")
+   
+       CVehicleDevice%class_name%();
+   
+       void Initialize(const sdv::u8string& objectConfig) override;
+   
+       sdv::EObjectStatus GetStatus() const override;
+   
+       void SetOperationMode(/*in*/ sdv::EOperationMode eMode) override;
+   
+       void Shutdown() override;
+   %rx_vd_register_events_list%
+   private:
+   %rx_vd_private_vd_header_part%
+       std::atomic<sdv::EObjectStatus> m_status = { sdv::EObjectStatus::initialization_pending };  ///< To update the object status when it changes.
+   };
+   
+   DEFINE_SDV_OBJECT(CVehicleDevice%class_name%)
+   
+   #endif // !define %vd_safeguard%
+   )code";
+   
+   const char szRXVehicleDeviceClassTemplate[] = R"code(
+   #include <iostream>
+   #include "VD_%class_name%.h"
+   
+   CVehicleDevice%class_name%::CVehicleDevice%class_name%()
+   {
+   }
+   
+   void CVehicleDevice%class_name%::Initialize(const sdv::u8string&)
+   {
+       if (m_status != sdv::EObjectStatus::initialization_pending)
+       {
+           return;
+       }
+       sdv::core::CDispatchService dispatch;
+   %rx_vd_subscribe_signals%
+   %rx_check_subscriptions%
+   }
+   
+   sdv::EObjectStatus CVehicleDevice%class_name%::GetStatus() const
+   {
+       return m_status;
+   }
+   
+   void CVehicleDevice%class_name%::SetOperationMode(/*in*/ sdv::EOperationMode eMode)
+   {
+       switch (eMode)
+       {
+       case sdv::EOperationMode::configuring:
+           if (m_status == sdv::EObjectStatus::running || m_status == sdv::EObjectStatus::initialized)
+               m_status = sdv::EObjectStatus::configuring;
+           break;
+       case sdv::EOperationMode::running:
+           if (m_status == sdv::EObjectStatus::configuring || m_status == sdv::EObjectStatus::initialized)
+               m_status = sdv::EObjectStatus::running;
+           break;
+       default:
+           break;
+       }
+   }
+   
+   void CVehicleDevice%class_name%::Shutdown()
+   {
+   %rx_reset_signals%
+       m_status = sdv::EObjectStatus::destruction_pending;
+   }
+   %rx_vd_register%
+   )code";
+   
+   const char szRXBasicServiceHeaderTemplate[] = R"code(
+   #ifndef %bs_safeguard%
+   #define %bs_safeguard%
+   
+   #include <iostream>
+   #include <set>
+   #include <support/component_impl.h>
+   #include <support/signal_support.h>
+   %rx_bs_includes_list%
+   class CBasicService%class_name%
+       : public sdv::CSdvObject
+   %rx_bs_interface_list%{
+   public:
+   
+       BEGIN_SDV_INTERFACE_MAP()
+   %rx_bs_interface_entry_list%    END_SDV_INTERFACE_MAP()
+   
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::BasicService)
+       DECLARE_OBJECT_CLASS_NAME("%vss_original%_Service")
+   
+       CBasicService%class_name%();
+   
+       ~CBasicService%class_name%();
+   %rx_bs_register_events_list%
+   private:
+   %rx_bs_private_vd_header_part%
+   };
+   
+   DEFINE_SDV_OBJECT(CBasicService%class_name%)
+   
+   #endif // !define %bs_safeguard%
+   )code";
+   
+   const char szRXBasicServiceClassTemplate[] = R"code(
+   #include <iostream>
+   #include "BS_%class_name%.h"
+   %vss_from_vd_not_found%
+   CBasicService%class_name%::CBasicService%class_name%()
+   {%rx_bs_constructor%}
+   
+   CBasicService%class_name%::~CBasicService%class_name%()
+   {%rx_bs_deconstructor%}
+   %rx_bs_getandsetfunctions%%rx_bs_register%
+   )code";
+   
+   const char szVDRXIDLTemplate[] = R"code(
+   #include "interfaces/core.idl"
+   
+   %vss_device%
+   )code";
+   
+   const char szBSRXIDLTemplate[] = R"code(
+   #include "interfaces/core.idl"
+   #include "VSS_%vd_vss_original_no_dot%_vd_rx.idl"
+   %vss_device%
+   %vss_service%
+   )code";

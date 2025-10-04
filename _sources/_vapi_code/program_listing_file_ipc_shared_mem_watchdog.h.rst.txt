@@ -1,0 +1,86 @@
+
+.. _program_listing_file_ipc_shared_mem_watchdog.h:
+
+Program Listing for File watchdog.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_ipc_shared_mem_watchdog.h>` (``ipc_shared_mem\watchdog.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef WATCH_DOG_H
+   #define WATCH_DOG_H
+   
+   #ifdef _WIN32
+   // Resolve conflict
+   #pragma push_macro("interface")
+   #undef interface
+   
+   #ifndef NOMINMAX
+   #define NOMINMAX
+   #endif
+   #include <WinSock2.h>
+   #include <Windows.h>
+   
+   // Resolve conflict
+   #pragma pop_macro("interface")
+   #ifdef GetClassInfo
+   #undef GetClassInfo
+   #endif
+   #endif
+   
+   #include <interfaces/process.h>
+   #include <support/interface_ptr.h>
+   #include <mutex>
+   #include <map>
+   #include <memory>
+   #include <set>
+   #include <thread>
+   #include <queue>
+   #include <condition_variable>
+   
+   // Forward declaration
+   class CConnection;
+   
+   class CWatchDog : public sdv::IInterfaceAccess, public sdv::process::IProcessLifetimeCallback
+   {
+   public:
+       CWatchDog();
+   
+       ~CWatchDog();
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::process::IProcessLifetimeCallback)
+       END_SDV_INTERFACE_MAP()
+   
+       void Clear();
+   
+       void AddConnection(const std::shared_ptr<CConnection>& rptrConnection);
+   
+       void RemoveConnection(CConnection* pConnection, bool bAsync);
+   
+       void AddMonitor(sdv::process::TProcessID tProcessID, CConnection* pConnection);
+   
+       void RemoveMonitor(const CConnection* pConnection);
+   
+   private:
+       void HandleScheduledConnectionDestructions();
+   
+       virtual void ProcessTerminated(/*in*/ sdv::process::TProcessID tProcessID, /*in*/ int64_t iRetValue) override;
+   
+       std::mutex                  m_mtxConnections;                           
+       std::map<CConnection*, std::shared_ptr<CConnection>>    m_mapConnections;       
+   
+       std::mutex                  m_mtxMonitors;                              
+       std::multimap<sdv::process::TProcessID, std::weak_ptr<CConnection>> m_mapMonitors; 
+       std::map<sdv::process::TProcessID, uint32_t>            m_mapProcessMonitors;   
+       std::condition_variable     m_cvTriggerConnectionDestruction;           
+       std::queue<std::shared_ptr<CConnection>> m_queueScheduledConnectionDestructions;     
+       std::thread                 m_threadScheduledConnectionDestructions;    
+       bool                        m_bShutdown = false;                        
+   };
+   
+   #endif // !defined WATCH_DOG_H

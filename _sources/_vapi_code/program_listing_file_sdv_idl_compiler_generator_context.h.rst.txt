@@ -1,0 +1,94 @@
+
+.. _program_listing_file_sdv_idl_compiler_generator_context.h:
+
+Program Listing for File context.h
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_generator_context.h>` (``sdv_idl_compiler\generator\context.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CONTEXT_H
+   #define CONTEXT_H
+   
+   #include "../includes.h"
+   #include <filesystem>
+   #include <map>
+   
+   class CGenContext
+   {
+   public:
+       CGenContext(sdv::IInterfaceAccess* pParser);
+   
+       virtual ~CGenContext();
+   
+       template <typename TInterface>
+       TInterface* GetInterface(sdv::IInterfaceAccess* pObject) const;
+   
+       sdv::IInterfaceAccess* GetParser() const { return m_pParser; }
+   
+       std::filesystem::path GetSource() const;
+   
+       std::filesystem::path GetOutputDir() const;
+   
+       std::string Header(const std::filesystem::path& rpathFile, const std::string& rssDescription = std::string()) const;
+   
+       static std::string Safeguard(const std::filesystem::path& rpathFile, bool bInitial);
+   
+       static std::string SmartIndent(const std::string& rssStr, const std::string& rssIndent);
+   
+       static std::string QualifyName(const std::string& rssName);
+   
+       typedef std::map<std::string, std::string> CKeywordMap;
+   
+       typedef std::vector<std::string> CExceptionVector;
+   
+       static std::string ReplaceKeywords(const std::string& rssStr, const CKeywordMap& rmapKeywords, char cMarker = '%');
+   
+       static std::string GetIndentChars();
+   
+       struct SCDeclInfo
+       {
+           sdv::idl::EDeclType eBaseType = sdv::idl::EDeclType::decltype_unknown;    
+           std::string                 ssDeclType;             
+           bool                        bIsPointer = false;     
+           bool                        bIsComplex = false;     
+           bool                        bTemplated = false;     
+           bool                        bIsInterface = false;   
+           bool                        bIsString = false;      
+           bool                        bIsDynamic = false;     
+           bool                        bValidType = false;     
+       };
+   
+       SCDeclInfo GetCDeclTypeStr(sdv::IInterfaceAccess* pDeclTypeObj, const std::string& rssScope /*= std::string()*/, bool bScopedName = false) const;
+   
+       static std::string MapEntityType2CType(sdv::idl::EEntityType eEntityType);
+   
+       static std::string MapDeclType2CType(sdv::idl::EDeclType eDeclType);
+   
+       static std::string GetRelativeScopedName(const std::string& ssScopedName, const std::string& rssScope);
+   
+   private:
+       sdv::IInterfaceAccess*        m_pParser = nullptr;        
+       sdv::idl::ICompilerInfo*      m_pCompilerInfo = nullptr;  
+       sdv::idl::ICompilerOption*    m_pOption = nullptr;        
+   };
+   
+   template <typename TInterface>
+   inline TInterface* CGenContext::GetInterface(sdv::IInterfaceAccess* pObject) const
+   {
+       if (!pObject) return nullptr;
+       return pObject->GetInterface(sdv::GetInterfaceId<TInterface>()).template get<TInterface>();
+   }
+   
+   #ifndef DOXYGEN_IGNORE
+   template <>
+   inline sdv::IInterfaceAccess* CGenContext::GetInterface(sdv::IInterfaceAccess* pObject) const
+   {
+       return pObject;
+   }
+   #endif
+   
+   #endif // !defined(CONTEXT_H)

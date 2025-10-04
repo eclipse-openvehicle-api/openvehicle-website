@@ -1,0 +1,55 @@
+
+.. _program_listing_file_sdv_idl_compiler_generator_stub_generator.h:
+
+Program Listing for File stub_generator.h
+=========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_generator_stub_generator.h>` (``sdv_idl_compiler\generator\stub_generator.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef STUB_GTENERATOR_H
+   #define STUB_GTENERATOR_H
+   
+   #include "ps_class_generator_base.h"
+   
+   class CStubGenerator : public CPSClassGeneratorBase
+   {
+   public:
+       CStubGenerator(sdv::IInterfaceAccess* pParser);
+   
+       virtual ~CStubGenerator() override;
+   
+   private:
+       virtual std::string GetNameAppendix() const override;
+   
+       virtual std::string GetClassDefFileComments() const override;
+   
+       virtual std::string GetClassImplFileComments() const override;
+   
+       virtual std::string GetClassDefBegin(CKeywordMap& rmapKeywords) const override;
+   
+       virtual std::string GetClassDefEnd(CKeywordMap& rmapKeywords) const override;
+   
+       virtual std::string GetConstructImplBegin(CKeywordMap& rmapKeywords) const override;
+   
+       virtual std::string GetConstructImplEnd(CKeywordMap& rmapKeywords) const override;
+   
+       virtual std::string GetConstructFuncImpl(const SFuncInfo& rsFunc, CKeywordMap& rmapKeywords) const override;
+   
+       virtual std::string GetFuncDef(const SFuncInfo& rsFunc, CKeywordMap& rmapKeywords) const override;
+   
+       virtual std::string GetFuncImpl(const SFuncInfo& rsFunc, CKeywordMap& rmapKeywords, const CExceptionVector& rvecExceptions) const override;
+   
+       virtual std::string GetFuncImplParamInit(const SFuncInfo& rsFunc, const SParamInfo& rsParam, CKeywordMap& rmapKeywords) const override;
+   
+       virtual std::string GetFuncImplStreamParamInput(const SFuncInfo& rsFunc, const SParamInfo& rsParam, CKeywordMap& rmapKeywords) const override;
+   
+       virtual std::string GetFuncImplStreamParamOutput(const SFuncInfo& rsFunc, const SParamInfo& rsParam, CKeywordMap& rmapKeywords) const override;
+   
+       virtual std::string GetFuncImplParamTerm(const SFuncInfo& rsFunc, const SParamInfo& rsParam, CKeywordMap& rmapKeywords) const override;
+   };
+   
+   #endif // !defined(STUB_GTENERATOR_H)

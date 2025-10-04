@@ -1,0 +1,143 @@
+
+.. _program_listing_file_sdv_idl_compiler_generator_definition_generator.h:
+
+Program Listing for File definition_generator.h
+===============================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_generator_definition_generator.h>` (``sdv_idl_compiler\generator\definition_generator.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef DEFINITION_GENERATOR_H
+   #define DEFINITION_GENERATOR_H
+   
+   #include "definition_generator_base.h"
+   #include <list>
+   #include <fstream>
+   #include <set>
+   #include <sstream>
+   
+   // TODO: Comment style overwrite: all javadoc, QT, C, Cpp, preceding, succeeding
+   // TODO: Tabs or spaces
+   // TODO: Tab size (default 4 characters)
+   // TODO: Succeeding comments
+   
+   struct SDefinitionSwitchCodeContext : SSwitchCodeContext
+   {
+       std::stringstream   sstreamCode;                    
+       std::stringstream   sstreamConstructorImpl;         
+       std::stringstream   sstreamDestructorImpl;          
+       std::stringstream   sstreamConstructHelperImpl;     
+       std::stringstream   sstreamCopyConstructHelperImpl; 
+       std::stringstream   sstreamMoveConstructHelperImpl; 
+       std::stringstream   sstreamDestructHelperImpl;      
+   };
+   
+   struct CDefinitionContext : CDefEntityContext<CDefinitionContext>
+   {
+       CDefinitionContext(const CGenContext& rGenContext, sdv::IInterfaceAccess* pEntity);
+   
+       CDefinitionContext(CDefinitionContext& rcontext, sdv::IInterfaceAccess* pEntity);
+   
+       virtual CDefinitionContext& operator<<(const CDefinitionContext& rcontext) override;
+   
+       void SetDefAccessPublic();
+   
+       void SetDefAccessPrivate();
+   
+       std::stringstream& GetPrefaceStream();
+   
+       std::stringstream& GetDefCodeStream();
+   
+       std::stringstream& GetAutoStream();
+   
+       std::string GetDefinitionCode() const;
+   
+       bool UsePreface() const;
+   
+       void DisablePreface();
+   
+       bool NeedsConstruction() const;
+   
+       void SetConstructionNeeded();
+   
+       bool NeedsNewlineAfterContent() const;
+   
+       void EnableNewlineAfterContent();
+   
+       void DisableNewlineAfterContent();
+   
+       bool HasFriends() const;
+   
+       const std::set<std::string>& GetFriendSet() const;
+   
+       void AddFriend(const std::string& rssScopedName);
+   
+   private:
+       std::stringstream       m_sstreamPreface;                           
+       std::stringstream       m_sstreamDefCode;                           
+       bool                    m_bPreface = false;                         
+       bool                    m_bConstructionCompulsory = false;          
+       bool                    m_bCurrentDefAccessPublic = true;           
+       bool                    m_bNewlineAfterContent = false;             
+       sdv::IInterfaceAccess*  m_pDefEntity = nullptr;                     
+       std::set<std::string>   m_setFriends;                               
+   };
+   
+   class CDefinitionGenerator : public CDefinitionGeneratorBase<CDefinitionContext>
+   {
+   public:
+       CDefinitionGenerator(sdv::IInterfaceAccess* pParser);
+   
+       virtual ~CDefinitionGenerator() override;
+   
+   private:
+       virtual void GetTargetFileInfo(std::string& rssTargetSubDir, std::string& rssTargetFileEnding) override;
+   
+       virtual std::string GetFileHeaderText() const override;
+   
+       virtual void StreamIntoFile(CDefinitionContext& rcontext, std::ofstream& rfstream) override;
+   
+       virtual void StreamIncludeSection(CDefinitionContext& rcontext) override;
+   
+       virtual void StreamMetaEntity(CDefinitionContext& rcontext, sdv::IInterfaceAccess* pEntity) override;
+   
+       enum class ECommentGroup { none, begin, end };
+   
+       void StreamComments(CDefinitionContext& rcontext, sdv::IInterfaceAccess* pEntity,
+           ECommentGroup eGroup = ECommentGroup::none);
+   
+       virtual bool StreamDeclaration(CDefinitionContext& rcontext, sdv::IInterfaceAccess* pEntity) override;
+   
+       virtual void StreamDefinition(CDefinitionContext& rcontext, sdv::IInterfaceAccess* pEntity, bool bInline = false,
+           bool bAnonymousDecl = false) override;
+   
+       void StreamTypedef(CDefinitionContext& rcontext, sdv::IInterfaceAccess* pEntity);
+   
+       void StreamAttribute(CDefinitionContext& rcontext, sdv::IInterfaceAccess* pEntity);
+   
+       void StreamOperation(CDefinitionContext& rcontext, sdv::IInterfaceAccess* pEntity);
+   
+       void StreamParameter(CDefinitionContext& rcontext, sdv::IInterfaceAccess* pEntity, bool bInitial);
+   
+       void StreamEnumEntry(CDefinitionContext& rcontext, sdv::IInterfaceAccess* pEntity);
+   
+       void StreamCaseEntry(CDefinitionContext& rcontext, sdv::IInterfaceAccess* pEntity);
+   
+       bool StreamDeclType(CDefinitionContext& rcontext, sdv::IInterfaceAccess* pEntity, bool& rbDefinitionStreamed,
+           bool bAnonymousDecl = false, bool bSkipInitialIndent = true);
+   
+       virtual void ProcessUnionJointContainerForSwitchVar(CDefinitionContext& rcontext,
+           sdv::IInterfaceAccess* pSwitchVarEntity, sdv::IInterfaceAccess* pContainerEntity) override;
+   
+       virtual void ProcessUnionInContainerContext(CDefinitionContext& rcontext, std::string rssMemberScopeUnionDecl,
+           std::string rssMemberScopeSwitchVar, sdv::IInterfaceAccess* pUnionDef,
+           const std::vector<SArrayIterationInfo>& rvecArrayIndices = std::vector<SArrayIterationInfo>()) override;
+   
+       std::set<std::string>   m_setHistory;                   
+       std::set<std::string>   m_setForwardDecl;               
+   };
+   
+   #endif // !defined(DEFINITION_GENERATOR_H)

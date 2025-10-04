@@ -1,0 +1,77 @@
+
+.. _program_listing_file_sdv_vss_util_vss_bs_generator.h:
+
+Program Listing for File vss_bs_generator.h
+===========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_vss_util_vss_bs_generator.h>` (``sdv_vss_util\vss_bs_generator.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef VSS_BS_GENERATOR_H
+   #define VSS_BS_GENERATOR_H
+   
+   #include <fstream>
+   #include "codegen_base.h"
+   #include "vss_helper.h"
+   
+   class CVSSBSGenerator : public CCodeGeneratorBase, CVSSHelper
+   {
+   public:
+       CVSSBSGenerator(const std::vector<SSignalBSDefinition>& signals, const std::vector<SSignalVDDefinition>& signalsVD, const std::filesystem::path& rpathOutputDir, const std::string& rsPrefix, 
+           const std::string& rsVersion, const bool enableComponentCreation) :
+           m_enableComponentCreation(enableComponentCreation),
+           m_ssPrefix(rsPrefix),
+           m_ssVersion(rsVersion), 
+           m_pathProject(rpathOutputDir), 
+           m_signals(signals), 
+           m_signalsVD(signalsVD)        
+       {}
+   
+   
+       bool GeneratedCode();
+   
+   private:
+   
+       std::string AppendExtension(const std::string& prefix, const std::string& filename, const std::string& extension) const;
+   
+       void CreateFiles(const std::string& ssVersion);
+   
+       void CreateRXFiles(const std::string& ssVersion) const;
+   
+       void CreateBasicServiceFilesForRXSignal(const SSignalBSDefinition& signal, const std::string& ssVersion) const;
+   
+       void CreateIDLBasicServiceFileForRXSignal(const SSignalBSDefinition& signal, const std::string& ssVersion) const;
+   
+       void CreateTXFiles(const std::string& ssVersion) const;
+   
+       void CreateBasicServiceFilesForTXSignal(const SSignalBSDefinition& signal, const std::string& ssVersion) const;
+   
+       void CreateIDLBasicServiceFileForTXSignal(const SSignalBSDefinition& signal, const std::string& ssVersion) const;
+   
+       SSignalVDDefinition GetVDSignal(const std::string& vssDefinition) const
+       {
+           SSignalVDDefinition noSignal;
+           for (const auto& signal : m_signalsVD)
+           {
+               if (signal.vssDefinition.compare(vssDefinition) == 0)
+               {
+                   return signal;
+               }
+           }
+           return noSignal;
+       }
+   
+       bool m_enableComponentCreation;                
+       std::string m_ssPrefix;                        
+       std::string m_ssVersion;                       
+       std::filesystem::path  m_pathProject;          
+       std::vector <SSignalBSDefinition> m_signals;   
+       std::vector <SSignalVDDefinition> m_signalsVD; 
+       std::vector <SSignalBSDefinition> m_TXsignals; 
+       std::vector <SSignalBSDefinition> m_RXsignals; 
+   };
+   
+   #endif // !defined VSS_BS_GENERATOR_H

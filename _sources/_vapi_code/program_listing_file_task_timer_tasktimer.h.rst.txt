@@ -1,0 +1,126 @@
+
+.. _program_listing_file_task_timer_tasktimer.h:
+
+Program Listing for File tasktimer.h
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_task_timer_tasktimer.h>` (``task_timer\tasktimer.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef TASK_TIMER_H
+   #define TASK_TIMER_H
+   
+   #include <interfaces/core.h>
+   #include <interfaces/timer.h>
+   #include <support/interface_ptr.h>
+   #include <support/component_impl.h>
+   #include <map>
+   #include <set>
+   #include <fstream>
+   
+   #ifdef _WIN32
+   // Resolve conflict
+   #pragma push_macro("interface")
+   #undef interface
+   
+   #ifndef NOMINMAX
+   #define NOMINMAX
+   #endif
+   
+   #include <WinSock2.h>
+   #include <Windows.h>
+   #include <timeapi.h>
+   
+   // Resolve conflict
+   #pragma pop_macro("interface")
+   #ifdef GetClassInfo
+   #undef GetClassInfo
+   #endif
+   #elif defined __unix__
+   #include <signal.h>
+   #include <unistd.h>
+   #include <mutex>
+   #include <time.h>
+   #include <sys/times.h>
+   #else
+   #error OS is not supported!
+   #endif
+   
+   // Forward declaration
+   class CTaskTimerService;
+   
+   class CTimer : public sdv::IInterfaceAccess, public sdv::IObjectDestroy
+   {
+   public:
+       CTimer(CTaskTimerService& rtimersvc, uint32_t uiPeriod, sdv::core::ITaskExecute* pExecute);
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual void DestroyObject() override;
+   
+       operator bool() const;
+   
+   private:
+   #ifdef _WIN32
+       void ExecuteCallback();
+   #endif
+   
+       sdv::CLifetimeCookie        m_cookie = sdv::CreateLifetimeCookie(); 
+       CTaskTimerService&          m_rtimersvc;                            
+       sdv::core::ITaskExecute*    m_pExecute = nullptr;                   
+   #ifdef _WIN32
+       UINT                        m_uiTimerID = 0ul;                      
+       bool                        m_bPrioritySet = false;                 
+   #elif defined __unix__
+       timer_t                     m_timerid = 0;                          
+       bool                        m_bRunning = false;                     
+       std::mutex                  m_mtxExecution;                         
+   #endif
+   };
+   
+   class CTaskTimerService : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::core::ITaskTimer
+   {
+   public:
+       CTaskTimerService();
+   
+       virtual ~CTaskTimerService() override;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
+           SDV_INTERFACE_ENTRY(sdv::core::ITaskTimer)
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_NAME("TaskTimerService")
+       DECLARE_OBJECT_SINGLETON()
+   
+       virtual void Initialize(/*in*/ const sdv::u8string& ssObjectConfig) override;
+   
+       virtual sdv::EObjectStatus GetStatus() const override;
+   
+       virtual void SetOperationMode(/*in*/ sdv::EOperationMode eMode) override;
+   
+       virtual void Shutdown() override;
+   
+       virtual sdv::IInterfaceAccess* CreateTimer(uint32_t uiPeriod, sdv::IInterfaceAccess* pTask) override;
+   
+       void RemoveTimer(CTimer* pTimer);
+   
+   private:
+       sdv::EObjectStatus      m_eObjectStatus = sdv::EObjectStatus::initialization_pending;   
+       std::mutex              m_mtxTasks;                                                     
+       std::map<CTimer*, std::unique_ptr<CTimer>>  m_mapTasks;                                 
+   };
+   
+   DEFINE_SDV_OBJECT(CTaskTimerService)
+   
+   #endif // !define TASK_TIMER_H

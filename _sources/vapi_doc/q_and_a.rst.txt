@@ -1,0 +1,108 @@
+.. _vapi-q_and_a:
+
+Q & A
+=====
+
+Tips and Tricks
+----------------
+
+Installation
+~~~~~~~~~~~~
+
+Visual Studio
+^^^^^^^^^^^^^
+-	Visual Studio Code or Visual Studio 2019 or higher
+
+.. _vapi-MinGW_installation:
+
+MinGW
+^^^^^
+-	MINGW Follow instruction on website:  https://code.visualstudio.com/docs/cpp/config-mingw
+
+   -	Execute multiple times (after restart of UCRT64): pacman -Syu
+   -	If certification problems: https://stackoverflow.com/questions/69348953/certificate-error-when-trying-to-install-msys2-packages-on-windows-server
+   -	Installation of MINGW: pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain
+   -	Maybe add option: --disable-download-timeout
+   -	Add to PATH: C:/msys64/ucrt64/bin
+   -  GCC Compiler version 14.2.0 or higher required
+
+CMake
+^^^^^
+-	CMake 3.20 or higher
+
+   -	Download MSI and install it (admin-rights required)
+   -	or download ZIP file and extract it
+
+      -	Add CMake path to PATH: C:/cmake-3.31.8-windows-x86_64/bin (e.g. for Version 3.31)
+
+Doxygen
+^^^^^^^
+-	Doxygen 1.10 or higher
+
+   -	Download Installer and install it (admin-rights required)
+   -	or download ZIP file and extract zip file
+
+      -	Add Doxygen path to PATH: C:/Downloads/doxygen-1.14.0.windows.x64
+
+Linux
+^^^^^
+-	Install WSL2 with UBUNTU, if allowed by the IT (not inside ZF):
+
+   -	E.g. Website: https://learn.microsoft.com/de-de/windows/wsl/install
+   -	Optional install Visual Studio code extensions: https://code.visualstudio.com/blogs/2019/09/03/wsl2
+   -	Optional configure Visual Studio 2022: https://learn.microsoft.com/en-us/cpp/build/walkthrough-build-debug-wsl2?view=msvc-170
+   
+-	Alternative: Docker Desktop with UBUNTU
+
+-	vcan (virtual CAN) on Ubuntu
+
+   -  Requirements: Linux Kernel with SocketCAN support (Ubuntu already includes this).
+   -  Install required packages:
+  
+      -  sudo apt update
+      -  sudo apt install net-tools iproute2 can-utils linux-modules-extra-$(uname -r)
+      -  # Load the vcan kernel module
+      -  sudo modprobe vcan
+      -  # Create a virtual CAN interface named vcan0
+      -  sudo ip link add dev vcan0 type vcan
+      -  # Bring the interface up
+      -  sudo ip link set up vcan0
+
+Own workspace creation in docker container
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- The following steps will be useful for setting the environment variables when working inside a docker container:
+
+   -  Create a .env File
+
+      -  Inside your home directory (or any consistent location in the container), create a file named .env 
+      -  Example: nano ~/.env or code ~/.env 
+
+   -  Add your environment variables in .env file like mentioned below:
+ 
+      -  export SDV_FRAMEWORK_RUNTIME=<your_output_build_directory>/bin
+      -  export SDV_FRAMEWORK_DEV_TOOLS=<your_output_build_directory>/bin
+      -  export SDV_FRAMEWORK_DEV_INCLUDE=<your_project_directory>/export
+      -  Use export so they are available to child processes (like build tools or VS Code terminals)
+
+   -  Edit your shell profile file — usually ~/.bashrc or ~/.profile (depending on your shell):
+
+      -  nano ~/.bashrc or code ~/.bashrc
+      -  Add this line at the end:
+      
+         -  # Load custom environment variables
+         -  if [ -f ~/.env ]; then
+         -  source ~/.env
+         -  fi
+ 
+      -  This ensures that every time a new shell starts (including VS Code terminals), your environment variables are loaded.
+
+   -  To Apply the Changes Immediately
+ 
+      -  source ~/.bashrc
+ 
+   -  you can check whether the environment variables are set properly:
+ 
+      -  echo $<environment_variable>
+
+
+

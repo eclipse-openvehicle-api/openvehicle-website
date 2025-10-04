@@ -1,0 +1,56 @@
+
+.. _program_listing_file_core_logger_control.h:
+
+Program Listing for File logger_control.h
+=========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_logger_control.h>` (``core\logger_control.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LOGGER_CONTROL_H
+   #define LOGGER_CONTROL_H
+   
+   #include <support/interface_ptr.h>
+   #include <interfaces/log.h>
+   #include <queue>
+   #include <mutex>
+   #include <utility>
+   
+   class CLoggerControl : public sdv::IInterfaceAccess, public sdv::core::ILogger
+   {
+   public:
+       CLoggerControl() = default;
+   
+       ~CLoggerControl();
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::core::ILogger)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual void Log(/*in*/ sdv::core::ELogSeverity eSeverity, /*in*/ const sdv::u8string& ssSrcFile, /*in*/ uint32_t uiSrcLine,
+           /*in*/ const sdv::process::TProcessID tProcessID, /*in*/ const sdv::u8string& ssObjectName,
+           /*in*/ const sdv::u8string& ssMessage) override;
+   
+       void SetLogger(sdv::core::ILogger* pLogger);
+   
+   private:
+       struct SLogEntry
+       {
+           sdv::core::ELogSeverity     eSeverity;      
+           sdv::u8string               ssSrcFile;      
+           uint32_t                    uiSrcLine;      
+           sdv::process::TProcessID    tProcessID;     
+           sdv::u8string               ssObjectName;   
+           sdv::u8string               ssMessage;      
+       };
+   
+       mutable std::mutex          m_mtxPrematureLog;      
+       std::queue<SLogEntry>       m_queuePrematureLog;    
+       sdv::core::ILogger*         m_pLogger = nullptr;    
+   };
+   
+   #endif // !defined LOGGER_CONTROL_H

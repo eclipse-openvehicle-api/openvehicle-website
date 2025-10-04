@@ -1,0 +1,47 @@
+
+.. _program_listing_file_core_memory.h:
+
+Program Listing for File memory.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_memory.h>` (``core\memory.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef MEMORY_H
+   #define MEMORY_H
+   
+   #include <map>
+   #include <mutex>
+   
+   #include <support/pointer.h>
+   #include <interfaces/mem.h>
+   #include <support/component_impl.h>
+   #include <support/mem_access.h>
+   
+   class CMemoryManager : public sdv::core::IMemoryAlloc, public sdv::IInterfaceAccess, public sdv::internal::IInternalMemAlloc
+   {
+   public:
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::core::IMemoryAlloc)
+       END_SDV_INTERFACE_MAP()
+   
+       
+       virtual sdv::pointer<uint8_t> Allocate(/*in*/ uint32_t uiLength) override;
+   
+   private:
+       virtual void* Alloc(size_t nSize) override;
+   
+       virtual void* Realloc(void* pData, size_t nSize) override;
+   
+       virtual void Free(void* pData) override;
+   
+   #ifdef MEMORY_TRACKER
+       std::mutex m_mtxTracker;                    
+       std::map<void*, size_t> m_mapTracker;       
+   #endif
+   };
+   
+   #endif // !define MEMORY_H

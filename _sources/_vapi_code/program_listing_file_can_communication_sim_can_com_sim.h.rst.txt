@@ -1,0 +1,82 @@
+
+.. _program_listing_file_can_communication_sim_can_com_sim.h:
+
+Program Listing for File can_com_sim.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_can_communication_sim_can_com_sim.h>` (``can_communication_sim\can_com_sim.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CAN_COM_SIMULATION_H
+   #define CAN_COM_SIMULATION_H
+   
+   #include <iostream>
+   #include <queue>
+   #include <set>
+   #include <thread>
+   #include <mutex>
+   
+   #include <interfaces/can.h>
+   #include <support/component_impl.h>
+   #include "../../global/ascformat/ascreader.h"
+   #include "../../global/ascformat/ascwriter.h"
+   
+   class CCANSimulation : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::can::IRegisterReceiver,
+       public sdv::can::ISend, sdv::can::IInformation
+   {
+   public:
+       CCANSimulation();
+   
+       virtual ~CCANSimulation() override;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
+           SDV_INTERFACE_ENTRY(sdv::can::IRegisterReceiver)
+           SDV_INTERFACE_ENTRY(sdv::can::ISend)
+           SDV_INTERFACE_ENTRY(sdv::can::IInformation)
+       END_SDV_INTERFACE_MAP()
+   
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::Device)
+       DECLARE_OBJECT_CLASS_NAME("CAN_Com_Sim")
+       DECLARE_DEFAULT_OBJECT_NAME("CAN_Communication_Object")
+       DECLARE_OBJECT_SINGLETON()
+   
+       virtual void Initialize(const sdv::u8string& ssObjectConfig) override;
+   
+       virtual sdv::EObjectStatus GetStatus() const override;
+   
+       void SetOperationMode(sdv::EOperationMode eMode) override;
+   
+       virtual void Shutdown() override;
+   
+       virtual void RegisterReceiver(/*in*/ sdv::can::IReceive* pReceiver) override;
+   
+       virtual void UnregisterReceiver(/*in*/ sdv::can::IReceive* pReceiver) override;
+   
+       virtual void Send(/*in*/ const sdv::can::SMessage& sMsg, /*in*/ uint32_t uiIfcIndex) override;
+   
+       virtual sdv::sequence<sdv::u8string> GetInterfaces() const override;
+   
+   private:
+       void PlaybackFunc(const asc::SCanMessage& rsMsg);
+   
+       std::atomic<sdv::EObjectStatus>             m_eStatus = sdv::EObjectStatus::initialization_pending;  
+       std::thread                                 m_threadReceive;            
+       mutable std::mutex                          m_mtxReceivers;             
+       std::set<sdv::can::IReceive*>               m_setReceivers;             
+       mutable std::mutex                          m_mtxInterfaces;            
+       std::map<int, size_t>                       m_mapIfc2Idx;               
+       std::vector<std::pair<int, std::string>>    m_vecInterfaces;            
+       std::filesystem::path                       m_pathSource;               
+       std::filesystem::path                       m_pathTarget;               
+       asc::CAscReader                             m_reader;                   
+       asc::CAscWriter                             m_writer;                   
+   };
+   
+   DEFINE_SDV_OBJECT(CCANSimulation)
+   
+   #endif // ! defined CAN_COM_SIMULATION_H

@@ -1,0 +1,81 @@
+
+.. _program_listing_file_sdv_dbc_util_can_dl.h:
+
+Program Listing for File can_dl.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_dbc_util_can_dl.h>` (``sdv_dbc_util\can_dl.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CAN_DL_H
+   #define CAN_DL_H
+   
+   #include "../global/dbcparser/dbcparser.h"
+   #include <fstream>
+   #include "codegen_base.h"
+   
+   class CCanDataLinkGen : public CCodeGeneratorBase
+   {
+   public:
+       CCanDataLinkGen(const std::filesystem::path& rpathOutputDir, const dbc::CDbcParser& rparser, const std::string& rssVersion,
+           const std::string& rssIfcName, size_t nIfcIdx, const std::vector<std::string>& rvecNodes);
+   
+   private:
+       typedef std::map<std::string, std::string> CKeywordMap;
+   
+       static std::string ReplaceKeywords(const std::string& rssStr, const CKeywordMap& rmapKeywords, char cMarker = '%');
+   
+      std::string StringMustBeFloatValue(const std::string& rssInput);
+   
+       std::string CodeDBCFileVersion(const std::string& rssVersion);
+   
+       std::string CodeInitInterfaceIndex(const std::string& rssIfcName);
+   
+       std::string CodeRxMessageDefinition(const dbc::SMessageDef& rsMsg);
+   
+       std::string CodeTxMessageDefinition(const dbc::SMessageDef& rsMsg);
+   
+       std::string CodeSignalDecl(const dbc::SSignalDef& rsSig);
+   
+       std::string CodeInitVarRxMessage(const dbc::SMessageDef& rsMsg);
+   
+       std::string CodeInitVarTxMessage(const dbc::SMessageDef& rsMsg);
+   
+       std::string CodeInitRxMessage(const dbc::SMessageDef& rsMsg);
+   
+       std::string CodeInitTxMessage(const dbc::SMessageDef& rsMsg);
+   
+       std::string CodeTermRxMessage(const dbc::SMessageDef& rsMsg);
+   
+       std::string CodeTermTxMessage(const dbc::SMessageDef& rsMsg);
+   
+       std::string CodeRxMessageFunctions(const dbc::SMessageDef& rsMsg);
+   
+       std::string CodeTxMessageFunctions(const dbc::SMessageDef& rsMsg);
+   
+       std::string CodeRegisterRxSignal(const dbc::SMessageDef& rsMsg, const dbc::SSignalDef& rsSig);
+   
+       std::string CodeRegisterTxSignal(const dbc::SMessageDef& rsMsg, const dbc::SSignalDef& rsSig);
+   
+       std::string CodeUnregisterSignal(const dbc::SMessageDef& rsMsg, const dbc::SSignalDef& rsSig);
+   
+       std::string CodeProcessRxSignal(const dbc::SMessageDef& rsMsg, const dbc::SSignalDef& rsSig);
+   
+       std::string InitTrigger(const dbc::SMessageDef& rsMsg, const dbc::SSignalDef& rsSig);
+   
+       std::string CodeComposeTxSignal(const dbc::SMessageDef& rsMsg, const dbc::SSignalDef& rsSig);
+   
+       std::filesystem::path       m_pathProject;      
+       std::filesystem::path       m_pathHeader;       
+       std::filesystem::path       m_pathCpp;          
+       std::ofstream               m_fstreamHeader;    
+       std::ofstream               m_fstreamCpp;       
+       const dbc::CDbcParser&      m_rparser;          
+   };
+   
+   
+   
+   #endif // !defined CAN_DL_H

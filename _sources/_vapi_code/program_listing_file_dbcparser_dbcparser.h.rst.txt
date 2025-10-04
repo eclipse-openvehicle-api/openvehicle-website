@@ -1,0 +1,571 @@
+
+.. _program_listing_file_dbcparser_dbcparser.h:
+
+Program Listing for File dbcparser.h
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_dbcparser_dbcparser.h>` (``dbcparser\dbcparser.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef DBCPARSER_H
+   #define DBCPARSER_H
+   
+   #include <filesystem>
+   #include <vector>
+   #include <string>
+   #include <fstream>
+   #include <sstream>
+   #include <cctype>
+   #include <cstdlib>
+   #include <utility>
+   #include <set>
+   #include <map>
+   #include <memory>
+   
+   namespace dbc
+   {
+       class CDbcSource
+       {
+       public:
+           CDbcSource() = default;
+   
+           CDbcSource(const std::filesystem::path& rpathDbcfile);
+   
+           CDbcSource(const std::string& rssContent);
+   
+           bool IsValid() const;
+   
+           const std::filesystem::path& Path() const;
+   
+           const std::string& Content() const;
+   
+           const char* ContentPtr() const;
+   
+           char CurrentChar() const;
+   
+           const size_t& Pos() const;
+           size_t& Pos();
+           void ResetPos();
+   
+           bool IsEOF() const;
+   
+           struct SPosLock
+           {
+               SPosLock() = default;
+   
+               SPosLock(CDbcSource& rThis);
+   
+               SPosLock(const SPosLock&) = delete;
+   
+               SPosLock(SPosLock&& rsPosLock) noexcept;
+   
+               ~SPosLock();
+   
+               SPosLock& operator=(const SPosLock&) = delete;
+   
+               SPosLock& operator=(SPosLock&& rsPosLock) noexcept;
+   
+               void Promote();
+   
+               void Rollback();
+   
+           private:
+               CDbcSource*     pSource = nullptr;      
+               size_t          nStoredPos = 0;         
+           };
+   
+           SPosLock CreatePosLock();
+   
+           size_t CalcLine() const;
+   
+           size_t CalcColumn() const;
+   
+       private:
+           std::filesystem::path   m_pathFile;         
+           std::string             m_ssContent;        
+           size_t                  m_nPos = 0;         
+       };
+   
+       struct SDbcParserException : std::exception
+       {
+           SDbcParserException(const CDbcSource& rSource, const std::string& rssReason) :
+               source(rSource), ssMessage(rssReason)
+           {
+               CreateWhatString();
+           }
+   
+           SDbcParserException(const std::string& rssReason) : SDbcParserException(CDbcSource(), rssReason)
+           {}
+   
+           template <typename... TParams>
+           SDbcParserException(const CDbcSource& rSource, const std::string& rssReason, TParams... rgtParams) : source(rSource)
+           {
+               std::vector<std::string> vecArgs;
+               BuildParamList(vecArgs, rgtParams...);
+               size_t nPos = 0;
+               while (nPos < rssReason.size() && nPos != std::string::npos)
+               {
+                   char c = rssReason[nPos++];
+                   switch (c)
+                   {
+                   case '%':   // Escaped
+                   {
+                       std::string ssNumber;
+                       while (c = rssReason[nPos++], std::isdigit(c))
+                           ssNumber += c;
+                       if (!ssNumber.empty())
+                       {
+                           size_t nIndex = static_cast<size_t>(std::atoll(ssNumber.c_str()));
+                           if (nIndex && nIndex - 1 < vecArgs.size())
+                               ssMessage += vecArgs[nIndex - 1];
+                           else
+                               ssMessage += "<unknown>";
+                       }
+                       if (c) ssMessage += c;
+                       break;
+                   }
+                   default:
+                       ssMessage += c;
+                       break;
+                   }
+               }
+               CreateWhatString();
+           }
+   
+           template <typename... TParams>
+           SDbcParserException(const std::string& rssReason, TParams... rgtParams) :
+               SDbcParserException(CDbcSource(), rssReason, rgtParams...)
+           {}
+   
+           virtual const char* what() const noexcept override
+           {
+               return ssWhat.c_str();
+           }
+   
+           const CDbcSource& Source() const
+           {
+               return source;
+           }
+   
+           void Source(const CDbcSource& rSource)
+           {
+               source = rSource;
+               CreateWhatString();
+           }
+   
+       private:
+           void BuildParamList(std::vector<std::string>& /*rvecParams*/) {}
+   
+           template <typename TParam, typename... TParams>
+           void BuildParamList(std::vector<std::string>& rvecParams, TParam tParam, TParams... rgtParams)
+           {
+               std::stringstream sstream;
+               sstream << tParam;
+               rvecParams.push_back(std::move(sstream.str()));
+               BuildParamList(rvecParams, rgtParams...);
+           }
+   
+           void CreateWhatString()
+           {
+               std::stringstream sstream;
+               if (source.IsValid())
+                   sstream << source.Path().generic_u8string() << "[" << source.CalcLine() << ", " << source.CalcColumn() << "]: ";
+               sstream << ssMessage;
+               ssWhat = std::move(sstream.str());
+           }
+   
+           CDbcSource      source;         
+           std::string     ssMessage;      
+           std::string     ssWhat;         
+       };
+   
+       using TValDescMap = std::map<uint32_t, std::string>;
+   
+       struct SAttributeDef
+       {
+           enum class EType
+           {
+               integer,            
+               hex_integer,        
+               floating_point,     
+               string,             
+               enumerator          
+           };
+   
+           SAttributeDef(EType eTypeParam);
+   
+           ~SAttributeDef();
+   
+           SAttributeDef(const SAttributeDef& rAttrDef);
+   
+           SAttributeDef(SAttributeDef&& rAttrDef);
+   
+           SAttributeDef& operator=(const SAttributeDef& rAttrDef);
+   
+           SAttributeDef& operator=(SAttributeDef&& rAttrDef);
+   
+           enum class EObjectType
+           {
+               global,         
+               node,           
+               message,        
+               signal,         
+               envvar,         
+           };
+   
+           EObjectType         eObjType = EObjectType::global;     
+           std::string         ssName;                             
+           const EType         eType;                              
+   
+           union
+           {
+               struct
+               {
+                   int32_t                     iMinimum;       
+                   int32_t                     iMaximum;       
+                   int32_t                     iDefault;       
+               } sIntValues;                                   
+               struct
+               {
+                   uint32_t                    uiMinimum;      
+                   uint32_t                    uiMaximum;      
+                   uint32_t                    uiDefault;      
+               } sHexValues;                                   
+               struct
+               {
+                   double                      dMinimum;       
+                   double                      dMaximum;       
+                   double                      dDefault;       
+               } sFltValues;                                   
+               struct
+               {
+                   std::string                 ssDefault;      
+               } sStringValues;                                
+               struct
+               {
+                   std::vector<std::string>    vecEnumValues;  
+                   std::string                 ssDefault;      
+               } sEnumValues;                                  
+           };
+       };
+   
+       using TAttributeDefPtr = std::shared_ptr<SAttributeDef>;
+   
+       struct SAttributeValue
+       {
+           SAttributeValue(TAttributeDefPtr& ptrAttrDefParam);
+   
+           ~SAttributeValue();
+   
+           SAttributeValue(const SAttributeValue& rAttrVal);
+   
+           SAttributeValue(SAttributeValue&& rAttrVal);
+   
+           SAttributeValue& operator=(const SAttributeValue& rAttrVal);
+   
+           SAttributeValue& operator=(SAttributeValue&& rAttrVal);
+   
+           TAttributeDefPtr    ptrAttrDef;     
+   
+           union
+           {
+               int32_t         iValue;         
+               uint32_t        uiValue;        
+               double          dValue;         
+               std::string     ssValue;        
+           };
+       };
+   
+       struct SNodeDef
+       {
+           std::string                     ssName;         
+           std::vector<std::string>        vecComments;    
+           std::vector<SAttributeValue>    vecAttributes;  
+       };
+   
+       struct SSignalTypeBase
+       {
+           uint32_t        uiSize = 0;                     
+   
+           enum class EByteOrder
+           {
+               big_endian,     
+               little_endian,  
+           };
+   
+           EByteOrder      eByteOrder = EByteOrder::big_endian;    
+   
+           enum class EValueType
+           {
+               signed_integer,         
+               unsigned_integer,       
+               ieee_float,             
+               ieee_double,            
+           };
+   
+           EValueType                  eValType = EValueType::signed_integer;  
+           double                      dFactor = 1.0;                          
+           double                      dOffset = 0.0;                          
+           double                      dMinimum = 0.0;                         
+           double                      dMaximum = 0.0;                         
+           std::string                 ssUnit;                                 
+       };
+   
+       struct SSignalDef : SSignalTypeBase
+       {
+           uint32_t                        uiMsgId = 0u;                   
+           std::string                     ssName;                         
+   
+           enum class EMultiplexBitmask : uint32_t
+           {
+               normal = 0,             
+               mltplx_switch = 1,      
+               mltplx_val = 2,         
+           };
+   
+           int32_t                         iMltplxCase = 0ll;              
+           uint32_t                        uiMultiplexBitmask = 0u;        
+           uint32_t                        uiStartBit = 0;                 
+           std::vector<std::string>        vecReceivers;                   
+           TValDescMap                     mapValueDescriptions;           
+           std::string                     ssSignalTypeDef;                
+           std::vector<std::string>        vecComments;                    
+           std::vector<SAttributeValue>    vecAttributes;                  
+   
+           struct SExtendedMultiplex
+           {
+               SSignalDef&                                 rsMultiplexor;  
+               std::vector<std::pair<uint32_t, uint32_t>>  vecRanges;      
+           };
+           std::vector<SExtendedMultiplex> vecExtMultiplex;                
+       };
+   
+       struct SSignalTypeDef : SSignalTypeBase
+       {
+           std::string                 ssName;             
+           double                      dDefaultValue;      
+           std::string                 ssValueTable;       
+       };
+   
+       struct SSignalGroupDef
+       {
+           std::string                 ssName;             
+           uint32_t                    uiRepetitions = 0;  
+           std::vector<std::string>    vecSignals;         
+       };
+   
+       struct SMessageDef
+       {
+           std::string                             ssName;             
+           uint32_t                                uiId = 0;           
+           uint32_t                                uiSize = 0;         
+           std::vector<std::string>                vecTransmitters;    
+           std::vector<SSignalDef>                 vecSignals;         
+           std::map<std::string, SSignalGroupDef>  mapSigGroups;       
+           std::vector<std::string>                vecComments;        
+           std::vector<SAttributeValue>            vecAttributes;      
+       };
+   
+       using TMessageDefPtr = std::shared_ptr<SMessageDef>;
+   
+       struct SEnvVarDef
+       {
+           std::string                     ssName;                                 
+   
+           enum class EType
+           {
+               integer,            
+               floating_point,     
+               string,             
+               data,               
+           };
+   
+           EType                           eType = EType::integer;                 
+           double                          dMinimum = 0.0;                         
+           double                          dMaximum = 0.0;                         
+           std::string                     ssUnit;                                 
+           double                          dInitVal = 0.0;                         
+           uint32_t                        uiId = 0u;                              
+   
+           enum class EAccessType
+           {
+               unrestricted,       
+               read,               
+               write,              
+               readwrite,          
+           };
+   
+           EAccessType                     eAccess = EAccessType::unrestricted;    
+           std::vector<std::string>        vecNodes;                               
+           TValDescMap                     mapValueDescriptions;                   
+           uint32_t                        uiDataSize = 0;                         
+           std::vector<std::string>        vecComments;                            
+           std::vector<SAttributeValue>    vecAttributes;                          
+       };
+   
+       class CDbcParser
+       {
+       public:
+           CDbcParser(bool bNoDefaultDef = false);
+   
+           void Parse(CDbcSource& rSource);
+   
+           void Clear();
+   
+           const std::vector<CDbcSource>& GetSources() const;
+   
+           const std::vector<std::string>& GetVersions() const;
+   
+           bool HasNodeDef(const std::string& rssNodeDefName) const;
+   
+           const std::vector<std::string> GetNodeDefNames() const;
+   
+           std::pair<SNodeDef, bool> GetNodeDef(const std::string& rssNodeDefName) const;
+   
+           bool HasValueTable(const std::string& rssName) const;
+   
+           bool HasValue(const std::string& rssTableName, uint32_t uiValue) const;
+   
+           std::string GetValue(const std::string& rssTableName, uint32_t uiValue) const;
+   
+           std::vector<std::string> GetValueTableNames() const;
+   
+           std::pair<std::vector<uint32_t>, bool> GetValues(const std::string& rssTableName) const;
+   
+           bool HasMsgDef(const std::string& rssName) const;
+   
+           bool HasMsgDef(uint32_t uiRawId) const;
+   
+           bool HasMsgDefStdId(uint32_t uiStdId) const;
+   
+           bool HasMsgDefExtId(uint32_t uiExtId) const;
+   
+           std::vector<uint32_t> GetMessageIDs() const;
+   
+           std::pair<SMessageDef, bool> GetMsgDef(const std::string& rssName) const;
+   
+           static std::pair<uint32_t, bool> ExtractMsgId(uint32_t uiRawId);
+   
+           static uint32_t ComposeRawId(uint32_t uiMsgId, bool bExtended);
+   
+           std::pair<SMessageDef, bool> GetMsgDef(uint32_t uiRawId) const;
+   
+           std::pair<SMessageDef, bool> GetMsgDefStdId(uint32_t uiStdId) const;
+   
+           std::pair<SMessageDef, bool> GetMsgDefExtId(uint32_t uiExtId) const;
+   
+           bool HasSignalDef(const std::string & rssMsgName, const std::string & rssSignalName) const;
+   
+           bool HasSignalDef(uint32_t uiRawMsgId, const std::string & rssSignalName) const;
+   
+           bool HasSignalDefStdId(uint32_t uiStdMsgId, const std::string & rssSignalName) const;
+   
+           bool HasSignalDefExtId(uint32_t uiExtMsgId, const std::string & rssSignalName) const;
+   
+           std::vector<std::string> GetSignalNames(uint32_t uiRawMsgId) const;
+   
+           std::pair<SSignalDef, bool> GetSignalDef(const std::string & rssMsgName, const std::string & rssSignalName) const;
+   
+           std::pair<SSignalDef, bool> GetSignalDef(uint32_t uiRawMsgId, const std::string & rssSignalName) const;
+   
+           std::pair<SSignalDef, bool> GetSignalDefStdId(uint32_t uiStdMsgId, const std::string & rssSignalName) const;
+   
+           std::pair<SSignalDef, bool> GetSignalDefExtId(uint32_t uiExtMsgId, const std::string & rssSignalName) const;
+   
+           std::vector<std::string> GetEnvVarNames() const;
+   
+           std::pair<SEnvVarDef, bool> GetEnvVarDef(const std::string & rssVarName) const;
+   
+           std::vector<std::string> GetSignalTypeDefNames() const;
+   
+           std::pair<SSignalTypeDef, bool> GetSignalTypeDef(const std::string& rssSignalTypeDefName) const;
+   
+           std::vector<std::string> GetSignalGroupDefNames(uint32_t uiRawMsgId) const;
+   
+           std::pair<SSignalGroupDef, bool> GetSignalGroupDef(uint32_t uiRawMsgId, const std::string& rssSignalGroupDefName) const;
+   
+           const std::vector<std::string>& GetComments() const;
+   
+           std::vector<std::string> GetAttributeDefNames() const;
+   
+           std::pair<SAttributeDef, bool> GetAttributeDef(const std::string& rssAttributeDefName) const;
+   
+           const std::vector<SAttributeValue>& GetAttributes() const;
+   
+       private:
+           static void SkipWhitespace(CDbcSource& rSource);
+   
+           static std::pair<uint32_t, bool> GetUInt(CDbcSource& rSource);
+   
+           static std::pair<int32_t, bool> GetInt(CDbcSource& rSource);
+   
+           static std::pair<double, bool> GetDouble(CDbcSource & rSource);
+   
+           static bool ExpectChar(char c, CDbcSource& rSource);
+   
+           static std::pair<std::string, bool> GetString(CDbcSource& rSource);
+   
+           static std::string GetIdentifier(CDbcSource& rSource);
+   
+           static bool IsDbcIdentifier(const std::string& rssIdentifier);
+   
+           void ReadVersion(CDbcSource& rSource);
+   
+           void ReadNewSymbols(CDbcSource& rSource);
+   
+           void ReadBitTiming(CDbcSource& rSource);
+   
+           void ReadNodeDef(CDbcSource& rSource);
+   
+           void ReadValTable(CDbcSource& rSource);
+   
+           void ReadMessageDef(CDbcSource& rSource);
+   
+           void ReadSignalTypeDefBase(CDbcSource& rSource, SSignalTypeBase& rsSignalTypeDefBase);
+   
+           void ReadSignalDef(CDbcSource& rSource, SMessageDef& rsMsgDef);
+   
+           void ReadSignalValueTypeDef(CDbcSource& rSource);
+   
+           void ReadMessageTransmitters(CDbcSource& rSource);
+   
+           void ReadValueDescriptions(CDbcSource& rSource);
+   
+           void ReadEnvVarDef(CDbcSource& rSource);
+   
+           void ReadEnvVarData(CDbcSource& rSource);
+   
+           void ReadSignalTypeDef(CDbcSource& rSource);
+   
+           void ReadSignalGroupDef(CDbcSource& rSource);
+   
+           void ReadCommentDef(CDbcSource& rSource);
+   
+           void ReadAttrDef(CDbcSource& rSource);
+   
+           void ReadAttrDefaultDef(CDbcSource& rSource);
+   
+           void ReadAttributes(CDbcSource& rSource);
+   
+           void ReadSignalMultiplexDef(CDbcSource& rSource);
+   
+           std::vector<CDbcSource>                   m_vecSources;                 
+           std::vector<std::string>                  m_vecVersions;                
+           std::map<std::string, SNodeDef>           m_mapNodes;                   
+           std::map<std::string, TValDescMap>        m_mapValueTables;             
+           std::map<std::string, TMessageDefPtr>     m_mapMsgDefByName;            
+           std::map<uint32_t, TMessageDefPtr>        m_mapMsgDefById;              
+           std::map<std::string, SEnvVarDef>         m_mapEnvVars;                 
+           std::map<std::string, SSignalTypeDef>     m_mapSigTypeDefs;             
+           std::vector<std::string>                  m_vecComments;                
+           std::vector<SAttributeValue>              m_vecAttributes;              
+           uint32_t                                  m_uiIndepMsgId = 0xffffffff;  
+           std::map<std::string, TAttributeDefPtr>   m_mapAttrDefs;                
+       };
+   
+   } // namespace dbc
+   
+   #endif // !defined DBCPARSER_H

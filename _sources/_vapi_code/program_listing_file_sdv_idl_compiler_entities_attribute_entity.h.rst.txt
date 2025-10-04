@@ -1,0 +1,54 @@
+
+.. _program_listing_file_sdv_idl_compiler_entities_attribute_entity.h:
+
+Program Listing for File attribute_entity.h
+===========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_entities_attribute_entity.h>` (``sdv_idl_compiler\entities\attribute_entity.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef ATTRIBUTE_ENTITY_H
+   #define ATTRIBUTE_ENTITY_H
+   
+   #include "declaration_entity.h"
+   
+   class CAttributeEntity : public CDeclarationEntity, public sdv::idl::IAttributeEntity
+   {
+   public:
+       CAttributeEntity(const CContextPtr& rptrContext, CEntityPtr ptrParent, bool bReadOnly);
+   
+       virtual ~CAttributeEntity() override = default;
+   
+       virtual sdv::interface_t GetInterface(sdv::interface_id idInterface) override;
+   
+       virtual sdv::idl::IEntityIterator* GetReadExceptions() override;
+   
+       virtual sdv::idl::IEntityIterator* GetWriteExceptions() override;
+   
+       virtual  sdv::idl::EEntityType GetType() const override { return  sdv::idl::EEntityType::type_attribute; }
+   
+       virtual void Process() override;
+   
+   protected:
+       virtual bool SupportArrays() const override;
+   
+       virtual bool IsReadOnly() const override;
+   
+       virtual bool SupportMultipleDeclarations() const override;
+   
+       virtual bool SupportRaiseExceptions() const override;
+   
+       virtual bool SupportSeparateSetGetRaiseExceptions() const override;
+   
+   private:
+       bool                m_bReadOnly = false;        
+       CEntityIterator     m_iteratorReadExceptions;   
+       CEntityIterator     m_iteratorWriteExceptions;  
+   };
+   
+   
+   
+   #endif // !defined(ATTRIBUTE_ENTITY_H)

@@ -1,0 +1,123 @@
+
+.. _program_listing_file_sdv_idl_compiler_generator_serdes_generator.h:
+
+Program Listing for File serdes_generator.h
+===========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_generator_serdes_generator.h>` (``sdv_idl_compiler\generator\serdes_generator.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SERDES_GENERATOR_H
+   #define SERDES_GENERATOR_H
+   
+   #include "definition_generator_base.h"
+   #include <set>
+   #include <fstream>
+   
+   class CSerdesContext : public CDefEntityContext<CSerdesContext>
+   {
+   public:
+       CSerdesContext(const CGenContext& rGenContext, sdv::IInterfaceAccess* pEntity);
+   
+       CSerdesContext(CSerdesContext& rcontext, sdv::IInterfaceAccess* pEntity, const std::string& rssDeclName = std::string());
+   
+       virtual CSerdesContext& operator<<(const CSerdesContext& rcontext) override;
+   
+       std::string ComposeMemberScope(const std::string& rssDeclName, bool bFullScope = false) const;
+   
+       void EnableSerDesNamespace();
+   
+       void DisableSerDesNamespace();
+   
+       std::stringstream& GetSerDesCodeStream();
+   
+       std::string GetSerDesCode() const;
+   
+       enum class EFuncStreamPart
+       {
+           header, 
+           body,   
+           footer, 
+       };
+   
+       std::stringstream& GetSizeFuncStream(EFuncStreamPart ePart = EFuncStreamPart::body);
+   
+       std::stringstream& GetSerFuncStream(EFuncStreamPart ePart = EFuncStreamPart::body);
+   
+       std::stringstream& GetDesFuncStream(EFuncStreamPart ePart = EFuncStreamPart::body);
+   
+       std::string GetSizeFuncCode(EFuncStreamPart ePart = EFuncStreamPart::body) const;
+   
+       std::string GetSerFuncCode(EFuncStreamPart ePart = EFuncStreamPart::body) const;
+   
+       std::string GetDesFuncCode(EFuncStreamPart ePart = EFuncStreamPart::body) const;
+   
+       void JoinFuncBodyStreams(const CSerdesContext& rcontext, bool bDoNotIncludeNewline = false);
+   
+       void StreamAndClearSerFuncStreams(const std::string& rssClassBegin, const std::string& rssClassEnd,
+           const CGenContext::CKeywordMap& rmapKeywords);
+   
+       bool NeedsVariableStreaming() const;
+   
+   private:
+       bool                    m_bSerDesByContainer = false;   
+       std::stringstream       m_sstreamSerDesCode;            
+       std::stringstream       m_sstreamSizeFuncHdr;           
+       std::stringstream       m_sstreamSizeFuncFtr;           
+       std::stringstream       m_sstreamSizeFunc;              
+       std::stringstream       m_sstreamSerFuncHdr;            
+       std::stringstream       m_sstreamSerFuncFtr;            
+       std::stringstream       m_sstreamSerFunc;               
+       std::stringstream       m_sstreamDesFuncHdr;            
+       std::stringstream       m_sstreamDesFuncFtr;            
+       std::stringstream       m_sstreamDesFunc;               
+       size_t                  m_nTempDeclCnt = 0;             
+       std::string             m_ssMemberScope;                
+       bool                    m_bSerDesNamespace = false;     
+       bool                    m_bNotStreamable = false;       
+   };
+   
+   class CSerdesGenerator : public CDefinitionGeneratorBase<CSerdesContext>
+   {
+   public:
+       CSerdesGenerator(sdv::IInterfaceAccess* pParser);
+   
+       virtual ~CSerdesGenerator() override;
+   
+   private:
+       virtual void GetTargetFileInfo(std::string& rssTargetSubDir, std::string& rssTargetFileEnding) override;
+   
+       virtual std::string GetFileHeaderText() const override;
+   
+       virtual void StreamIntoFile(CSerdesContext& rcontext, std::ofstream& rfstream) override;
+   
+       virtual void StreamIncludeSection(CSerdesContext& rcontext) override;
+   
+       virtual void StreamMetaEntity(CSerdesContext& rcontext, sdv::IInterfaceAccess* pEntity) override;
+   
+       virtual bool StreamDeclaration(CSerdesContext& rcontext, sdv::IInterfaceAccess* pEntity) override;
+   
+       virtual void StreamDefinition(CSerdesContext& rcontext, sdv::IInterfaceAccess* pEntity, bool bInline = false,
+           bool bAnonymousDecl = false) override;
+   
+       bool StreamDefinitionContent(CSerdesContext& rcontext, sdv::IInterfaceAccess* pEntity, bool bSuppressComments = false);
+   
+       void StreamInterface(CSerdesContext& rcontext, sdv::IInterfaceAccess* pEntity);
+   
+       virtual void ProcessUnionInContainerContext(CSerdesContext& rcontext, std::string rssMemberScopeUnionDecl,
+           std::string rssMemberScopeSwitchVar, sdv::IInterfaceAccess* pUnionDef,
+           const std::vector<SArrayIterationInfo>& rvecArrayIndices = std::vector<SArrayIterationInfo>()) override;
+   
+       virtual void ProcessUnionJointContainerForSwitchVar(CSerdesContext& rcontext,
+           sdv::IInterfaceAccess* pSwitchVarEntity, sdv::IInterfaceAccess* pContainerEntity) override;
+   
+       std::set<std::string>       m_setHistory;               
+       std::set<std::string>       m_setNonStreamableDef;      
+   
+       std::map<std::string, std::list<std::string>>   m_mapInlineDef;
+   };
+   
+   #endif // !defined SERDES_GENERATOR_H

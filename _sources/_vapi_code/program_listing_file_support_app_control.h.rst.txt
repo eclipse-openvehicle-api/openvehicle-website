@@ -1,0 +1,362 @@
+
+.. _program_listing_file_support_app_control.h:
+
+Program Listing for File app_control.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_app_control.h>` (``support\app_control.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SDV_APP_CONTROL_H
+   #define SDV_APP_CONTROL_H
+   
+   #include "sdv_core.h"
+   #include "../interfaces/app.h"
+   #include "../interfaces/config.h"
+   #include "interface_ptr.h"
+   #include "local_service_access.h"
+   
+   namespace sdv
+   {
+       namespace app
+       {
+           class CAppControl : public IInterfaceAccess, public IAppEvent
+           {
+           public:
+               CAppControl() = default;
+   
+               CAppControl(const std::string& rssConfig) : CAppControl()
+               {
+                   Startup(rssConfig);
+               }
+   
+               ~CAppControl()
+               {
+                   Shutdown();
+               }
+   
+               // Interface map
+               BEGIN_SDV_INTERFACE_MAP()
+                   SDV_INTERFACE_ENTRY(IAppEvent)
+               END_SDV_INTERFACE_MAP()
+   
+               bool Startup(const std::string& rssConfig)
+               {
+                   IAppControl* pAppControl = core::GetCore() ? core::GetCore<IAppControl>() : nullptr;
+                   if (!pAppControl) return false;
+                   if (m_eState != EAppOperationState::not_started) return false;
+                   try
+                   {
+                       // Start the application control
+                       bool bRet = pAppControl->Startup(rssConfig, this);
+   
+                       // Get the application context
+                       const IAppContext* pAppContext = core::GetCore<IAppContext>();
+                       if (pAppContext)
+                       {
+                           m_eContext = pAppContext->GetContextType();
+                           m_uiInstanceID = pAppContext->GetInstanceID();
+                           m_uiRetries = pAppContext->GetRetries();
+                       }
+   
+                       // Automatically connect to the server
+                       if (m_eContext == EAppContext::external)
+                       {
+                           // Try to connect
+                           m_ptrServerRepository = sdv::com::ConnectToLocalServerRepository(m_uiInstanceID, m_uiRetries);
+                           if (!m_ptrServerRepository)
+                           {
+                               if (!ConsoleIsSilent())
+                                   std::cerr << "ERROR: Failed to connect to the server repository." << std::endl;
+                               Shutdown();
+                               return false;
+                           }
+   
+                           // Get access to the module control service
+                           sdv::core::IObjectAccess* pObjectAccess = m_ptrServerRepository.GetInterface<sdv::core::IObjectAccess>();
+                           const sdv::core::IRepositoryControl* pRepoControl = nullptr;
+                           if (pObjectAccess)
+                               pRepoControl = sdv::TInterfaceAccessPtr(pObjectAccess->GetObject("RepositoryService")).
+                               GetInterface<sdv::core::IRepositoryControl>();
+                           if (!pRepoControl)
+                           {
+                               if (!ConsoleIsSilent())
+                                   std::cerr << "ERROR: Failed to access the server repository." << std::endl;
+                               return false;
+                           }
+   
+                           // Link the local repository to the server repository.
+                           sdv::core::ILinkCoreRepository* pLinkCoreRepo =
+                               sdv::core::GetObject<sdv::core::ILinkCoreRepository>("RepositoryService");
+                           if (!pLinkCoreRepo)
+                           {
+                               if (!ConsoleIsSilent())
+                                   std::cerr << "ERROR: Cannot link local and server repositories." << std::endl;
+                               return false;
+                           }
+                           pLinkCoreRepo->LinkCoreRepository(m_ptrServerRepository);
+                       }
+   
+                       return bRet;
+                   }
+                   catch (const XSysExcept& rxException)
+                   {
+                       if (!ConsoleIsSilent())
+                           std::cerr << "ERROR: " << rxException.what() << std::endl;
+                       return false;
+                   }
+               }
+   
+               bool RunLoop()
+               {
+                   IAppControl* pAppControl = core::GetCore() ? core::GetCore<IAppControl>() : nullptr;
+                   if (!pAppControl) return false;
+   
+                   try
+                   {
+                       pAppControl->RunLoop();
+                   } catch (const XSysExcept&)
+                   {
+                       return false;
+                   }
+                   return true;
+               }
+   
+               void Shutdown()
+               {
+                   // Disconnect local and remote repositories.
+                   if (m_ptrServerRepository)
+                   {
+                       // Link the local repository to the server repository.
+                       sdv::core::ILinkCoreRepository* pLinkCoreRepo =
+                           sdv::core::GetObject<sdv::core::ILinkCoreRepository>("RepositoryService");
+                       if (!pLinkCoreRepo)
+                       {
+                           if (!ConsoleIsSilent())
+                               std::cerr << "ERROR: Cannot unlink local and server repositories." << std::endl;
+                       } else
+                           pLinkCoreRepo->UnlinkCoreRepository();
+                   }
+   
+                   // Disconnect from the server (if connected at all).
+                   m_ptrServerRepository.Clear();
+   
+                   // Shutdown.
+                   IAppControl* pAppControl = core::GetCore() ? core::GetCore<IAppControl>() : nullptr;
+                   try
+                   {
+                       if (pAppControl) pAppControl->Shutdown(false);
+                   } catch (const XSysExcept&)
+                   {
+                       if (!ConsoleIsSilent())
+                           std::cerr << "ERROR: Failed to shutdown app control." << std::endl;
+                   }
+                   m_eContext = EAppContext::no_context;
+                   m_uiInstanceID = 0u;
+               }
+   
+               bool IsRunning() const
+               {
+                   return m_eState == EAppOperationState::running;
+               }
+   
+               static std::filesystem::path GetFrameworkRuntimeDirectory()
+               {
+   #ifdef _WIN32
+                   const wchar_t* szFrameworkDir = _wgetenv(L"SDV_FRAMEWORK_RUNTIME");
+                   if (!szFrameworkDir) return {};
+                   return szFrameworkDir;
+   #elif defined __unix__
+                   const char* szFrameworkDir = getenv("SDV_FRAMEWORK_RUNTIME");
+                   if (!szFrameworkDir) return {};
+                   return szFrameworkDir;
+   #else
+       #error The OS is not supported!
+   #endif
+               }
+   
+               static void SetFrameworkRuntimeDirectory(const std::filesystem::path& rpathDir)
+               {
+   #ifdef _WIN32
+                   // NOTE: In windows there are two environment variable stacks which need to be updated.
+                   std::ignore = SetEnvironmentVariable(L"SDV_FRAMEWORK_RUNTIME", rpathDir.native().c_str());
+                   std::ignore = _wputenv((std::wstring(L"SDV_FRAMEWORK_RUNTIME=") + rpathDir.native()).c_str());
+   #elif defined __unix__
+                   std::ignore = setenv("SDV_FRAMEWORK_RUNTIME", rpathDir.generic_u8string().c_str(), 1);
+   #else
+       #error The OS is not supported!
+   #endif
+               }
+   
+               static std::filesystem::path GetComponentInstallDirectory()
+               {
+   #ifdef _WIN32
+                   const wchar_t* szComponentDir = _wgetenv(L"SDV_COMPONENT_INSTALL");
+                   if (!szComponentDir) return {};
+                   return szComponentDir;
+   #elif defined __unix__
+                   const char* szComponentDir = getenv("SDV_COMPONENT_INSTALL");
+                   if (!szComponentDir) return {};
+                   return szComponentDir;
+   #else
+       #error The OS is not supported!
+   #endif
+               }
+   
+               static void SetComponentInstallDirectory(const std::filesystem::path& rpathDir)
+               {
+   #ifdef _WIN32
+                   // NOTE: In windows there are two environment variable stacks which need to be updated.
+                   std::ignore = SetEnvironmentVariable(L"SDV_COMPONENT_INSTALL", rpathDir.native().c_str());
+                   std::ignore = _wputenv((std::wstring(L"SDV_COMPONENT_INSTALL=") + rpathDir.native()).c_str());
+   #elif defined __unix__
+                   std::ignore = setenv("SDV_COMPONENT_INSTALL", rpathDir.generic_u8string().c_str(), 1);
+   #else
+   #error The OS is not supported!
+   #endif
+               }
+   
+               EAppContext GetAppContext() const
+               {
+                   return m_eContext;
+               }
+   
+               uint32_t GetInstanceID() const
+               {
+                   return m_uiInstanceID;
+               }
+   
+               void SetRunningMode()
+               {
+                   IAppOperation* pAppOperation = core::GetObject<IAppOperation>("AppControlService");
+                   if (pAppOperation)
+                       pAppOperation->SetRunningMode();
+               }
+   
+               bool IsConfiguring() const
+               {
+                   return m_eState == EAppOperationState::configuring;
+               }
+   
+               void SetConfigMode()
+               {
+                   IAppOperation* pAppOperation = core::GetObject<IAppOperation>("AppControlService");
+                   if (pAppOperation)
+                       pAppOperation->SetConfigMode();
+               }
+   
+               core::EConfigProcessResult ProcessConfig(/*in*/ const sdv::u8string& ssContent)
+               {
+                   core::IConfig* pAppConfig = nullptr;
+                   sdv::TInterfaceAccessPtr ptrConfigObj = core::GetObject("ConfigService");
+                   if (ptrConfigObj) pAppConfig = ptrConfigObj.GetInterface<core::IConfig>();
+                   if (!pAppConfig) return core::EConfigProcessResult::failed;
+   
+                   bool bRunning = IsRunning();
+                   SetConfigMode();
+                   core::EConfigProcessResult eResult = pAppConfig->ProcessConfig(ssContent);
+                   if (bRunning) SetRunningMode();
+                   return eResult;
+               }
+   
+               core::EConfigProcessResult LoadConfig(/*in*/ const sdv::u8string& ssFilename)
+               {
+                   core::IConfig* pAppConfig = nullptr;
+                   sdv::TInterfaceAccessPtr ptrConfigObj = core::GetObject("ConfigService");
+                   if (ptrConfigObj) pAppConfig = ptrConfigObj.GetInterface<core::IConfig>();
+                   if (!pAppConfig) return core::EConfigProcessResult::failed;
+   
+                   bool bRunning = IsRunning();
+                   SetConfigMode();
+                   core::EConfigProcessResult eResult = pAppConfig->LoadConfig(ssFilename);
+                   if (bRunning) SetRunningMode();
+                   return eResult;
+               }
+   
+               bool AddConfigSearchDir(/*in*/ const std::filesystem::path& rpathDir)
+               {
+                   core::IConfig* pAppConfig = nullptr;
+                   sdv::TInterfaceAccessPtr ptrConfigObj = core::GetObject("ConfigService");
+                   if (ptrConfigObj) pAppConfig = ptrConfigObj.GetInterface<core::IConfig>();
+                   if (!pAppConfig) return false;
+                   return pAppConfig->AddConfigSearchDir(rpathDir.generic_u8string());
+               }
+   
+               bool AddConfigSearchDir(/*in*/ const sdv::u8string& ssDir)
+               {
+                   core::IConfig* pAppConfig = nullptr;
+                   sdv::TInterfaceAccessPtr ptrConfigObj = core::GetObject("ConfigService");
+                   if (ptrConfigObj) pAppConfig = ptrConfigObj.GetInterface<core::IConfig>();
+                   if (!pAppConfig) return false;
+                   return pAppConfig->AddConfigSearchDir(ssDir);
+               }
+   
+               bool AddConfigSearchDir(/*in*/ const std::string& ssDir)
+               {
+                   core::IConfig* pAppConfig = nullptr;
+                   sdv::TInterfaceAccessPtr ptrConfigObj = core::GetObject("ConfigService");
+                   if (ptrConfigObj) pAppConfig = ptrConfigObj.GetInterface<core::IConfig>();
+                   if (!pAppConfig) return false;
+                   return pAppConfig->AddConfigSearchDir(ssDir);
+               }
+   
+               bool AddConfigSearchDir(/*in*/ const char* szDir)
+               {
+                   if (!szDir) return false;
+                   core::IConfig* pAppConfig = nullptr;
+                   sdv::TInterfaceAccessPtr ptrConfigObj = core::GetObject("ConfigService");
+                   if (ptrConfigObj) pAppConfig = ptrConfigObj.GetInterface<core::IConfig>();
+                   if (!pAppConfig) return false;
+                   return pAppConfig->AddConfigSearchDir(szDir);
+               }
+   
+               bool AddModuleSearchDir(/*in*/ const std::filesystem::path& rpathDir)
+               {
+                   sdv::core::IModuleControlConfig* pModuleConfig = sdv::core::GetCore<sdv::core::IModuleControlConfig>();
+                   if (!pModuleConfig) return false;
+                   return pModuleConfig->AddModuleSearchDir(rpathDir.generic_u8string());
+               }
+   
+               bool AddModuleSearchDir(/*in*/ const sdv::u8string& rssDir)
+               {
+                   sdv::core::IModuleControlConfig* pModuleConfig = sdv::core::GetCore<sdv::core::IModuleControlConfig>();
+                   if (!pModuleConfig) return false;
+                   return pModuleConfig->AddModuleSearchDir(rssDir);
+               }
+   
+               bool AddModuleSearchDir(/*in*/ const std::string& rssDir)
+               {
+                   sdv::core::IModuleControlConfig* pModuleConfig = sdv::core::GetCore<sdv::core::IModuleControlConfig>();
+                   if (!pModuleConfig) return false;
+                   return pModuleConfig->AddModuleSearchDir(rssDir);
+               }
+   
+               bool AddModuleSearchDir(/*in*/ const char* szDir)
+               {
+                   if (!szDir) return false;
+                   sdv::core::IModuleControlConfig* pModuleConfig = sdv::core::GetCore<sdv::core::IModuleControlConfig>();
+                   if (!pModuleConfig) return false;
+                   return pModuleConfig->AddModuleSearchDir(szDir);
+               }
+   
+           private:
+               virtual void ProcessEvent(/*inout*/ SAppEvent& sEvent) override
+               {
+                   // Only process state change events
+                   if (sEvent.uiEventID != EVENT_OPERATION_STATE_CHANGED) return;
+   
+                   m_eState = static_cast<EAppOperationState>(sEvent.uiInfo);
+               }
+   
+               EAppOperationState      m_eState = EAppOperationState::not_started;     
+               EAppContext             m_eContext = EAppContext::no_context;           
+               uint32_t                m_uiInstanceID = 0u;                            
+               uint32_t                m_uiRetries = 0u;                               
+               sdv::TObjectPtr         m_ptrServerRepository;                          
+           };
+       } // namespace app
+   } // namespace sdv
+   #endif // !defined SDV_APP_CONTROL_H

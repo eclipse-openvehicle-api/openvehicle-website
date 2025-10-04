@@ -1,0 +1,199 @@
+
+.. _program_listing_file_core_installation_manifest.h:
+
+Program Listing for File installation_manifest.h
+================================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_installation_manifest.h>` (``core\installation_manifest.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef INSTALL_MANIFEST_H
+   #define INSTALL_MANIFEST_H
+   
+   #include <filesystem>
+   #include <string>
+   #include <vector>
+   #include <optional>
+   #include <interfaces/core.h>
+   #include <interfaces/config.h>
+   #include <map>
+   #include <cstdlib>
+   
+   inline bool IsParentPath(const std::filesystem::path& rpathBase, const std::filesystem::path& rpathRelative)
+   {
+       auto pathAbsBase = std::filesystem::weakly_canonical(rpathBase);
+       auto pathAbsPotentialParent = std::filesystem::weakly_canonical(rpathBase / rpathRelative);
+   
+       // Check if pathAbsPotentialParent supersedes pathAbsBase. If not, it points to or derives from a parent.
+       auto itBase = pathAbsBase.begin();
+       auto itPotentialParent = pathAbsPotentialParent.begin();
+       while (itBase != pathAbsBase.end())
+       {
+           // If the potential path has finished, it is pointing to a parent.
+           if (itPotentialParent == pathAbsPotentialParent.end()) return true;
+   
+           // If the path-parts are not equal, the potential parent part is really deriving from a parent.
+           if (*itBase != *itPotentialParent) return true;
+   
+           // Check next
+           itBase++;
+           itPotentialParent++;
+       }
+   
+       // Even if the potential path might be still have more parts, they derive from the base path.
+       return false;
+   }
+   
+   inline bool RefersToRelativeParent(const std::filesystem::path& rpathRelative)
+   {
+       int iDepth = 0;
+       for (const auto& pathPart : rpathRelative)
+       {
+           if (pathPart == "..")
+               --iDepth;
+           else if (pathPart != "." && pathPart != "")
+               ++iDepth;
+           if (iDepth < 0) return true;   // Not allowed to be negative.
+       }
+       return false;
+   }
+   
+   class CInstallManifest
+   {
+   public:
+       struct SComponent
+       {
+           std::filesystem::path pathRelModule;            
+           std::string ssManifest;                         
+           std::string ssClassName;                        
+           sdv::sequence<sdv::u8string> seqAliases;        
+           std::string ssDefaultObjectName;                
+           sdv::EObjectType eType;                         
+           uint32_t uiFlags;                               
+           sdv::sequence<sdv::u8string> seqDependencies;   
+       };
+   
+       CInstallManifest() = default;
+   
+       bool IsValid() const;
+   
+       void Clear();
+   
+       const std::string& InstallName() const;
+   
+       sdv::installation::SPackageVersion Version() const;
+   
+       const std::filesystem::path& InstallDir() const;
+   
+       bool Create(const std::string& rssInstallName);
+   
+       bool Load(const std::filesystem::path& rpathInstallDir, bool bBlockSystemObjects = false);
+   
+       bool Save(const std::filesystem::path& rpathInstallDir) const;
+   
+       bool Read(const std::string& rssManifest, bool bBlockSystemObjects = false);
+   
+       std::string Write() const;
+   
+       bool AddModule(const std::filesystem::path& rpathModulePath, const std::filesystem::path& rpathRelTargetDir = ".");
+   
+       std::filesystem::path FindModule(const std::filesystem::path& rpathRelModule) const;
+   
+       std::string FindModuleManifest(const std::filesystem::path& rpathRelModule) const;
+   
+       std::optional<SComponent> FindComponentByClass(const std::string& rssClass) const;
+   
+       std::vector<SComponent> ComponentList() const;
+   
+       std::vector<std::filesystem::path> ModuleList() const;
+   
+       std::vector<std::pair<std::string, std::string>> PropertyList() const;
+   
+       void Property(const std::string& rssName, const std::string& rssValue);
+   
+       std::optional<std::string> Property(const std::string& rssName) const;
+   
+   private:
+       static bool NeedQuotedName(const std::string& rssName);
+   
+       struct SModule
+       {
+           SModule(const std::filesystem::path& rpathRelModule, const std::string& rssManifest, bool bBlockSystemObjects);
+   
+           std::filesystem::path   pathRelModule;      
+           std::string             ssManifest;         
+           std::vector<SComponent> vecComponents;      
+       };
+   
+       std::string                         m_ssInstallName;                
+       mutable std::filesystem::path       m_pathInstallDir;               
+       bool                                m_bBlockSystemObjects = false;  
+       std::vector<SModule>                m_vecModules;                   
+       std::map<std::string, std::string>  m_mapProperties;                
+   };
+   
+   inline sdv::installation::SPackageVersion InterpretVersionString(const std::string& rssVersion)
+   {
+       // 
+       sdv::installation::SPackageVersion sVersion{};
+       size_t nPos      = rssVersion.find('.');
+       sVersion.uiMajor = static_cast<uint32_t>(std::atoi(rssVersion.substr(0, nPos).c_str()));
+       size_t nStart    = nPos;
+       if (nStart != std::string::npos)
+       {
+           nStart++;
+           nPos             = rssVersion.find('.', nPos + 1);
+           sVersion.uiMinor = static_cast<uint32_t>(std::atoi(rssVersion.substr(nStart, nPos).c_str()));
+       }
+       nStart = nPos;
+       if (nStart != std::string::npos)
+       {
+           nStart++;
+           sVersion.uiPatch = static_cast<uint32_t>(std::atoi(rssVersion.substr(nStart).c_str()));
+       }
+       return sVersion;
+   }
+   
+   constexpr inline bool operator==(sdv::installation::SPackageVersion sFirst, sdv::installation::SPackageVersion sSecond)
+   {
+       return sFirst.uiMajor == sSecond.uiMajor && sFirst.uiMinor == sSecond.uiMinor && sFirst.uiPatch == sSecond.uiPatch;
+   }
+   
+   constexpr inline bool operator>=(sdv::installation::SPackageVersion sFirst, sdv::installation::SPackageVersion sSecond)
+   {
+       return sFirst.uiMajor > sSecond.uiMajor
+              || (sFirst.uiMajor == sSecond.uiMajor
+                  && (sFirst.uiMinor > sSecond.uiMinor ||
+                      (sFirst.uiMinor == sSecond.uiMinor && sFirst.uiPatch >= sSecond.uiPatch)));
+   }
+   
+   constexpr inline bool operator>(sdv::installation::SPackageVersion sFirst, sdv::installation::SPackageVersion sSecond)
+   {
+       return sFirst.uiMajor > sSecond.uiMajor
+              || (sFirst.uiMajor == sSecond.uiMajor
+                  && (sFirst.uiMinor > sSecond.uiMinor || (sFirst.uiMinor == sSecond.uiMinor && sFirst.uiPatch > sSecond.uiPatch)));
+   }
+   
+   constexpr inline bool operator!=(sdv::installation::SPackageVersion sFirst, sdv::installation::SPackageVersion sSecond)
+   {
+       return sFirst.uiMajor != sSecond.uiMajor || sFirst.uiMinor != sSecond.uiMinor || sFirst.uiPatch != sSecond.uiPatch;
+   }
+   
+   constexpr inline bool operator<(sdv::installation::SPackageVersion sFirst, sdv::installation::SPackageVersion sSecond)
+   {
+       return sFirst.uiMajor < sSecond.uiMajor
+              || (sFirst.uiMajor == sSecond.uiMajor
+                  && (sFirst.uiMinor < sSecond.uiMinor || (sFirst.uiMinor == sSecond.uiMinor && sFirst.uiPatch < sSecond.uiPatch)));
+   }
+   
+   constexpr inline bool operator<=(sdv::installation::SPackageVersion sFirst, sdv::installation::SPackageVersion sSecond)
+   {
+       return sFirst.uiMajor < sSecond.uiMajor
+              || (sFirst.uiMajor == sSecond.uiMajor
+                  && (sFirst.uiMinor < sSecond.uiMinor || (sFirst.uiMinor == sSecond.uiMinor && sFirst.uiPatch <= sSecond.uiPatch)));
+   }
+   
+   #endif // !defined INSTALL_MANIFEST_H

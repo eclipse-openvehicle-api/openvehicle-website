@@ -1,0 +1,83 @@
+.. _example-general-component:
+
+Example General Component
+=========================
+
+.. note::
+   An :term:`Vehicle Device` is used here as an example, but the described points are relevant for all :term:`VAPI Component` s.
+
+.. warning::
+   When compiling a :term:`VAPI Component`, basically a shared library (normally .dll under Windows and .so under Linux), it is important that only explicitly exported functions are visible since otherwise dynamic linking will produce crashing errors. Private visibility for functions in shared libraries unless explicitly exported is default under Windows but may not be with other systems and/or compilers. To assure the needed visibility e.g. under CMake one can add the line ``set(CMAKE_CXX_VISIBILITY_PRESET hidden)`` in the corresponding  ``CMakeLists.txt`` files.
+
+.. tab-set::
+
+   .. tab-item:: Example
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component.cpp
+         :tab-width: 4
+
+   .. tab-item:: Inheritance
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component.cpp
+         :tab-width: 4
+         :emphasize-lines: 7-9
+
+      Any :term:`VAPI Component` needs to inherit from the **CSdvObject** class and any interface it implements.
+
+   .. tab-item:: Destructor
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component.cpp
+         :tab-width: 4
+         :emphasize-lines: 16
+
+      Any :term:`VAPI Component` needs to have their destructor virtual through the ``override`` keyword if one exists.
+
+   .. tab-item:: Exposing Interfaces
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component.cpp
+         :tab-width: 4
+         :emphasize-lines: 21-24
+
+      Any :term:`VAPI Component` needs to declare the interfaces it wants to expose in the interface map to be accessible via the GetInterface template function by other :term:`VAPI Component` s.
+
+   .. tab-item:: Object Type
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component.cpp
+         :tab-width: 4
+         :emphasize-lines: 26
+
+      Any :term:`VAPI Component` needs to declare to which kind of component it is. This defines also to what other component group it is allowed to communicate with. Possible options are defined in the ``EObjectType`` enum.
+
+   .. tab-item:: Object Name
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component.cpp
+         :tab-width: 4
+         :emphasize-lines: 27
+
+      Any :term:`VAPI Component` needs to declare its name to be able to be found by other components and be able to be referenced in the :term:`Config File`.
+
+      .. warning::
+         This name has to be unique in any system setup the component is used in!
+
+   .. tab-item:: Function implementation
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component.cpp
+         :tab-width: 4
+         :emphasize-lines: 32-35, 40-43
+
+      Any :term:`VAPI Component` needs to implement all the functions from the inherited :term:`Interface` s.
+
+   .. tab-item:: Define as VAPI Object
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component.cpp
+         :tab-width: 4
+         :emphasize-lines: 46
+
+      Any :term:`VAPI Component` needs to be declared as a :term:`VAPI Component` by the ``DEFINE_SDV_OBJECT`` macro that takes the class type of the component as an argument.
+
+      .. warning::
+         The call to ``DEFINE_SDV_OBJECT`` must be in the same namespace as the object it declares as a :term:`VAPI Component` since it does not allow for namespaces in front of the class type in the argument.
+
+.. note::
+   The *Inheritance*, *Exposing Interfaces*, *Object Type* and *Function Implementation* can also be, in full or partly, done by an other custom parent class.
+

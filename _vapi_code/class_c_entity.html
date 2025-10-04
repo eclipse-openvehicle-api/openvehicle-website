@@ -1,0 +1,1827 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Class CEntity &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/class_c_entity';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Class CEntity</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-centity">
+<span id="exhale-class-class-c-entity"></span><h1>Class CEntity<a class="headerlink" href="#class-centity" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_sdv_idl_compiler_entities_entity_base.h.html#file-sdv-idl-compiler-entities-entity-base-h"><span class="std std-ref">File entity_base.h</span></a></p></li>
+</ul>
+<section id="nested-relationships">
+<h2>Nested Relationships<a class="headerlink" href="#nested-relationships" title="Permalink to this heading">#</a></h2>
+<section id="nested-types">
+<h3>Nested Types<a class="headerlink" href="#nested-types" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="class_c_entity_1_1_c_entity_iterator.html#exhale-class-class-c-entity-1-1-c-entity-iterator"><span class="std std-ref">Class CEntity::CEntityIterator</span></a></p></li>
+</ul>
+</section>
+</section>
+<section id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Permalink to this heading">#</a></h2>
+<section id="base-types">
+<h3>Base Types<a class="headerlink" href="#base-types" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::idl::IEntityInfo</span></code> (<a class="reference internal" href="structsdv_1_1idl_1_1_i_entity_info.html#exhale-struct-structsdv-1-1idl-1-1-i-entity-info"><span class="std std-ref">Struct IEntityInfo</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::idl::IEntityComments</span></code> (<a class="reference internal" href="structsdv_1_1idl_1_1_i_entity_comments.html#exhale-struct-structsdv-1-1idl-1-1-i-entity-comments"><span class="std std-ref">Struct IEntityComments</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::idl::IEntityContext</span></code> (<a class="reference internal" href="structsdv_1_1idl_1_1_i_entity_context.html#exhale-struct-structsdv-1-1idl-1-1-i-entity-context"><span class="std std-ref">Struct IEntityContext</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::idl::IForwardDeclarationEntity</span></code> (<a class="reference internal" href="structsdv_1_1idl_1_1_i_forward_declaration_entity.html#exhale-struct-structsdv-1-1idl-1-1-i-forward-declaration-entity"><span class="std std-ref">Struct IForwardDeclarationEntity</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::IInterfaceAccess</span></code> (<a class="reference internal" href="structsdv_1_1_i_interface_access.html#exhale-struct-structsdv-1-1-i-interface-access"><span class="std std-ref">Struct IInterfaceAccess</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">std::enable_shared_from_this&lt;</span> <span class="pre">CEntity</span> <span class="pre">&gt;</span></code></p></li>
+</ul>
+</section>
+<section id="derived-types">
+<h3>Derived Types<a class="headerlink" href="#derived-types" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">CDeclarationEntity</span></code> (<a class="reference internal" href="class_c_declaration_entity.html#exhale-class-class-c-declaration-entity"><span class="std std-ref">Class CDeclarationEntity</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">CDefinitionEntity</span></code> (<a class="reference internal" href="class_c_definition_entity.html#exhale-class-class-c-definition-entity"><span class="std std-ref">Class CDefinitionEntity</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">CMetaEntity</span></code> (<a class="reference internal" href="class_c_meta_entity.html#exhale-class-class-c-meta-entity"><span class="std std-ref">Class CMetaEntity</span></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this heading">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv47CEntity">
+<span id="_CPPv37CEntity"></span><span id="_CPPv27CEntity"></span><span id="CEntity"></span><span class="target" id="class_c_entity"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CEntity</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">idl</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1idl_1_1_i_entity_info.html#_CPPv4N3sdv3idl11IEntityInfoE" title="sdv::idl::IEntityInfo"><span class="n"><span class="pre">IEntityInfo</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">idl</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1idl_1_1_i_entity_comments.html#_CPPv4N3sdv3idl15IEntityCommentsE" title="sdv::idl::IEntityComments"><span class="n"><span class="pre">IEntityComments</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">idl</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1idl_1_1_i_entity_context.html#_CPPv4N3sdv3idl14IEntityContextE" title="sdv::idl::IEntityContext"><span class="n"><span class="pre">IEntityContext</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">idl</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1idl_1_1_i_forward_declaration_entity.html#_CPPv4N3sdv3idl25IForwardDeclarationEntityE" title="sdv::idl::IForwardDeclarationEntity"><span class="n"><span class="pre">IForwardDeclarationEntity</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_shared_from_this</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv47CEntity" title="CEntity"><span class="n"><span class="pre">CEntity</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv47CEntity" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Base of the entities allowing generic access to the entity. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>Normally a declaration entity cannot have child entities. It would make sense to manage child entities only by the definition entity. OMG IDL imposes naming restrictions for all the entities. And forward declarations are allowed. This requires that child management is implemented on a base level, even though declarations will not have any children. </p>
+</div>
+</p>
+<p>Subclassed by <a class="reference internal" href="class_c_declaration_entity.html#class_c_declaration_entity"><span class="std std-ref">CDeclarationEntity</span></a>, <a class="reference internal" href="class_c_definition_entity.html#class_c_definition_entity"><span class="std std-ref">CDefinitionEntity</span></a>, <a class="reference internal" href="class_c_meta_entity.html#class_c_meta_entity"><span class="std std-ref">CMetaEntity</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-unnamed-group">Unnamed Group</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN7CEntity3GetEP7TEntityv">
+<span id="_CPPv3I0EN7CEntity3GetEv"></span><span id="_CPPv2I0EN7CEntity3GetEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TEntity</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_c_entity_1a6889e0b49e2371bb1d74c7acc8d4493f"></span><a class="reference internal" href="#_CPPv4I0EN7CEntity3GetEP7TEntityv" title="CEntity::Get::TEntity"><span class="n"><span class="pre">TEntity</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">Get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN7CEntity3GetEP7TEntityv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the derived entity class. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TEntity</strong> – The entity class to request a pointer for. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pointer to the derived class or NULL when the requested class didn’t derive from this entity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK7CEntity3GetEPK7TEntityv">
+<span id="_CPPv3I0ENK7CEntity3GetEv"></span><span id="_CPPv2I0ENK7CEntity3GetEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TEntity</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_c_entity_1aa3454fd816ece8649cb4587da1ad8cfa"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0ENK7CEntity3GetEPK7TEntityv" title="CEntity::Get::TEntity"><span class="n"><span class="pre">TEntity</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">Get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK7CEntity3GetEPK7TEntityv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the derived entity class. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TEntity</strong> – The entity class to request a pointer for. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pointer to the derived class or NULL when the requested class didn’t derive from this entity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-unnamed-group">Unnamed Group</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity10GetContextEv">
+<span id="_CPPv3NK7CEntity10GetContextEv"></span><span id="_CPPv2NK7CEntity10GetContextEv"></span><span id="CEntity::GetContextC"></span><span class="target" id="class_c_entity_1a85441f3e21f1a65b8f1e639b19cc5426"></span><a class="reference internal" href="typedef_parsecontext_8h_1a2991514a5be4c70b6aae37c729b25b39.html#_CPPv411CContextPtr" title="CContextPtr"><span class="n"><span class="pre">CContextPtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetContext</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity10GetContextEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the parse context. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the parse context. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity10GetContextEv">
+<span id="_CPPv3N7CEntity10GetContextEv"></span><span id="_CPPv2N7CEntity10GetContextEv"></span><span id="CEntity::GetContext"></span><span class="target" id="class_c_entity_1a44e4fde677354926472c3fa6610ac407"></span><a class="reference internal" href="typedef_parsecontext_8h_1a2991514a5be4c70b6aae37c729b25b39.html#_CPPv411CContextPtr" title="CContextPtr"><span class="n"><span class="pre">CContextPtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetContext</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity10GetContextEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the parse context. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the parse context. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-unnamed-group">Unnamed Group</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity15GetParentEntityEv">
+<span id="_CPPv3NK7CEntity15GetParentEntityEv"></span><span id="_CPPv2NK7CEntity15GetParentEntityEv"></span><span id="CEntity::GetParentEntityC"></span><span class="target" id="class_c_entity_1ac531d6cf071d3cf4ec962ceebed169cd"></span><a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetParentEntity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity15GetParentEntityEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the parent entity of this entity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the smart pointer to the parent entity or NULL when this is the root entity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity15GetParentEntityEv">
+<span id="_CPPv3N7CEntity15GetParentEntityEv"></span><span id="_CPPv2N7CEntity15GetParentEntityEv"></span><span id="CEntity::GetParentEntity"></span><span class="target" id="class_c_entity_1ac947c4be8414d17630a03aeba0adcb5b"></span><a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetParentEntity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity15GetParentEntityEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the parent entity of this entity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the smart pointer to the parent entity or NULL when this is the root entity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-unnamed-group">Unnamed Group</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity13GetRootEntityEv">
+<span id="_CPPv3NK7CEntity13GetRootEntityEv"></span><span id="_CPPv2NK7CEntity13GetRootEntityEv"></span><span id="CEntity::GetRootEntityC"></span><span class="target" id="class_c_entity_1a4ff9f1ed0752bbb57963053eb32bdc91"></span><a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetRootEntity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity13GetRootEntityEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the root entity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the root entity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity13GetRootEntityEv">
+<span id="_CPPv3N7CEntity13GetRootEntityEv"></span><span id="_CPPv2N7CEntity13GetRootEntityEv"></span><span id="CEntity::GetRootEntity"></span><span class="target" id="class_c_entity_1a9afc66779fa7ffa03027b2d44624ad0d"></span><a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetRootEntity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity13GetRootEntityEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the root entity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the root entity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-unnamed-group">Unnamed Group</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity17GetResolvedEntityEv">
+<span id="_CPPv3NK7CEntity17GetResolvedEntityEv"></span><span id="_CPPv2NK7CEntity17GetResolvedEntityEv"></span><span id="CEntity::GetResolvedEntityC"></span><span class="target" id="class_c_entity_1a757163f465629ec6e5e63ea96170a0ff"></span><a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetResolvedEntity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity17GetResolvedEntityEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get resolved entity if the entity is a typedef (or multiple typedefs). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns resolved entity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity17GetResolvedEntityEv">
+<span id="_CPPv3N7CEntity17GetResolvedEntityEv"></span><span id="_CPPv2N7CEntity17GetResolvedEntityEv"></span><span id="CEntity::GetResolvedEntity"></span><span class="target" id="class_c_entity_1a160cb8c16865aae071433a6c523ac6ed"></span><a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetResolvedEntity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity17GetResolvedEntityEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get resolved entity if the entity is a typedef (or multiple typedefs). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns resolved entity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-unnamed-group">Unnamed Group</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity16SetBeginPositionE8uint32_t8uint32_t">
+<span id="_CPPv3N7CEntity16SetBeginPositionE8uint32_t8uint32_t"></span><span id="_CPPv2N7CEntity16SetBeginPositionE8uint32_t8uint32_t"></span><span id="CEntity::SetBeginPosition__uint32_t.uint32_t"></span><span class="target" id="class_c_entity_1a7801ccb20debe9185978113594a60e98"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetBeginPosition</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiLine</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiCol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity16SetBeginPositionE8uint32_t8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set the position during parsing. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uiLine</strong> – <strong>[in]</strong> The line number. </p></li>
+<li><p><strong>uiCol</strong> – <strong>[in]</strong> The column number. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity14SetEndPositionE8uint32_t8uint32_t">
+<span id="_CPPv3N7CEntity14SetEndPositionE8uint32_t8uint32_t"></span><span id="_CPPv2N7CEntity14SetEndPositionE8uint32_t8uint32_t"></span><span id="CEntity::SetEndPosition__uint32_t.uint32_t"></span><span class="target" id="class_c_entity_1adc6451bdd7ff110bff9e0014c2ba816f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetEndPosition</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiLine</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiCol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity14SetEndPositionE8uint32_t8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set the position during parsing. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uiLine</strong> – <strong>[in]</strong> The line number. </p></li>
+<li><p><strong>uiCol</strong> – <strong>[in]</strong> The column number. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-unnamed-group">Unnamed Group</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity12GetParserRefEv">
+<span id="_CPPv3NK7CEntity12GetParserRefEv"></span><span id="_CPPv2NK7CEntity12GetParserRefEv"></span><span id="CEntity::GetParserRefC"></span><span class="target" id="class_c_entity_1a6bd53a81ecffb5a590b81f617abebc05"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="class_c_parser.html#_CPPv47CParser" title="CParser"><span class="n"><span class="pre">CParser</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetParserRef</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity12GetParserRefEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the parser. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the parser. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity12GetParserRefEv">
+<span id="_CPPv3N7CEntity12GetParserRefEv"></span><span id="_CPPv2N7CEntity12GetParserRefEv"></span><span id="CEntity::GetParserRef"></span><span class="target" id="class_c_entity_1aa8817140a01dfbb0dbe156240699d1cb"></span><a class="reference internal" href="class_c_parser.html#_CPPv47CParser" title="CParser"><span class="n"><span class="pre">CParser</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetParserRef</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity12GetParserRefEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the parser. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the parser. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-unnamed-group">Unnamed Group</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity8ValueRefEv">
+<span id="_CPPv3NK7CEntity8ValueRefEv"></span><span id="_CPPv2NK7CEntity8ValueRefEv"></span><span id="CEntity::ValueRefC"></span><span class="target" id="class_c_entity_1abe94cc3de81d496fef5c5b11bf086a9a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="typedef_entity__base_8h_1a6a1d36357af8a38fc9a42cf1233728b5.html#_CPPv413CValueNodePtr" title="CValueNodePtr"><span class="n"><span class="pre">CValueNodePtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">ValueRef</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity8ValueRefEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a reference to the calculated value. Consider. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">Throws</span></span></span> – an exception when the index doesn’t correspond to the size of the array. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value struct smart pointer of the specified type. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity8ValueRefEv">
+<span id="_CPPv3N7CEntity8ValueRefEv"></span><span id="_CPPv2N7CEntity8ValueRefEv"></span><span id="CEntity::ValueRef"></span><span class="target" id="class_c_entity_1a2a6efc5a3a975d0bd768c6164e6e4e25"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="typedef_entity__base_8h_1a6a1d36357af8a38fc9a42cf1233728b5.html#_CPPv413CValueNodePtr" title="CValueNodePtr"><span class="n"><span class="pre">CValueNodePtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">ValueRef</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity8ValueRefEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a reference to the calculated value. Consider. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">Throws</span></span></span> – an exception when the index doesn’t correspond to the size of the array. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value struct smart pointer of the specified type. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity7CEntityERK11CContextPtr10CEntityPtr">
+<span id="_CPPv3N7CEntity7CEntityERK11CContextPtr10CEntityPtr"></span><span id="_CPPv2N7CEntity7CEntityERK11CContextPtr10CEntityPtr"></span><span id="CEntity::CEntity__CContextPtrCR.CEntityPtr"></span><span class="target" id="class_c_entity_1aae28a68ca8bf02ccb80baa69f6346e5d"></span><span class="sig-name descname"><span class="n"><span class="pre">CEntity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="typedef_parsecontext_8h_1a2991514a5be4c70b6aae37c729b25b39.html#_CPPv411CContextPtr" title="CContextPtr"><span class="n"><span class="pre">CContextPtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rptrContext</span></span>, <a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ptrParent</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity7CEntityERK11CContextPtr10CEntityPtr" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructor using the parser to process the code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rptrContext</strong> – <strong>[in]</strong> Reference to the smart pointer holding the parse context. Must not be NULL. </p></li>
+<li><p><strong>ptrParent</strong> – <strong>[in]</strong> Pointer to the parent class holding this entity. This must not be NULL. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity7CEntityERK11CContextPtr10CEntityPtrRK10CTokenList">
+<span id="_CPPv3N7CEntity7CEntityERK11CContextPtr10CEntityPtrRK10CTokenList"></span><span id="_CPPv2N7CEntity7CEntityERK11CContextPtr10CEntityPtrRK10CTokenList"></span><span id="CEntity::CEntity__CContextPtrCR.CEntityPtr.CTokenListCR"></span><span class="target" id="class_c_entity_1a76127d3e542f144b73b97a5f225b149b"></span><span class="sig-name descname"><span class="n"><span class="pre">CEntity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="typedef_parsecontext_8h_1a2991514a5be4c70b6aae37c729b25b39.html#_CPPv411CContextPtr" title="CContextPtr"><span class="n"><span class="pre">CContextPtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rptrContext</span></span>, <a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ptrParent</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="class_c_token_list.html#_CPPv410CTokenList" title="CTokenList"><span class="n"><span class="pre">CTokenList</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rlstTokenList</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity7CEntityERK11CContextPtr10CEntityPtrRK10CTokenList" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructor using the provided token-list to process the code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rptrContext</strong> – <strong>[in]</strong> Reference to the smart pointer holding the parse context. Must not be NULL. </p></li>
+<li><p><strong>ptrParent</strong> – <strong>[in]</strong> Pointer to the parent class holding this entity. This must not be NULL. </p></li>
+<li><p><strong>rlstTokenList</strong> – <strong>[in]</strong> Reference to the token list holding the tokens to process. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntityD0Ev">
+<span id="_CPPv3N7CEntityD0Ev"></span><span id="_CPPv2N7CEntityD0Ev"></span><span id="CEntity::~CEntity"></span><span class="target" id="class_c_entity_1a833f1423fd7e0f2096517b100c44db72"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~CEntity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N7CEntityD0Ev" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity12GetInterfaceEN3sdv12interface_idE">
+<span id="_CPPv3N7CEntity12GetInterfaceEN3sdv12interface_idE"></span><span id="_CPPv2N7CEntity12GetInterfaceEN3sdv12interface_idE"></span><span id="CEntity::GetInterface__sdv::interface_id"></span><span class="target" id="class_c_entity_1a9c0541b89a8c3b493c54cb6f0f8ff703"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1interface__t.html#_CPPv4N3sdv11interface_tE" title="sdv::interface_t"><span class="n"><span class="pre">interface_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetInterface</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1a2347c332dec12fa065d315aabc19c98e.html#_CPPv4N3sdv12interface_idE" title="sdv::interface_id"><span class="n"><span class="pre">interface_id</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">idInterface</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N7CEntity12GetInterfaceEN3sdv12interface_idE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get access to another interface. Overload of <a class="reference internal" href="structsdv_1_1_i_interface_access.html#structsdv_1_1_i_interface_access_1ac23bdf804e1ccab723abab8708df3b98"><span class="std std-ref">sdv::IInterfaceAccess::GetInterface</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>idInterface</strong> – <strong>[in]</strong> The interface id to get access to. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pointer to the interface or NULL when the interface is not supported. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity7GetTypeEv">
+<span id="_CPPv3NK7CEntity7GetTypeEv"></span><span id="_CPPv2NK7CEntity7GetTypeEv"></span><span id="CEntity::GetTypeC"></span><span class="target" id="class_c_entity_1ae52b351e8da069422a65d9da1b591e25"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">idl</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="enum_namespacesdv_1_1idl_1a15ad03805fbe6e6a1a3764feb180adde.html#_CPPv4N3sdv3idl11EEntityTypeE" title="sdv::idl::EEntityType"><span class="n"><span class="pre">EEntityType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetType</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK7CEntity7GetTypeEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the type of the entity. Default type is <a class="reference internal" href="enum_parser_8h_1a4507f53e542d2237c94a9ffce9dd2ccb.html#namespacesdv_1_1idl_1a15ad03805fbe6e6a1a3764feb180addeacab607306ee869343d89a05cdd121abf"><span class="std std-ref">sdv::idl::EEntityType::type_unknown</span></a>. Overload of <a class="reference internal" href="structsdv_1_1idl_1_1_i_entity_info.html#structsdv_1_1idl_1_1_i_entity_info_1a90fd1b9389de97d1e2e3ae625fcebd21"><span class="std std-ref">sdv::idl::IEntityInfo::GetType</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the entity type. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity9GetEntityEv">
+<span id="_CPPv3N7CEntity9GetEntityEv"></span><span id="_CPPv2N7CEntity9GetEntityEv"></span><span id="CEntity::GetEntity"></span><span class="target" id="class_c_entity_1a7da216e12022641855ecbec1f7921f6e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetEntity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N7CEntity9GetEntityEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the entity if this is a forward declared entity. Overload of <a class="reference internal" href="structsdv_1_1idl_1_1_i_forward_declaration_entity.html#structsdv_1_1idl_1_1_i_forward_declaration_entity"><span class="std std-ref">sdv::idl::IForwardDeclarationEntity</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pointer to the entity this forward declaration is referring to. Or NULL when no entity was defined. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity14GetDeclTypeStrEb">
+<span id="_CPPv3NK7CEntity14GetDeclTypeStrEb"></span><span id="_CPPv2NK7CEntity14GetDeclTypeStrEb"></span><span id="CEntity::GetDeclTypeStr__bC"></span><span class="target" id="class_c_entity_1a05aa773171275636887961eddb5653c1"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetDeclTypeStr</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bResolveTypedef</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity14GetDeclTypeStrEb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the declaration type of the entity as string. </p>
+<p>
+For declaration entities, the type returned includes the declaration type. For definition entities, the type returned have the for of “&lt;base type&gt; &lt;type identifier&gt;”. <dl class="simple">
+<dt><strong>Attention</strong></dt><dd><p>To get the qualified type including array sizes, use the GetDeclTypeStr of the <a class="reference internal" href="class_c_entity_value_node.html#class_c_entity_value_node"><span class="std std-ref">CEntityValueNode</span></a> class.</p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bResolveTypedef</strong> – <strong>[in]</strong> When set, resolve the typedef type into the base type. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the entity declaration type string. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity7ProcessEv">
+<span id="_CPPv3N7CEntity7ProcessEv"></span><span id="_CPPv2N7CEntity7ProcessEv"></span><span id="CEntity::Process"></span><span class="target" id="class_c_entity_1a306b782982fbe526d40b91a99c9e28cd"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Process</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N7CEntity7ProcessEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Process the code. Entity specific processing function. Must be derived. </p>
+<p>The processing of follows the following stages:<ul class="simple">
+<li><p>Process definition - determine the type blue-print</p></li>
+<li><p>Process declaration - determine the identifier</p></li>
+<li><p>Process assignment - build value chains It is not required to process all three steps. A definition can be made without a following declaration. A declaration can be made based on a previous definition. Whether or not a definition is made, is determined from the token sequence (grammar). In principal, if the statements are not specifying a definition, they are specifying a declaration or both (a declaration following the definition). Processing assignments is triggered by the complex processing entities (modules, structs, unions, interfaces, enums). In modules and enums, a declaration statement is processed for assignents directly. In structs and unions, the use of member variables is allowed even if they are defined later and have not been processed yet. Therefore, the declarations of all members in the structs and unions are processed first and the assignments are following after this. Assignments are only possible following a declaration. Therefore, the process assignment function is only implemented in the <a class="reference internal" href="class_c_declaration_entity.html#class_c_declaration_entity"><span class="std std-ref">CDeclarationEntity</span></a> class implementing typedefs, const declarations and variable declarations. The assignment of values is possible also for enums, structs, unions and interfaces. The overloadable ProcessAsignmentValue function is used for this. </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity7GetNameEv">
+<span id="_CPPv3NK7CEntity7GetNameEv"></span><span id="_CPPv2NK7CEntity7GetNameEv"></span><span id="CEntity::GetNameC"></span><span class="target" id="class_c_entity_1a5c7d7ee9799b303dc6369c1500c108bd"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ad4584b9d3937ef91dc3661773c068362.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetName</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK7CEntity7GetNameEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the name of the entity. Overload of IEntityInfo::GetName. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name string. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity13GetScopedNameEv">
+<span id="_CPPv3NK7CEntity13GetScopedNameEv"></span><span id="_CPPv2NK7CEntity13GetScopedNameEv"></span><span id="CEntity::GetScopedNameC"></span><span class="target" id="class_c_entity_1aa5640edbebd8f224dc8284884d0422ab"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ad4584b9d3937ef91dc3661773c068362.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetScopedName</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK7CEntity13GetScopedNameEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the scoped name of the entity (including the modules separated by the scope separator). Overload of IEntityInfo::GetScopedName. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The scoped name build from the entities of the parents separated by ‘::’. An empty name means global scope. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity14MakeFullScopedERKNSt6stringE">
+<span id="_CPPv3NK7CEntity14MakeFullScopedERKNSt6stringE"></span><span id="_CPPv2NK7CEntity14MakeFullScopedERKNSt6stringE"></span><span id="CEntity::MakeFullScoped__ssCRC"></span><span class="target" id="class_c_entity_1a1d31331a542929236cd5801fcdddc5e2"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MakeFullScoped</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssExpression</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity14MakeFullScopedERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Replace any identifier in the expression with a relative scope to this entity by a full scoped identifier. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>If an entity in the expression cannot be found within the current scope, the entity is not corrected and replaced without change in the retargeted expression. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssExpression</strong> – <strong>[in]</strong> Reference to the expression to use for retargeting. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The expression with full scoped identifiers. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity7IsEqualE10CEntityPtr">
+<span id="_CPPv3N7CEntity7IsEqualE10CEntityPtr"></span><span id="_CPPv2N7CEntity7IsEqualE10CEntityPtr"></span><span id="CEntity::IsEqual__CEntityPtr"></span><span class="target" id="class_c_entity_1af7ab50bfb646a365d023c84c29a1a47c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsEqual</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ptrEntity</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity7IsEqualE10CEntityPtr" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Has equal. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ptrEntity</strong> – <strong>[in]</strong> Pointer to the entity to use for the comparison. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when the entities have the identical scoped names. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity9GetParentEv">
+<span id="_CPPv3NK7CEntity9GetParentEv"></span><span id="_CPPv2NK7CEntity9GetParentEv"></span><span id="CEntity::GetParentC"></span><span class="target" id="class_c_entity_1a8b8175601211105e72af7c7a257c07fb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetParent</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK7CEntity9GetParentEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the parent entity of this entity. Overload of IEntityInfo::GetParent. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns an interface to the parent entity or NULL when this is the root parent (when there is no parent). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity16SetCommentTokensERK10CTokenListb">
+<span id="_CPPv3N7CEntity16SetCommentTokensERK10CTokenListb"></span><span id="_CPPv2N7CEntity16SetCommentTokensERK10CTokenListb"></span><span id="CEntity::SetCommentTokens__CTokenListCR.b"></span><span class="target" id="class_c_entity_1af6043586621e63748223b593b5a79a41"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetCommentTokens</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="class_c_token_list.html#_CPPv410CTokenList" title="CTokenList"><span class="n"><span class="pre">CTokenList</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rlstComments</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bPreceeding</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity16SetCommentTokensERK10CTokenListb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set the comment tokens for this entity. </p>
+<p><dl class="simple">
+<dt><strong>Attention</strong></dt><dd><p>This function doesn’t set any comment if there is already a comment assigned (either through a forward declaration or when a comment is provided beforee and after a declaration). Unless, the new comments have additional information on the comment format (brief, java doc or doxygen) and the initial comments didn’t have this. </p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rlstComments</strong> – <strong>[in]</strong> Reference to the comments token list. </p></li>
+<li><p><strong>bPreceeding</strong> – <strong>[in]</strong> When set, the comments are preceding the next statement; otherwise they are succeeding. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity22GetPreCommentTokenListEv">
+<span id="_CPPv3N7CEntity22GetPreCommentTokenListEv"></span><span id="_CPPv2N7CEntity22GetPreCommentTokenListEv"></span><span id="CEntity::GetPreCommentTokenList"></span><span class="target" id="class_c_entity_1aba45452dca170bb2995ad9e74c2cc74b"></span><a class="reference internal" href="class_c_token_list.html#_CPPv410CTokenList" title="CTokenList"><span class="n"><span class="pre">CTokenList</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetPreCommentTokenList</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity22GetPreCommentTokenListEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the preceding comment token list. </p>
+<p>Preceding comments must be located in the same source file as the next token and must be adjacent and end at the latest one line before the next token. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the preceding comment token list. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity27ProcessPostCommentTokenListE8uint32_t">
+<span id="_CPPv3N7CEntity27ProcessPostCommentTokenListE8uint32_t"></span><span id="_CPPv2N7CEntity27ProcessPostCommentTokenListE8uint32_t"></span><span id="CEntity::ProcessPostCommentTokenList__uint32_t"></span><span class="target" id="class_c_entity_1a13eb73aeba92e19bc726a2f55af404b6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProcessPostCommentTokenList</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiLine</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity27ProcessPostCommentTokenListE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Process the succeeding comment token list and assign to the current entity. </p>
+<p>Succeeding comments must be located in the same source file as the entity and must be adjacent and start at the provided line. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiLine</strong> – <strong>[in]</strong> The line to start checking for succeeding comments at. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity11GetCommentsER8uint32_t">
+<span id="_CPPv3NK7CEntity11GetCommentsER8uint32_t"></span><span id="_CPPv2NK7CEntity11GetCommentsER8uint32_t"></span><span id="CEntity::GetComments__uint32_tRC"></span><span class="target" id="class_c_entity_1aa937dc5e6b76fe0f13603b4995a260aa"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ad4584b9d3937ef91dc3661773c068362.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetComments</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ruiFlags</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK7CEntity11GetCommentsER8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the comment lines for this entity as one string. Overload of IEntityComments::GetComments. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>For c-style multi-line comments, the indentation and additional asterisk character at the beginning of each line is removed. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ruiFlags</strong> – <strong>[out]</strong> Reference to the variable receiving the comment flags (a bitmask combination of <a class="reference internal" href="structsdv_1_1idl_1_1_i_entity_comments.html#structsdv_1_1idl_1_1_i_entity_comments_1a38082e97c022849d6a830009bf392c22"><span class="std std-ref">sdv::idl::IEntityComments::ECommentMask</span></a>). </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the comment string. If the comment contains multiple lines, each line is ending with a newline. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity11GetLocationEv">
+<span id="_CPPv3NK7CEntity11GetLocationEv"></span><span id="_CPPv2NK7CEntity11GetLocationEv"></span><span id="CEntity::GetLocationC"></span><span class="target" id="class_c_entity_1a174c8bce86b2769c1de9f35806d33eff"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">idl</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1idl_1_1_i_entity_context.html#_CPPv4N3sdv3idl14IEntityContextE" title="sdv::idl::IEntityContext"><span class="n"><span class="pre">IEntityContext</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1idl_1_1_i_entity_context.html#_CPPv4N3sdv3idl14IEntityContext9ELocationE" title="sdv::idl::IEntityContext::ELocation"><span class="n"><span class="pre">ELocation</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetLocation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK7CEntity11GetLocationEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the location. Overload of <a class="reference internal" href="structsdv_1_1idl_1_1_i_entity_context.html#structsdv_1_1idl_1_1_i_entity_context_1a564fc823a406f213ab8fa2b0c80a7ccb"><span class="std std-ref">sdv::idl::IEntityContext::GetLocation</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the location. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity13GetSourcePathEv">
+<span id="_CPPv3NK7CEntity13GetSourcePathEv"></span><span id="_CPPv2NK7CEntity13GetSourcePathEv"></span><span id="CEntity::GetSourcePathC"></span><span class="target" id="class_c_entity_1ad5f3ea0b6ef8c49b75424b5c4e3db81d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ad4584b9d3937ef91dc3661773c068362.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetSourcePath</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK7CEntity13GetSourcePathEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the path to the file. Overload of <a class="reference internal" href="structsdv_1_1idl_1_1_i_entity_context.html#structsdv_1_1idl_1_1_i_entity_context_1a570f9534a45380a0737073dc217933cb"><span class="std std-ref">sdv::idl::IEntityContext::GetSourcePath</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the source path string. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity11GetPositionER8uint32_tR8uint32_tR8uint32_tR8uint32_t">
+<span id="_CPPv3N7CEntity11GetPositionER8uint32_tR8uint32_tR8uint32_tR8uint32_t"></span><span id="_CPPv2N7CEntity11GetPositionER8uint32_tR8uint32_tR8uint32_tR8uint32_t"></span><span id="CEntity::GetPosition__uint32_tR.uint32_tR.uint32_tR.uint32_tR"></span><span class="target" id="class_c_entity_1a5002e5132e77069e92d969b87b6e658f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetPosition</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ruiLineBegin</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ruiColBegin</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ruiLineEnd</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ruiColEnd</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N7CEntity11GetPositionER8uint32_tR8uint32_tR8uint32_tR8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the position in the file. Overload of <a class="reference internal" href="structsdv_1_1idl_1_1_i_entity_context.html#structsdv_1_1idl_1_1_i_entity_context_1ad17d4e6c4a1d0f6fd6e148162f0a13d1"><span class="std std-ref">sdv::idl::IEntityContext::GetPosition</span></a>. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>Not all entities have a position. If no position is available, the position return value has the value 0. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ruiLineBegin</strong> – <strong>[out]</strong> Reference to the variable receiving the line number of the entity beginning. </p></li>
+<li><p><strong>ruiColBegin</strong> – <strong>[out]</strong> Reference to the variable receiving the column number of the entity beginning. </p></li>
+<li><p><strong>ruiLineEnd</strong> – <strong>[out]</strong> Reference to the variable receiving the line number of the entity ending. </p></li>
+<li><p><strong>ruiColEnd</strong> – <strong>[out]</strong> Reference to the variable receiving the column number of the entity ending. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity8CalcHashER11CHashObject">
+<span id="_CPPv3NK7CEntity8CalcHashER11CHashObject"></span><span id="_CPPv2NK7CEntity8CalcHashER11CHashObject"></span><span id="CEntity::CalcHash__CHashObjectRC"></span><span class="target" id="class_c_entity_1ab0ed60db8ae4483d21ea52d118e7ec31"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CalcHash</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="class_c_hash_object.html#_CPPv411CHashObject" title="CHashObject"><span class="n"><span class="pre">CHashObject</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rHash</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity8CalcHashER11CHashObject" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Calculate the hash of this entity and all encapsulated entities. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rHash</strong> – <strong>[inout]</strong> Hash object to be filled with data. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity4FindERKNSt6stringEb">
+<span id="_CPPv3NK7CEntity4FindERKNSt6stringEb"></span><span id="_CPPv2NK7CEntity4FindERKNSt6stringEb"></span><span id="CEntity::Find__ssCR.bC"></span><span class="target" id="class_c_entity_1a4a2a6bd8eb56852cee60866bda509ac9"></span><a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Find</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssScopedName</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bCheckParent</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity4FindERKNSt6stringEb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Find the entity using a scoped name. </p>
+<p>A scoped name defines an entity name with possible entity parent names. Each name is separated by the scope separator ‘::’. For example: “parent_1::parent_1_a::parent_1_a_I::entity”. The first entity that will be searched for is the uppermost parent (here parent_1). The search starts at the current entity. If the search was not successful, the search is done using the parent and if the search also there was not successful, the parent of the parent is searched for, and so on. The search is successful if all the requested parents match and the entity is found. An exception to the rule of the scoped name is, when the name starts with the scope separator indicating that the search is not relative but should start at the root entity. For example: “::parent::entity”. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TEntity</strong> – The entity type to return. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rssScopedName</strong> – <strong>[in]</strong> Reference to a string object containing the relative or absolute scoped entity name consisting of zero or more parents definitions and one entity name all separated with the scope separator ‘::’ followed by declaration members separated by a member separator ‘.’. The name must not be empty. </p></li>
+<li><p><strong>bCheckParent</strong> – <strong>[in]</strong> When set, check the parent(s) as well if the scoped name fits on one of the children of a parent; otherwise the parent(s) is(are) not taken into account. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The first version returns an entity smart pointer. The second version returns the entity pointer converted to the requested entity type (if the entity is of this type). If the entity doesn’t exists or is of the wrong type a NULL pointer is returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK7CEntity4FindEP7TEntityRKNSt6stringE">
+<span id="_CPPv3I0ENK7CEntity4FindERKNSt6stringE"></span><span id="_CPPv2I0ENK7CEntity4FindERKNSt6stringE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TEntity</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_c_entity_1a9b57ffd51341e8b3e2e0fae10a0ef0fb"></span><a class="reference internal" href="#_CPPv4I0ENK7CEntity4FindEP7TEntityRKNSt6stringE" title="CEntity::Find::TEntity"><span class="n"><span class="pre">TEntity</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">Find</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssScopedName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK7CEntity4FindEP7TEntityRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Find the entity using a scoped name. </p>
+<p>A scoped name defines an entity name with possible entity parent names. Each name is separated by the scope separator ‘::’. For example: “parent_1::parent_1_a::parent_1_a_I::entity”. The first entity that will be searched for is the uppermost parent (here parent_1). The search starts at the current entity. If the search was not successful, the search is done using the parent and if the search also there was not successful, the parent of the parent is searched for, and so on. The search is successful if all the requested parents match and the entity is found. An exception to the rule of the scoped name is, when the name starts with the scope separator indicating that the search is not relative but should start at the root entity. For example: “::parent::entity”. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TEntity</strong> – The entity type to return. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>rssScopedName</strong> – <strong>[in]</strong> Reference to a string object containing the relative or absolute scoped entity name consisting of zero or more parents definitions and one entity name all separated with the scope separator ‘::’ followed by declaration members separated by a member separator ‘.’. The name must not be empty. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The first version returns an entity smart pointer. The second version returns the entity pointer converted to the requested entity type (if the entity is of this type). If the entity doesn’t exists or is of the wrong type a NULL pointer is returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity9FindValueERK10CTokenList">
+<span id="_CPPv3NK7CEntity9FindValueERK10CTokenList"></span><span id="_CPPv2NK7CEntity9FindValueERK10CTokenList"></span><span id="CEntity::FindValue__CTokenListCRC"></span><span class="target" id="class_c_entity_1a430f03df81084cc60b2b121fa6464bbd"></span><a class="reference internal" href="typedef_entity__base_8h_1a6a1d36357af8a38fc9a42cf1233728b5.html#_CPPv413CValueNodePtr" title="CValueNodePtr"><span class="n"><span class="pre">CValueNodePtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FindValue</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="class_c_token_list.html#_CPPv410CTokenList" title="CTokenList"><span class="n"><span class="pre">CTokenList</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rlstScopedNameInclMembers</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity9FindValueERK10CTokenList" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Find the value belonging to the scoped name. </p>
+<p>A scoped name defines an entity name with possible entity parent names. Each name is separated by the scope separator ‘::’. For example: “parent_1::parent_1_a::parent_1_a_I::entity”. The first entity that will be searched for is the uppormost parent (here parent_1). The search starts at the current entity. If the search was not successful, the search is done using the parent and if the search also there was not successful, the parent of the parent is searched for, and so on. The search is successful if all the requested parents match and the entity is found. An exception to the rule of the scoped name is, when the name starts with the scope separator indicating that the search is not relative but should start at the root entity. For example: “::parent::entity”. Following the scoped name, members and indices can be specified to navigate to the correct value declaration. Members are separated by a dot ‘.’ and indices are specified using square brackets ‘[…]’. For example “::parent::entity.first[1]”. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rlstScopedNameInclMembers</strong> – <strong>[in]</strong> Token list consisting of tokens representing the scoped name as well as any array and member names. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a value node smart pointer. If the value node doesn’t exists or is of the wrong type a NULL pointer is returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity9FindValueERKNSt6stringE">
+<span id="_CPPv3NK7CEntity9FindValueERKNSt6stringE"></span><span id="_CPPv2NK7CEntity9FindValueERKNSt6stringE"></span><span id="CEntity::FindValue__ssCRC"></span><span class="target" id="class_c_entity_1ab03287d0e4254ef42a13f97f9e61b238"></span><a class="reference internal" href="typedef_entity__base_8h_1a6a1d36357af8a38fc9a42cf1233728b5.html#_CPPv413CValueNodePtr" title="CValueNodePtr"><span class="n"><span class="pre">CValueNodePtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FindValue</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssScopedNameInclMembers</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity9FindValueERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Find the value belonging to the scoped name. </p>
+<p>A scoped name defines an entity name with possible entity parent names. Each name is separated by the scope separator ‘::’. For example: “parent_1::parent_1_a::parent_1_a_I::entity”. The first entity that will be searched for is the uppormost parent (here parent_1). The search starts at the current entity. If the search was not successful, the search is done using the parent and if the search also there was not successful, the parent of the parent is searched for, and so on. The search is successful if all the requested parents match and the entity is found. An exception to the rule of the scoped name is, when the name starts with the scope separator indicating that the search is not relative but should start at the root entity. For example: “::parent::entity”. Following the scoped name, members and indices can be specified to navigate to the correct value declaration. Members are separated by a dot ‘.’ and indices are specified using square brackets ‘[…]’. For example “::parent::entity.first[1]”. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssScopedNameInclMembers</strong> – <strong>[in]</strong> Reference to a string object containing the relative or absolute scoped entity name consisting of zero or more parents and one entity name all separated with the scope separator ‘::’. The name must not be empty. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a value node smart pointer. If the value node doesn’t exists or is of the wrong type a NULL pointer is returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK7CEntity9FindValueEP10TValueNodeRKNSt6stringE">
+<span id="_CPPv3I0ENK7CEntity9FindValueERKNSt6stringE"></span><span id="_CPPv2I0ENK7CEntity9FindValueERKNSt6stringE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TValueNode</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_c_entity_1ada4b72bce92fd7c4ee2b595239411f6c"></span><a class="reference internal" href="#_CPPv4I0ENK7CEntity9FindValueEP10TValueNodeRKNSt6stringE" title="CEntity::FindValue::TValueNode"><span class="n"><span class="pre">TValueNode</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">FindValue</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssScopedNameInclMembers</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK7CEntity9FindValueEP10TValueNodeRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Find the value belonging to the scoped name. </p>
+<p>A scoped name defines an entity name with possible entity parent names. Each name is separated by the scope separator ‘::’. For example: “parent_1::parent_1_a::parent_1_a_I::entity”. The first entity that will be searched for is the uppormost parent (here parent_1). The search starts at the current entity. If the search was not successful, the search is done using the parent and if the search also there was not successful, the parent of the parent is searched for, and so on. The search is successful if all the requested parents match and the entity is found. An exception to the rule of the scoped name is, when the name starts with the scope separator indicating that the search is not relative but should start at the root entity. For example: “::parent::entity”. Following the scoped name, members and indices can be specified to navigate to the correct value declaration. Members are separated by a dot ‘.’ and indices are specified using square brackets ‘[…]’. For example “::parent::entity.first[1]”. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TValueNode</strong> – Type of the value node to return. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>rssScopedNameInclMembers</strong> – <strong>[in]</strong> Reference to a string object containing the relative or absolute scoped entity name consisting of zero or more parents and one entity name all separated with the scope separator ‘::’. The name must not be empty. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the value node pointer converted to the requested value node type (if the value node is of this type). If the value node doesn’t exists or is of the wrong type a NULL pointer is returned. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity16FindValueVariantERKNSt6stringE">
+<span id="_CPPv3NK7CEntity16FindValueVariantERKNSt6stringE"></span><span id="_CPPv2NK7CEntity16FindValueVariantERKNSt6stringE"></span><span id="CEntity::FindValueVariant__ssCRC"></span><span class="target" id="class_c_entity_1a039480434311b65233c8ea095c49368c"></span><a class="reference internal" href="class_c_const_variant.html#_CPPv413CConstVariant" title="CConstVariant"><span class="n"><span class="pre">CConstVariant</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FindValueVariant</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssScopedNameInclMembers</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity16FindValueVariantERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Find the value variant belonging to the scoped name. </p>
+<p>A scoped name defines an entity name with possible entity parent names. Each name is separated by the scope separator ‘::’. For example: “parent_1::parent_1_a::parent_1_a_I::entity”. The first entity that will be searched for is the uppormost parent (here parent_1). The search starts at the current entity. If the search was not successful, the search is done using the parent and if the search also there was not successful, the parent of the parent is searched for, and so on. The search is successful if all the requested parents match and the entity is found. An exception to the rule of the scoped name is, when the name starts with the scope separator indicating that the search is not relative but should start at the root entity. For example: “::parent::entity”. Following the scoped name, members and indices can be specified to navigate to the correct value declaration. Members are separated by a dot ‘.’ and indices are specified using square brackets ‘[…]’. For example “::parent::entity.first[1]”. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssScopedNameInclMembers</strong> – <strong>[in]</strong> Reference to a string object containing the relative or absolute scoped entity name consisting of zero or more parents and one entity name all separated with the scope separator ‘::’. The name must not be empty. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>On success, return a const variant structure with the value belonging to the requested value node. On failure, a const variant is returned that is initialized with 0 using the boolean data type (the first type and first value). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity5GetIdEv">
+<span id="_CPPv3NK7CEntity5GetIdEv"></span><span id="_CPPv2NK7CEntity5GetIdEv"></span><span id="CEntity::GetIdC"></span><span class="target" id="class_c_entity_1a7f9c50e98f36b629065beb5657fe1395"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetId</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK7CEntity5GetIdEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the entity ID. Overload of IEntityInfo::GetId. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the entity ID. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity18ForwardDeclarationEv">
+<span id="_CPPv3NK7CEntity18ForwardDeclarationEv"></span><span id="_CPPv2NK7CEntity18ForwardDeclarationEv"></span><span id="CEntity::ForwardDeclarationC"></span><span class="target" id="class_c_entity_1ae1b8a04cbc3a83c1c19052d05b2672d0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ForwardDeclaration</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK7CEntity18ForwardDeclarationEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Is the entity defined as (forward) declaration only? Overload of IEntityInfo::ForwardDeclaration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether this entity class instance is defined as forward declaration. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity12IsRootEntityEv">
+<span id="_CPPv3NK7CEntity12IsRootEntityEv"></span><span id="_CPPv2NK7CEntity12IsRootEntityEv"></span><span id="CEntity::IsRootEntityC"></span><span class="target" id="class_c_entity_1a3a8f2c692a688989a01d6a4a49af7705"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsRootEntity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity12IsRootEntityEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Is this definition a root entity? </p>
+<p>The root entity is not expecting curly brackets ‘{…}’. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether this entity is the root entity (which is not the case). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity12IsExtendableEv">
+<span id="_CPPv3NK7CEntity12IsExtendableEv"></span><span id="_CPPv2NK7CEntity12IsExtendableEv"></span><span id="CEntity::IsExtendableC"></span><span class="target" id="class_c_entity_1a9afd061631711006352c900ab70404ab"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsExtendable</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity12IsExtendableEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Is the entity extendable (can multiple definitions at the same scope exist and do they extend each other)? </p>
+<p>The default implementation doesn’t allow extending the entity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether the entity is extendable (which is not the case). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity16SupportsChildrenEv">
+<span id="_CPPv3NK7CEntity16SupportsChildrenEv"></span><span id="_CPPv2NK7CEntity16SupportsChildrenEv"></span><span id="CEntity::SupportsChildrenC"></span><span class="target" id="class_c_entity_1ab9642dbc6d9e82bff65a7253257bcc08"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SupportsChildren</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity16SupportsChildrenEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Does the entity support children? </p>
+<p>The default implementation doesn’t allow children. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether the entity supports children (which is not the case). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity17ProcessScopedNameEb">
+<span id="_CPPv3N7CEntity17ProcessScopedNameEb"></span><span id="_CPPv2N7CEntity17ProcessScopedNameEb"></span><span id="CEntity::ProcessScopedName__b"></span><span class="target" id="class_c_entity_1aafb3f566920b0465270c0869ba680bde"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProcessScopedName</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bNoSearchError</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity17ProcessScopedNameEb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Process the code for a soped name (a name composed of identifiers and scope operators). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bNoSearchError</strong> – <strong>[in]</strong> When set, do not throw exception during search to an entity with the name. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair object with the first element the scoped name and the second element a pointer to the found entity. In case the object doesn’t exists, returns a nullptr as second element. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity17ProcessScopedNameERK10CTokenListb">
+<span id="_CPPv3NK7CEntity17ProcessScopedNameERK10CTokenListb"></span><span id="_CPPv2NK7CEntity17ProcessScopedNameERK10CTokenListb"></span><span id="CEntity::ProcessScopedName__CTokenListCR.bC"></span><span class="target" id="class_c_entity_1a41d1cb3a5cfb44597a671d213e6540c4"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProcessScopedName</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="class_c_token_list.html#_CPPv410CTokenList" title="CTokenList"><span class="n"><span class="pre">CTokenList</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rlstExpression</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bNoSearchError</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity17ProcessScopedNameERK10CTokenListb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Process the code for a soped name (a name composed of identifiers and scope operators). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rlstExpression</strong> – <strong>[in]</strong> Reference to the token list holding the expression. </p></li>
+<li><p><strong>bNoSearchError</strong> – <strong>[in]</strong> When set, do not throw exception during search to an entity with the name. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair object with the first element the scoped name and the second element a pointer to the found entity. In case the object doesn’t exists, returns a nullptr as second element. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity7CEntityER7CParserRK11CContextPtr">
+<span id="_CPPv3N7CEntity7CEntityER7CParserRK11CContextPtr"></span><span id="_CPPv2N7CEntity7CEntityER7CParserRK11CContextPtr"></span><span id="CEntity::CEntity__CParserR.CContextPtrCR"></span><span class="target" id="class_c_entity_1adb5eee519b1397601d4a4ff432c61ae8"></span><span class="sig-name descname"><span class="n"><span class="pre">CEntity</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="class_c_parser.html#_CPPv47CParser" title="CParser"><span class="n"><span class="pre">CParser</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rParser</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="typedef_parsecontext_8h_1a2991514a5be4c70b6aae37c729b25b39.html#_CPPv411CContextPtr" title="CContextPtr"><span class="n"><span class="pre">CContextPtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rptrContext</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity7CEntityER7CParserRK11CContextPtr" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Root entity constructor (name is ‘root’ and no parent). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rParser</strong> – <strong>[in]</strong> Reference to the parser. </p></li>
+<li><p><strong>rptrContext</strong> – <strong>[in]</strong> Reference to the smart pointer holding the parse context. Must not be NULL. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity8GetTokenEv">
+<span id="_CPPv3N7CEntity8GetTokenEv"></span><span id="_CPPv2N7CEntity8GetTokenEv"></span><span id="CEntity::GetToken"></span><span class="target" id="class_c_entity_1af01aba01b67942bef03140a18e704d12"></span><a class="reference internal" href="class_c_token.html#_CPPv46CToken" title="CToken"><span class="n"><span class="pre">CToken</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetToken</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity8GetTokenEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a token from the parser with moving the current position. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the token. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity17GetLastValidTokenEv">
+<span id="_CPPv3NK7CEntity17GetLastValidTokenEv"></span><span id="_CPPv2NK7CEntity17GetLastValidTokenEv"></span><span id="CEntity::GetLastValidTokenC"></span><span class="target" id="class_c_entity_1a57dbc4b727cad717dfc40eff233b3efa"></span><a class="reference internal" href="class_c_token.html#_CPPv46CToken" title="CToken"><span class="n"><span class="pre">CToken</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetLastValidToken</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity17GetLastValidTokenEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the last valid token. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the last read token or an empty token when no token was read before. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity9PeekTokenE6size_t">
+<span id="_CPPv3N7CEntity9PeekTokenE6size_t"></span><span id="_CPPv2N7CEntity9PeekTokenE6size_t"></span><span id="CEntity::PeekToken__s"></span><span class="target" id="class_c_entity_1a1eabba9281f326a5ebc93ebe428f51e3"></span><a class="reference internal" href="class_c_token.html#_CPPv46CToken" title="CToken"><span class="n"><span class="pre">CToken</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PeekToken</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nIndex</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity9PeekTokenE6size_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a token from the parser without moving the current position. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nIndex</strong> – <strong>[in]</strong> The amount of tokens to skip before returning the token. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the token. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity12PrependTokenER6CToken">
+<span id="_CPPv3N7CEntity12PrependTokenER6CToken"></span><span id="_CPPv2N7CEntity12PrependTokenER6CToken"></span><span id="CEntity::PrependToken__CTokenR"></span><span class="target" id="class_c_entity_1aec8393ccac2a3330c5259b5c73cf2559"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PrependToken</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="class_c_token.html#_CPPv46CToken" title="CToken"><span class="n"><span class="pre">CToken</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rToken</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity12PrependTokenER6CToken" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Insert token for parsing at the front of the parsing list. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rToken</strong> – <strong>[in]</strong> Reference to token object containing the code to insert. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity24ProcessNumericExpressionERK10CTokenList8uint32_t">
+<span id="_CPPv3NK7CEntity24ProcessNumericExpressionERK10CTokenList8uint32_t"></span><span id="_CPPv2NK7CEntity24ProcessNumericExpressionERK10CTokenList8uint32_t"></span><span id="CEntity::ProcessNumericExpression__CTokenListCR.uint32_tC"></span><span class="target" id="class_c_entity_1a3829e956ced01a742e74d2f72d09acb5"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="class_c_const_variant.html#_CPPv413CConstVariant" title="CConstVariant"><span class="n"><span class="pre">CConstVariant</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProcessNumericExpression</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="class_c_token_list.html#_CPPv410CTokenList" title="CTokenList"><span class="n"><span class="pre">CTokenList</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rlstExpression</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiPrecedence</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">100</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity24ProcessNumericExpressionERK10CTokenList8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Calculate the value based on the precedence of operators. </p>
+<p>Parse through the string and calculate a value. Values and arithmetic operators are read and a result is calculated as long as the operator precedence doesn’t undercut the current precedence.<ul class="simple">
+<li><p>identifiers can be used</p></li>
+<li><p>operators allowed for floating and fixed point operations: + - / * &lt; &lt;= &gt; &gt;= == !=</p></li>
+<li><p>operators allowed for integral types: + - / % * &amp; | ^ ~ &lt;&lt; &gt;&gt; &amp;&amp; || ! &gt; &gt;= &lt; &lt;= == !=</p></li>
+<li><p>parenthesis are allowed</p></li>
+</ul>
+</p>
+<p>Operator precedence: +———&amp;#8212;+————–&amp;#8212;+—————————————-&amp;#8212;+ | precedence | operators | description | +============+=================+===========================================+ | 0 | ~ ! ( ) defined | Bitwise NOT, logical NOT and parenthesis | +———&amp;#8212;+————–&amp;#8212;+—————————————-&amp;#8212;+ | 1 | * / % | Multiplication, division, and remainder | +———&amp;#8212;+————–&amp;#8212;+—————————————-&amp;#8212;+ | 2 | + - | Addition and subtraction | +———&amp;#8212;+————–&amp;#8212;+—————————————-&amp;#8212;+ | 3 | &lt;&lt; &gt;&gt; | Bitwise left shift and right shift | +———&amp;#8212;+————–&amp;#8212;+—————————————-&amp;#8212;+ | 4 | &lt; &lt;= &gt; &gt;= | Relational operators | +———&amp;#8212;+————–&amp;#8212;+—————————————-&amp;#8212;+ | 5 | == != | Equality operators | +———&amp;#8212;+————–&amp;#8212;+—————————————-&amp;#8212;+ | 6 | &amp; | Bitwise AND | +———&amp;#8212;+————–&amp;#8212;+—————————————-&amp;#8212;+ | 7 | ^ | Bitwise XOR | +———&amp;#8212;+————–&amp;#8212;+—————————————-&amp;#8212;+ | 8 | | | Bitwise OR | +———&amp;#8212;+————–&amp;#8212;+—————————————-&amp;#8212;+ | 9 | &amp;&amp; | Logical AND | +———&amp;#8212;+————–&amp;#8212;+—————————————-&amp;#8212;+ | 10 | || | Logical OR | +———&amp;#8212;+————–&amp;#8212;+—————————————-&amp;#8212;+ </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rlstExpression</strong> – <strong>[in]</strong> Reference to the expression token list. </p></li>
+<li><p><strong>uiPrecedence</strong> – <strong>[in]</strong> [in] Current precedence level (default 100). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair containing the calculated value and a boolean that indicates whether the result is dynamic. In the latter case, the calculated value will be 0. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity23ProcessStringExpressionERK10CTokenList">
+<span id="_CPPv3NK7CEntity23ProcessStringExpressionERK10CTokenList"></span><span id="_CPPv2NK7CEntity23ProcessStringExpressionERK10CTokenList"></span><span id="CEntity::ProcessStringExpression__CTokenListCRC"></span><span class="target" id="class_c_entity_1a947fee874043dbd174073d787829a997"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="class_c_const_variant.html#_CPPv413CConstVariant" title="CConstVariant"><span class="n"><span class="pre">CConstVariant</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProcessStringExpression</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="class_c_token_list.html#_CPPv410CTokenList" title="CTokenList"><span class="n"><span class="pre">CTokenList</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rlstExpression</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity23ProcessStringExpressionERK10CTokenList" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Process the string expression. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rlstExpression</strong> – <strong>[in]</strong> Reference to the expression token list. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair containing the result string and a boolean that indicates whether the result is dynamic. In the latter case, the result string will be empty. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity11ProcessTypeEb">
+<span id="_CPPv3N7CEntity11ProcessTypeEb"></span><span id="_CPPv2N7CEntity11ProcessTypeEb"></span><span id="CEntity::ProcessType__b"></span><span class="target" id="class_c_entity_1a01a3d37778826bb114489ec591753b44"></span><a class="reference internal" href="class_c_type_declaration.html#_CPPv416CTypeDeclaration" title="CTypeDeclaration"><span class="n"><span class="pre">CTypeDeclaration</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProcessType</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bNoSearchError</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity11ProcessTypeEb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Process the code for a type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bNoSearchError</strong> – <strong>[in]</strong> When set, does not throw an exception during the search of an entity with the defined name. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The type declaration. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity7SetNameERKNSt6stringEbb">
+<span id="_CPPv3N7CEntity7SetNameERKNSt6stringEbb"></span><span id="_CPPv2N7CEntity7SetNameERKNSt6stringEbb"></span><span id="CEntity::SetName__ssCR.b.b"></span><span class="target" id="class_c_entity_1a832f578173a9301fea2b7ffc9e198834"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetName</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssName</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bForwardDeclaration</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bNoInsert</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity7SetNameERKNSt6stringEbb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set the name of the entity. This function must be called by the derived class and will check for a duplicate name (case insensitive comparison) and registers the entity under its name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssName</strong> – <strong>[in]</strong> String object containing the name of the entity. Cannot be empty. </p></li>
+<li><p><strong>bForwardDeclaration</strong> – <strong>[in]</strong> When set, the entity is part of forward declaration. When the declaration exists already, this function doesn’t do anything. When it doesn’t exists, the entity is created and marked as declared. </p></li>
+<li><p><strong>bNoInsert</strong> – <strong>[in]</strong> When set, do not insert the entity in the child map of the parent. Use only when local entities are needed. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity28ProcessSystemTypeAssignmentsEv">
+<span id="_CPPv3N7CEntity28ProcessSystemTypeAssignmentsEv"></span><span id="_CPPv2N7CEntity28ProcessSystemTypeAssignmentsEv"></span><span id="CEntity::ProcessSystemTypeAssignments"></span><span class="target" id="class_c_entity_1aa03fecfbb2f502f125f0d017cd7a93b2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ProcessSystemTypeAssignments</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity28ProcessSystemTypeAssignmentsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>In case there are any unassigned system type entities, process the entities. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity8AddChildE10CEntityPtr">
+<span id="_CPPv3N7CEntity8AddChildE10CEntityPtr"></span><span id="_CPPv2N7CEntity8AddChildE10CEntityPtr"></span><span id="CEntity::AddChild__CEntityPtr"></span><span class="target" id="class_c_entity_1a197eb6816b3fcb2e925ea7ca428e8dcf"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AddChild</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">ptrChild</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity8AddChildE10CEntityPtr" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Add the child to the children list. Called by CreateChild function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ptrChild</strong> – <strong>[in]</strong> Pointer to the child entity to add. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity9FindLocalERKNSt6stringEb">
+<span id="_CPPv3NK7CEntity9FindLocalERKNSt6stringEb"></span><span id="_CPPv2NK7CEntity9FindLocalERKNSt6stringEb"></span><span id="CEntity::FindLocal__ssCR.bC"></span><span class="target" id="class_c_entity_1ac32b22afa30471b898a6c0ede859a1dc"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FindLocal</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssName</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bDeclaration</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity9FindLocalERKNSt6stringEb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Find the entity locally by looking in the entity children map and the entity children maps of all the chained entities. The search is done case-insensitive. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssName</strong> – <strong>[in]</strong> Reference to the string object containing the name of the entity to search for. </p></li>
+<li><p><strong>bDeclaration</strong> – <strong>[in]</strong> When set, the name belongs to a declaration; otherwise it belongs to a definition. Needed to allow the reuse of names between declarations and definitions. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair object containing an entity pointer if the entity exists or a NULL pointer if not as well as a boolean that indicates that the entity was from an inherited entity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity10FindMemberERKNSt6stringE">
+<span id="_CPPv3NK7CEntity10FindMemberERKNSt6stringE"></span><span id="_CPPv2NK7CEntity10FindMemberERKNSt6stringE"></span><span id="CEntity::FindMember__ssCRC"></span><span class="target" id="class_c_entity_1aed0355f28baa714ba4333e8372daa788"></span><a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FindMember</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssScopedName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity10FindMemberERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Find the member entity by looking at the entity declaration map of the type. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>Only compound entities (struct, union, exception) can have declarations. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssScopedName</strong> – <strong>[in]</strong> Name of the entity separated by dots (name.name.name) indicating the declaration within a compound entity. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The declaration entity that is represented by the scoped name or NULL when no entity was found. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity17GetChildrenVectorEv">
+<span id="_CPPv3N7CEntity17GetChildrenVectorEv"></span><span id="_CPPv2N7CEntity17GetChildrenVectorEv"></span><span id="CEntity::GetChildrenVector"></span><span class="target" id="class_c_entity_1a0a9500daa98dda3f121eeb4c574a4750"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="typedef_entity__base_8h_1aebda28391608af9ec8c488ca7c85a88b.html#_CPPv413CEntityVector" title="CEntityVector"><span class="n"><span class="pre">CEntityVector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetChildrenVector</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity17GetChildrenVectorEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the children vector for creation of the iterator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the reference to the child vector. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity16DeclTypeToStringEN3sdv3idl9EDeclTypeE">
+<span id="_CPPv3NK7CEntity16DeclTypeToStringEN3sdv3idl9EDeclTypeE"></span><span id="_CPPv2NK7CEntity16DeclTypeToStringEN3sdv3idl9EDeclTypeE"></span><span id="CEntity::DeclTypeToString__sdv::idl::EDeclTypeC"></span><span class="target" id="class_c_entity_1a579de6acef43f62738016adb163fb6a8"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DeclTypeToString</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">idl</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="enum_namespacesdv_1_1idl_1a7a70043b285f0f006497dfb95c17f8fd.html#_CPPv4N3sdv3idl9EDeclTypeE" title="sdv::idl::EDeclType"><span class="n"><span class="pre">EDeclType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eType</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity16DeclTypeToStringEN3sdv3idl9EDeclTypeE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the declaration type as string. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>eType</strong> – <strong>[in]</strong> The declaration type. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The declaration type as string. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity16StringToDeclTypeERKNSt6stringE">
+<span id="_CPPv3NK7CEntity16StringToDeclTypeERKNSt6stringE"></span><span id="_CPPv2NK7CEntity16StringToDeclTypeERKNSt6stringE"></span><span id="CEntity::StringToDeclType__ssCRC"></span><span class="target" id="class_c_entity_1a0661c39a78e579e36abd017e5f6d19ed"></span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">idl</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="enum_namespacesdv_1_1idl_1a7a70043b285f0f006497dfb95c17f8fd.html#_CPPv4N3sdv3idl9EDeclTypeE" title="sdv::idl::EDeclType"><span class="n"><span class="pre">EDeclType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">StringToDeclType</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssType</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7CEntity16StringToDeclTypeERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the declaration type as enum type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssType</strong> – <strong>[in]</strong> The declaration type as string. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The declaration type as enum type. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-static-functions">Protected Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN7CEntity11CreateChildE10CEntityPtrRK11CContextPtrP7CEntityDp7TParams">
+<span id="_CPPv3I0DpEN7CEntity11CreateChildERK11CContextPtrP7CEntityDp7TParams"></span><span id="_CPPv2I0DpEN7CEntity11CreateChildERK11CContextPtrP7CEntityDp7TParams"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TEntity</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">TParams</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_c_entity_1a830e3e808a6accc76b812bfe993c2a3a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="typedef_entity__base_8h_1a75ee9b7ea26ce31d7c5b1768cca62c52.html#_CPPv410CEntityPtr" title="CEntityPtr"><span class="n"><span class="pre">CEntityPtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CreateChild</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="typedef_parsecontext_8h_1a2991514a5be4c70b6aae37c729b25b39.html#_CPPv411CContextPtr" title="CContextPtr"><span class="n"><span class="pre">CContextPtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rptrContext</span></span>, <a class="reference internal" href="#_CPPv47CEntity" title="CEntity"><span class="n"><span class="pre">CEntity</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pParent</span></span>, <a class="reference internal" href="#_CPPv4I0DpEN7CEntity11CreateChildE10CEntityPtrRK11CContextPtrP7CEntityDp7TParams" title="CEntity::CreateChild::TParams"><span class="n"><span class="pre">TParams</span></span></a><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tParams</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0DpEN7CEntity11CreateChildE10CEntityPtrRK11CContextPtrP7CEntityDp7TParams" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Create a child entity and optionally add it to the list of children. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>The parameters defined by the parameter type TParams must correspond to the parameters needed for the constructor of TEntity minus the compulsory ptrParent parameter. </p>
+</div>
+<div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>The parse context of the child is the same as the parent. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TEntity</strong> – The entity class to create. This class must derive from <a class="reference internal" href="#class_c_entity"><span class="std std-ref">CEntity</span></a>. </p></li>
+<li><p><strong>TParams</strong> – Zero or more parameter types to use for the constructor of the entity class. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rptrContext</strong> – <strong>[in]</strong> Reference to the context. </p></li>
+<li><p><strong>pParent</strong> – <strong>[in]</strong> Pointer to the parent entity. </p></li>
+<li><p><strong>tParams</strong> – <strong>[in]</strong> Zero or more parameters to use for the constructor of the entity class. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a smart pointer to the entity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity15CEntityIteratorE">
+<span id="_CPPv3N7CEntity15CEntityIteratorE"></span><span id="_CPPv2N7CEntity15CEntityIteratorE"></span><span id="CEntity::CEntityIterator"></span><span class="target" id="class_c_entity_1_1_c_entity_iterator"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CEntityIterator</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">idl</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1idl_1_1_i_entity_iterator.html#_CPPv4N3sdv3idl15IEntityIteratorE" title="sdv::idl::IEntityIterator"><span class="n"><span class="pre">IEntityIterator</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><a class="headerlink" href="#_CPPv4N7CEntity15CEntityIteratorE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Entity iterator helper class. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity15CEntityIterator15CEntityIteratorER13CEntityVector">
+<span id="_CPPv3N7CEntity15CEntityIterator15CEntityIteratorER13CEntityVector"></span><span id="_CPPv2N7CEntity15CEntityIterator15CEntityIteratorER13CEntityVector"></span><span id="CEntity::CEntityIterator::CEntityIterator__CEntityVectorR"></span><span class="target" id="class_c_entity_1_1_c_entity_iterator_1a35790c9758f1e46ec0e5a26799e72ef2"></span><span class="sig-name descname"><span class="n"><span class="pre">CEntityIterator</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="typedef_entity__base_8h_1aebda28391608af9ec8c488ca7c85a88b.html#_CPPv413CEntityVector" title="CEntityVector"><span class="n"><span class="pre">CEntityVector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rvecEntities</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7CEntity15CEntityIterator15CEntityIteratorER13CEntityVector" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rvecEntities</strong> – <strong>[in]</strong> Reference to the entity vector to create the iterator for. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity15CEntityIterator12GetInterfaceEN3sdv12interface_idE">
+<span id="_CPPv3N7CEntity15CEntityIterator12GetInterfaceEN3sdv12interface_idE"></span><span id="_CPPv2N7CEntity15CEntityIterator12GetInterfaceEN3sdv12interface_idE"></span><span id="CEntity::CEntityIterator::GetInterface__sdv::interface_id"></span><span class="target" id="class_c_entity_1_1_c_entity_iterator_1a4077f89c97f59f323d3608cad7d0ecdf"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1interface__t.html#_CPPv4N3sdv11interface_tE" title="sdv::interface_t"><span class="n"><span class="pre">interface_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetInterface</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1a2347c332dec12fa065d315aabc19c98e.html#_CPPv4N3sdv12interface_idE" title="sdv::interface_id"><span class="n"><span class="pre">interface_id</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">idInterface</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N7CEntity15CEntityIterator12GetInterfaceEN3sdv12interface_idE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get access to another interface. Overload of IInterfaceAccess::GetInterface. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>idInterface</strong> – <strong>[in]</strong> The interface id to get access to. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pointer to the interface or NULL when the interface is not supported. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7CEntity15CEntityIterator8GetCountEv">
+<span id="_CPPv3NK7CEntity15CEntityIterator8GetCountEv"></span><span id="_CPPv2NK7CEntity15CEntityIterator8GetCountEv"></span><span id="CEntity::CEntityIterator::GetCountC"></span><span class="target" id="class_c_entity_1_1_c_entity_iterator_1a89ebfbc7972217ab940c3ee523885346"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetCount</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK7CEntity15CEntityIterator8GetCountEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get amount of child entities. Overload of IEntityIterator::GetCount. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the amount of entities in this iterator. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7CEntity15CEntityIterator16GetEntityByIndexE8uint32_t">
+<span id="_CPPv3N7CEntity15CEntityIterator16GetEntityByIndexE8uint32_t"></span><span id="_CPPv2N7CEntity15CEntityIterator16GetEntityByIndexE8uint32_t"></span><span id="CEntity::CEntityIterator::GetEntityByIndex__uint32_t"></span><span class="target" id="class_c_entity_1_1_c_entity_iterator_1a14c6a8e0035c983a28f6ff603f9ce38b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetEntityByIndex</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiIndex</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N7CEntity15CEntityIterator16GetEntityByIndexE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get entity at supplied index. Overload of IEntityIterator::GetEntityByIndex. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiIndex</strong> – <strong>[in]</strong> Index of the entity to return. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns interface pointer to the entity or NULL when the index was too large. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

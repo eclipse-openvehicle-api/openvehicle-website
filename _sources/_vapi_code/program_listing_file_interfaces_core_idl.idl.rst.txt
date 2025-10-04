@@ -1,0 +1,324 @@
+
+.. _program_listing_file_interfaces_core_idl.idl:
+
+Program Listing for File core_idl.idl
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_core_idl.idl>` (``interfaces\core_idl.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core.idl"
+   #include "mem.idl"
+   
+   module sdv
+   {
+       module idl
+       {
+           exception XCompileError
+           {
+   
+               u8string    ssReason;   
+               u8string    ssFile;     
+               uint32      uiLine;     
+               uint32      uiCol;      
+               u8string    ssToken;    
+               u8string    ssLine;     
+           };
+   
+   
+           const u8string ssOptionDevEnvDir = u8"DevEnvDir";       
+           const u8string ssOptionOutDir = u8"OutDir";             
+           const u8string ssOptionFilename = u8"Filename";         
+           const u8string ssOptionFilePath = u8"FilePath";         
+           const u8string ssOptionCodeGen = u8"CodeGen";           
+   
+           interface ICompilerOption
+           {
+               u8string GetOption(in u8string rssOption) const;
+   
+               uint32 GetOptionCnt(in u8string rssOption) const;
+   
+               u8string GetOptionN(in u8string rssOption, in uint32 uiIndex) const;
+           };
+   
+           interface ICompilerInfo
+           {
+               u8string GetFilePath() const;
+   
+               u8string GetOutputDir() const;
+           };
+   
+           enum EEntityType : uint32
+           {
+               type_unknown,                   
+               type_variable,                  
+               type_enum,                      
+               type_struct,                    
+               type_union,                     
+               type_module,                    
+               type_interface,                 
+               type_exception,                 
+               type_attribute,                 
+               type_operation,                 
+               type_parameter,                 
+               type_enum_entry,                
+               type_case_entry,                
+               type_switch_variable,           
+               type_typedef,                   
+               type_meta,                      
+           };
+   
+           enum EDeclType : uint32
+           {
+               decltype_unknown,                   
+               decltype_short,                     
+               decltype_long,                      
+               decltype_long_long,                 
+               decltype_octet,                     
+               decltype_unsigned_short,            
+               decltype_unsigned_long,             
+               decltype_unsigned_long_long,        
+               decltype_float,                     
+               decltype_double,                    
+               decltype_long_double,               
+               decltype_fixed,                     
+               decltype_char,                      
+               decltype_char16,                    
+               decltype_char32,                    
+               decltype_wchar,                     
+               decltype_boolean,                   
+               decltype_native,                    
+               decltype_string,                    
+               decltype_u8string,                  
+               decltype_u16string,                 
+               decltype_u32string,                 
+               decltype_wstring,                   
+               decltype_enum,                      
+               decltype_struct,                    
+               decltype_union,                     
+               decltype_module,                    
+               decltype_interface,                 
+               decltype_exception,                 
+               decltype_attribute,                 
+               decltype_operation,                 
+               decltype_parameter,                 
+               decltype_enum_entry,                
+               decltype_case_entry,                
+               decltype_typedef,                   
+               decltype_void,                      
+               decltype_meta,                      
+               decltype_pointer,                   
+               decltype_sequence,                  
+               decltype_map,                       
+               decltype_bitset,                    
+               decltype_bitfield,                  
+               decltype_bitmask,                   
+               decltype_any,                       
+               decltype_interface_id,              
+               decltype_interface_type,            
+               decltype_exception_id,              
+           };
+   
+           interface IEntityInfo
+           {
+               EEntityType GetType() const;
+   
+               u8string GetName() const;
+   
+               u8string GetScopedName() const;
+   
+               boolean ForwardDeclaration() const;
+   
+               uint64 GetId() const;
+   
+               IInterfaceAccess GetParent() const;
+           };
+   
+           interface IEntityIterator
+           {
+               uint32 GetCount() const;
+   
+               IInterfaceAccess GetEntityByIndex(in uint32 uiIndex);
+           };
+   
+           interface IEntityContext
+           {
+               enum ELocation : uint32
+               {
+                   source,                 
+                   local_include,          
+                   global_include          
+               };
+   
+               ELocation GetLocation() const;
+   
+               u8string GetSourcePath() const;
+   
+               void GetPosition(out uint32 ruiLineBegin, out uint32 ruiColBegin, out uint32 ruiLineEnd, out uint32 ruiColEnd);
+           };
+   
+           interface IMetaEntity
+           {
+               enum EType : uint32
+               {
+                   include_local = 10,             
+                   include_global = 11,            
+                   define = 20,                    
+                   undef = 21,                     
+                   verbatim = 100,                 
+               };
+   
+               EType GetMetaType() const;
+   
+               u8string GetContent() const;
+           };
+   
+           interface IEntityComments
+           {
+               enum ECommentMask : uint32
+               {
+                   c_style_javadoc = 0x40001000,               
+                   c_style_javadoc_post = 0x40201000,          
+                   c_style_qt = 0x40002000,                    
+                   c_style_qt_post = 0x40202000,               
+                   c_style = 0x40000000,                       
+                   cpp_style_javadoc = 0x80001000,             
+                   cpp_style_javadoc_post = 0x80201000,        
+                   cpp_style_qt = 0x80002000,                  
+                   cpp_style_qt_post = 0x80202000,             
+                   cpp_style = 0x80000000,                     
+                   loc_succeeding = 0x00200000,                
+                   format_javadoc = 0x00001000,                
+                   format_qt = 0x00002000,                     
+                   format_mask = 0x0000f000,                   
+               };
+   
+               u8string GetComments(out uint32 ruiFlags) const;
+           };
+   
+           interface IDefinitionEntity
+           {
+               boolean IsUnnamed() const;
+   
+               IEntityIterator GetChildren();
+   
+               IEntityIterator GetInheritance();
+           };
+   
+           interface IForwardDeclarationEntity
+           {
+               IInterfaceAccess GetEntity();
+           };
+   
+           interface IDeclarationType
+           {
+               EDeclType GetBaseType() const;
+   
+               u8string  GetTypeString() const;
+   
+               IInterfaceAccess GetTypeDefinition() const;
+   
+               uint32 GetFixedLength() const;
+   
+               uint32 GetDecimals() const;
+   
+               IInterfaceAccess GetValueType() const;
+   
+               IInterfaceAccess GetKeyType() const;
+           };
+   
+           struct SArrayDimension
+           {
+               enum EDimensionType : uint32
+               {
+                   bound = 0,             
+                   unbound = 2,           
+               } eType;    
+   
+               u8string ssExpression; 
+           };
+   
+           interface IDeclarationEntity
+           {
+               IInterfaceAccess GetDeclarationType() const;
+   
+               boolean IsReadOnly() const;
+   
+               boolean IsAnonymous() const;
+   
+               boolean HasArray() const;
+   
+               sequence<SArrayDimension> GetArrayDimensions() const;
+   
+               boolean HasAssignment() const;
+   
+               u8string GetAssignment() const;
+           };
+   
+           interface IInterfaceEntity
+           {
+               boolean IsLocal() const;
+           };
+   
+           interface IOperationEntity
+           {
+               IEntityIterator GetParameters();
+   
+               IEntityIterator GetExceptions();
+           };
+   
+           interface IAttributeEntity
+           {
+               IEntityIterator GetReadExceptions();
+   
+               IEntityIterator GetWriteExceptions();
+           };
+   
+           interface IParameterEntity
+           {
+               enum EParameterDirection : uint32
+               {
+                   unknown,    
+                   input,      
+                   output,     
+                   in_out,     
+               };
+   
+               EParameterDirection GetDirection() const;
+           };
+   
+           interface IEnumEntity
+           {
+               void GetBaseType(out EDeclType reType, out IInterfaceAccess rpType) const;
+           };
+   
+           interface IUnionEntity
+           {
+               enum ESwitchInterpret : uint32
+               {
+                   switch_variable,        
+                   switch_type,            
+               };
+   
+               ESwitchInterpret GetSwitchInterpretation() const;
+   
+               void GetSwitchType(out EDeclType reType, out IInterfaceAccess rpType) const;
+   
+               void GetSwitchVar(out u8string rssVarStr, out IInterfaceAccess rpVarEntity,
+                   out IInterfaceAccess rpVarContainer) const;
+           };
+   
+           interface ICaseEntity
+           {
+               u8string GetLabel() const;
+   
+               boolean IsDefault() const;
+           };
+   
+       }; // module idl
+   }; // module sdv
+   

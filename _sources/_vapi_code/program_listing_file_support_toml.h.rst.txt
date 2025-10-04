@@ -1,0 +1,265 @@
+
+.. _program_listing_file_support_toml.h:
+
+Program Listing for File toml.h
+===============================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_toml.h>` (``support\toml.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SDV_CONFIG_H
+   #define SDV_CONFIG_H
+   
+   #include "../interfaces/toml.h"
+   #include "interface_ptr.h"
+   #include "local_service_access.h"
+   
+   namespace sdv::toml
+   {
+       class CNode
+       {
+       public:
+           CNode() = default;
+   
+           CNode(const TInterfaceAccessPtr& rptrNode);
+   
+           CNode& operator=(const TInterfaceAccessPtr& rptrNode);
+   
+           virtual bool IsValid() const;
+   
+           virtual operator bool() const;
+   
+           sdv::u8string GetName();
+   
+           ENodeType GetType();
+   
+           sdv::any_t GetValue();
+   
+           virtual void Clear();
+   
+           sdv::u8string GetTOML() const;
+   
+       protected:
+           TInterfaceAccessPtr     m_ptrNode;              
+           INodeInfo*              m_pNodeInfo = nullptr;  
+       };
+   
+       class CNodeCollection : public CNode
+       {
+       public:
+           CNodeCollection() = default;
+   
+           CNodeCollection(const TInterfaceAccessPtr& rptrNode);
+   
+           CNodeCollection(const CNode& rNode);
+   
+           CNodeCollection& operator=(const TInterfaceAccessPtr& rptrNode);
+   
+           CNodeCollection& operator=(const CNode& rNode);
+   
+           virtual bool IsValid() const override;
+   
+           virtual operator bool() const override;
+   
+           size_t GetCount() const;
+   
+           CNode Get(size_t nIndex) const;
+   
+           CNode operator[](size_t nIndex) const;
+   
+           virtual void Clear() override;
+   
+           CNode GetDirect(const sdv::u8string& rssNode) const;
+   
+       private:
+           INodeCollection*    m_pCollection = nullptr;        
+       };
+   
+       class CTOMLParser : public CNodeCollection
+       {
+       public:
+           CTOMLParser() = default;
+   
+           CTOMLParser(const std::string& rssConfig);
+   
+           bool Process(const std::string& rssConfig);
+   
+           virtual bool IsValid() const override;
+   
+           virtual operator bool() const override;
+   
+           // Ignore cppcheck warning for not using dynamic binding when being called through the destructor.
+           // cppcheck-suppress virtualCallInConstructor
+           virtual void Clear() override;
+   
+       private:
+           TObjectPtr      m_ptrParserUtil;        
+           ITOMLParser*    m_pParser = nullptr;    
+       };
+   
+       inline CNode::CNode(const TInterfaceAccessPtr& rptrNode)
+       {
+           m_pNodeInfo = rptrNode.GetInterface<INodeInfo>();
+           if (!m_pNodeInfo)
+               return;
+           m_ptrNode = rptrNode;
+       }
+   
+       inline CNode& CNode::operator=(const TInterfaceAccessPtr& rptrNode)
+       {
+           CNode::Clear();
+           m_pNodeInfo = rptrNode.GetInterface<INodeInfo>();
+           if (!m_pNodeInfo)
+               return *this;
+           m_ptrNode = rptrNode;
+           return *this;
+       }
+   
+       inline bool CNode::IsValid() const
+       {
+           return m_pNodeInfo ? true : false;
+       }
+   
+       inline CNode::operator bool() const
+       {
+           return m_pNodeInfo ? true : false;
+       }
+   
+       inline sdv::u8string CNode::GetName()
+       {
+           return m_pNodeInfo ? m_pNodeInfo->GetName() : sdv::u8string();
+       }
+   
+       inline ENodeType CNode::GetType()
+       {
+           return m_pNodeInfo ? m_pNodeInfo->GetType() : ENodeType::node_invalid;
+       }
+   
+       inline sdv::any_t CNode::GetValue()
+       {
+           return m_pNodeInfo ? m_pNodeInfo->GetValue() : sdv::any_t();
+       }
+   
+       inline void CNode::Clear()
+       {
+           m_ptrNode = nullptr;
+           m_pNodeInfo = nullptr;
+       }
+   
+       inline sdv::u8string CNode::GetTOML() const
+       {
+           return m_pNodeInfo ? m_pNodeInfo->GetTOML() : sdv::u8string();
+       }
+   
+       inline CNodeCollection::CNodeCollection(const TInterfaceAccessPtr& rptrNode) : CNode(rptrNode)
+       {
+           m_pCollection = rptrNode.GetInterface<INodeCollection>();
+           if (!m_pCollection) CNode::Clear();
+       }
+   
+       inline CNodeCollection::CNodeCollection(const CNode& rNode) : CNode(rNode)
+       {
+           m_pCollection = m_ptrNode.GetInterface<INodeCollection>();
+           if (!m_pCollection) CNode::Clear();
+       }
+   
+       inline CNodeCollection& CNodeCollection::operator=(const TInterfaceAccessPtr& rptrNode)
+       {
+           CNode::operator=(rptrNode);
+           m_pCollection = rptrNode.GetInterface<INodeCollection>();
+           if (!m_pCollection) CNode::Clear();
+           return *this;
+       }
+   
+       inline CNodeCollection& CNodeCollection::operator=(const CNode& rNode)
+       {
+           CNode::operator=(rNode);
+           m_pCollection = m_ptrNode.GetInterface<INodeCollection>();
+           if (!m_pCollection) CNode::Clear();
+           return *this;
+       }
+   
+       inline bool CNodeCollection::IsValid() const
+       {
+           return m_pCollection ? true : false;
+       }
+   
+       inline CNodeCollection::operator bool() const
+       {
+           return m_pCollection ? true : false;
+       }
+   
+       inline size_t CNodeCollection::GetCount() const
+       {
+           return m_pCollection ? m_pCollection->GetCount() : 0;
+       }
+   
+       inline CNode CNodeCollection::Get(size_t nIndex) const
+       {
+           return m_pCollection ? CNode(m_pCollection->GetNode(static_cast<uint32_t>(nIndex))) : CNode();
+       }
+   
+       inline CNode CNodeCollection::operator[](size_t nIndex) const
+       {
+           return m_pCollection ? CNode(m_pCollection->GetNode(static_cast<uint32_t>(nIndex))) : CNode();
+       }
+   
+       inline void CNodeCollection::Clear()
+       {
+           CNode::Clear();
+           m_pCollection = nullptr;
+       }
+   
+       inline CNode CNodeCollection::GetDirect(const sdv::u8string& rssNode) const
+       {
+           return m_pCollection ? CNode(m_pCollection->GetNodeDirect(rssNode)) : CNode();
+       }
+   
+       inline CTOMLParser::CTOMLParser(const std::string& rssConfig)
+       {
+           Process(rssConfig);
+       }
+   
+       inline bool CTOMLParser::Process(const std::string& rssConfig)
+       {
+           Clear();
+           m_ptrParserUtil = sdv::core::CreateUtility("TOMLParserUtility");
+           m_pParser = m_ptrParserUtil.GetInterface<ITOMLParser>();
+           if (m_pParser)
+           {
+               try
+               {
+                   m_pParser->Process(rssConfig);
+                   CNodeCollection::operator=(m_ptrParserUtil);
+               }
+               catch (const sdv::toml::XTOMLParseException&)
+               {
+                   Clear();
+                   return false;
+               }
+           }
+           return IsValid();
+       }
+   
+       inline bool CTOMLParser::IsValid() const
+       {
+           return m_pParser ? true : false;
+       }
+   
+       inline CTOMLParser::operator bool() const
+       {
+           return m_pParser ? true : false;
+       }
+   
+       inline void CTOMLParser::Clear()
+       {
+           m_pParser = nullptr;
+           m_ptrParserUtil.Clear();
+       }
+   
+   }
+   
+   #endif // !defined SDV_CONFIG_H

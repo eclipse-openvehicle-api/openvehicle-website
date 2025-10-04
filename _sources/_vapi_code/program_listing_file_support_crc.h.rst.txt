@@ -1,0 +1,159 @@
+
+.. _program_listing_file_support_crc.h:
+
+Program Listing for File crc.h
+==============================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_crc.h>` (``support\crc.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SDV_CRC_H
+   #define SDV_CRC_H
+   
+   #include <array>
+   #include <cstdint>
+   #include <stddef.h>
+   
+   namespace sdv
+   {
+       template <typename T>
+       constexpr T reflect(T tValue)
+       {
+           static_assert(std::is_arithmetic_v<T> || std::is_same_v<T, bool>);
+   
+           T tMask = 1;
+           T tReflection{0};
+           for (size_t nBit = 0; nBit < sizeof(T) * 8; nBit++)
+           {
+               tReflection <<= 1;
+               if (tValue & tMask)
+                   tReflection |= 0x1;
+               tMask <<= 1;
+           }
+           return tReflection;
+       }
+   
+       template <typename TCRC, TCRC tPolynomial, TCRC tInitVal, TCRC tXorOut, bool bReflectIn, bool bReflectOut>
+       class crc
+       {
+       public:
+           using TCRCType = TCRC;      
+   
+           template <typename T>
+           TCRCType calc_checksum(const T* pData, size_t nCount) noexcept;
+   
+           template <typename T>
+           void add(T tValue) noexcept;
+   
+           TCRCType get_checksum() const noexcept;
+   
+           void set_checksum(TCRCType tCrcValue) noexcept;
+   
+           void reset() noexcept;
+   
+       private:
+           static constexpr uint64_t m_nWidth = 8 * sizeof(TCRCType);
+   
+           static constexpr uint64_t m_nMsb = 1ull << (m_nWidth - 1);
+   
+           static constexpr auto m_arrTable = []
+           {
+               std::array<TCRCType, 256> arrTemp{};
+               for (size_t tDividend = 0; tDividend < 256; ++tDividend)
+               {
+                   TCRCType tRemainder = static_cast<TCRCType>(tDividend << (m_nWidth - 8));
+                   for (uint8_t bit = 8; bit > 0; --bit)
+                   {
+                       if (tRemainder & m_nMsb)
+                           tRemainder = (tRemainder << 1) ^ tPolynomial;
+                       else
+                           tRemainder = (tRemainder << 1);
+                   }
+                   arrTemp[tDividend] = tRemainder;
+               }
+               return arrTemp;
+           }();
+   
+           TCRCType m_tCrcValue = tInitVal;  
+       };
+   
+       using crcSAE_J1850 = sdv::crc<uint8_t, 0x1du, 0xff, 0xff, false, false>;
+   
+       using crcAUTOSAR_8H2F = sdv::crc<uint8_t, 0x2fu, 0xff, 0xff, false, false>;
+   
+       using crcCCITT_FALSE = sdv::crc<uint16_t, 0x1021u, 0xffffu, 0, false, false> ;
+   
+       using crcARC = sdv::crc<uint16_t, 0x8005, 0, 0, true, true>;
+   
+       using crcIEEE_802_3 = sdv::crc<uint32_t, 0x04C11DB7u, 0xffffffffu, 0xffffffffu, true, true> ;
+   
+       using crcAUTOSAR_P4 = sdv::crc<uint32_t, 0xF4ACFB13u, 0xffffffffu, 0xffffffffu, true, true> ;
+   
+       using crcCRC32C = sdv::crc<uint32_t, 0x1EDC6F41, 0xffffffffu, 0xffffffffu, true, true> ;
+   
+       using crcECMA = sdv::crc<uint64_t, 0x42F0E1EBA9EA3693, 0xffffffffffffffffu, 0xffffffffffffffffu, true, true>;
+   
+       template <typename TCRC, TCRC tPolynomial, TCRC tInitVal, TCRC tXorOut, bool bReflectIn, bool bReflectOut>
+       template <typename T>
+       typename crc<TCRC, tPolynomial, tInitVal, tXorOut, bReflectIn, bReflectOut>::TCRCType
+           crc<TCRC, tPolynomial, tInitVal, tXorOut, bReflectIn, bReflectOut>::calc_checksum(const T* pData, size_t nCount) noexcept
+       {
+           if (!pData || !nCount) return get_checksum();
+           for (size_t nIndex = 0; nIndex < nCount; nIndex++)
+               add(pData[nIndex]);
+           return get_checksum();
+       }
+   
+       template <typename TCRC, TCRC tPolynomial, TCRC tInitVal, TCRC tXorOut, bool bReflectIn, bool bReflectOut>
+       template <typename T>
+       inline void crc<TCRC, tPolynomial, tInitVal, tXorOut, bReflectIn, bReflectOut>::add(T tValue) noexcept
+       {
+           if constexpr (bReflectIn)
+           {
+               for (size_t nIndex = 0; nIndex < sizeof(T); ++nIndex)
+               {
+                   uint8_t data = static_cast<uint8_t>(reflect(reinterpret_cast<uint8_t*>(&tValue)[nIndex]) ^ (m_tCrcValue >> (m_nWidth - 8)));
+                   m_tCrcValue = m_arrTable[data] ^ (m_tCrcValue << 8);
+               }
+           }
+           else
+           {
+               for (size_t nIndex = 0; nIndex < sizeof(T); ++nIndex)
+               {
+                   uint8_t data = static_cast<uint8_t>((reinterpret_cast<uint8_t*>(&tValue)[nIndex]) ^ (m_tCrcValue >> (m_nWidth - 8)));
+                   m_tCrcValue = m_arrTable[data] ^ (m_tCrcValue << 8);
+               }
+           }
+       }
+   
+       template <typename TCRC, TCRC tPolynomial, TCRC tInitVal, TCRC tXorOut, bool bReflectIn, bool bReflectOut>
+       inline typename crc<TCRC, tPolynomial, tInitVal, tXorOut, bReflectIn, bReflectOut>::TCRCType
+           crc<TCRC, tPolynomial, tInitVal, tXorOut, bReflectIn, bReflectOut>::get_checksum() const noexcept
+       {
+           if constexpr (bReflectOut)
+               return static_cast<TCRCType>(reflect(m_tCrcValue) ^ tXorOut);
+           else
+               return static_cast<TCRCType>(m_tCrcValue ^ tXorOut);
+       }
+   
+       template <typename TCRC, TCRC tPolynomial, TCRC tInitVal, TCRC tXorOut, bool bReflectIn, bool bReflectOut>
+       inline void crc<TCRC, tPolynomial, tInitVal, tXorOut, bReflectIn, bReflectOut>::set_checksum(TCRCType tCrcValue) noexcept
+       {
+           if constexpr (bReflectOut)
+               m_tCrcValue = static_cast<TCRCType>(reflect(static_cast<TCRCType>(tCrcValue ^ tXorOut)));
+           else
+               m_tCrcValue = static_cast<TCRCType>(tCrcValue ^ tXorOut);
+       }
+   
+       template <typename TCRC, TCRC tPolynomial, TCRC tInitVal, TCRC tXorOut, bool bReflectIn, bool bReflectOut>
+       inline void crc<TCRC, tPolynomial, tInitVal, tXorOut, bReflectIn, bReflectOut>::reset() noexcept
+       {
+           m_tCrcValue = tInitVal;
+       }
+   
+   } // namespace sdv
+   
+   #endif // SDV_CRC_H

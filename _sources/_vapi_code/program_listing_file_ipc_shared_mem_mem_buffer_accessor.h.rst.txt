@@ -1,0 +1,228 @@
+
+.. _program_listing_file_ipc_shared_mem_mem_buffer_accessor.h:
+
+Program Listing for File mem_buffer_accessor.h
+==============================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_ipc_shared_mem_mem_buffer_accessor.h>` (``ipc_shared_mem\mem_buffer_accessor.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef MEM_BUFFER_ACCESSOR_H
+   #define MEM_BUFFER_ACCESSOR_H
+   
+   #include <deque>
+   #include <mutex>
+   #include <cassert>
+   #include <cstring>
+   #include <iostream>
+   #include <sstream>
+   #include <thread>
+   #include <optional>
+   #include <interfaces/core_types.h>
+   
+   enum class EAccessType
+   {
+       rx,     
+       tx,     
+   };
+   
+   class CMemBufferAccessorBase
+   {
+   protected:
+       struct SBufferHdr
+       {
+           uint32_t uiVersion = SDVFrameworkInterfaceVersion;  
+           uint32_t uiSize    = 0u;                            
+           uint32_t uiTxPos   = 0u;                            
+           uint32_t uiRxPos   = 0u;                            
+       };
+   
+   public:
+       struct SPacketHdr
+       {
+           enum class EType : uint16_t
+           {
+               data     = 0, 
+               stuffing = 1, 
+           } eType;          
+   
+           enum class EState : uint16_t
+           {
+               free     = 0, 
+               reserved = 1, 
+               commit   = 2, 
+               read     = 3, 
+           } eState;   
+   
+           uint32_t uiSize; 
+       };
+   
+       CMemBufferAccessorBase() = default;
+   
+       virtual void Attach(uint8_t* pBuffer, uint32_t uiSize = 0);
+   
+       virtual void Detach();
+   
+       bool IsValid() const;
+   
+       const uint8_t* GetBufferPointer() const;
+   
+       void ResetRx() { if (m_pHdr) m_pHdr->uiRxPos = m_pHdr->uiTxPos; m_bCancel = false; }
+   
+       void CancelSend() { m_bCancel = true; TriggerDataReceive(); std::this_thread::sleep_for(std::chrono::milliseconds(10)); }
+   
+       bool Canceled() const { return m_bCancel; }
+   
+   protected:
+       SPacketHdr* GetPacketHdr(uint32_t uiPos) const;
+   
+       uint8_t* GetPacketData(uint32_t uiPos) const;
+   
+       virtual bool HasUnreadData() const { return m_pHdr && m_pHdr->uiRxPos != m_pHdr->uiTxPos; }
+   
+       virtual void TriggerDataSend() = 0;
+   
+       virtual bool WaitForData(uint32_t uiTimeoutMs) const = 0;
+   
+       virtual void TriggerDataReceive() = 0;
+   
+       virtual bool WaitForFreeSpace(uint32_t uiTimeoutMs) const = 0;
+   
+       template <typename T>
+       inline uint32_t Align(T tSize)
+       {
+           uint32_t uiSize = static_cast<uint32_t>(tSize);
+           return (uiSize % 8) ? uiSize + 8 - uiSize % 8 : uiSize;
+       }
+   
+       uint8_t*    m_pBuffer = nullptr;    
+       SBufferHdr* m_pHdr  = nullptr;      
+       bool        m_bCancel = false;      
+   };
+   
+   // Forward declaration
+   class CMemBufferAccessorTx;
+   
+   class CAccessorTxPacket
+   {
+   public:
+       CAccessorTxPacket() = default;
+   
+       CAccessorTxPacket(CMemBufferAccessorTx& rAccessor, CMemBufferAccessorBase::SPacketHdr* pPacketHdr);
+   
+       CAccessorTxPacket(const CAccessorTxPacket& rpacket) = delete;
+   
+       CAccessorTxPacket(CAccessorTxPacket&& rpacket) noexcept;
+   
+       ~CAccessorTxPacket();
+   
+       CAccessorTxPacket& operator=(const CAccessorTxPacket& rpacket) = delete;
+   
+       CAccessorTxPacket& operator=(CAccessorTxPacket&& rpacket) noexcept;
+   
+       operator bool() const;
+   
+       bool IsValid() const;
+   
+       void Commit();
+   
+       uint32_t GetSize() const;
+   
+       uint8_t* GetDataPtr();
+   
+       template <typename TData>
+       TData* GetDataPtr(uint32_t uiOffset = 0)
+       {
+           return GetSize() >= (uiOffset + sizeof(TData)) ? reinterpret_cast<TData*>(GetDataPtr()) : nullptr;
+       }
+   
+   private:
+       CMemBufferAccessorTx*               m_pAccessor = nullptr;      
+       CMemBufferAccessorBase::SPacketHdr* m_pPacketHdr = nullptr;     
+   };
+   
+   class CMemBufferAccessorTx : public CMemBufferAccessorBase
+   {
+       friend CAccessorTxPacket;
+   
+   public:
+       ~CMemBufferAccessorTx();
+   
+       std::optional<CAccessorTxPacket> Reserve(uint32_t uiSize, uint32_t uiTimeoutMs = 1000);
+   
+       bool TryWrite(const void* pData, uint32_t uiSize);
+   
+       static constexpr EAccessType GetAccessType() { return EAccessType::tx; };
+   
+   private:
+       void Commit(SPacketHdr* pPacketHdr);
+   
+       bool                    m_bBlockReserve = false;    
+       std::mutex              m_mtxReservedPackes;        
+       std::deque<SPacketHdr*> m_queueReservedPackets;     
+   };
+   
+   // Forward declaration
+   class CMemBufferAccessorRx;
+   
+   class CAccessorRxPacket
+   {
+   public:
+       CAccessorRxPacket() = default;
+   
+       CAccessorRxPacket(CMemBufferAccessorRx& rAccessor, CMemBufferAccessorBase::SPacketHdr* pPacketHdr);
+   
+       CAccessorRxPacket(const CAccessorRxPacket& rpacket) = delete;
+   
+       CAccessorRxPacket(CAccessorRxPacket&& rpacket) noexcept;
+   
+       CAccessorRxPacket& operator=(const CAccessorRxPacket& rpacket) = delete;
+   
+       CAccessorRxPacket& operator=(CAccessorRxPacket&& rpacket) noexcept;
+   
+       operator bool() const;
+   
+       bool IsValid() const;
+   
+       void Reset();
+   
+       uint32_t GetSize() const;
+   
+       const uint8_t* GetData() const;
+   
+       template <typename TData>
+       const TData* GetData(uint32_t uiOffset = 0) const
+       {
+           return GetSize() >= (uiOffset + sizeof(TData)) ? reinterpret_cast<const TData*>(GetData()) : nullptr;
+       }
+   
+       void Accept();
+   
+   private:
+       CMemBufferAccessorRx*               m_pAccessor = nullptr;      
+       CMemBufferAccessorBase::SPacketHdr* m_pPacketHdr = nullptr;     
+   };
+   
+   class CMemBufferAccessorRx : public CMemBufferAccessorBase
+   {
+       friend CAccessorRxPacket;
+   public:
+       // Suppress cppcheck warning about a useless override. The function is here for clearer code documentation.
+       // cppcheck-suppress uselessOverride
+       virtual void Attach(uint8_t* pBuffer, uint32_t uiSize = 0) override;
+   
+       std::optional<CAccessorRxPacket> TryRead();
+   
+       static constexpr EAccessType GetAccessType() { return EAccessType::rx; };
+   
+   protected:
+       void ReleasePackets();
+   
+   private:
+       std::mutex          m_mtxReadAccess;            
+   };
+   
+   #endif // !defined MEM_BUFFER_ACCESSOR_H

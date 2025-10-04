@@ -1,0 +1,73 @@
+
+.. _program_listing_file_sdv_idl_compiler_lexerbase.h:
+
+Program Listing for File lexerbase.h
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_lexerbase.h>` (``sdv_idl_compiler\lexerbase.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LEXERBASE_H
+   #define LEXERBASE_H
+   
+   enum class ETokenType
+   {
+       token_none,             
+       token_whitespace,       
+       token_comments,         
+       token_identifier,       
+       token_keyword,          
+       token_literal,          
+       token_separator,        
+       token_operator,         
+       token_meta,             
+   };
+   
+   enum class ETokenLiteralType
+   {
+       token_undefined,                        
+       token_literal_dec_integer,              
+       token_literal_oct_integer,              
+       token_literal_hex_integer,              
+       token_literal_bin_integer,              
+       token_literal_dec_floating_point,       
+       token_literal_hex_floating_point,       
+       token_literal_fixed_point,              
+       token_literal_string,                   
+       token_literal_raw_string,               
+       token_literal_character,                
+       token_literal_character_sequence,       
+       token_literal_boolean,                  
+       token_literal_nullptr,                  
+   };
+   
+   enum class ETokenMetaType
+   {
+       token_undefined,                        
+       token_meta_include_local,               
+       token_meta_include_global,              
+       token_meta_define,                      
+       token_meta_undef,                       
+       token_meta_verbatim,                    
+   };
+   
+   // Forward declarations
+   class CToken;
+   class CCodePos;
+   
+   struct ILexerCallback
+   {
+       virtual void InsertWhitespace(const CToken &rtoken) = 0;
+   
+       virtual void InsertComment(const CToken& rtoken) = 0;
+   
+       virtual void ProcessPreprocDirective(CCodePos& rCode) = 0;
+   };
+   
+   
+   
+   
+   #endif // !defined LEXERBASE_H

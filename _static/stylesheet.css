@@ -1,0 +1,280 @@
+/* stylesheet.css */
+/* Import secondary sidebar styles */
+@import url('secondary-sidebar.css');
+
+/* Define custom colors for light and dark themes */
+
+/* Default (light mode) styles */
+:root {
+    --background-color: #ffffff; /* Light background */
+    --text-color: #000000; /* Dark text */
+    --navbar-background-color: #f0f0f0; /* Light navbar background */
+    --tile-background-color: linear-gradient(135deg, rgb(1, 68, 131), rgb(129, 206, 241)); /* Tile gradient */
+    --tile-hover-background-color: linear-gradient(135deg, rgb(0, 50, 100), rgb(100, 180, 220)); /* Tile hover gradient */
+    --sidebar-background-color: #f9f9f9; /* Light sidebar background */
+    --bs-body-bg: #eaeaea; /* Light body background */
+    --bs-body-color: #000000; /* Dark text */
+    --bs-navbar-bg: #ffffff; /* Light navbar background */
+    --bs-card-bg: linear-gradient(135deg, rgb(1, 68, 131), rgb(129, 206, 241)); /* Tile gradient */
+    --bs-card-hover-bg: linear-gradient(135deg, rgb(0, 50, 100), rgb(100, 180, 220)); /* Tile hover gradient */
+}
+
+/* Dark mode styles */
+[data-theme="dark"] {
+    --background-color: linear-gradient(to top right, rgb(0, 8, 40), rgb(0, 87, 183)); /* Gradient background */
+    --text-color: #ffffff; /* Light text */
+    --navbar-background-color: #ffffff; /* White navbar background */
+    --tile-background-color: linear-gradient(135deg, rgb(0, 50, 100), rgb(100, 180, 220)); /* Tile gradient */
+    --tile-hover-background-color: linear-gradient(135deg, rgb(1, 68, 131), rgb(129, 206, 241)); /* Tile hover gradient */
+    --sidebar-background-color: #001f3f; /* Dark sidebar background */
+    --bs-body-bg: linear-gradient(to top right, rgb(0, 8, 40), rgb(0, 87, 183)); /* Gradient for main body */
+    --bs-body-color: #ffffff; /* Light text */
+    --bs-navbar-bg: rgba(0, 87, 184, 1); /* navbar background */
+    --bs-card-bg: linear-gradient(135deg, rgb(0, 50, 100), rgb(100, 180, 220)); /* Tile gradient */
+    --bs-card-hover-bg: linear-gradient(135deg, rgb(1, 68, 131), rgb(129, 206, 241)); /* Tile hover gradient */
+}
+
+/* Apply the custom colors */
+body {
+    background: var(--bs-body-bg) !important;
+    color: var(--bs-body-color) !important;
+    font-family: 'ZFPrometo', Arial, sans-serif;
+}
+
+/* Default (dark mode) navbar background color */
+.navbar {
+    background-color: var(--bs-navbar-bg) !important; /* White navbar background */
+    color: var(--text-color) !important; /* Navbar text color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar a {
+    color: var(--text-color) !important; /* Navbar link color */
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    color: #4CAF50 !important; /* Highlight navbar links on hover */
+}
+
+/* Add a continuous shining animation to the image */
+.shining-image {
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 20px; /* Rounded corners */
+    transition: 0.5s;
+    -webkit-mask: 
+        linear-gradient(135deg, #000c 5%, #ffffff, #000c 95%)
+        100% 100% / 300% 300%;
+    mask: 
+        linear-gradient(135deg, #000c 5%, #ffffff, #000c 95%)
+        100% 100% / 300% 300%;
+    animation: shine-mask 2s infinite alternate; /* Faster and more intense animation */
+    margin: 0; /* Remove any extra margin */
+}
+
+@keyframes shine-mask {
+    0% {
+        -webkit-mask-position: 100% 100%;
+        mask-position: 100% 100%;
+    }
+    100% {
+        -webkit-mask-position: 0 0;
+        mask-position: 0 0;
+    }
+}
+
+/* Right sidebar styles */
+.bd-sidebar, .sidebar {
+    background-color: var(--sidebar-background-color) !important; /* Force sidebar background color */
+    color: var(--text-color) !important; /* Sidebar text color */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    margin-left: auto; /* Push the sidebar to the right */
+    margin-right: 0; /* Align to the screen edge */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.bd-sidebar a, .sidebar a {
+    color: var(--text-color) !important; /* Sidebar link color */
+    text-decoration: none;
+}
+
+.bd-sidebar a:hover, .sidebar a:hover {
+    color: #4CAF50 !important; /* Highlight sidebar links on hover */
+}
+
+/* Adjust the primary sidebar to be responsive */
+.bd-sidebar {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .bd-sidebar {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px; /* Adjust width as needed */
+        height: 100vh; /* Full height */
+        overflow-y: auto; /* Enable scrolling if content overflows */
+    }
+}
+
+.bd-sidebar:hover, .sidebar:hover {
+    background-color: #1a5733; /* Slightly lighter shade on hover */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+}
+
+.bd-sidebar a, .sidebar a {
+    color: var(--text-color) !important; /* Sidebar link color */
+    text-decoration: none;
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.bd-sidebar a:hover, .sidebar a:hover {
+    color: #4CAF50 !important; /* Highlight sidebar links on hover */
+}
+
+/* Add a logo to the top-right corner */
+.top-right-logo {
+    position: fixed;
+    top: 10px; /* Adjust the vertical position */
+    right: 10px; /* Adjust the horizontal position */
+    z-index: 1000; /* Ensure it stays on top */
+    width: 50px; /* Adjust the size of the logo */
+    height: auto;
+}
+
+.top-right-logo img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Add a logo to the top-left corner */
+.top-left-logo {
+    position: fixed;
+    top: 10px; /* Adjust the vertical position */
+    right: 10px; /* Adjust the horizontal position to the right */
+    z-index: 1000; /* Ensure it stays on top */
+    width: 50px; /* Adjust the size of the logo */
+    height: auto;
+}
+
+.top-left-logo img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Main content area */
+.bd-main {
+    background-color: var(--bs-body-bg) !important; /* Force main content background color */
+    color: var(--bs-body-color) !important; /* Force main content text color */
+    margin-left: 0 !important; /* Remove left margin */
+    margin-right: 350px; /* Leave space for the right sidebar */
+    padding: 20px; /* Add padding for spacing */
+    box-sizing: border-box; /* Include padding in width calculation */
+    width: calc(100% - 350px); /* Adjust width to account for the right sidebar */
+    position: relative; /* Ensure it stays under the navbar */
+    top: 0; /* Align to the top of the browser */
+}
+
+/* Add styles for interactive tiles */
+.interactive-tile {
+    width: 200px;
+    height: 200px;
+    padding: 15px; /* Add padding for spacing */
+    background: var(--bs-card-bg) !important;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.interactive-tile:hover {
+    background: var(--bs-card-hover-bg) !important;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Enhance shadow */
+    transform: scale(1.05); /* Slightly enlarge the tile */
+}
+
+.interactive-tile a {
+    font-size: 1.5em; /* Make the text bigger */
+    text-decoration: none;
+    color: white;
+    text-align: center; /* Center the text */
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.interactive-tile a:hover {
+    color: #f0f0f0; /* Slightly lighter text color */
+    text-decoration: underline; /* Underline the text */
+}
+
+/* Parent container for the main content and sidebars */
+.parent-container {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: row; /* Align items horizontally */
+    width: 100%; /* Take the full width of the screen */
+    height: 100vh; /* Full height of the viewport */
+    box-sizing: border-box; /* Include padding and border in width/height calculations */
+}
+
+/* Custom style for the footer */
+.bd-footer .bd-footer__inner {
+    background-color: var(--bs-body-bg) !important; /* Use body background color */
+    color: var(--bs-body-color) !important; /* Use body text color */
+    padding: 10px; /* Add padding for spacing */
+    text-align: center; /* Center-align the content */
+    font-size: 1em; /* Adjust font size */
+    width: 100%; /* Take full width */
+    margin: 0; /* Remove any extra margin */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for theme changes */
+}
+
+/* Style links inside the footer */
+.bd-footer .bd-footer__inner a {
+    color: var(--bs-body-color) !important; /* Use body text color for links */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.bd-footer .bd-footer__inner a:hover {
+    color: #4CAF50 !important; /* Highlight links on hover */
+    text-decoration: underline; /* Add underline on hover */
+}
+
+/* Responsive styles */
+@media (max-width: 700px) {
+    .container, .bd-main, .parent-container {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 5px !important;
+        box-sizing: border-box;
+    }
+    .interactive-tile {
+        width: 100% !important;
+        height: auto !important;
+        min-width: 0 !important;
+        margin: 10px 0 !important;
+        font-size: 1em !important;
+        padding: 10px !important;
+    }
+    .shining-image {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+    }
+    h1, h2, h3 {
+        font-size: 1.2em !important;
+        font-family: ZFPrometo !important;
+    }
+    .bd-sidebar, .sidebar {
+        display: none !important;
+    }
+}

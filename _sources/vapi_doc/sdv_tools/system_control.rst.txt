@@ -1,0 +1,63 @@
+.. _vapi-system_control:
+
+System Control
+==============
+
+sdv_control
+~~~~~~~~~~~
+
+**Description:**
+Main control utility for managing the SDV server and services. Supports startup, shutdown, installation, and service lifecycle operations. 
+
+**Role:**
+Used to initialize the SDV system, manage installed components, and control service execution dynamically. 
+
+sdv_trace_mon
+~~~~~~~~~~~~~
+
+**Description:**
+Monitors log messages from the SDV server for debugging and diagnostics.  
+
+**Role:**
+Used during development and runtime to observe system behavior, trace issues, and validate service interactions.  
+
+sdv_local_shutdown
+~~~~~~~~~~~~~~~~~~
+
+**Description:**
+Shuts down a locally started SDV core instance.  
+
+**Role:**
+Used to terminate the SDV system in standalone or simulation environments without disrupting other processes.
+
+System Internals
+----------------
+
+sdv_core
+~~~~~~~~
+
+**Description:**
+The core application that runs the SDV service framework. Supports both local simulation and server-based operation. 
+
+**Role:**
+Central runtime component that hosts :term:`Vehicle Device` s and :term:`Basic Service` s. Typically started via ``sdv_control``.
+
+sdv_iso
+~~~~~~~
+
+**Description:**
+Runs components in isolated processes to improve system stability and fault tolerance due to :term:`Freedom from Interference`.
+
+**Role:**
+Used at runtime to separate critical or potentially unstable components, such as :term:`Complex Service` s, from the core process. Enables dynamic loading and unloading of services without affecting the main system.
+
+**Example Usage:**
+
+.. code-block:: console
+
+    $ sdv_iso.exe eyJjb21wb25lbnQiOiAiRXhhbXBsZUNvbXBvbmVudCJ9 --verbose --install_dir=core/
+
+
+
+
+

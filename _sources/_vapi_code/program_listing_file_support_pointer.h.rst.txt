@@ -1,0 +1,256 @@
+
+.. _program_listing_file_support_pointer.h:
+
+Program Listing for File pointer.h
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_pointer.h>` (``support\pointer.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SDV_PTR_H
+   #define SDV_PTR_H
+   
+   #include <ostream>
+   #include <atomic>
+   #include <algorithm>
+   #include "iterator.h"
+   #ifndef DONT_LOAD_CORE_TYPES
+   #include "../interfaces/core_types.h"
+   #endif
+   
+   namespace sdv
+   {
+       // Forward declaration
+       template <typename, size_t>
+       class pointer;
+   
+       template <typename T, size_t nFixedSize = 0>
+       class pointer
+       {
+       public:
+           using element_type = T;
+   
+           static const size_t size_bytes = nFixedSize * sizeof(T);
+   
+           static const size_t aligned_size_bytes = nFixedSize * sizeof(T) + ((nFixedSize * sizeof(T) % 8) ? (8 - nFixedSize * sizeof(T) % 8) : 0);
+   
+           pointer() noexcept;
+   
+           pointer(const pointer& rptr);
+   
+           template <size_t nFixedSize2>
+           pointer(const pointer<T, nFixedSize2>& rptr);
+   
+           pointer(pointer&& rptr);
+   
+           template <size_t nFixedSize2>
+           pointer(pointer<T, nFixedSize2>&& rptr);
+   
+           ~pointer();
+   
+           pointer& operator=(const pointer& rptr);
+   
+           template <size_t nFixedSize2>
+           pointer& operator=(const pointer<T, nFixedSize2>& rptr);
+   
+           pointer& operator=(pointer&& rptr);
+   
+           template <size_t nFixedSize2>
+           pointer& operator=(pointer<T, nFixedSize2>&& rptr);
+   
+           void reset();
+   
+           template <size_t nFixedSizeRight>
+           void swap(pointer<T, nFixedSizeRight>& rptr);
+   
+           element_type* get() const noexcept;
+   
+           T& operator*() const;
+   
+           T* operator->() const;
+   
+           element_type& operator[](size_t nIndex) const;
+   
+           operator bool() const noexcept;
+   
+           size_t size() const noexcept;
+   
+           void resize(size_t nSize);
+   
+           size_t capacity() const noexcept;
+   
+       private:
+           uint32_t m_uiSize = 0;                  
+           uint32_t m_uiReserved = 0;              
+           union
+           {
+               T m_rgtData[nFixedSize] = {};               
+               uint8_t m_rguiBuffer[aligned_size_bytes];   
+           };
+       };
+   
+       namespace internal
+       {
+           // Forward declaration
+           interface IInternalMemAlloc;
+           template <typename T>
+           pointer<T, 0> make_ptr(IInternalMemAlloc* pAllocator, size_t nSize = 1);
+       }
+   
+       template <typename T>
+       pointer<T> make_ptr(size_t nSize = 1);
+   
+       template <typename T>
+       class pointer<T, 0>
+       {
+           friend pointer<T> internal::make_ptr<T>(internal::IInternalMemAlloc* pAllocator, size_t nSize /*= 1*/);
+           friend pointer<T> make_ptr<T>(size_t);
+   
+       public:
+           using element_type = T;
+   
+           pointer() noexcept;
+   
+           pointer(const pointer& rptr);
+   
+           template <size_t nFixedSize2>
+           pointer(const pointer<T, nFixedSize2>& rptr);
+   
+           pointer(pointer&& rptr) noexcept;
+   
+           template <size_t nFixedSize2>
+           pointer(const pointer<T, nFixedSize2>&& rptr);
+   
+           ~pointer();
+   
+           pointer& operator=(const pointer& rptr);
+   
+           template <size_t nFixedSize2>
+           pointer& operator=(const pointer<T, nFixedSize2>& rptr);
+   
+           pointer& operator=(pointer&& rptr) noexcept;
+   
+           template <size_t nFixedSize2>
+           pointer& operator=(pointer<T, nFixedSize2>&& rptr);
+   
+       protected:
+           void attach(pointer<uint8_t>&& rptrBuffer);
+   
+           pointer<uint8_t>&& detach();
+   
+       public:
+           void reset();
+   
+           template <size_t nFixedSizeRight>
+           void swap(pointer<T, nFixedSizeRight>& rptr);
+   
+           element_type* get() const noexcept;
+   
+           T& operator*() const;
+   
+           T* operator->() const;
+   
+           element_type& operator[](size_t nIndex) const;
+   
+           operator bool() const noexcept;
+   
+           size_t size() const noexcept;
+   
+           void resize(size_t nSize);
+   
+           size_t capacity() const noexcept;
+   
+           size_t ref_count() const noexcept;
+   
+       private:
+           struct SAllocation
+           {
+               internal::IInternalMemAlloc* pAllocator = nullptr;  
+               T*                           pData      = nullptr;  
+               uint32_t                     uiSize     = 0;        
+               std::atomic_uint32_t         uiRefCnt   = 0;        
+           };
+   
+           SAllocation* m_psAllocation = nullptr; 
+       };
+   
+       template <class T, size_t nFixedSizeLeft, size_t nFixedSizeRight>
+       void swap(pointer<T, nFixedSizeLeft>& rptrLeft, pointer<T, nFixedSizeRight>& rptrRight);
+   
+       template <class T, size_t nFixedSizeLeft, size_t nFixedSizeRight>
+       bool operator==(const pointer<T, nFixedSizeLeft>& rptrLeft, const pointer<T, nFixedSizeRight>& rptrRight) noexcept;
+   
+       template <class T, size_t nFixedSizeLeft, size_t nFixedSizeRight>
+       bool operator!=(const pointer<T, nFixedSizeLeft>& rptrLeft, const pointer<T, nFixedSizeRight>& rptrRight) noexcept;
+   
+       template <class T, size_t nFixedSizeLeft, size_t nFixedSizeRight>
+       bool operator<(const pointer<T, nFixedSizeLeft>& rptrLeft, const pointer<T, nFixedSizeRight>& rptrRight) noexcept;
+   
+       template <class T, size_t nFixedSizeLeft, size_t nFixedSizeRight>
+       bool operator<=(const pointer<T, nFixedSizeLeft>& rptrLeft, const pointer<T, nFixedSizeRight>& rptrRight) noexcept;
+   
+       template <class T, size_t nFixedSizeLeft, size_t nFixedSizeRight>
+       bool operator>(const pointer<T, nFixedSizeLeft>& rptrLeft, const pointer<T, nFixedSizeRight>& rptrRight) noexcept;
+   
+       template <class T, size_t nFixedSizeLeft, size_t nFixedSizeRight>
+       bool operator>=(const pointer<T, nFixedSizeLeft>& rptrLeft, const pointer<T, nFixedSizeRight>& rptrRight) noexcept;
+   
+       template <class T, size_t nFixedSizeLeft>
+       bool operator==(const pointer<T, nFixedSizeLeft>& rptrLeft, std::nullptr_t pNull) noexcept;
+   
+       template <class T, size_t nFixedSizeRight>
+       bool operator==(std::nullptr_t pNull, const pointer<T, nFixedSizeRight>& rptrRight) noexcept;
+   
+       template <class T, size_t nFixedSizeLeft>
+       bool operator!=(const pointer<T, nFixedSizeLeft>& rptrLeft, std::nullptr_t pNull) noexcept;
+   
+       template <class T, size_t nFixedSizeRight>
+       bool operator!=(std::nullptr_t pNull, const pointer<T, nFixedSizeRight>& rptrRight) noexcept;
+   
+       template <class T, size_t nFixedSizeLeft>
+       bool operator<(const pointer<T, nFixedSizeLeft>& rptrLeft, std::nullptr_t pNull) noexcept;
+   
+       template <class T, size_t nFixedSizeRight>
+       bool operator<(std::nullptr_t pNull, const pointer<T, nFixedSizeRight>& rptrRight) noexcept;
+   
+       template <class T, size_t nFixedSizeLeft>
+       bool operator<=(const pointer<T, nFixedSizeLeft>& rptrLeft, std::nullptr_t pNull) noexcept;
+   
+       template <class T, size_t nFixedSizeRight>
+       bool operator<=(std::nullptr_t pNull, const pointer<T, nFixedSizeRight>& rptrRight) noexcept;
+   
+       template <class T, size_t nFixedSizeLeft>
+       bool operator>(const pointer<T, nFixedSizeLeft>& rptrLeft, std::nullptr_t pNull) noexcept;
+   
+       template <class T, size_t nFixedSizeRight>
+       bool operator>(std::nullptr_t pNull, const pointer<T, nFixedSizeRight>& rptrRight) noexcept;
+   
+       template <class T, size_t nFixedSizeLeft>
+       bool operator>=(const pointer<T, nFixedSizeLeft>& rptrLeft, std::nullptr_t pNull) noexcept;
+   
+       template <class T, size_t nFixedSizeRight>
+       bool operator>=(std::nullptr_t pNull, const pointer<T, nFixedSizeRight>& rptrRight) noexcept;
+   
+       template <class T, class U, class V, size_t nFixedSize>
+       std::basic_ostream<U, V>& operator<<(std::basic_ostream<U, V>& rstream, const pointer<T, nFixedSize>& rptr);
+   
+       template <typename TTraits = std::char_traits<char>>
+       pointer<uint8_t> from_stream(std::basic_streambuf<char, TTraits>* pStreamBuf);
+   
+       template <typename TTraits = std::char_traits<char>>
+       void to_stream(const pointer<uint8_t>& rptr, std::basic_streambuf<char, TTraits>* pStreamBuf);
+   
+       template <typename T>
+       T* cast(pointer<uint8_t>& rptr, size_t nOffset = 0);
+   
+       template <typename T>
+       const T* cast(const pointer<uint8_t>& rptr, size_t nOffset = 0);
+   
+   } // namespace sdv
+   
+   #include "pointer.inl"
+   
+   #endif // !defined SDV_PTR_H

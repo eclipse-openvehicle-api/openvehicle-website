@@ -1,0 +1,73 @@
+.. _vapi-project_guide:
+
+Project Guide
+=============
+
+Project File Structure
+----------------------
+
+Here's a high-level overview of the directory layout:
+
+.. code-block:: text
+
+   /build           → output folder of all framework binaries, including examples and tests.
+   /doc             → documentation files, based on sphinx.
+   /examples        → sub 'repository', to be build it requires the framework binaries and framework header files.
+   /export          → framework header files, together with the framework binaries allows to build new projects.
+   /framework_tests → sub 'repository', contains tests for the auto generated code, to be build it requires the framework binaries and framework header files.
+   /global          → general framework code (anything except SDV execeutables, SDV services and tests).
+   /sdv_executables → framework source code for all framework executables.
+   /sdv_services    → framework source code for all framework services.
+   /tests           → contains source code for all framework tests. 
+   /tmp_project     → template project to setup a new work space so that nobody needs to put his new code inside the framework itself.
+
+Here's a overview of the build output layout:
+
+.. code-block:: text
+
+   /bin                  → framework binaries
+   /examples/bin         → framework example binaries
+   /examples/system_demo_example/generated/fmu_DemoExampleFMU/fmus → fmu of system demo example
+   /framework_tests/bin  → framework auto generated code test binaries
+   /tests/bin            → framework test binaries
+
+Each module is self-contained and follows a consistent naming and structure convention.
+
+Deep Dive Into Examples
+-----------------------
+
+First build the examples and then take your time to have a close look at the different examples.
+
+.. include:: build_examples.rst
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Examples: Learn how to use the framework to build SDV components
+
+   examples/component_examples 
+
+Contributing Guidelines
+-----------------------
+
+1. Setup your own working space so that you do not need to put your code inside the framework layout. Instead you can place it anywhere you like by using ``Environment variables``
+
+   .. include:: build_own_project.rst
+
+2. Follow the coding style outlined in docs/style-guide.md.
+3. Write unit tests for new features or bug fixes.
+4. Submit a pull request with a clear description of your changes.
+
+Please ensure your code passes all tests and adheres to the formatting rules.
+
+Reporting Issues
+----------------
+
+If you encounter a bug or have a feature request:
+
+   - Check if the issue already exists in the GitHub Issues.
+   - If not, create a new issue with:
+
+     - A descriptive title
+     - Steps to reproduce
+     - Expected vs. actual behavior
+     - Environment details (OS, compiler, etc.)

@@ -1,0 +1,73 @@
+.. _vapi-asdv-tools:
+
+Core Tools
+==========
+
+These tools are essential for building, deploying, and running SDV components.
+
+sdv_dbc_util
+~~~~~~~~~~~~
+
+**Description:**
+Processes DBC (CAN database) files to generate code for CAN signal integration.  
+
+**Role:**
+Used to integrate vehicle-specific communication signals into the SDV system via the :term:`Data Link` Layer. Also generates code for :term:`FMU` simulation.
+
+**Key Options:**
+- ``--dl_lib_name<string>``
+- ``--nodes<string>[,<string>]``
+- ``--module<string>``
+- ``-O<path>``
+
+sdv_vss_util
+~~~~~~~~~~~~
+
+**Description:**
+Generates IDL files and :term:`VAPI Component` code from a CSV-formatted Excel file based on the Vehicle Signal Specification (VSS).  
+
+**Role:**
+Used to define standardized signal interfaces and generate :term:`Vehicle Device` and :term:`Basic Service` components.
+
+**Key Options:**
+- ``--prefix<string>``
+- ``--enable_components``
+- ``--version<string>``
+- ``-O<path>``
+
+sdv_packager
+~~~~~~~~~~~~
+
+**Description:**
+Creates, installs, verifies, and uninstalls SDV component installation packages.  
+
+**Role:**
+Used to bundle and deploy components after code generation. Supports both traditional packaging and direct installation workflows.
+
+**Available Commands:**
+- ``PACK``, ``INSTALL``, ``DIRECT_INSTALL``, ``UNINSTALL``, ``VERIFY``, ``SHOW``
+
+**Example Usage:**
+.. code-block:: console
+
+    $ sdv_packager.exe DIRECT_INSTALL ExampleInterfaceComponents --instance 1000 
+    -I "C:\Repo_VAPI\vapi-cpp-vehicle-api-platform\build\gcc_w64_mingw_debug\bin" 
+    --interface_config --overwrite
+
+sdv_control
+~~~~~~~~~~~
+
+**Description:**
+Main control utility for managing the SDV server and services.  
+
+**Role:**
+Used to initialize the SDV system, manage installed components, and control service execution dynamically.
+
+sdv_core
+~~~~~~~~
+
+**Description:**
+The core application that runs the SDV service framework.  
+
+**Role:**
+Central runtime component that hosts :term:`Vehicle Device` s and :term:`Basic Service` s. Typically started via ``sdv_control``.

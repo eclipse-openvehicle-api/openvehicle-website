@@ -1,0 +1,59 @@
+
+.. _program_listing_file_interfaces_timer.h:
+
+Program Listing for File timer.h
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_timer.h>` (``interfaces\timer.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__TIMER_H__20251003_130454_725__
+   #define __IDL_GENERATED__TIMER_H__20251003_130454_725__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   namespace sdv
+   {
+       namespace core
+       {
+           interface ITaskExecute
+           {
+               static constexpr ::sdv::interface_id _id = 0xD77F3689C579D2B9;
+   
+               virtual void Execute() = 0;
+           };
+   
+           interface ITaskTimer
+           {
+               static constexpr ::sdv::interface_id _id = 0xA8B5F932D683BB6E;
+   
+               virtual IInterfaceAccess* CreateTimer(/*in*/ uint32_t uiPeriod, /*in*/ IInterfaceAccess* pTask) = 0;
+           };
+   
+           interface ITimerSimulationStep
+           {
+               static constexpr ::sdv::interface_id _id = 0xFAF7814D35A2F910;
+   
+               virtual void SimulationStep(/*in*/ uint64_t uiSimulationStep) = 0;
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__TIMER_H__20251003_130454_728__)

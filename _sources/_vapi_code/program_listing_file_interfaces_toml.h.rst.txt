@@ -1,0 +1,103 @@
+
+.. _program_listing_file_interfaces_toml.h:
+
+Program Listing for File toml.h
+===============================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_toml.h>` (``interfaces\toml.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__TOML_H__20251003_130454_743__
+   #define __IDL_GENERATED__TOML_H__20251003_130454_743__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   namespace sdv
+   {
+       namespace toml
+       {
+           except XTOMLParseException : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0x2D7A36F0F156B309;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "TOML parse exception.";
+   
+               sdv::u8string ssMessage;
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           enum class ENodeType : uint8_t
+           {
+               node_table,
+   
+               node_array,
+   
+               node_integer,
+   
+               node_floating_point,
+   
+               node_boolean,
+   
+               node_string,
+   
+               node_invalid,
+           };
+   
+           interface INodeInfo
+           {
+               static constexpr ::sdv::interface_id _id = 0x238A8EF0420C4DB8;
+   
+               virtual sdv::u8string GetName() const = 0;
+   
+               virtual ENodeType GetType() const = 0;
+   
+               virtual sdv::any_t GetValue() const = 0;
+   
+               virtual sdv::u8string GetTOML() const = 0;
+           };
+   
+           interface INodeCollection
+           {
+               static constexpr ::sdv::interface_id _id = 0xBC836E7F94697937;
+   
+               virtual uint32_t GetCount() const = 0;
+   
+               virtual IInterfaceAccess* GetNode(/*in*/ uint32_t uiIndex) const = 0;
+   
+               virtual IInterfaceAccess* GetNodeDirect(/*in*/ const sdv::u8string& ssPath) const = 0;
+           };
+   
+           interface ITOMLParser
+           {
+               static constexpr ::sdv::interface_id _id = 0xD504E441EE68E0A4;
+   
+               virtual bool Process(/*in*/ const sdv::u8string& ssContent) = 0;
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__TOML_H__20251003_130454_752__)

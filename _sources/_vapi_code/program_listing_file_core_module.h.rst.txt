@@ -1,0 +1,86 @@
+
+.. _program_listing_file_core_module.h:
+
+Program Listing for File module.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_module.h>` (``core\module.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef MODULE_H
+   #define MODULE_H
+   
+   #include <mutex>
+   #include <string>
+   #include <map>
+   #include <functional>
+   #include <optional>
+   #include <interfaces/core.h>
+   #include <interfaces/module.h>
+   
+   class CModuleInst
+   {
+   public:
+       CModuleInst(const std::filesystem::path& rpathModuleConfigPath, const std::filesystem::path& rpathModule) noexcept;
+   
+       CModuleInst(const CModuleInst&) = delete;
+   
+       CModuleInst(CModuleInst&&) = delete;
+   
+       ~CModuleInst();
+   
+       CModuleInst& operator=(const CModuleInst&) = delete;
+   
+       CModuleInst& operator=(CModuleInst&&) = delete;
+   
+       bool IsValid() const noexcept;
+   
+       std::string GetDefaultObjectName(const std::string& ssClassName) const;
+   
+       bool IsSingleton(const std::string& ssClassName) const;
+   
+       std::vector<std::string> GetAvailableClasses() const;
+   
+       sdv::IInterfaceAccess* CreateObject(const std::string& ssClassName);
+   
+       void DestroyObject(sdv::IInterfaceAccess* object);
+   
+       std::filesystem::path GetModuleConfigPath() const;
+   
+       std::filesystem::path GetModulePath() const;
+   
+       sdv::core::TModuleID GetModuleID() const;
+   
+       sdv::core::SModuleInfo GetModuleInfo() const;
+   
+       std::optional<sdv::SClassInfo> GetClassInfo(const std::string& rssClassName) const;
+   
+       bool Load(const std::filesystem::path& rpathModule) noexcept;
+   
+       bool Unload(bool bForce) noexcept;
+   
+       bool HasActiveObjects() const;
+   
+   private:
+       using TFNHasActiveObjects = bool();
+   
+       using TFNGetModuleFactory = sdv::IInterfaceAccess*(uint32_t);
+   
+       using TFNGetManifest = const char*();
+   
+       mutable std::recursive_mutex            m_mtxModule;                
+       std::filesystem::path                   m_pathModuleConfigPath;     
+       std::filesystem::path                   m_pathModule;               
+       sdv::core::TModuleID                    m_tModuleID = 0;            
+       std::function<TFNHasActiveObjects>      m_fnActiveObjects;          
+       std::function<TFNGetModuleFactory>      m_fnGetFactory;             
+       std::function<TFNGetManifest>           m_fnGetManifest;            
+       sdv::IObjectFactory*                    m_pFactory = nullptr;       
+       std::map<std::string, sdv::SClassInfo>  m_mapClassInfo;             
+       uint32_t                                m_uiIfcVersion = 0;         
+   };
+   
+   #endif // !defined MODULE_H

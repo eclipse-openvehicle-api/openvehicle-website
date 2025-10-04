@@ -1,0 +1,68 @@
+
+.. _program_listing_file_interfaces_can.idl:
+
+Program Listing for File can.idl
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_can.idl>` (``interfaces\can.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core.idl"
+   
+   module sdv
+   {
+       module can
+       {
+           struct SMessage
+           {
+               uint32          uiID;           
+               boolean         bExtended;      
+               boolean         bCanFd;         
+               sequence<uint8> seqData;        
+           };
+   
+           enum EError : uint32
+           {
+               no_error = 0,       
+               bit_error = 1,      
+               stuff_error = 2,    
+               form_error = 3,     
+               crc_error = 4,      
+               ack_error = 5,      
+           };
+   
+           struct SErrorFrame
+           {
+               uint32          uiID;       
+               EError       eError;     
+           };
+   
+           local interface IReceive
+           {
+               void Receive(in SMessage sMsg, in uint32 uiIfcIndex);
+   
+               void Error(in SErrorFrame sError, in uint32 uiIfcIndex);
+           };
+   
+           local interface IRegisterReceiver
+           {
+               void RegisterReceiver(in IReceive pReceiver);
+   
+               void UnregisterReceiver(in IReceive pReceiver);
+           };
+   
+           local interface ISend
+           {
+               void Send(in SMessage sMsg, in uint32 uiIfcIndex);
+           };
+   
+           local interface IInformation
+           {
+               sequence<u8string> GetInterfaces() const;
+           };
+       };
+   };

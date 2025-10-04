@@ -1,0 +1,144 @@
+
+.. _program_listing_file_sdv_dbc_util_fmu.h:
+
+Program Listing for File fmu.h
+==============================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_dbc_util_fmu.h>` (``sdv_dbc_util\fmu.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SOFTCAR_FMU_H
+   #define SOFTCAR_FMU_H
+   
+   #ifdef WIN32
+   #include <Rpc.h>
+   #endif
+   
+   #include "../global/dbcparser/dbcparser.h"
+   #include <fstream>
+   #include "codegen_base.h"
+   
+   struct signalDefinition
+   {
+       std::string message_name;   
+       std::string name;           
+       std::string attributes;     
+       uint32_t index = 0;         
+       bool isInput = false;       
+       bool isDouble = false;      
+       uint32_t uiSize = 0;        
+       dbc::SSignalDef::EValueType signalType = dbc::SSignalDef::EValueType::signed_integer; 
+   };
+   
+   class CSoftcarFMUGen : public CCodeGeneratorBase
+   {
+   public:
+       CSoftcarFMUGen(const std::filesystem::path& rpathOutputDir, const dbc::CDbcParser& rparser, const std::string& ssModelIdentifier, const std::string& rsVersion, const std::vector<std::string>& rvecNodes);
+   
+   private:
+       typedef std::map<std::string, std::string> CKeywordMap;
+   
+       void UpdateKeywordMap(const std::string& rsModelIdentifier, const std::string& rsVersion, 
+           const std::vector<std::string>& rvecNodes, CKeywordMap& rmapKeywords) const;
+   
+       void CreateResourcesFiles(const std::filesystem::path& rRootPath) const;
+   
+       void CreateSourceFiles(const std::filesystem::path& rRootPath) const;
+   
+       void CreateIncludeFiles(const std::filesystem::path& rRootPath) const;
+   
+       void CreateFMUFiles(const std::filesystem::path& rRootPath, const std::string& rsModelIdentifier, CKeywordMap& rmapKeywords) const;
+   
+       bool CleanUpDirectory(const std::filesystem::path& rpathRootDirectory) const;
+   
+       bool CreateDirectories(const std::filesystem::path& rpathRootDirectory, const std::filesystem::path& rpathSubDirectory) const;
+   
+       std::string Code_AllSignalsIdentifierList(const std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string Code_SignalIdentifierList(const signalDefinition& rSignal) const;
+   
+       static std::string ReplaceKeywords(const std::string& rsStr, const CKeywordMap& rmapKeywords, char cMarker = '%');
+   
+       std::string CodeBuildDescriptionXML(const std::string& rsModelIdentifier) const;
+   
+       std::string CodeDBCFileVersion(const std::string& rsVersion) const;
+   
+       std::string CodeModelIdentifier(const std::string& rsModelIdentifier) const;
+   
+       std::string CodeFMIFile_VariableList(const std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeFMIFile_SignalVariableList(const signalDefinition& rSignal) const;
+   
+       std::string CodeConfigH_Rx_ValueReference(const dbc::SMessageDef& rsMsg, uint32_t& rIndex,
+           std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeConfigH_Tx_ValueReference(const dbc::SMessageDef& rsMsg, uint32_t& rIndex,
+           std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeConfigH_Rx_SignalForValueReference(const dbc::SSignalDef& rsSig, const uint32_t index,
+           const std::string& rsMessageName, std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeConfigH_Tx_SignalForValueReference(const dbc::SSignalDef& rsSig, const uint32_t index,
+           const std::string& rsMessageName, std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeConfigH_ModelDataList(const std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeConfigH_SignalForModelData(const signalDefinition& rSignal) const;
+   
+       std::string CodeVariableList(const std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeVariableName(const signalDefinition& rSignal) const;
+   
+       std::string CodeModelCPP_GlobalDefinitionList(const std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeModelCPP_GlobalSignalDefinition(const signalDefinition& rSignal) const;
+   
+       std::string CodeModelCPP_GlobalRegisterList(const std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeModelCPP_GlobalRegisterCheckList(const std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeModelCPP_GlobalRegisterSignal(const signalDefinition& rSignal) const;
+   
+       std::string CodeModelCPP_GlobalRegisterSignalCheck(const signalDefinition& rSignal, bool first) const;
+   
+       std::string CodeModelCPP_GlobalResetList(const std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeModelCPP_GlobalResetSignal(const signalDefinition& rSignal) const;
+   
+       std::string CodeModelCPP_EventUpdateList(const std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeModelCPP_EventUpdateSignalDefinitionWrite(const signalDefinition& rSignal) const;
+   
+       std::string CodeModelCPP_EventUpdateSignalDefinitionRead(const signalDefinition& rSignal) const;
+   
+       std::string CodeModelCPP_GetFloat64(const std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeModelCPP_GetInt32(const std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeModelCPP_SetFloat64(const std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeModelCPP_SetInt32(const std::vector<signalDefinition>& rvecSignalDefinitions) const;
+   
+       std::string CodeModelCPP_GetFloat64SignalDefinition(const signalDefinition& rSignal) const;
+   
+       std::string CodeModelCPP_GetInt32SignalDefinition(const signalDefinition& rSignal) const;
+   
+       std::string CodeModelCPP_SetFloat64SignalDefinition(const signalDefinition& rSignal) const;
+   
+       std::string CodeModelCPP_SetInt32SignalDefinition(const signalDefinition& rSignal) const;
+   
+       std::string CodeModelCPP_OpenAPILoadFunction() const;
+   
+       std::string CodeGetDefaultValueOfTxSignal(const dbc::SSignalDef& rSignal) const;
+   
+       std::string GetAttributes(const dbc::SSignalDef& rSignal, const bool& isDouble) const;
+   
+       std::string newUUID() const;
+   
+       const dbc::CDbcParser& m_rparser;  
+   };
+   
+   #endif // !defined SOFTCAR_FMU_H

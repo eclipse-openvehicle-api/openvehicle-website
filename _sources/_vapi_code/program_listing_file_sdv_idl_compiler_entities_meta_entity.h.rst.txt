@@ -1,0 +1,43 @@
+
+.. _program_listing_file_sdv_idl_compiler_entities_meta_entity.h:
+
+Program Listing for File meta_entity.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_entities_meta_entity.h>` (``sdv_idl_compiler\entities\meta_entity.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef META_ENTITY_H
+   #define META_ENTITY_H
+   
+   #include "entity_base.h"
+   
+   class CMetaEntity : public CEntity, public sdv::idl::IMetaEntity
+   {
+   public:
+       CMetaEntity(const CContextPtr& rptrContext, CEntityPtr ptrParent, const CToken& rtokenMeta,
+           const CTokenList lstComments);
+   
+       virtual ~CMetaEntity() override = default;
+   
+       virtual sdv::idl::EEntityType GetType() const override { return sdv::idl::EEntityType::type_meta; }
+   
+       virtual sdv::u8string GetName() const override { return "meta"; }
+   
+       virtual sdv::interface_t GetInterface(sdv::interface_id idInterface) override;
+   
+       virtual sdv::idl::IMetaEntity::EType GetMetaType() const override;
+   
+       virtual sdv::u8string GetContent() const override;
+   
+       virtual void Process() override {};
+   
+   private:
+       sdv::idl::IMetaEntity::EType    m_eType;        
+       std::string                     m_ssContent;    
+   };
+   
+   #endif 

@@ -1,0 +1,1157 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Class CCommandLine &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/class_c_command_line';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Class CCommandLine</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-ccommandline">
+<span id="exhale-class-class-c-command-line"></span><h1>Class CCommandLine<a class="headerlink" href="#class-ccommandline" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_cmdlnparser_cmdlnparser.h.html#file-cmdlnparser-cmdlnparser-h"><span class="std std-ref">File cmdlnparser.h</span></a></p></li>
+</ul>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this heading">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv412CCommandLine">
+<span id="_CPPv312CCommandLine"></span><span id="_CPPv212CCommandLine"></span><span id="CCommandLine"></span><span class="target" id="class_c_command_line"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CCommandLine</span></span></span><a class="headerlink" href="#_CPPv412CCommandLine" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The class provides a generic implementation of command line argument parsing. Instantiate this class and define which arguments are supported. The parsing is done by calling the Parse function. Parse errors are reported with std::exception. </p>
+<p>This class allows the generic implementation of a command line parser by defining the arguments and the variables connected to the arguments. The parsing of the command line is done by calling the function <a class="reference internal" href="#class_c_command_line_1acec45305e9cace460659967952927cab"><span class="std std-ref">CCommandLine::Parse</span></a>, which automatically fills the corresponding variables when an argument is supplied on the command line.</p>
+<p><p>The following command line argument types are supported:</p>
+<p>+——————–</p>
+&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | Variable | Description | Source code example | Argument Example | +=======================+==================+=================================================================+===================+ | bool | Boolean variable | bool bHelp = false; | -help | | | | commandline.DefineOption(“help”, bHelp, “Show help.”); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | int8_t | Integer variable | int iTest = 0; | -test_int=10 | | uint8_t | | commandline.DefineOption(“test_int”, iTest, “Example.”); | | | int16_t | | double dTest = 0.0; | | | uint16_t | | commandline.DefineOption(“test_d”, dTest, “Example.”); | -test_d=1.1 | | int32_t | | | | | uint32_t | | | | | int64_t | | | | | uint64_t | | | | | float | | | | | double | | | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | std::vector | Vector container | std::vector&lt;int&gt; vec; sdv::sequence&lt;int&gt; seq; | -vec_int=10,20 | | std::list | List container | commandline.DefineOption(“vec_int”, vec, “Example”); | | | <a class="reference internal" href="classsdv_1_1sequence.html#classsdv_1_1sequence"><span class="std std-ref">sdv::sequence</span></a> | Sequence | commandline.DefineOption(“vec_int”, seq, “Example”); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | bool | Flag variable | bool bExample = false; | -flag+ | | | | commandline.DefineFlagOption(“flag”, bExample, “Example.”); | -flag- | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | enum | Enum variable | enum ETest { test1, test2, test3 }; | -e_tst=tst2 | | | | SEnumArgumentAssoc&lt;ETest&gt; rgsAssociations[] = | | | | | { { test1, “tst1”, “Test the #1” }, | | | | | { test2, “tst2”, “Test the #2” }, | | | | | { test3, “tst3”, “Test the #3” } }; | | | | | ETest eTest = test3; | | | | | CArgumentDefT&lt;ETest&gt;&amp; rEnumTest = | | | | | commandline.DefineOption(“e_tst”, eTest, “Test.”); | | | | | rEnumTest.AddAssociations(rgsAssociations); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | std::vector | Enum vector | enum ETest { test1, test2, test3 }; | -e_tst=tst2,tst3 | | std::list | Enum list | SEnumArgumentAssoc&lt;ETest&gt; rgsAssociations[] = | | | <a class="reference internal" href="classsdv_1_1sequence.html#classsdv_1_1sequence"><span class="std std-ref">sdv::sequence</span></a> | Enum sequence | { { test1, “tst1”, “Test the #1” }, | | | | | { test2, “tst2”, “Test the #2” }, | | | | | { test3, “tst3”, “Test the #3” } }; | | | | | std::vector&lt;ETest&gt; vecEnumArg; | | | | | CArgumentDefT&lt;std::vector&lt;ETest&gt;&gt;&amp; rEnumTest = | | | | | commandline.DefineOption(“e_tst”, vecEnumArg, “Test.”); | | | | | rEnumTest.AddAssociations(rgsAssociations); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | std::string | String variable | std::string ssTest; | -str=abc | | | | commandline.DefineOption(“str”, ssTest, “Example.”); | -str=”abc def” | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | std::vector | String vector | std::list&lt;std::string&gt; lst; sdv::sequence&lt;sdv::u8string&gt; seq | -str=abc,”def” | | std::list | String list | commandline.DefineOption(“lst_str”, lst, “Example.”); | | | <a class="reference internal" href="classsdv_1_1sequence.html#classsdv_1_1sequence"><span class="std std-ref">sdv::sequence</span></a> | String sequence | commandline.DefineOption(“lst_str”, seq, “Example.”); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;<p>+ | std::filesystem::path | Path variable | std::filesystem::path pathTest; | -path=”test/file  |</p>
+<p>|                       |                  | commandline.DefineOption(“path”, pathTest, “Example.”);         |                   |</p>
+<p>+——————–&amp;mdash;+—————&amp;mdash;+————————————————————–&amp;mdash;+—————-&amp;mdash;+</p>
+<p>| std::vector           | Path vector      | std::list&lt;std::filesystem::path&gt; lstPathTest;                   | -pth=”f1.tx”,”f2” |</p>
+<p>| std::list             | Path list        | commandline.DefineOption(“pth”, lstPathTest, “Example.”);       |                   |</p>
+<p>| sdv::sequence         | Path sequence    |                                                                 |                   |</p>
+<p>+——————–&amp;mdash;+—————&amp;mdash;+————————————————————–&amp;mdash;+—————-&amp;mdash;+</p>
+<p>| any assignment        | Default argument | std::vector&lt;std::string&gt; args;                                  | abc def           |</p>
+<p>|                       |                  | commandline.DefineDefaultArgument(vec, “text chunks”); | | +——————–</p>
+&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+</p>
+<p>The command line class holds a list of argument definitions. Dependable on the provided arguments, the argument definitions receive the parsed values from the command line. Since so many different types of arguments are possible, the implementation uses a construct of class derivation implementing portions of the arguments (e.g. value assignment, containers, flags, etc.).</p>
+<p>Implementing a new argument type, it is necessary to provide a definition and a value class for the type. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N12CCommandLine11EParseFlagsE">
+<span id="_CPPv3N12CCommandLine11EParseFlagsE"></span><span id="_CPPv2N12CCommandLine11EParseFlagsE"></span><span class="target" id="class_c_command_line_1a1e58f3f7aa468c8887d1d646191f2992"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EParseFlags</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><a class="headerlink" href="#_CPPv4N12CCommandLine11EParseFlagsE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Parsing flags. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12CCommandLine11EParseFlags20assignment_characterE">
+<span id="_CPPv3N12CCommandLine11EParseFlags20assignment_characterE"></span><span id="_CPPv2N12CCommandLine11EParseFlags20assignment_characterE"></span><span class="target" id="class_c_command_line_1a1e58f3f7aa468c8887d1d646191f2992af57cde423a28021f051c2d23232519de"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignment_character</span></span></span><a class="headerlink" href="#_CPPv4N12CCommandLine11EParseFlags20assignment_characterE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Default argument assignment: -option=ARG and &amp;#8212;suboption=ARG. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12CCommandLine11EParseFlags23no_assignment_characterE">
+<span id="_CPPv3N12CCommandLine11EParseFlags23no_assignment_characterE"></span><span id="_CPPv2N12CCommandLine11EParseFlags23no_assignment_characterE"></span><span class="target" id="class_c_command_line_1a1e58f3f7aa468c8887d1d646191f2992a3502b40d768044e61d2e8a53994fb547"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">no_assignment_character</span></span></span><a class="headerlink" href="#_CPPv4N12CCommandLine11EParseFlags23no_assignment_characterE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>When set, assignment arguments do not use the assignment character. This allows values to be glueed directly to the (sub-)option as it is used by many programs. -optionARG and &amp;#8212;suboptionARG </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12CCommandLine11EParseFlags19assignment_next_argE">
+<span id="_CPPv3N12CCommandLine11EParseFlags19assignment_next_argE"></span><span id="_CPPv2N12CCommandLine11EParseFlags19assignment_next_argE"></span><span class="target" id="class_c_command_line_1a1e58f3f7aa468c8887d1d646191f2992a74a009c158ea3cfe8f0a1925c89b8743"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignment_next_arg</span></span></span><a class="headerlink" href="#_CPPv4N12CCommandLine11EParseFlags19assignment_next_argE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>When set, assignment arguments provide the arguments as separate arguments: -option ARG &amp;#8212;suboption ARG. This is also a common way to provide options. NOTE: although this is a very common way to provide options, arrays cannot be provided. If multiple values need to be provided, each value has to be repeated using the option tag. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12CCommandLine12CCommandLineE8uint32_t">
+<span id="_CPPv3N12CCommandLine12CCommandLineE8uint32_t"></span><span id="_CPPv2N12CCommandLine12CCommandLineE8uint32_t"></span><span id="CCommandLine::CCommandLine__uint32_t"></span><span class="target" id="class_c_command_line_1ab7e7aafe090f9be93215cf878c6bf200"></span><span class="sig-name descname"><span class="n"><span class="pre">CCommandLine</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiFlags</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">static_cast</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">uint32_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4N12CCommandLine11EParseFlagsE" title="CCommandLine::EParseFlags"><span class="n"><span class="pre">EParseFlags</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N12CCommandLine11EParseFlags20assignment_characterE" title="CCommandLine::EParseFlags::assignment_character"><span class="n"><span class="pre">assignment_character</span></span></a><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12CCommandLine12CCommandLineE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiFlags</strong> – <strong>[in]</strong> Zero or more flags of EParseFlags (default using assignment character). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12CCommandLineD0Ev">
+<span id="_CPPv3N12CCommandLineD0Ev"></span><span id="_CPPv2N12CCommandLineD0Ev"></span><span id="CCommandLine::~CCommandLine"></span><span class="target" id="class_c_command_line_1a27e7d153dd500ee09dc61e9a315dab15"></span><span class="sig-name descname"><span class="n"><span class="pre">~CCommandLine</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12CCommandLineD0Ev" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK12CCommandLine18GetApplicationPathEv">
+<span id="_CPPv3NK12CCommandLine18GetApplicationPathEv"></span><span id="_CPPv2NK12CCommandLine18GetApplicationPathEv"></span><span id="CCommandLine::GetApplicationPathC"></span><span class="target" id="class_c_command_line_1afda37769caf4a61ce1c4372149ef7513"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetApplicationPath</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK12CCommandLine18GetApplicationPathEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the application path. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the application path. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK12CCommandLine13GetParseFlagsEv">
+<span id="_CPPv3NK12CCommandLine13GetParseFlagsEv"></span><span id="_CPPv2NK12CCommandLine13GetParseFlagsEv"></span><span id="CCommandLine::GetParseFlagsC"></span><span class="target" id="class_c_command_line_1ac9a6fd10a0302e83c44f2dac72f6f026"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetParseFlags</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK12CCommandLine13GetParseFlagsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the parse flags that were supplied to the parse function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The parse flags of zero or more flags of EParseFlags. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK12CCommandLine14CheckParseFlagE11EParseFlags">
+<span id="_CPPv3NK12CCommandLine14CheckParseFlagE11EParseFlags"></span><span id="_CPPv2NK12CCommandLine14CheckParseFlagE11EParseFlags"></span><span id="CCommandLine::CheckParseFlag__EParseFlagsC"></span><span class="target" id="class_c_command_line_1a4352d186c6b9eb618818678949e84a34"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CheckParseFlag</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N12CCommandLine11EParseFlagsE" title="CCommandLine::EParseFlags"><span class="n"><span class="pre">EParseFlags</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eParseFlag</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK12CCommandLine14CheckParseFlagE11EParseFlags" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Check whether the parse flag has been set. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>eParseFlag</strong> – <strong>[in]</strong> The parse flag to check for. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns whether the flag has been set, or not. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN12CCommandLine5ParseEv6size_tPPK9TCharType">
+<span id="_CPPv3I0EN12CCommandLine5ParseE6size_tPPK9TCharType"></span><span id="_CPPv2I0EN12CCommandLine5ParseE6size_tPPK9TCharType"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TCharType</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_c_command_line_1acec45305e9cace460659967952927cab"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Parse</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nArgs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN12CCommandLine5ParseEv6size_tPPK9TCharType" title="CCommandLine::Parse::TCharType"><span class="n"><span class="pre">TCharType</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">rgszArgs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN12CCommandLine5ParseEv6size_tPPK9TCharType" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Parse the command line, to be called after the command line class has been filled with argument definitions. This function will trow exceptions using the std::exception mechanism. tparam Character type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nArgs</strong> – <strong>[in]</strong> The amount of arguments. </p></li>
+<li><p><strong>rgszArgs</strong> – <strong>[in]</strong> Array of arguments. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12CCommandLine11DefineGroupERKNSt6stringERKNSt6stringE">
+<span id="_CPPv3N12CCommandLine11DefineGroupERKNSt6stringERKNSt6stringE"></span><span id="_CPPv2N12CCommandLine11DefineGroupERKNSt6stringERKNSt6stringE"></span><span id="CCommandLine::DefineGroup__ssCR.ssCR"></span><span class="target" id="class_c_command_line_1a79bea4994e2d8576bb8382de0c303057"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DefineGroup</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssTitle</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssDescription</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12CCommandLine11DefineGroupERKNSt6stringERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Define a group that cover the options following. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssTitle</strong> – <strong>[in]</strong> Zero terminated string containing the title of the group. </p></li>
+<li><p><strong>rssDescription</strong> – <strong>[in]</strong> The description of the group. This parameter is optional. If not supplied, can be NULL. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN12CCommandLine21DefineDefaultArgumentER13CArgumentDefTI4TVarER4TVarRKNSt6stringE">
+<span id="_CPPv3I0EN12CCommandLine21DefineDefaultArgumentER4TVarRKNSt6stringE"></span><span id="_CPPv2I0EN12CCommandLine21DefineDefaultArgumentER4TVarRKNSt6stringE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TVar</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_c_command_line_1a07cbd9cb81ca781e13a7873f22240942"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="class_c_argument_def_t.html#_CPPv4I00E13CArgumentDefT" title="CArgumentDefT"><span class="n"><span class="pre">CArgumentDefT</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN12CCommandLine21DefineDefaultArgumentER13CArgumentDefTI4TVarER4TVarRKNSt6stringE" title="CCommandLine::DefineDefaultArgument::TVar"><span class="n"><span class="pre">TVar</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">DefineDefaultArgument</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN12CCommandLine21DefineDefaultArgumentER13CArgumentDefTI4TVarER4TVarRKNSt6stringE" title="CCommandLine::DefineDefaultArgument::TVar"><span class="n"><span class="pre">TVar</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rtVar</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssHelpText</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN12CCommandLine21DefineDefaultArgumentER13CArgumentDefTI4TVarER4TVarRKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Argument definition for a default argument, which is an argument without option (-/) character. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TVar</strong> – Variable type of the argument to define. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rtVar</strong> – <strong>[inout]</strong> Reference to the argument that receives the content of the command line after parsing. </p></li>
+<li><p><strong>rssHelpText</strong> – <strong>[in]</strong> Pointer to the zero terminated text to present when printing help information about the argument. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CArgumentDefT&lt;TVar&gt;&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN12CCommandLine12DefineOptionER13CArgumentDefTI4TVarERKNSt6stringER4TVarRKNSt6stringEb6size_tDp14TArgumentGroup">
+<span id="_CPPv3I0DpEN12CCommandLine12DefineOptionERKNSt6stringER4TVarRKNSt6stringEb6size_tDp14TArgumentGroup"></span><span id="_CPPv2I0DpEN12CCommandLine12DefineOptionERKNSt6stringER4TVarRKNSt6stringEb6size_tDp14TArgumentGroup"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TVar</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">TArgumentGroup</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_c_command_line_1ab229c893ca57878b7e2a3c5f46548e8c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="class_c_argument_def_t.html#_CPPv4I00E13CArgumentDefT" title="CArgumentDefT"><span class="n"><span class="pre">CArgumentDefT</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0DpEN12CCommandLine12DefineOptionER13CArgumentDefTI4TVarERKNSt6stringER4TVarRKNSt6stringEb6size_tDp14TArgumentGroup" title="CCommandLine::DefineOption::TVar"><span class="n"><span class="pre">TVar</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">DefineOption</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssArgument</span></span>, <a class="reference internal" href="#_CPPv4I0DpEN12CCommandLine12DefineOptionER13CArgumentDefTI4TVarERKNSt6stringER4TVarRKNSt6stringEb6size_tDp14TArgumentGroup" title="CCommandLine::DefineOption::TVar"><span class="n"><span class="pre">TVar</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rtVar</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssHelpText</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bCaseSensitive</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nArgumentGroup</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span>, <a class="reference internal" href="#_CPPv4I0DpEN12CCommandLine12DefineOptionER13CArgumentDefTI4TVarERKNSt6stringER4TVarRKNSt6stringEb6size_tDp14TArgumentGroup" title="CCommandLine::DefineOption::TArgumentGroup"><span class="n"><span class="pre">TArgumentGroup</span></span></a><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nAdditionalGroups</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0DpEN12CCommandLine12DefineOptionER13CArgumentDefTI4TVarERKNSt6stringER4TVarRKNSt6stringEb6size_tDp14TArgumentGroup" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Option definition, which is an argument with option (-/) character. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TVar</strong> – Variable type of the argument to define. </p></li>
+<li><p><strong>TArgumentGroup</strong> – Types of additional argument groups for showing argument specific help. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rssArgument</strong> – <strong>[in]</strong> Pointer to the zero terminated string with the argument name. </p></li>
+<li><p><strong>rtVar</strong> – <strong>[inout]</strong> Reference to the argument that receives the content of the command line after parsing. </p></li>
+<li><p><strong>rssHelpText</strong> – <strong>[in]</strong> Pointer to the zero terminated text to present when printing help information about the argument. </p></li>
+<li><p><strong>bCaseSensitive</strong> – <strong>[in]</strong> Boolean telling whether the argument should be compared case sensitive or case insensitive. </p></li>
+<li><p><strong>nArgumentGroup</strong> – <strong>[in]</strong> During the generation of the help test, to optionally show the options based on the arguments supplied, argument groups can be used. The options are assigned to one or more argument groups and during the PrintHelp function, the group to show will be supplied. The default group is group #0. </p></li>
+<li><p><strong>nAdditionalGroups</strong> – <strong>[in]</strong> Zero or more additional group scan be supplied. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CArgumentDefT&lt;TVar&gt;&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN12CCommandLine15DefineSubOptionER13CArgumentDefTI4TVarERKNSt6stringER4TVarRKNSt6stringEb6size_tDp14TArgumentGroup">
+<span id="_CPPv3I0DpEN12CCommandLine15DefineSubOptionERKNSt6stringER4TVarRKNSt6stringEb6size_tDp14TArgumentGroup"></span><span id="_CPPv2I0DpEN12CCommandLine15DefineSubOptionERKNSt6stringER4TVarRKNSt6stringEb6size_tDp14TArgumentGroup"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TVar</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">TArgumentGroup</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_c_command_line_1aedccb115f29e0542d2c888cdffd701de"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="class_c_argument_def_t.html#_CPPv4I00E13CArgumentDefT" title="CArgumentDefT"><span class="n"><span class="pre">CArgumentDefT</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0DpEN12CCommandLine15DefineSubOptionER13CArgumentDefTI4TVarERKNSt6stringER4TVarRKNSt6stringEb6size_tDp14TArgumentGroup" title="CCommandLine::DefineSubOption::TVar"><span class="n"><span class="pre">TVar</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">DefineSubOption</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssArgument</span></span>, <a class="reference internal" href="#_CPPv4I0DpEN12CCommandLine15DefineSubOptionER13CArgumentDefTI4TVarERKNSt6stringER4TVarRKNSt6stringEb6size_tDp14TArgumentGroup" title="CCommandLine::DefineSubOption::TVar"><span class="n"><span class="pre">TVar</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rtVar</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssHelpText</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bCaseSensitive</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nArgumentGroup</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span>, <a class="reference internal" href="#_CPPv4I0DpEN12CCommandLine15DefineSubOptionER13CArgumentDefTI4TVarERKNSt6stringER4TVarRKNSt6stringEb6size_tDp14TArgumentGroup" title="CCommandLine::DefineSubOption::TArgumentGroup"><span class="n"><span class="pre">TArgumentGroup</span></span></a><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nAdditionalGroups</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0DpEN12CCommandLine15DefineSubOptionER13CArgumentDefTI4TVarERKNSt6stringER4TVarRKNSt6stringEb6size_tDp14TArgumentGroup" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sub-option definition, which is an argument with sub-option (&amp;#8212;) characters. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TVar</strong> – Variable type of the argument to define. </p></li>
+<li><p><strong>TArgumentGroup</strong> – Types of additional argument groups for showing argument specific help. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rssArgument</strong> – <strong>[in]</strong> Pointer to the zero terminated string with the argument name. </p></li>
+<li><p><strong>rtVar</strong> – <strong>[inout]</strong> Reference to the argument that receives the content of the command line after parsing. </p></li>
+<li><p><strong>rssHelpText</strong> – <strong>[in]</strong> Pointer to the zero terminated text to present when printing help information about the argument. </p></li>
+<li><p><strong>bCaseSensitive</strong> – <strong>[in]</strong> Boolean telling whether the argument should be compared case sensitive or case insensitive. </p></li>
+<li><p><strong>nArgumentGroup</strong> – <strong>[in]</strong> During the generation of the help test, to optionally show the options based on the arguments supplied, argument groups can be used. The options are assigned to one or more argument groups and during the PrintHelp function, the group to show will be supplied. The default group is group #0. </p></li>
+<li><p><strong>nAdditionalGroups</strong> – <strong>[in]</strong> Zero or more additional group scan be supplied. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CArgumentDefT&lt;TVar&gt;&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IDpEN12CCommandLine16DefineFlagOptionER13CArgumentDefTIbERKNSt6stringERbRKNSt6stringEb6size_tDp14TArgumentGroup">
+<span id="_CPPv3IDpEN12CCommandLine16DefineFlagOptionERKNSt6stringERbRKNSt6stringEb6size_tDp14TArgumentGroup"></span><span id="_CPPv2IDpEN12CCommandLine16DefineFlagOptionERKNSt6stringERbRKNSt6stringEb6size_tDp14TArgumentGroup"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">TArgumentGroup</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_c_command_line_1a917a509a300b7bb0b4ed7e13fc2387ee"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="class_c_argument_def_t.html#_CPPv4I00E13CArgumentDefT" title="CArgumentDefT"><span class="n"><span class="pre">CArgumentDefT</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">DefineFlagOption</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssArgument</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rbFlag</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssHelpText</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bCaseSensitive</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nArgumentGroup</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span>, <a class="reference internal" href="#_CPPv4IDpEN12CCommandLine16DefineFlagOptionER13CArgumentDefTIbERKNSt6stringERbRKNSt6stringEb6size_tDp14TArgumentGroup" title="CCommandLine::DefineFlagOption::TArgumentGroup"><span class="n"><span class="pre">TArgumentGroup</span></span></a><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nAdditionalGroups</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN12CCommandLine16DefineFlagOptionER13CArgumentDefTIbERKNSt6stringERbRKNSt6stringEb6size_tDp14TArgumentGroup" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Flag option definition, which is an argument with option (-/) character. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TArgumentGroup</strong> – Types of additional argument groups for showing argument specific help. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rssArgument</strong> – <strong>[in]</strong> Pointer to the zero terminated string with the argument name. </p></li>
+<li><p><strong>rbFlag</strong> – <strong>[inout]</strong> Reference to the argument that receives the content of the command line after parsing. </p></li>
+<li><p><strong>rssHelpText</strong> – <strong>[in]</strong> Pointer to the zero terminated text to present when printing help information about the argument. </p></li>
+<li><p><strong>bCaseSensitive</strong> – <strong>[in]</strong> Boolean telling whether the argument should be compared case sensitive or case insensitive. </p></li>
+<li><p><strong>nArgumentGroup</strong> – <strong>[in]</strong> During the generation of the help test, to optionally show the options based on the arguments supplied, argument groups can be used. The options are assigned to one or more argument groups and during the PrintHelp function, the group to show will be supplied. The default group is group #0. </p></li>
+<li><p><strong>nAdditionalGroups</strong> – <strong>[in]</strong> Zero or more additional group scan be supplied. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CArgumentDefT&lt;TVar&gt;&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IDpEN12CCommandLine19DefineFlagSubOptionER13CArgumentDefTIbERKNSt6stringERbRKNSt6stringEb6size_tDp14TArgumentGroup">
+<span id="_CPPv3IDpEN12CCommandLine19DefineFlagSubOptionERKNSt6stringERbRKNSt6stringEb6size_tDp14TArgumentGroup"></span><span id="_CPPv2IDpEN12CCommandLine19DefineFlagSubOptionERKNSt6stringERbRKNSt6stringEb6size_tDp14TArgumentGroup"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">TArgumentGroup</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_c_command_line_1a6fd07d903a63a89b60d519684373f4d9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="class_c_argument_def_t.html#_CPPv4I00E13CArgumentDefT" title="CArgumentDefT"><span class="n"><span class="pre">CArgumentDefT</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">DefineFlagSubOption</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssArgument</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rbFlag</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssHelpText</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bCaseSensitive</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nArgumentGroup</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span>, <a class="reference internal" href="#_CPPv4IDpEN12CCommandLine19DefineFlagSubOptionER13CArgumentDefTIbERKNSt6stringERbRKNSt6stringEb6size_tDp14TArgumentGroup" title="CCommandLine::DefineFlagSubOption::TArgumentGroup"><span class="n"><span class="pre">TArgumentGroup</span></span></a><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nAdditionalGroups</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN12CCommandLine19DefineFlagSubOptionER13CArgumentDefTIbERKNSt6stringERbRKNSt6stringEb6size_tDp14TArgumentGroup" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Flag sub-option definition, which is an argument with option (-/) character. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TArgumentGroup</strong> – Types of additional argument groups for showing argument specific help. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rssArgument</strong> – <strong>[in]</strong> Pointer to the zero terminated string with the argument name. </p></li>
+<li><p><strong>rbFlag</strong> – <strong>[inout]</strong> Reference to the argument that receives the content of the command line after parsing. </p></li>
+<li><p><strong>rssHelpText</strong> – <strong>[in]</strong> Pointer to the zero terminated text to present when printing help information about the argument. </p></li>
+<li><p><strong>bCaseSensitive</strong> – <strong>[in]</strong> Boolean telling whether the argument should be compared case sensitive or case insensitive. </p></li>
+<li><p><strong>nArgumentGroup</strong> – <strong>[in]</strong> During the generation of the help test, to optionally show the options based on the arguments supplied, argument groups can be used. The options are assigned to one or more argument groups and during the PrintHelp function, the group to show will be supplied. The default group is group #0. </p></li>
+<li><p><strong>nAdditionalGroups</strong> – <strong>[in]</strong> Zero or more additional group scan be supplied. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>CArgumentDefT&lt;TVar&gt;&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12CCommandLine15PrintFixedWidthE6size_t">
+<span id="_CPPv3N12CCommandLine15PrintFixedWidthE6size_t"></span><span id="_CPPv2N12CCommandLine15PrintFixedWidthE6size_t"></span><span id="CCommandLine::PrintFixedWidth__s"></span><span class="target" id="class_c_command_line_1a6538763c49f18b3367a1df85e05dcd9e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PrintFixedWidth</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nWidth</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12CCommandLine15PrintFixedWidthE6size_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set or remove a fixed with printing of the help text. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nWidth</strong> – <strong>[in]</strong> The width of the printable area. Can be 0, then the width should be dynamically taken from the console width the application is running in. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK12CCommandLine15PrintFixedWidthEv">
+<span id="_CPPv3NK12CCommandLine15PrintFixedWidthEv"></span><span id="_CPPv2NK12CCommandLine15PrintFixedWidthEv"></span><span id="CCommandLine::PrintFixedWidthC"></span><span class="target" id="class_c_command_line_1a22103f20c224da56dac42adf2b93505d"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PrintFixedWidth</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK12CCommandLine15PrintFixedWidthEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the current fixed width for printing help. If no fixed width has been selected, returns 0. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the fixed width selected to print help or 0 for dynamic width. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12CCommandLine13PrintMaxWidthE6size_t">
+<span id="_CPPv3N12CCommandLine13PrintMaxWidthE6size_t"></span><span id="_CPPv2N12CCommandLine13PrintMaxWidthE6size_t"></span><span id="CCommandLine::PrintMaxWidth__s"></span><span class="target" id="class_c_command_line_1a23707be5ddbd4f3246de4cf2af0d0c7a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PrintMaxWidth</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nWidth</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12CCommandLine13PrintMaxWidthE6size_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set the maximum width of printing the help text when the console width is larger. This will automatically select dynamic width. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nWidth</strong> – <strong>[in]</strong> The maximum width of the printing text if the console is larger. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK12CCommandLine13PrintMaxWidthEv">
+<span id="_CPPv3NK12CCommandLine13PrintMaxWidthEv"></span><span id="_CPPv2NK12CCommandLine13PrintMaxWidthEv"></span><span id="CCommandLine::PrintMaxWidthC"></span><span class="target" id="class_c_command_line_1a0d3d3196989e63f7a053143238152363"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PrintMaxWidth</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK12CCommandLine13PrintMaxWidthEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the maximum width of printing the help text. Could be 0 when there is no limit. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the maximum width of the printing the help text. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12CCommandLine11PrintSyntaxEb">
+<span id="_CPPv3N12CCommandLine11PrintSyntaxEb"></span><span id="_CPPv2N12CCommandLine11PrintSyntaxEb"></span><span id="CCommandLine::PrintSyntax__b"></span><span class="target" id="class_c_command_line_1a35d7fc0027b8b2b494f3e59f4b4b9085"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PrintSyntax</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bEnable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12CCommandLine11PrintSyntaxEb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Enable or disable syntax explanation during printing of the help text. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bEnable</strong> – <strong>[in]</strong> When set, enables the syntax printing; otherwise disables syntax printing. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK12CCommandLine11PrintSyntaxEv">
+<span id="_CPPv3NK12CCommandLine11PrintSyntaxEv"></span><span id="_CPPv2NK12CCommandLine11PrintSyntaxEv"></span><span id="CCommandLine::PrintSyntaxC"></span><span class="target" id="class_c_command_line_1afb2e8ae972b23d2fb24df31d23d9f02f"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PrintSyntax</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK12CCommandLine11PrintSyntaxEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the current syntax printing state. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The syntax printing state; either enabled, or disabled. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK12CCommandLine9PrintHelpERNSt7ostreamERKNSt6stringE6size_t">
+<span id="_CPPv3NK12CCommandLine9PrintHelpERNSt7ostreamERKNSt6stringE6size_t"></span><span id="_CPPv2NK12CCommandLine9PrintHelpERNSt7ostreamERKNSt6stringE6size_t"></span><span id="CCommandLine::PrintHelp__osR.ssCR.sC"></span><span class="target" id="class_c_command_line_1a013c812098c5db87ef45cd2bb1bd2273"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PrintHelp</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rstream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssHelpText</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nArgumentGroup</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK12CCommandLine9PrintHelpERNSt7ostreamERKNSt6stringE6size_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Print help information based on the configured arguments. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TGroup</strong> – Zero or more help groups to show. If none are supplied, the default group #0 is shown. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rstream</strong> – <strong>[in]</strong> The stream to be used to print the help. </p></li>
+<li><p><strong>rssHelpText</strong> – <strong>[in]</strong> A description of the application formatted to fit the console width. </p></li>
+<li><p><strong>nArgumentGroup</strong> – <strong>[in]</strong> During the generation of the help test, to optionally show the options based on the arguments supplied, argument groups can be used. The options are assigned to one or more argument groups and during the PrintHelp function, the group to show will be supplied. The default group is group #0. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK12CCommandLine13DumpArgumentsERNSt7ostreamEb">
+<span id="_CPPv3NK12CCommandLine13DumpArgumentsERNSt7ostreamEb"></span><span id="_CPPv2NK12CCommandLine13DumpArgumentsERNSt7ostreamEb"></span><span id="CCommandLine::DumpArguments__osR.bC"></span><span class="target" id="class_c_command_line_1a3dbac997482ccac5c6bc9ef145157266"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DumpArguments</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rstream</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bAll</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK12CCommandLine13DumpArgumentsERNSt7ostreamEb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Dump command line arguments. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rstream</strong> – <strong>[inout]</strong> Reference to the stream to dump the arguments to. </p></li>
+<li><p><strong>bAll</strong> – <strong>[in]</strong> When set, dump all arguments; otherwise only the ones that we provided over the command line. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK12CCommandLine21IncompatibleArgumentsE6size_tb">
+<span id="_CPPv3NK12CCommandLine21IncompatibleArgumentsE6size_tb"></span><span id="_CPPv2NK12CCommandLine21IncompatibleArgumentsE6size_tb"></span><span id="CCommandLine::IncompatibleArguments__s.bC"></span><span class="target" id="class_c_command_line_1a7fbf080a3fa0c72cda6156d2359ad21b"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IncompatibleArguments</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nArgumentGroup</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bFull</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK12CCommandLine21IncompatibleArgumentsE6size_tb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a list of incompatible supplied arguments base don the supplied argument group. </p>
+<p>Options can be assigned one or more groups. This can be useful to selective enable/disable options based on the state on the command line (e.g. based on a command provided on the command line). Not all options are compatible to the currently active group and the compatibility can be checked using this function. Provided options belonging to group 0 are always compatible. For all other provided options, the compatibility is checked with the provided argument group number. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nArgumentGroup</strong> – <strong>[in]</strong> Argument group that currently defines the compatibility. </p></li>
+<li><p><strong>bFull</strong> – <strong>[in]</strong> When set, returns the complete supplied argument text. If not, returns the option label only. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of incompatible provided arguments. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N12CCommandLine13PrintHelpTextERNSt7ostreamERKNSt6stringE6size_t">
+<span id="_CPPv3N12CCommandLine13PrintHelpTextERNSt7ostreamERKNSt6stringE6size_t"></span><span id="_CPPv2N12CCommandLine13PrintHelpTextERNSt7ostreamERKNSt6stringE6size_t"></span><span id="CCommandLine::PrintHelpText__osR.ssCR.s"></span><span class="target" id="class_c_command_line_1a3b5378e4d5ac10036a18ce7cb2e7f6bb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PrintHelpText</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rstream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssHelpText</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nPrintWidth</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12CCommandLine13PrintHelpTextERNSt7ostreamERKNSt6stringE6size_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Print help text information (not printing the arguments). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rstream</strong> – <strong>[in]</strong> The stream to be used to print the help. </p></li>
+<li><p><strong>rssHelpText</strong> – <strong>[in]</strong> A description of the application formatted to fit the console width. </p></li>
+<li><p><strong>nPrintWidth</strong> – <strong>[in]</strong> The width of the printable area. Can be 0, then the width is taken from the console width the application is running in. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

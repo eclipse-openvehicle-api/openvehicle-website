@@ -1,0 +1,898 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>What is Open Vehicle API &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'vapi_doc/the_VAPI';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="A view under the hood" href="under_the_hood.html" />
+    <link rel="prev" title="Aspects of Open Vehicle API" href="../vapi_pages/aspects_of_VAPI.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item current active">
+                      <a class="nav-link dropdown-item nav-internal" href="#">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item current active">
+                      <a class="nav-link dropdown-item nav-internal" href="#">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">What is...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="what-is-open-vehicle-api">
+<h1>What is Open Vehicle API<a class="headerlink" href="#what-is-open-vehicle-api" title="Permalink to this heading">#</a></h1>
+<section id="general">
+<h2>General<a class="headerlink" href="#general" title="Permalink to this heading">#</a></h2>
+<p>The VAPI or Open Vehicle API is an abstract and complex topic, so for a better understanding please read the following topics and have a look at the <a class="reference internal" href="glossary.html#vapi-glossary"><span class="std std-ref">VAPI Glossary</span></a>.</p>
+<section id="what-is-the-open-vehicle-api">
+<h3>What is the Open Vehicle API?<a class="headerlink" href="#what-is-the-open-vehicle-api" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The VAPI is an open component based framework in C++ for setting up and using a vehicle abstraction through multiple abstraction stages (<a class="reference internal" href="glossary.html#term-VAPI-Layer"><span class="xref std std-term">VAPI Layer</span></a>).</p></li>
+<li><p>Built <a class="reference internal" href="glossary.html#term-VAPI-Component"><span class="xref std std-term">VAPI Component</span></a> s don’t rely on exact matching of compiler versions for compatibility, even multiple different compilers can be used to create a set of components that work together, for more details please see the <a class="reference internal" href="#requirements-for-vapi-sdk"><span class="std std-ref">SDK requirements</span></a>.</p></li>
+<li><p>The VAPI is designed to be used event-driven, but can work in a timed context using <a class="reference internal" href="glossary.html#term-Platform-Abstraction"><span class="xref std std-term">Platform Abstraction</span></a> functionalities.</p></li>
+</ul>
+</section>
+<section id="what-is-the-vapi-not">
+<h3>What is the VAPI not?<a class="headerlink" href="#what-is-the-vapi-not" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The VAPI is <strong>not</strong> yet developed under ISO 26262. But that’s exactly the development of the <a class="reference internal" href="glossary.html#term-VAPI-Framework"><span class="xref std std-term">VAPI Framework</span></a> is targeting for at the moment. The current development of the <a class="reference internal" href="glossary.html#term-VAPI-Framework"><span class="xref std std-term">VAPI Framework</span></a> focuses on mixed critical to have a system with a safety instance and a QM mode instance.</p></li>
+<li><p>The VAPI is <strong>not</strong> a fixed API description. The <a class="reference internal" href="glossary.html#term-VAPI-Framework"><span class="xref std std-term">VAPI Framework</span></a> allows for any API descriptions (<a class="reference internal" href="glossary.html#term-Interface-Set"><span class="xref std std-term">Interface Set</span></a> s) that consists of <a class="reference internal" href="glossary.html#term-Interface"><span class="xref std std-term">Interface</span></a> s. But we are part of projects which are looking forward to standardize interfaces. Therefore you will read on several placess about VSS (Vehicle Signal Specification) in the documentation. All examples are targeting for that.</p></li>
+<li><p>The VAPI does <strong>not</strong> define communication interfaces except for communication between the <a class="reference internal" href="glossary.html#term-VAPI-Platform-Integration"><span class="xref std std-term">VAPI Platform Integration</span></a> and the <a class="reference internal" href="glossary.html#term-VAPI-Framework"><span class="xref std std-term">VAPI Framework</span></a> and VAPI-internal communication. There is no supposed communication or data exchange between <a class="reference internal" href="glossary.html#term-VAPI-Component"><span class="xref std std-term">VAPI Component</span></a> s and any non-internal tools and elements.</p></li>
+</ul>
+</section>
+<section id="vapi-principles">
+<span id="id1"></span><h3>VAPI Principles<a class="headerlink" href="#vapi-principles" title="Permalink to this heading">#</a></h3>
+<p>The principles on which the VAPI is developed are:</p>
+<ul class="simple">
+<li><p>The VAPI should be simple to use as an integrator and as a <a class="reference internal" href="glossary.html#term-VAPI-Component"><span class="xref std std-term">VAPI Component</span></a> developer. The provided <a class="reference internal" href="glossary.html#term-VAPI-Interface"><span class="xref std std-term">VAPI Interface</span></a> s and <a class="reference internal" href="glossary.html#term-VAPI-Support-Class"><span class="xref std std-term">VAPI support class</span></a> es should be easy to understand and use, hard to misuse, but still provide all needed functionality conveniently in a compact form.</p></li>
+<li><p>External dependencies should be minimal.</p></li>
+<li><p>Developed <a class="reference internal" href="glossary.html#term-VAPI-Component"><span class="xref std std-term">VAPI Component</span></a> s should be testable in isolation.</p></li>
+<li><p>Developed <a class="reference internal" href="glossary.html#term-VAPI-Component"><span class="xref std std-term">VAPI Component</span></a> s only communicate via <a class="reference internal" href="glossary.html#term-Interface"><span class="xref std std-term">Interface</span></a> s to be replaceable in a system without reconfiguring or recompiling the system.</p></li>
+<li><p>Communication is done through <a class="reference internal" href="glossary.html#term-VAPI-Layer"><span class="xref std std-term">VAPI Layer</span></a>. The <a class="reference internal" href="glossary.html#term-Platform-Abstraction"><span class="xref std std-term">Platform Abstraction</span></a> and <a class="reference internal" href="glossary.html#term-Vehicle-Device"><span class="xref std std-term">Vehicle Device</span></a> s only communicate with the <a class="reference internal" href="glossary.html#term-Data-Dispatch-Service"><span class="xref std std-term">Data Dispatch Service</span></a>, <a class="reference internal" href="glossary.html#term-Basic-Service"><span class="xref std std-term">Basic Service</span></a> s only with <a class="reference internal" href="glossary.html#term-Vehicle-Device"><span class="xref std std-term">Vehicle Device</span></a> s, <a class="reference internal" href="glossary.html#term-Complex-Service"><span class="xref std std-term">Complex Service</span></a> s and <a class="reference internal" href="glossary.html#term-Extern-Application"><span class="xref std std-term">Extern Application</span></a> s only with <a class="reference internal" href="glossary.html#term-Basic-Service"><span class="xref std std-term">Basic Service</span></a> s and <a class="reference internal" href="glossary.html#term-Complex-Service"><span class="xref std std-term">Complex Service</span></a> s.</p></li>
+<li><p>Data units should be generalized through the different layers of the Vehicle API, as exemplary shown here:</p></li>
+</ul>
+</section>
+<section id="requirements-of-the-vapi-sdk">
+<span id="requirements-for-vapi-sdk"></span><h3>Requirements of the VAPI SDK<a class="headerlink" href="#requirements-of-the-vapi-sdk" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The VAPI relies on virtual functions as a base of its <a class="reference internal" href="glossary.html#term-Interface"><span class="xref std std-term">Interface</span></a> s and on the use of a <a class="reference external" href="https://en.wikipedia.org/wiki/Virtual_method_table">vtable</a>. To assure correct behaviour with other components, that may not have been compiled with the same compiler, an appropriate compiler has to implement polymorphism through vtables.</p></li>
+<li><p>The VAPI relies on Runtime Type Information (RTTI) at compile time for now and requires this feature to be enabled.</p></li>
+<li><p>The VAPI needs a compiler compatible with C++17 or later.</p></li>
+<li><p>The VAPI Framework requires an underlying <a class="reference internal" href="glossary.html#term-Platform-Abstraction"><span class="xref std std-term">Platform Abstraction</span></a> that implements and exposes the required Interfaces.</p>
+<ul>
+<li><p>interprocess communication</p></li>
+<li><p>loading and unloading of shared libraries</p></li>
+<li><p>starting and stopping processes</p></li>
+<li><p>file reads and writes</p></li>
+<li><p>timed triggers</p></li>
+</ul>
+</li>
+<li><p>To compile VAPI Services from Source a compiler compatible with C++17 or later is needed.</p></li>
+<li><p>The system the <a class="reference internal" href="glossary.html#term-VAPI-Framework"><span class="xref std std-term">VAPI Framework</span></a> runs on must allow exceptions.</p></li>
+<li><p>To assure correct behaviour, little endian systems are needed. Big endian systems may be possible, but are not (yet) officially supported. Remote machines in a single system <strong>must not</strong> differ in endianness!</p></li>
+</ul>
+</section>
+</section>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>The <a class="reference internal" href="glossary.html#term-VAPI-Framework"><span class="xref std std-term">VAPI Framework</span></a> supports <a class="reference internal" href="glossary.html#term-Mixed-Criticality"><span class="xref std std-term">Mixed-Criticality</span></a> and focuses on the HPC to run in 2 modes (see also <a class="reference internal" href="key_building_blocks.html#vapi-mixed-criticality"><span class="std std-ref">Picture Mixed-Criticality</span></a></p>
+<ul class="simple">
+<li><p>Safety context</p></li>
+<li><p>Non-safety context (QM mode)</p></li>
+</ul>
+<figure class="align-default" id="fig-overview-on-hpc">
+<img alt="../_images/VAPI_on_hpc.png" src="../_images/VAPI_on_hpc.png" />
+</figure>
+<p>The Open Vehicle API framework comprises of:</p>
+<ul class="simple">
+<li><p>a set of building and orchestration tools</p></li>
+<li><p>a run-time managing binary components</p></li>
+<li><p>services for communication and platform interface (logging, IPC, task timer)</p></li>
+<li><p>management software to run components on different (virtual) machines and to run complex services and applications as isolated services</p></li>
+<li><p>components and services to run on a local machine, a cloud-based SIL environment and a target HW on the HIL or in the vehicle</p></li>
+</ul>
+<figure class="align-default" id="fig-overview-tools">
+<img alt="../_images/tools.png" src="../_images/tools.png" />
+</figure>
+<p>It contains already:</p>
+<ul class="simple">
+<li><p>several executables and helper tools</p></li>
+<li><p>a lot of core services ready to be used</p></li>
+<li><p>Hardware abstraction components e.g. access to CAN bus.</p></li>
+<li><p>Helper tools to auto generate several layers to access Can bus, FMU creation for Siumlation with <code class="docutils literal notranslate"><span class="pre">OpenXilEnv</span></code> and more.</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">More details under the hood:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="under_the_hood.html">A view under the hood</a></li>
+</ul>
+</div>
+</section>
+<section id="open-vehicle-api-framework-user">
+<span id="vapi-developer"></span><h2>Open Vehicle API Framework User<a class="headerlink" href="#open-vehicle-api-framework-user" title="Permalink to this heading">#</a></h2>
+<p>There is not a single type of developer for the <a class="reference internal" href="glossary.html#term-VAPI-Framework"><span class="xref std std-term">VAPI Framework</span></a>. Instead, one has to distinguish between different developer types and views depending on the topic to be implemented. The developer has not to know in which environment his component is finally running. That means the developer does not need to have or know about the final environment his component/application is running while he develops and debugs his component.</p>
+<p>Therefore, a final application may run on different platforms and may use multiple components which will come from different suppliers which may not know each other.</p>
+<section id="vapi-framework-developer">
+<h3>VAPI Framework developer<a class="headerlink" href="#vapi-framework-developer" title="Permalink to this heading">#</a></h3>
+<p>Enhances the framework core functionality and provides support classes for these core functionalities.</p>
+</section>
+<section id="vehicle-device-developer">
+<h3>Vehicle device developer<a class="headerlink" href="#vehicle-device-developer" title="Permalink to this heading">#</a></h3>
+<p>Develops the abstraction of a specific hardware device and provides access to the device via one or more interfaces.</p>
+</section>
+<section id="basic-service-developer">
+<h3>Basic service developer<a class="headerlink" href="#basic-service-developer" title="Permalink to this heading">#</a></h3>
+<p>Implements a single basic functionality of a vehicle using only interfaces of vehicle devices and provides this functionality to complex services and applications via Interfaces.</p>
+</section>
+<section id="complex-service-developer">
+<h3>Complex service developer<a class="headerlink" href="#complex-service-developer" title="Permalink to this heading">#</a></h3>
+<p>Implements a single complex functionality of a vehicle using only interfaces of basic services and provides this functionality via Interfaces to be used by another complex services and applications.</p>
+</section>
+<section id="application-developer">
+<h3>Application developer<a class="headerlink" href="#application-developer" title="Permalink to this heading">#</a></h3>
+<p>Develops applications using the interfaces of the complex services. The complex services and the underlying vehicle devices and services can be provided by different suppliers.</p>
+</section>
+<section id="platform-integrator">
+<h3>Platform integrator<a class="headerlink" href="#platform-integrator" title="Permalink to this heading">#</a></h3>
+<p>Implements the platform abstraction (file access, process management, …). This platform abstraction component is required either for a new platform or if an existing middleware must be adapted to use the <a class="reference internal" href="glossary.html#term-VAPI-Framework"><span class="xref std std-term">VAPI Framework</span></a>. All interfaces of the platform abstraction need to be implemented.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../vapi_pages/aspects_of_VAPI.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Aspects of Open Vehicle API</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="under_the_hood.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">A view under the hood</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

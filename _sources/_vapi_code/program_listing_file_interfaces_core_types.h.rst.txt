@@ -1,0 +1,351 @@
+
+.. _program_listing_file_interfaces_core_types.h:
+
+Program Listing for File core_types.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_core_types.h>` (``interfaces\core_types.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__CORE_TYPES_H__20251003_130453_772__
+   #define __IDL_GENERATED__CORE_TYPES_H__20251003_130453_772__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   static const uint32_t SDVFrameworkInterfaceVersion = 100;
+   
+   static const uint32_t SDVFrameworkBuildVersion = 100;
+   
+   static const uint32_t SDVFrameworkSubbuildVersion = 100;
+   
+   /* Define SDV_SYMBOL_PUBLIC attribute for exported functions. */
+   #if !defined(SDV_SYMBOL_PUBLIC) || !defined(SDV_SYMBOL_HIDDEN)
+   #if defined _WIN32 || defined __CYGWIN__
+   #ifdef __GNUC__
+   #define SDV_SYMBOL_PUBLIC __attribute__((dllexport))
+   #else
+   #define SDV_SYMBOL_PUBLIC __declspec(dllexport)
+   #endif
+   #define SDV_SYMBOL_HIDDEN
+   #else
+   #if __GNUC__ >= 4
+   #define SDV_SYMBOL_PUBLIC __attribute__((visibility("default"))) __attribute__((used))
+   #define SDV_SYMBOL_HIDDEN __attribute__((visibility("hidden")))
+   #else
+   #define SDV_SYMBOL_PUBLIC 
+   #define SDV_SYMBOL_HIDDEN  
+   #endif
+   #endif
+   #endif /* !defined(SDV_SYMBOL_PUBLIC) || !defined(SDV_SYMBOL_HIDDEN) */
+   
+   #ifdef __unix__
+   #if _POSIX_C_SOURCE < 200809L
+   #error POSIX version POSIX.1-2008 or higher needed
+   #endif
+   #endif
+   
+   #include "../support/interface.h"
+   #include "../support/except.h"
+   
+   namespace sdv
+   {
+       enum class EEndian : uint8_t
+       {
+           big_endian = 0,
+   
+           little_endian = 1,
+       };
+   
+       except XSysExcept
+       {
+           inline static const ::sdv::exception_id _id = 0xE1BCB80EB2F0DCB8;
+   
+           inline static const char _description[] = "XSysExcept exception";
+   
+           virtual const char* what() const noexcept { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept { return _id; }
+       };
+   
+       except XAccessDenied : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x08AE5C06C907F393;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "Access denied.";
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XNotFound : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x13A281444B2D581F;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "Resource not found.";
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XInvalidState : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x5361779B0383F526;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The system is in an invalid state.";
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XTimeout : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x3D446A23C2F13EB1;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "A timeout occurred.";
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XNoInterface : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0xB67CF66C856DCD04;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The interface could not be found.";
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XIndexOutOfRange : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0xCB72D113B2C57CB6;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The supplied index was out of range.";
+   
+           uint32_t uiIndex;
+   
+           uint32_t uiSize;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XInvalidIterator : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0xE12D4F227521A71E;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The supplied iterator was invalid.";
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XNullPointer : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0xEEF0101F215DAB3F;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "A NULL-pointer was supplied.";
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XInvalidRefCount : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x02E02E52488E61DB;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The reference counter has an invalid/unexpected value.";
+   
+           uint32_t uiCount;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XBufferTooSmall : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x3C494554A6187FE2;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The buffer was too small to store the data.";
+   
+           uint64_t uiSize;
+   
+           uint64_t uiCapacity;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XHashNotMatching : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x7618626C6A824D7D;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The provided hash value doesn't match to the calculated hash value.";
+   
+           uint64_t uiCalculated;
+   
+           uint64_t uiProvided;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XOffsetPastBufferSize : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0xD58CE8122B835FCB;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "The provided offset doesn't is not pointing to a location within the buffer.";
+   
+           uint64_t uiOffset;
+   
+           uint64_t uiSize;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XUnknownException : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x18504F1A91F6FC94;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "An exception was fired, but no handler found for it.";
+   
+           sdv::exception_id unknown_id;
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       except XUnhandledException : XSysExcept
+       {
+           // _id might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const ::sdv::exception_id _id = 0x560CDFE1BF94C8C1;
+   
+           // _description might also be member of the base class. Suppress in static code analysis.
+           // cppcheck-suppress duplInheritedMember
+           inline static const char _description[] = "An unhandled exception was caught.";
+   
+           virtual const char* what() const noexcept override { return _description; }
+   
+           virtual ::sdv::exception_id id() const noexcept override { return _id; }
+       };
+   
+       namespace core
+       {
+           except XNoMemMgr : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0xA0CB36340BFEECB3;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "The memory manager could not be accessed.";
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XAllocFailed : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0x48383EE6B2D75A0F;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "The allocation of memory failed.";
+   
+               uint32_t uiSize;
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__CORE_TYPES_H__20251003_130453_824__)

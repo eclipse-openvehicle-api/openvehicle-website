@@ -1,0 +1,214 @@
+
+.. _program_listing_file_support_pssup.h:
+
+Program Listing for File pssup.h
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_pssup.h>` (``support\pssup.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SDV_PS_SUPPORT_H
+   #define SDV_PS_SUPPORT_H
+   
+   #include "../interfaces/core_ps.h"
+   #include "../interfaces/serdes/core_ps_serdes.h"
+   #include "../interfaces/serdes/core_types_serdes.h"
+   
+   bool operator==(const sdv::ps::TMarshallID& rtID1, const sdv::ps::TMarshallID& rtID2);
+   
+   bool operator==(const sdv::ps::TMarshallID& rtID1, size_t nVal);
+   
+   bool operator==(size_t nVal, const sdv::ps::TMarshallID& rtID2);
+   
+   bool operator!=(const sdv::ps::TMarshallID& rtID1, const sdv::ps::TMarshallID& rtID2);
+   
+   bool operator!=(const sdv::ps::TMarshallID& rtID1, size_t nVal);
+   
+   bool operator!=(size_t nVal, const sdv::ps::TMarshallID& rtID2);
+   
+   bool operator<(const sdv::ps::TMarshallID& rtID1, const sdv::ps::TMarshallID& rtID2);
+   
+   bool operator<=(const sdv::ps::TMarshallID& rtID1, const sdv::ps::TMarshallID& rtID2);
+   
+   bool operator>(const sdv::ps::TMarshallID& rtID1, const sdv::ps::TMarshallID& rtID2);
+   
+   bool operator>=(const sdv::ps::TMarshallID& rtID1, const sdv::ps::TMarshallID& rtID2);
+   
+   bool operator!(const sdv::ps::TMarshallID& rtID);
+   
+   #ifndef DOXYGEN_IGNORE
+   template <>
+   struct std::less<sdv::ps::TMarshallID>
+   {
+       using result_type = bool;
+   
+       using first_argument_type = sdv::ps::TMarshallID;
+   
+       using second_argument_type = sdv::ps::TMarshallID;
+   
+       bool operator()(const sdv::ps::TMarshallID& rtID1, const sdv::ps::TMarshallID& rtID2) const { return ::operator<(rtID1, rtID2); }
+   };
+   #endif // !defined DOXYGEN_IGNORE
+   
+   bool operator==(const sdv::com::TConnectionID& rtID1, const sdv::com::TConnectionID& rtID2);
+   
+   bool operator==(const sdv::com::TConnectionID& rtID1, size_t nVal);
+   
+   bool operator==(size_t nVal, const sdv::com::TConnectionID& rtID2);
+   
+   bool operator!=(const sdv::com::TConnectionID& rtID1, const sdv::com::TConnectionID& rtID2);
+   
+   bool operator!=(const sdv::com::TConnectionID& rtID1, size_t nVal);
+   
+   bool operator!=(size_t nVal, const sdv::com::TConnectionID& rtID2);
+   
+   bool operator<(const sdv::com::TConnectionID& rtID1, const sdv::com::TConnectionID& rtID2);
+   
+   bool operator<=(const sdv::com::TConnectionID& rtID1, const sdv::com::TConnectionID& rtID2);
+   
+   bool operator>(const sdv::com::TConnectionID& rtID1, const sdv::com::TConnectionID& rtID2);
+   
+   bool operator>=(const sdv::com::TConnectionID& rtID1, const sdv::com::TConnectionID& rtID2);
+   
+   bool operator!(const sdv::com::TConnectionID& rtID);
+   
+   #ifndef DOXYGEN_IGNORE
+   template <>
+   struct std::less<sdv::com::TConnectionID>
+   {
+       using result_type = bool;
+   
+       using first_argument_type = sdv::com::TConnectionID;
+   
+       using second_argument_type = sdv::com::TConnectionID;
+   
+       bool operator()(const sdv::com::TConnectionID& rtID1, const sdv::com::TConnectionID& rtID2) const { return ::operator<(rtID1, rtID2); }
+   };
+   #endif // !defined DOXYGEN_IGNORE
+   
+   #include "sequence.h"
+   #include "pointer.h"
+   #include "crc.h"
+   #include "component_impl.h"
+   #include <cassert>
+   #include <thread>
+   #include <condition_variable>
+   #include <map>
+   #include <functional>
+   #include <chrono>
+   #include <queue>
+   
+   namespace sdv
+   {
+       namespace ps
+       {
+           struct SMarshallLocal : SMarshall
+           {};
+   
+           class CRawDataBypass
+           {
+           public:
+               CRawDataBypass();
+   
+               void push(const pointer<uint8_t>& rptrData);
+   
+               pointer<uint8_t> pop();
+   
+               bool empty() const;
+   
+               void clear();
+   
+           private:
+                std::queue<pointer<uint8_t>> m_queueBypassData;    
+           };
+   
+           CRawDataBypass& GetRawDataBypass();
+   
+           enum class ECallResult : uint32_t
+           {
+               result_ok = 0,          
+               result_exception = 1,   
+           };
+   
+           template <typename TInterface>
+           class CProxyHandler : public sdv::CSdvObject, public IMarshallObjectIdent, public IMarshallLink
+           {
+           public:
+               // Ensure that the EEndian structure is 8 bits (to prevent byte swapping during detection).
+               static_assert(sizeof(EEndian) == 1);
+   
+               CProxyHandler();
+   
+               virtual ~CProxyHandler() override;
+   
+               // Interface map
+               BEGIN_SDV_INTERFACE_MAP()
+                   SDV_INTERFACE_CHAIN_BASE(sdv::CSdvObject)
+                   SDV_INTERFACE_ENTRY(IMarshallObjectIdent)
+                   SDV_INTERFACE_ENTRY(IMarshallLink)
+               END_SDV_INTERFACE_MAP()
+   
+               // Object class type
+               DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::Proxy)
+   
+               virtual void SetIdentification(/*in*/ const TMarshallID& tMarshallID) override;
+   
+               virtual void Link(/*in*/ IMarshall* pMarshall) override;
+   
+               virtual void Unlink() override;
+   
+               ECallResult DoCall(uint32_t uiFuncIndex, const serializer<GetPlatformEndianess()>& rserInput,
+                   deserializer<GetPlatformEndianess()>& rdesOutput);
+   
+           private:
+               IMarshall*      m_pRequest = nullptr;       
+               TMarshallID     m_tProxyID = {};             
+               TMarshallID     m_tStubID = {};              
+           };
+   
+           template <typename TInterface>
+           class CStubHandler : public sdv::CSdvObject, public IMarshallObjectIdent, public IMarshall
+           {
+               // Ensure that the EEndian structure is 8 bits (to prevent byte swapping during detection).
+               static_assert(sizeof(EEndian) == 1);
+   
+           public:
+               CStubHandler();
+   
+               virtual ~CStubHandler() override;
+   
+               // Interface map
+               BEGIN_SDV_INTERFACE_MAP()
+                   SDV_INTERFACE_CHAIN_BASE(sdv::CSdvObject)
+                   SDV_INTERFACE_ENTRY(IMarshallObjectIdent)
+                   SDV_INTERFACE_ENTRY(IMarshall)
+               END_SDV_INTERFACE_MAP()
+   
+               // Object class type
+               DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::Stub)
+   
+           protected:
+               typedef std::function<ECallResult(EEndian, const pointer<uint8_t>&, pointer<uint8_t>&)> FNDispatch;
+   
+               void RegisterDispatchFunc(FNDispatch fnDispatch);
+   
+               template <typename TExcept>
+               pointer<uint8_t> SerializeException(EEndian eEndian, const TExcept& rexcept);
+   
+               virtual void SetIdentification(/*in*/ const TMarshallID& tMarshallID) override;
+   
+               virtual sequence<pointer<uint8_t>> Call(/*inout*/ sequence<pointer<uint8_t>>& seqInputData) override;
+   
+           private:
+               std::vector<FNDispatch>     m_vecDispatch;  
+               TMarshallID                 m_tStubID{};    
+           };
+       } // namespace ps
+   } // namespace sdv
+   
+   #include "pssup.inl"
+   
+   #endif // !defined(SDV_PS_SUPPORT_H)

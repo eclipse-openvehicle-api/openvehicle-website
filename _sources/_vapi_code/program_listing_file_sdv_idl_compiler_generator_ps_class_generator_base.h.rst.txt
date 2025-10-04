@@ -1,0 +1,103 @@
+
+.. _program_listing_file_sdv_idl_compiler_generator_ps_class_generator_base.h:
+
+Program Listing for File ps_class_generator_base.h
+==================================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_generator_ps_class_generator_base.h>` (``sdv_idl_compiler\generator\ps_class_generator_base.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef PS_CLASS_GENERATOR_BASE_H
+   #define PS_CLASS_GENERATOR_BASE_H
+   
+   #include "context.h"
+   #include <vector>
+   
+   class CPSClassGeneratorBase : public CGenContext
+   {
+   public:
+       CPSClassGeneratorBase(sdv::IInterfaceAccess* pParser);
+   
+       virtual bool Generate();
+   
+   protected:
+       virtual std::string GetNameAppendix() const = 0;
+   
+       virtual std::string GetClassDefFileComments() const = 0;
+   
+       virtual std::string GetClassImplFileComments() const = 0;
+   
+       virtual std::string GetClassDefBegin(CKeywordMap& rmapKeywords) const = 0;
+   
+       virtual std::string GetClassDefEnd(CKeywordMap& rmapKeywords) const = 0;
+   
+       virtual std::string GetConstructImplBegin(CKeywordMap& rmapKeywords) const = 0;
+   
+       virtual std::string GetConstructImplEnd(CKeywordMap& rmapKeywords) const = 0;
+   
+       struct SFuncInfo
+       {
+           std::string                     ssName;                 
+           std::string                     ssDecl;                 
+           std::string                     ssDeclType;             
+           std::string                     ssDefRetValue;          
+           bool                            bIsConst = false;       
+           size_t                          nInputParamCnt = 0;     
+           size_t                          nOutputParamCnt = 0;    
+       };
+   
+       struct SParamInfo : SCDeclInfo
+       {
+           std::string                             ssName;                 
+           std::string                             ssDefaultValue;         
+           std::string                             ssSize;                 
+           enum class EDirection { in, out, inout, ret, ignored } eDirection = EDirection::ignored;   
+           enum class EAllocType { direct, indirect, ifc}         eAllocType = EAllocType::direct;    
+       };
+   
+       virtual std::string GetConstructFuncImpl(const SFuncInfo& rsFunc, CKeywordMap& rmapKeywords) const = 0;
+   
+       virtual std::string GetFuncDef(const SFuncInfo& rsFunc, CKeywordMap& rmapKeywords) const = 0;
+   
+       virtual std::string GetFuncImpl(const SFuncInfo& rsFunc, CKeywordMap& rmapKeywords, const CExceptionVector& rvecExceptions) const = 0;
+   
+       virtual std::string GetFuncImplParamInit(const SFuncInfo& rsFunc, const SParamInfo& rsParam, CKeywordMap& rmapKeywords) const = 0;
+   
+       virtual std::string GetFuncImplStreamParamInput(const SFuncInfo& rsFunc, const SParamInfo& rsParam, CKeywordMap& rmapKeywords) const = 0;
+   
+       virtual std::string GetFuncImplStreamParamOutput(const SFuncInfo& rsFunc, const SParamInfo& rsParam, CKeywordMap& rmapKeywords) const = 0;
+   
+       virtual std::string GetFuncImplParamTerm(const SFuncInfo& rsFunc, const SParamInfo& rsParam, CKeywordMap& rmapKeywords) const = 0;
+   
+   private:
+       void ProcessEntities(std::ostream& rstreamHdr, std::ostream& rstreamCpp, sdv::idl::IEntityIterator* pIterator);
+   
+       void StreamInterface(std::ostream& rstreamHdr, std::ostream& rstreamCpp, sdv::IInterfaceAccess* pEntity);
+   
+       void StreamInterfaceContent(std::ostream& rstreamClassDef, std::ostream& rstreamConstrBody, std::ostream& rstreamClassImpl,
+           const CKeywordMap& rmapKeywords, sdv::IInterfaceAccess* pEntity, uint32_t& ruiFuncCnt);
+   
+       void StreamAttribute(std::ostream& rstreamClassDef, std::ostream& rstreamConstrBody, std::ostream& rstreamClassImpl,
+           const CKeywordMap& rmapKeywords, sdv::IInterfaceAccess* pEntity, uint32_t& ruiFuncCnt);
+   
+       void StreamOperation(std::ostream& rstreamClassDef, std::ostream& rstreamConstrBody, std::ostream& rstreamClassImpl,
+           const CKeywordMap& rmapKeywords, sdv::IInterfaceAccess* pEntity, uint32_t& ruiFuncCnt);
+   
+       void StreamFunction(std::ostream& rstreamClassDef, std::ostream& rstreamConstrBody, std::ostream& rstreamClassImpl,
+           const CKeywordMap& rmapKeywords, sdv::IInterfaceAccess* pRetParam, uint32_t& ruiFuncCnt, bool bConst,
+           const std::vector<sdv::IInterfaceAccess*>& rvecParams, const CExceptionVector& rvecExceptions);
+   
+       SParamInfo GetParamInfo(sdv::IInterfaceAccess* pParam, bool bIsRetValue = false) const;
+   
+       void StreamMarshallDecl(std::ofstream& rstream, const CKeywordMap& rmapKeywords, uint32_t uiFuncIndex, uint32_t uiParamCnt);
+   
+       static bool RuntimeProcessingRequired(sdv::IInterfaceAccess* pEntity);
+   
+   
+   };
+   
+   
+   #endif // !defined(PS_CLASS_GENERATOR_BASE_H)

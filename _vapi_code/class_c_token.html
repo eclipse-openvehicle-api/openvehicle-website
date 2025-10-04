@@ -1,0 +1,1403 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Class CToken &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/class_c_token';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Class CToken</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-ctoken">
+<span id="exhale-class-class-c-token"></span><h1>Class CToken<a class="headerlink" href="#class-ctoken" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_sdv_idl_compiler_token.h.html#file-sdv-idl-compiler-token-h"><span class="std std-ref">File token.h</span></a></p></li>
+</ul>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this heading">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv46CToken">
+<span id="_CPPv36CToken"></span><span id="_CPPv26CToken"></span><span id="CToken"></span><span class="target" id="class_c_token"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CToken</span></span></span><a class="headerlink" href="#_CPPv46CToken" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Token within the source string. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-unnamed-group">Unnamed Group</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CTokencvRKNSt6stringEEv">
+<span id="_CPPv3NK6CTokencvRKNSt6stringEEv"></span><span id="_CPPv2NK6CTokencvRKNSt6stringEEv"></span><span id="CToken::castto-ssCR-operatorC"></span><span class="target" id="class_c_token_1a17038bc488fe2d5917466d70310520c2"></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&amp;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CTokencvRKNSt6stringEEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the code chunk that the token points to. When a length is part of the token the string is limited to the length. Otherwise the chunk contains the complete string starting at the token. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the string chunk. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken5c_strEv">
+<span id="_CPPv3NK6CToken5c_strEv"></span><span id="_CPPv2NK6CToken5c_strEv"></span><span id="CToken::c_strC"></span><span class="target" id="class_c_token_1a2094e4b0ca4421d8b41bff8e3a5c6992"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">c_str</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken5c_strEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Returns the code chunk that the token points to. When a length is part of the token the string is limited to the length. Otherwise the chunk contains the complete string starting at the token. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the string chunk. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-unnamed-group">Unnamed Group</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken9IsLiteralEv">
+<span id="_CPPv3NK6CToken9IsLiteralEv"></span><span id="_CPPv2NK6CToken9IsLiteralEv"></span><span id="CToken::IsLiteralC"></span><span class="target" id="class_c_token_1a5c69a6a89d67956ed9a0e368821ca226"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsLiteral</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken9IsLiteralEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken9IsIntegerEv">
+<span id="_CPPv3NK6CToken9IsIntegerEv"></span><span id="_CPPv2NK6CToken9IsIntegerEv"></span><span id="CToken::IsIntegerC"></span><span class="target" id="class_c_token_1aaddc2547dc9f36bfecff603a777a6aaf"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsInteger</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken9IsIntegerEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken8IsSignedEv">
+<span id="_CPPv3NK6CToken8IsSignedEv"></span><span id="_CPPv2NK6CToken8IsSignedEv"></span><span id="CToken::IsSignedC"></span><span class="target" id="class_c_token_1abe71319372a41015703e7e1845e6b26f"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsSigned</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken8IsSignedEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken10IsUnsignedEv">
+<span id="_CPPv3NK6CToken10IsUnsignedEv"></span><span id="_CPPv2NK6CToken10IsUnsignedEv"></span><span id="CToken::IsUnsignedC"></span><span class="target" id="class_c_token_1aee9c13372dc3ea290251e63f38076799"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsUnsigned</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken10IsUnsignedEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken6IsLongEv">
+<span id="_CPPv3NK6CToken6IsLongEv"></span><span id="_CPPv2NK6CToken6IsLongEv"></span><span id="CToken::IsLongC"></span><span class="target" id="class_c_token_1a1d0a180da4e8ede47ea99d837f92d11e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsLong</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken6IsLongEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken10IsLongLongEv">
+<span id="_CPPv3NK6CToken10IsLongLongEv"></span><span id="_CPPv2NK6CToken10IsLongLongEv"></span><span id="CToken::IsLongLongC"></span><span class="target" id="class_c_token_1a08293831891e4d619188f5696cab731f"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsLongLong</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken10IsLongLongEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken9IsDecimalEv">
+<span id="_CPPv3NK6CToken9IsDecimalEv"></span><span id="_CPPv2NK6CToken9IsDecimalEv"></span><span id="CToken::IsDecimalC"></span><span class="target" id="class_c_token_1aed42345a0e3728acbb99c3a1a80f7e71"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsDecimal</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken9IsDecimalEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken13IsHexadecimalEv">
+<span id="_CPPv3NK6CToken13IsHexadecimalEv"></span><span id="_CPPv2NK6CToken13IsHexadecimalEv"></span><span id="CToken::IsHexadecimalC"></span><span class="target" id="class_c_token_1aefc41d45a5739a3317ff39772cbdc7a2"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsHexadecimal</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken13IsHexadecimalEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken7IsOctalEv">
+<span id="_CPPv3NK6CToken7IsOctalEv"></span><span id="_CPPv2NK6CToken7IsOctalEv"></span><span id="CToken::IsOctalC"></span><span class="target" id="class_c_token_1acd024536a57e0bf131693691db786bb6"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsOctal</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken7IsOctalEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken8IsBinaryEv">
+<span id="_CPPv3NK6CToken8IsBinaryEv"></span><span id="_CPPv2NK6CToken8IsBinaryEv"></span><span id="CToken::IsBinaryC"></span><span class="target" id="class_c_token_1a3ccb9f9a03520c38b403332f823fe6c1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsBinary</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken8IsBinaryEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken15IsFloatingPointEv">
+<span id="_CPPv3NK6CToken15IsFloatingPointEv"></span><span id="_CPPv2NK6CToken15IsFloatingPointEv"></span><span id="CToken::IsFloatingPointC"></span><span class="target" id="class_c_token_1a2d60cfda740367465a8e1ef926da9c9e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsFloatingPoint</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken15IsFloatingPointEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken12IsFixedPointEv">
+<span id="_CPPv3NK6CToken12IsFixedPointEv"></span><span id="_CPPv2NK6CToken12IsFixedPointEv"></span><span id="CToken::IsFixedPointC"></span><span class="target" id="class_c_token_1af8078d0079f1d0c6d49311a72211e755"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsFixedPoint</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken12IsFixedPointEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken11IsCharacterEv">
+<span id="_CPPv3NK6CToken11IsCharacterEv"></span><span id="_CPPv2NK6CToken11IsCharacterEv"></span><span id="CToken::IsCharacterC"></span><span class="target" id="class_c_token_1ae2708b88f5686c799b258aefbbffcd8a"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsCharacter</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken11IsCharacterEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken19IsCharacterSequenceEv">
+<span id="_CPPv3NK6CToken19IsCharacterSequenceEv"></span><span id="_CPPv2NK6CToken19IsCharacterSequenceEv"></span><span id="CToken::IsCharacterSequenceC"></span><span class="target" id="class_c_token_1aed0fd5e89bfab4f7619fee009aebfccb"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsCharacterSequence</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken19IsCharacterSequenceEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken8IsStringEv">
+<span id="_CPPv3NK6CToken8IsStringEv"></span><span id="_CPPv2NK6CToken8IsStringEv"></span><span id="CToken::IsStringC"></span><span class="target" id="class_c_token_1a8e0cfc82136684734afede1732827063"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsString</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken8IsStringEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken7IsAsciiEv">
+<span id="_CPPv3NK6CToken7IsAsciiEv"></span><span id="_CPPv2NK6CToken7IsAsciiEv"></span><span id="CToken::IsAsciiC"></span><span class="target" id="class_c_token_1a69fb24efceda92dec0c20d9ded1d5d07"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsAscii</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken7IsAsciiEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken6IsUtf8Ev">
+<span id="_CPPv3NK6CToken6IsUtf8Ev"></span><span id="_CPPv2NK6CToken6IsUtf8Ev"></span><span id="CToken::IsUtf8C"></span><span class="target" id="class_c_token_1a2fad653c4a9b430e67fead0ca6c3fa7f"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsUtf8</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken6IsUtf8Ev" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken7IsUtf16Ev">
+<span id="_CPPv3NK6CToken7IsUtf16Ev"></span><span id="_CPPv2NK6CToken7IsUtf16Ev"></span><span id="CToken::IsUtf16C"></span><span class="target" id="class_c_token_1ab24e5753d12c58774b292e4326779029"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsUtf16</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken7IsUtf16Ev" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken7IsUtf32Ev">
+<span id="_CPPv3NK6CToken7IsUtf32Ev"></span><span id="_CPPv2NK6CToken7IsUtf32Ev"></span><span id="CToken::IsUtf32C"></span><span class="target" id="class_c_token_1a58bd4c20493da59d0cd49ad803d3356f"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsUtf32</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken7IsUtf32Ev" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken6IsWideEv">
+<span id="_CPPv3NK6CToken6IsWideEv"></span><span id="_CPPv2NK6CToken6IsWideEv"></span><span id="CToken::IsWideC"></span><span class="target" id="class_c_token_1a992183b47924771616d404ec0ae1ddaf"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsWide</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken6IsWideEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken11IsRawStringEv">
+<span id="_CPPv3NK6CToken11IsRawStringEv"></span><span id="_CPPv2NK6CToken11IsRawStringEv"></span><span id="CToken::IsRawStringC"></span><span class="target" id="class_c_token_1a56a3dd11fbb7b57ce3cb95309cfec798"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsRawString</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken11IsRawStringEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken9IsBooleanEv">
+<span id="_CPPv3NK6CToken9IsBooleanEv"></span><span id="_CPPv2NK6CToken9IsBooleanEv"></span><span id="CToken::IsBooleanC"></span><span class="target" id="class_c_token_1a48934a3944d1bee80a9ca83227ead94d"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsBoolean</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken9IsBooleanEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken9IsNullptrEv">
+<span id="_CPPv3NK6CToken9IsNullptrEv"></span><span id="_CPPv2NK6CToken9IsNullptrEv"></span><span id="CToken::IsNullptrC"></span><span class="target" id="class_c_token_1a985484f533fdc2b0252d20f454eb812a"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsNullptr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken9IsNullptrEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Information functions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the information. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6CToken6CTokenEv">
+<span id="_CPPv3N6CToken6CTokenEv"></span><span id="_CPPv2N6CToken6CTokenEv"></span><span id="CToken::CToken"></span><span class="target" id="class_c_token_1adf80708e89131c08ceff98bfe9022bf5"></span><span class="sig-name descname"><span class="n"><span class="pre">CToken</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N6CToken6CTokenEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Default constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6CToken6CTokenERKNSt6stringE10ETokenType">
+<span id="_CPPv3N6CToken6CTokenERKNSt6stringE10ETokenType"></span><span id="_CPPv2N6CToken6CTokenERKNSt6stringE10ETokenType"></span><span id="CToken::CToken__ssCR.ETokenType"></span><span class="target" id="class_c_token_1ab0c0848a2dfdc5b1a1c4859833d265bb"></span><span class="sig-name descname"><span class="n"><span class="pre">CToken</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssText</span></span>, <a class="reference internal" href="enum_lexerbase_8h_1ad941352973bf4794ab3e87ffb1c485bd.html#_CPPv410ETokenType" title="ETokenType"><span class="n"><span class="pre">ETokenType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eType</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="enum_lexerbase_8h_1ad941352973bf4794ab3e87ffb1c485bd.html#_CPPv410ETokenType" title="ETokenType"><span class="n"><span class="pre">ETokenType</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="enum_lexerbase_8h_1ad941352973bf4794ab3e87ffb1c485bd.html#_CPPv4N10ETokenType16token_identifierE" title="ETokenType::token_identifier"><span class="n"><span class="pre">token_identifier</span></span></a><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6CToken6CTokenERKNSt6stringE10ETokenType" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Specific constructor for code insertion. </p>
+<p>During processing, it sometimes is necessary to add created tokens to token lists. <dl class="simple">
+<dt><strong>Attention</strong></dt><dd><p>The constructor doesn’t check for validity of the token text and types. </p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssText</strong> – <strong>[in]</strong> The text the token represents. </p></li>
+<li><p><strong>eType</strong> – <strong>[in]</strong> The token type (default identifier). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6CToken6CTokenERKNSt6stringE17ETokenLiteralType">
+<span id="_CPPv3N6CToken6CTokenERKNSt6stringE17ETokenLiteralType"></span><span id="_CPPv2N6CToken6CTokenERKNSt6stringE17ETokenLiteralType"></span><span id="CToken::CToken__ssCR.ETokenLiteralType"></span><span class="target" id="class_c_token_1a93d43b4306d5142663e98cd6cf6dc390"></span><span class="sig-name descname"><span class="n"><span class="pre">CToken</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssText</span></span>, <a class="reference internal" href="enum_lexerbase_8h_1acb95157d7b8b5a271771d94bcfc43d55.html#_CPPv417ETokenLiteralType" title="ETokenLiteralType"><span class="n"><span class="pre">ETokenLiteralType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eLiteralType</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6CToken6CTokenERKNSt6stringE17ETokenLiteralType" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Specific constructor for code insertion. </p>
+<p>During processing, it sometimes is necessary to add created tokens to token lists. <dl class="simple">
+<dt><strong>Attention</strong></dt><dd><p>The constructor doesn’t check for validity of the token text and types. </p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssText</strong> – <strong>[in]</strong> The text the token represents. </p></li>
+<li><p><strong>eLiteralType</strong> – <strong>[in]</strong> The token literal type (default undefined). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6CToken6CTokenERKNSt6stringE14ETokenMetaType">
+<span id="_CPPv3N6CToken6CTokenERKNSt6stringE14ETokenMetaType"></span><span id="_CPPv2N6CToken6CTokenERKNSt6stringE14ETokenMetaType"></span><span id="CToken::CToken__ssCR.ETokenMetaType"></span><span class="target" id="class_c_token_1a757f7112e761976597bf82443c8aa437"></span><span class="sig-name descname"><span class="n"><span class="pre">CToken</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssText</span></span>, <a class="reference internal" href="enum_lexerbase_8h_1a981294792ddc22aeb69e8722a58a4cb3.html#_CPPv414ETokenMetaType" title="ETokenMetaType"><span class="n"><span class="pre">ETokenMetaType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eMetaType</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6CToken6CTokenERKNSt6stringE14ETokenMetaType" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Specific constructor for code insertion. </p>
+<p>During processing, it sometimes is necessary to add created tokens to token lists. <dl class="simple">
+<dt><strong>Attention</strong></dt><dd><p>The constructor doesn’t check for validity of the token text and types. </p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssText</strong> – <strong>[in]</strong> The text the token represents. </p></li>
+<li><p><strong>eMetaType</strong> – <strong>[in]</strong> The token meta type (default undefined). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6CToken9MoveStartE7int32_t">
+<span id="_CPPv3N6CToken9MoveStartE7int32_t"></span><span id="_CPPv2N6CToken9MoveStartE7int32_t"></span><span id="CToken::MoveStart__int32_t"></span><span class="target" id="class_c_token_1a6db7249597839d5ad3aa6e27bfa60749"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MoveStart</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">iOffset</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6CToken9MoveStartE7int32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Move start; adjusts the start position of the token. Does not adjust the end. </p>
+<p><dl class="simple">
+<dt><strong>Attention</strong></dt><dd><p>Does move before the beginning of the line. </p>
+</dd>
+<dt><strong>Attention</strong></dt><dd><p>Does not move past the end of the token. </p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>iOffset</strong> – <strong>[in]</strong> The amount of characters to adjust. A negative offset moves to the left. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6CToken7MoveEndE7int32_t">
+<span id="_CPPv3N6CToken7MoveEndE7int32_t"></span><span id="_CPPv2N6CToken7MoveEndE7int32_t"></span><span id="CToken::MoveEnd__int32_t"></span><span class="target" id="class_c_token_1a63d38c9bd0380c694c132edd0fd94a7d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MoveEnd</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">iOffset</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6CToken7MoveEndE7int32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Move end; adjusts the end position of the token. Does not adjust the start. </p>
+<p><dl class="simple">
+<dt><strong>Attention</strong></dt><dd><p>Does move before the start of the token. </p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>iOffset</strong> – <strong>[in]</strong> The amount of characters to adjust. A negative offset moves to the left. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CTokeneqERK6CToken">
+<span id="_CPPv3NK6CTokeneqERK6CToken"></span><span id="_CPPv2NK6CTokeneqERK6CToken"></span><span id="CToken::eq-operator__CTokenCRC"></span><span class="target" id="class_c_token_1a4c2d78fbb9e97fb25e70ff60704c2ffa"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv46CToken" title="CToken"><span class="n"><span class="pre">CToken</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rtoken</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CTokeneqERK6CToken" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Equality operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rtoken</strong> – <strong>[in]</strong> The token to compare with. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ if the provided token and this token are identical. Otherwise returns ‘false’. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CTokenneERK6CToken">
+<span id="_CPPv3NK6CTokenneERK6CToken"></span><span id="_CPPv2NK6CTokenneERK6CToken"></span><span id="CToken::neq-operator__CTokenCRC"></span><span class="target" id="class_c_token_1aadc80dfcba4c7cb50b3eea15b64b6064"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv46CToken" title="CToken"><span class="n"><span class="pre">CToken</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rtoken</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CTokenneERK6CToken" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Inequality operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rtoken</strong> – <strong>[in]</strong> The token to compare with. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ if the provided token and this token are not identical. Otherwise returns ‘false’. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken7GetLineEv">
+<span id="_CPPv3NK6CToken7GetLineEv"></span><span id="_CPPv2NK6CToken7GetLineEv"></span><span id="CToken::GetLineC"></span><span class="target" id="class_c_token_1a682c1d7b511fe3b83829514ca8e5f136"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetLine</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken7GetLineEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the line number. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The line number. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken6GetColEv">
+<span id="_CPPv3NK6CToken6GetColEv"></span><span id="_CPPv2NK6CToken6GetColEv"></span><span id="CToken::GetColC"></span><span class="target" id="class_c_token_1ad97ca9dd7561b9af8d0370c4ac312573"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetCol</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken6GetColEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the column number. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Get column number. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken10GetEndLineEv">
+<span id="_CPPv3NK6CToken10GetEndLineEv"></span><span id="_CPPv2NK6CToken10GetEndLineEv"></span><span id="CToken::GetEndLineC"></span><span class="target" id="class_c_token_1a5d4d4a38be6b2d541e9f9bac6c9ddcac"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetEndLine</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken10GetEndLineEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the last line this token on. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The line number. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken9GetEndColEv">
+<span id="_CPPv3NK6CToken9GetEndColEv"></span><span id="_CPPv2NK6CToken9GetEndColEv"></span><span id="CToken::GetEndColC"></span><span class="target" id="class_c_token_1ad9d065656e36bf3f43a19853753ab9a5"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetEndCol</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken9GetEndColEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the last column this token is on. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The column number. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken9GetLengthEv">
+<span id="_CPPv3NK6CToken9GetLengthEv"></span><span id="_CPPv2NK6CToken9GetLengthEv"></span><span id="CToken::GetLengthC"></span><span class="target" id="class_c_token_1a72ca8df5d8b0febc58b1ea8dde1de709"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetLength</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken9GetLengthEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Return the length of the current token snippet. Or 0xFFFFFFFF when the rest of the code is part of this snippet. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the length of the token snippet. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken7GetTypeEv">
+<span id="_CPPv3NK6CToken7GetTypeEv"></span><span id="_CPPv2NK6CToken7GetTypeEv"></span><span id="CToken::GetTypeC"></span><span class="target" id="class_c_token_1a056f5aafe1817c477d9af67b3be1dd1c"></span><a class="reference internal" href="enum_lexerbase_8h_1ad941352973bf4794ab3e87ffb1c485bd.html#_CPPv410ETokenType" title="ETokenType"><span class="n"><span class="pre">ETokenType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetType</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken7GetTypeEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the token type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The token type of this token. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken14GetLiteralTypeEv">
+<span id="_CPPv3NK6CToken14GetLiteralTypeEv"></span><span id="_CPPv2NK6CToken14GetLiteralTypeEv"></span><span id="CToken::GetLiteralTypeC"></span><span class="target" id="class_c_token_1a0c9796ad5d44d668f51b14bd9b7853df"></span><a class="reference internal" href="enum_lexerbase_8h_1acb95157d7b8b5a271771d94bcfc43d55.html#_CPPv417ETokenLiteralType" title="ETokenLiteralType"><span class="n"><span class="pre">ETokenLiteralType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetLiteralType</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken14GetLiteralTypeEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the token’s literal type (if the token is a literal token). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The literal type of this token when the token is a literal token. ETokenLiteralType::token_undefined otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken11GetMetaTypeEv">
+<span id="_CPPv3NK6CToken11GetMetaTypeEv"></span><span id="_CPPv2NK6CToken11GetMetaTypeEv"></span><span id="CToken::GetMetaTypeC"></span><span class="target" id="class_c_token_1a8669ba69f5e11ddbd22d8bebfd5b49ef"></span><a class="reference internal" href="enum_lexerbase_8h_1a981294792ddc22aeb69e8722a58a4cb3.html#_CPPv414ETokenMetaType" title="ETokenMetaType"><span class="n"><span class="pre">ETokenMetaType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetMetaType</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken11GetMetaTypeEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the token’s meta type (if the token is a meta token). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The meta type of this token when the token is a meta token. ETokenMetaType::token_undefined otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CTokencvbEv">
+<span id="_CPPv3NK6CTokencvbEv"></span><span id="_CPPv2NK6CTokencvbEv"></span><span id="CToken::castto-b-operatorC"></span><span class="target" id="class_c_token_1a89b9def0fbf11ed5d92701489e10ca32"></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CTokencvbEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Validity operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns ‘true’ when the token is valid. Otherwise returns ‘false’. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken4LeftE8uint32_t">
+<span id="_CPPv3NK6CToken4LeftE8uint32_t"></span><span id="_CPPv2NK6CToken4LeftE8uint32_t"></span><span id="CToken::Left__uint32_tC"></span><span class="target" id="class_c_token_1a244fc450e7ba780917197e52c44a63e0"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Left</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiLen</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken4LeftE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the left part of the string. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiLen</strong> – <strong>[in]</strong> The amount of characters to return. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the left part of the string chunk. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken5RightE8uint32_t">
+<span id="_CPPv3NK6CToken5RightE8uint32_t"></span><span id="_CPPv2NK6CToken5RightE8uint32_t"></span><span id="CToken::Right__uint32_tC"></span><span class="target" id="class_c_token_1a47ac7909249897ae4360ec9b424061f6"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Right</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiLen</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken5RightE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the right part of the string. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiLen</strong> – <strong>[in]</strong> The amount of characters to return. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the right part of the string chunk. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CTokeneqEPKc">
+<span id="_CPPv3NK6CTokeneqEPKc"></span><span id="_CPPv2NK6CTokeneqEPKc"></span><span id="CToken::eq-operator__cCPC"></span><span class="target" id="class_c_token_1a935fac5ede85a4ad7da1dda336d612e7"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">szString</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CTokeneqEPKc" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>String equality operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>szString</strong> – <strong>[in]</strong> Zero terminated string to use for the comparison. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ if the string chunk of this token is identical with the provided string. Otherwise returns ‘false’. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CTokenneEPKc">
+<span id="_CPPv3NK6CTokenneEPKc"></span><span id="_CPPv2NK6CTokenneEPKc"></span><span id="CToken::neq-operator__cCPC"></span><span class="target" id="class_c_token_1a177b49383a1faea4938fa16000e8ef6a"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">szString</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CTokenneEPKc" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>String inequality operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>szString</strong> – <strong>[in]</strong> Zero terminated string to use for the comparison. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ if the string chunk of this token is not identical with the provided string. Otherwise returns ‘false’. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CTokeneqERKNSt6stringE">
+<span id="_CPPv3NK6CTokeneqERKNSt6stringE"></span><span id="_CPPv2NK6CTokeneqERKNSt6stringE"></span><span id="CToken::eq-operator__ssCRC"></span><span class="target" id="class_c_token_1ae05e54a373de32b23c7a8a70c957394e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssString</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CTokeneqERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>String equality operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssString</strong> – <strong>[in]</strong> String object to use for the comparison. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ if the string chunk of this token is identical with the provided string. Otherwise returns ‘false’. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CTokenneERKNSt6stringE">
+<span id="_CPPv3NK6CTokenneERKNSt6stringE"></span><span id="_CPPv2NK6CTokenneERKNSt6stringE"></span><span id="CToken::neq-operator__ssCRC"></span><span class="target" id="class_c_token_1a66e5eecd0f5e9e75abc3c636577ba353"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssString</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CTokenneERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>String inequality operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssString</strong> – <strong>[in]</strong> String object to use for the comparison. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ if the string chunk of this token is identical with the provided string. Otherwise returns ‘false’. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken8ValueRefEv">
+<span id="_CPPv3NK6CToken8ValueRefEv"></span><span id="_CPPv2NK6CToken8ValueRefEv"></span><span id="CToken::ValueRefC"></span><span class="target" id="class_c_token_1a700627c5baf1cb7a676dc2b9c5219bd5"></span><a class="reference internal" href="class_c_const_variant.html#_CPPv413CConstVariant" title="CConstVariant"><span class="n"><span class="pre">CConstVariant</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ValueRef</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken8ValueRefEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the value of the token in the smallest fitting data type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><span class="n">The</span></span></span> – function throws an exception in case the assignment is not possible. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the value as const variant. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6CToken10SetContextERK11CContextPtr">
+<span id="_CPPv3N6CToken10SetContextERK11CContextPtr"></span><span id="_CPPv2N6CToken10SetContextERK11CContextPtr"></span><span id="CToken::SetContext__CContextPtrCR"></span><span class="target" id="class_c_token_1ad10a97df22b25e90c34c8a71672a5bda"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetContext</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="typedef_parsecontext_8h_1a2991514a5be4c70b6aae37c729b25b39.html#_CPPv411CContextPtr" title="CContextPtr"><span class="n"><span class="pre">CContextPtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rptrContext</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6CToken10SetContextERK11CContextPtr" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set source code context. </p>
+<p>The parser can attach source code context. The context contains all the allocated memory this token is pointing to and holding the context in the token prevents unexpected disappearance of the token during post-processing. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rptrContext</strong> – <strong>[in]</strong> Reference to the smart pointer to the source code context. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6CToken10GetContextEv">
+<span id="_CPPv3NK6CToken10GetContextEv"></span><span id="_CPPv2NK6CToken10GetContextEv"></span><span id="CToken::GetContextC"></span><span class="target" id="class_c_token_1a1bb0c6d8fdfc1a41417af785753018bb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="typedef_parsecontext_8h_1a2991514a5be4c70b6aae37c729b25b39.html#_CPPv411CContextPtr" title="CContextPtr"><span class="n"><span class="pre">CContextPtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetContext</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6CToken10GetContextEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get source code context. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pointer to the source code context. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

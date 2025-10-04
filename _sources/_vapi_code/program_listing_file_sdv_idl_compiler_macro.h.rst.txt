@@ -1,0 +1,60 @@
+
+.. _program_listing_file_sdv_idl_compiler_macro.h:
+
+Program Listing for File macro.h
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_macro.h>` (``sdv_idl_compiler\macro.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef MACRO_H
+   #define MACRO_H
+   
+   #include <string>
+   #include <vector>
+   #include <map>
+   #include <set>
+   #include "token.h"
+   
+   // Forward declarations
+   class CIdlCompilerEnvironment;
+   
+    using CUsedMacroSet = std::set<std::string>;
+   
+   class CMacro
+   {
+   public:
+       CMacro(const char* szName, const std::vector<std::string>* pvecParams, const char* szValue);
+   
+       CMacro(const CMacro& rMacro);
+   
+       CMacro(CMacro&& rMacro) noexcept;
+   
+       CMacro& operator=(const CMacro& rMacro);
+   
+       CMacro& operator=(CMacro&& rMacro) noexcept;
+   
+       bool operator==(const CMacro& rMacro);
+   
+       bool operator!=(const CMacro& rMacro);
+   
+       const std::string& GetName() const;
+   
+       bool ExpectParameters() const;
+   
+       std::string Expand(const CIdlCompilerEnvironment& renv, const CToken& rtoken, const std::vector<std::string>& rvecParams,
+           CUsedMacroSet& rsetUsedMacros) const;
+   
+   private:
+       std::string                 m_ssName;           
+       bool                        m_bExpectParams;    
+       std::vector<std::string>    m_vecParamDefs;     
+       std::string                 m_ssValue;          
+   };
+   
+   using CMacroMap = std::map<std::string, CMacro>;
+   
+   #endif // !defined MACRO_H

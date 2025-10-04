@@ -1,0 +1,246 @@
+
+.. _program_listing_file_sdv_vss_util_vss_helper.h:
+
+Program Listing for File vss_helper.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_vss_util_vss_helper.h>` (``sdv_vss_util\vss_helper.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef VSS_HELPER_H
+   #define VSS_HELPER_H
+   
+   #include <iostream>
+   #include <vector>
+   #include <unordered_set>
+   #include <algorithm>
+   #include <string>
+   #include <sstream>
+   #include <fstream>
+   #include <thread>
+   #include <chrono>
+   //#include <algorithm>
+   #include <interfaces/dispatch.h>
+   
+   namespace sdv
+   {
+       namespace vss
+       {
+           enum class EDeclType : uint32_t
+           {
+               decltype_unknown,
+               decltype_short,
+               decltype_long,
+               decltype_long_long,
+               decltype_octet,
+               decltype_unsigned_short,
+               decltype_unsigned_long,
+               decltype_unsigned_long_long,
+               decltype_float,
+               decltype_double,
+               decltype_long_double,
+               decltype_fixed,
+               decltype_char,
+               decltype_char16,
+               decltype_char32,
+               decltype_wchar,
+               decltype_boolean,
+               decltype_native,
+               decltype_string,
+               decltype_u8string,
+               decltype_u16string,
+               decltype_u32string,
+               decltype_wstring,
+               decltype_enum,
+               decltype_struct,
+               decltype_union,
+               decltype_module,
+               decltype_interface,
+               decltype_exception,
+               decltype_attribute,
+               decltype_operation,
+               decltype_parameter,
+               decltype_enum_entry,
+               decltype_case_entry,
+               decltype_typedef,
+               decltype_void,
+               decltype_meta,
+               decltype_pointer,
+               decltype_sequence,
+               decltype_map,
+               decltype_bitset,
+               decltype_bitfield,
+               decltype_bitmask,
+               decltype_any,
+               decltype_interface_id,
+               decltype_interface_type,
+               decltype_exception_id,
+           };
+       }
+   }
+   
+   class CVSSHelper
+   {
+   
+   public:
+   
+       struct SFunctionVDDefinition
+       {
+           std::string idlType;                            
+           std::string functionName;                       
+           std::string signalName;                         
+           std::string canSignalName;                      
+       };
+   
+       struct SFunctionBSDefinition
+       {
+           std::string idlType;                            
+           std::string functionName;                       
+           std::string signalName;                         
+       };
+   
+       struct SSignalVDDefinition
+       {
+           std::string vssDefinition;                        
+           std::string className;                            
+           sdv::core::ESignalDirection signalDirection = sdv::core::ESignalDirection::sigdir_rx; 
+           std::vector<SFunctionVDDefinition> vecFunctions; 
+       };
+   
+       struct SSignalBSDefinition
+       {
+           std::string vssDefinition;                        
+           std::string vssVDDefinition;                      
+           std::string className;                            
+           sdv::core::ESignalDirection signalDirection = sdv::core::ESignalDirection::sigdir_rx; 
+           std::vector<SFunctionBSDefinition> vecFunctions; 
+       };
+   
+      static bool VehicleDeviceVSSDefinitionExists(bool bSilent, const std::vector<SSignalVDDefinition>& vdSignals,
+           const std::vector<SSignalBSDefinition>& bsSignals);
+   
+   protected:
+   
+       void CreateCMakeFile(const std::filesystem::path& filePath, const std::string& cmakeContent) const;
+   
+       std::filesystem::path MakeLowercaseFilename(std::filesystem::path& fullPath) const;
+   
+       std::string Align(const std::string& ssInput, size_t size) const;
+   
+       std::string Trim(const std::string& ssInput) const;
+   
+       bool MustNotContainSpaces(const std::string& ssInput) const;
+   
+       size_t GetMaxClassName(const std::vector<SSignalVDDefinition>& signals, const std::string& ssTitle) const;
+   
+       size_t GetMaxIDLType(const std::vector<SSignalVDDefinition>& signals, const std::string& ssTitle) const;
+   
+       size_t GetMaxCTypeFromIDLType(const std::vector<SSignalVDDefinition>& signals, const std::string& ssTitle) const;
+   
+       size_t GetMaxSignalName(const std::vector<SSignalVDDefinition>& signals, const std::string& ssTitle) const;
+   
+       size_t GetMaxCANSignalName(const std::vector<SSignalVDDefinition>& signals, const std::string& ssTitle) const;
+   
+       size_t GetMaxFunctionName(const std::vector<SSignalVDDefinition>& signals, const std::string& ssTitle) const;
+   
+       size_t GetMaxVSSDefinition(const std::vector<SSignalVDDefinition>& signals, const std::string& ssTitle) const;
+   
+       bool MustContainDotOrIsEmpty(const std::string& ssInput, bool mustBeEmpty) const;
+   
+       std::string ValidateVSSFormatNumbers(const std::string& ssInput) const;
+   
+       bool IsNumber(const std::string& ssInput) const;
+   
+       std::string GenerateDefaultIfEmpty(const std::string& ssInput, std::string ssDefaultString, const uint32_t& index) const;
+   
+       std::string AddQuotationMarks(const std::string& ssInput) const;
+   
+       std::string ReplaceCharacters(const std::string& ssInput, const std::string& from, const std::string& to) const;
+   
+       std::string ToUpper(const std::string& ssInput) const;
+   
+       std::string ShortenVSSString(const std::string& ssInput) const;
+   
+       std::string GetCTypeFromIDLType(const std::string& ssIDLType) const;
+   
+       bool ValidateIDLTypes(const std::vector<std::string>& vecTypes, const bool silent) const;
+   
+       bool CreateFolder(const std::filesystem::path& rootPath, const std::string& subfolder) const;
+   
+       void DeleteHeaderFile(const std::filesystem::path& path, const std::string& fileNameNoExtension) const;
+   
+       void ValidateVDCodeStyle(const SFunctionVDDefinition& function, const bool verbose) const;
+   
+       void ValidateBSCodeStyle(const SFunctionBSDefinition& function, const bool verbose) const;
+   
+       void ValidateVDCodeStyle(const SSignalVDDefinition& signal, const bool verbose) const;
+   
+       void ValidateBSCodeStyle(const SSignalBSDefinition& signal, const bool verbose) const; 
+   
+   private:
+   
+       using TDeclTypeAssoc = std::pair<std::string, sdv::vss::EDeclType>;
+   
+       std::string MapDeclType2CType(const sdv::vss::EDeclType eDeclType) const;
+   
+       const std::vector<TDeclTypeAssoc> m_vecDeclTypes = {
+           {"short", sdv::vss::EDeclType::decltype_short},
+           {"unsigned short", sdv::vss::EDeclType::decltype_unsigned_short},
+           {"long", sdv::vss::EDeclType::decltype_long},
+           {"unsigned long", sdv::vss::EDeclType::decltype_unsigned_long},
+           {"long long", sdv::vss::EDeclType::decltype_long_long},
+           {"unsigned long long", sdv::vss::EDeclType::decltype_unsigned_long_long},
+           {"fixed", sdv::vss::EDeclType::decltype_fixed},
+           {"float", sdv::vss::EDeclType::decltype_float},
+           {"double", sdv::vss::EDeclType::decltype_double},
+           {"long double", sdv::vss::EDeclType::decltype_long_double},
+           {"char", sdv::vss::EDeclType::decltype_char},
+           {"wchar", sdv::vss::EDeclType::decltype_wchar},
+           {"int8", sdv::vss::EDeclType::decltype_char},
+           {"int16", sdv::vss::EDeclType::decltype_short},
+           {"int32", sdv::vss::EDeclType::decltype_long},
+           {"int64", sdv::vss::EDeclType::decltype_long_long},
+           {"int", sdv::vss::EDeclType::decltype_long},
+           {"uint8", sdv::vss::EDeclType::decltype_octet},
+           {"uint16", sdv::vss::EDeclType::decltype_unsigned_short},
+           {"uint32", sdv::vss::EDeclType::decltype_unsigned_long},
+           {"uint64", sdv::vss::EDeclType::decltype_unsigned_long_long},
+           {"uint", sdv::vss::EDeclType::decltype_unsigned_long},
+           {"boolean", sdv::vss::EDeclType::decltype_boolean},
+           {"native", sdv::vss::EDeclType::decltype_native},
+           {"octet", sdv::vss::EDeclType::decltype_octet},
+           {"byte", sdv::vss::EDeclType::decltype_octet},
+           {"string", sdv::vss::EDeclType::decltype_string},
+           {"wstring", sdv::vss::EDeclType::decltype_wstring},
+           {"enum", sdv::vss::EDeclType::decltype_enum},
+           {"struct", sdv::vss::EDeclType::decltype_struct},
+           {"union", sdv::vss::EDeclType::decltype_union},
+           {"operation", sdv::vss::EDeclType::decltype_operation},
+           {"attribute", sdv::vss::EDeclType::decltype_parameter},
+           {"enum_entry", sdv::vss::EDeclType::decltype_enum_entry},
+           {"case_entry", sdv::vss::EDeclType::decltype_case_entry},
+           {"typedef", sdv::vss::EDeclType::decltype_typedef},
+           {"sequence", sdv::vss::EDeclType::decltype_sequence},
+           {"map", sdv::vss::EDeclType::decltype_map},
+           {"bitset", sdv::vss::EDeclType::decltype_bitset},
+           {"bitfield", sdv::vss::EDeclType::decltype_bitfield},
+           {"bitmask", sdv::vss::EDeclType::decltype_bitmask},
+           {"any", sdv::vss::EDeclType::decltype_any},
+           {"void", sdv::vss::EDeclType::decltype_void},
+           // Add additional types based on enabled extensions
+           {"interface_id", sdv::vss::EDeclType::decltype_interface_id},
+           {"interface_t", sdv::vss::EDeclType::decltype_interface_type},
+           {"exception_id", sdv::vss::EDeclType::decltype_exception_id},
+           {"pointer", sdv::vss::EDeclType::decltype_pointer},
+           {"char16", sdv::vss::EDeclType::decltype_char16},
+           {"char32", sdv::vss::EDeclType::decltype_char32},
+           {"u8string", sdv::vss::EDeclType::decltype_u8string},
+           {"u16string", sdv::vss::EDeclType::decltype_u16string},
+           {"u32string", sdv::vss::EDeclType::decltype_u32string}
+       };
+   };
+   
+   #endif // !defined VSS_HELPER_H

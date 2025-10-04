@@ -1,0 +1,248 @@
+
+.. _program_listing_file_interfaces_core_ps.h:
+
+Program Listing for File core_ps.h
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_core_ps.h>` (``interfaces\core_ps.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__CORE_PS_H__20251003_130454_59__
+   #define __IDL_GENERATED__CORE_PS_H__20251003_130454_59__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   #include "process.h"
+   
+   namespace sdv
+   {
+       namespace ps
+       {
+           except XMarshallExcept
+           {
+               inline static const ::sdv::exception_id _id = 0x9FFA1B51FBE0B25F;
+   
+               inline static const char _description[] = "XMarshallExcept exception";
+   
+               virtual const char* what() const noexcept { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept { return _id; }
+           };
+   
+           except XMarshallNotInitialized : XMarshallExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0xBA71FFA859CA5D80;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "Marshalling data between proxy and stub was not initialized or is in an invalid state.";
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XMarshallTimeout : XMarshallExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0x22FA41DBC90A2886;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "The marshalling call was timed out.";
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XMarshallMissingData : XMarshallExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0xEA186D33EB1AB83A;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "Part of the marshalling data was lost during the marshalling call.";
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XMarshallVersion : XMarshallExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0x1B5765789496CA1C;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "The marshalling interfaces of objects have different versions and therefore cannot be connected.";
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XMarshallIntegrity : XMarshallExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0x187539367B4E91AC;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "An integrity violation has occurred during marshalling.";
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           except XMarshallNoObject : XMarshallExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0x137C2F19437D6D00;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "No marshalling object for the interface found.";
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
+           enum class EMarshallFlags : uint32_t
+           {
+               direction_output = 0x10,
+   
+               exception_triggered = 0x80,
+           };
+   
+           struct SMarshallID
+           {
+               uint32_t uiHostID;
+   
+               process::TProcessID tProcessID;
+   
+               uint32_t uiIdent;
+   
+               uint32_t uiControl;
+           };
+   
+           typedef SMarshallID TMarshallID;
+   
+           struct SMarshall
+           {
+               EEndian eEndian;
+   
+               uint16_t uiVersion;
+   
+               sdv::interface_id tIfcId;
+   
+               uint32_t uiFuncIndex;
+   
+               sdv::sequence<uint16_t> seqChecksums;
+   
+               uint32_t uiFlags;
+   
+               uint16_t uiHdrChecksum;
+           };
+   
+           enum class EMarshallDataInterpret : uint32_t
+           {
+               input_data = 0,
+   
+               output_data = 1,
+           };
+   
+           struct SMarshallAddress
+           {
+               EEndian eEndian;
+   
+               uint16_t uiVersion;
+   
+               EMarshallDataInterpret eInterpret;
+   
+               TMarshallID tProxyID;
+   
+               TMarshallID tStubID;
+   
+               uint64_t uiCallIndex;
+           };
+   
+           interface IMarshallObjectIdent
+           {
+               static constexpr ::sdv::interface_id _id = 0xCDAF9D2056553245;
+   
+               virtual void SetIdentification(/*in*/ const TMarshallID& tMarshallID) = 0;
+           };
+   
+           /*local*/ interface IMarshall
+           {
+               static constexpr ::sdv::interface_id _id = 0xFB040A7885827BE9;
+   
+               virtual sdv::sequence<sdv::pointer<uint8_t>> Call(/*inout*/ sdv::sequence<sdv::pointer<uint8_t>>& seqInputData) = 0;
+           };
+   
+           interface IMarshallLink
+           {
+               static constexpr ::sdv::interface_id _id = 0xE72B2977F9DF8CAC;
+   
+               virtual void Link(/*in*/ IMarshall* pMarshall) = 0;
+   
+               virtual void Unlink() = 0;
+           };
+   
+           interface IProxyControl
+           {
+               static constexpr ::sdv::interface_id _id = 0x8775C4F048BFBBBA;
+   
+               virtual sdv::interface_t GetTargetInterface() = 0;
+           };
+   
+           interface IStubLink
+           {
+               static constexpr ::sdv::interface_id _id = 0x85755C9368CAD322;
+   
+               virtual void Link(/*in*/ sdv::interface_t ifc) = 0;
+   
+               virtual void Unlink() = 0;
+           };
+   
+           interface IMarshallAccess
+           {
+               static constexpr ::sdv::interface_id _id = 0x20FEAC051A82C7D5;
+   
+               virtual sdv::interface_t GetProxy(/*in*/ const TMarshallID& tStubID, /*in*/ sdv::interface_id id) = 0;
+   
+               virtual TMarshallID GetStub(/*in*/ sdv::interface_t ifc) = 0;
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__CORE_PS_H__20251003_130454_76__)

@@ -1,0 +1,94 @@
+
+.. _program_listing_file_core_toml_parser_parser_toml.h:
+
+Program Listing for File parser_toml.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_toml_parser_parser_toml.h>` (``core\toml_parser\parser_toml.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef PARSER_TOML_H
+   #define PARSER_TOML_H
+   
+   #include "lexer_toml.h"
+   #include "parser_node_toml.h"
+   
+   class CParserTOML : public sdv::IInterfaceAccess, public sdv::toml::ITOMLParser
+   {
+   public:
+       CParserTOML() = default;
+   
+       CParserTOML(const std::string& rssString);
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::toml::ITOMLParser)
+           SDV_INTERFACE_CHAIN_MEMBER(m_ptrRoot)
+       END_SDV_INTERFACE_MAP()
+   
+       void Clear();
+   
+       // Ignore cppcheck warning for not using dynamic binding when being called through the constructor.
+       // cppcheck-suppress virtualCallInConstructor
+       virtual bool Process(/*in*/ const sdv::u8string& ssContent) override;
+   
+       const CNodeCollection& GetRoot() const;
+       CNodeCollection& GetRoot();
+       std::string CreateTOMLText(const std::string& rssParent = std::string()) const;
+   
+   private:
+       template <class TCollectionNode>
+       bool Add(const std::string& rssPath);
+   
+       bool Add(const std::string& rssPath, bool bVal);
+   
+       bool Add(const std::string& rssPath, int64_t iVal);
+   
+       bool Add(const std::string& rssPath, double dVal);
+   
+       bool Add(const std::string& rssPath, const std::string& rssVal);
+   
+       void ProcessTable();
+   
+       void ProcessTableArray();
+   
+       void ProcessValueKey();
+   
+       void ProcessValue(const std::string& rssKeyPath);
+   
+       void ProcessArray(const std::string& rssKeyPath);
+   
+       void ProcessInlineTable(const std::string& rssKeyPath);
+   
+       std::string ComposePath();
+   
+       enum class EEnvironment
+       {
+           env_array,          
+           env_inline_table    
+       };
+       std::stack<EEnvironment>    m_stackEnvironment;                             
+       std::shared_ptr<CNode>      m_ptrRoot = std::make_shared<CRootTable>();     
+       std::string                 m_ssCurrentTable;                               
+       CLexerTOML                  m_lexer;                                        
+   };
+   
+   template <class TCollectionNode>
+   inline bool CParserTOML::Add(const std::string& rssPath)
+   {
+       size_t nOffset = rssPath.rfind('.');
+       if (nOffset == std::string::npos)
+           nOffset = 0;
+       else
+           nOffset++;
+       std::string ssName = rssPath.substr(nOffset);
+   
+       m_ptrRoot->Add(rssPath, std::make_shared<TCollectionNode>(ssName), true);
+   
+       return true;
+   }
+   
+   #endif // PARSER_TOML_H

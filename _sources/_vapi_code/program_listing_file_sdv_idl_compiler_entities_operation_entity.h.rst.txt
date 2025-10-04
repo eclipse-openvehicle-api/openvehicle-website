@@ -1,0 +1,61 @@
+
+.. _program_listing_file_sdv_idl_compiler_entities_operation_entity.h:
+
+Program Listing for File operation_entity.h
+===========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_entities_operation_entity.h>` (``sdv_idl_compiler\entities\operation_entity.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef OPERATION_ENTITY_H
+   #define OPERATION_ENTITY_H
+   
+   #include "declaration_entity.h"
+   
+   class COperationEntity : public CDeclarationEntity, public sdv::idl::IOperationEntity
+   {
+   public:
+       COperationEntity(const CContextPtr& rptrContext, CEntityPtr ptrParent);
+   
+       virtual ~COperationEntity() override = default;
+   
+       virtual sdv::interface_t GetInterface(sdv::interface_id idInterface) override;
+   
+       virtual sdv::idl::IEntityIterator* GetParameters() override;
+   
+       virtual sdv::idl::IEntityIterator* GetExceptions() override;
+   
+       virtual bool IsReadOnly() const override { return m_bOperationIsConst; }
+   
+       virtual  sdv::idl::EEntityType GetType() const override { return  sdv::idl::EEntityType::type_operation; }
+   
+       virtual void Process() override { CDeclarationEntity::Process(); }
+   
+   protected:
+       virtual bool SupportRaiseExceptions() const override { return true; }
+   
+       virtual bool SupportArrays() const override { return true; }
+   
+       virtual bool SupportInterface() const override { return true; }
+   
+       virtual bool SupportVoid() const override { return true; }
+   
+       virtual bool RequiresParameters() const override { return true; }
+   
+       virtual void SetOperationAsConst() override { m_bOperationIsConst = true; }
+   
+       virtual std::pair<CEntityPtr, bool> FindLocal(const std::string& rssName, bool bDeclaration) const override;
+   
+       virtual bool RequiresAssignment() const override;
+   
+   private:
+       bool                m_bOperationIsConst = false;    
+       CEntityIterator     m_iteratorParameters;           
+       CEntityIterator     m_iteratorExceptions;           
+   };
+   
+   
+   #endif // !defined(OPERATION_ENTITY_H)

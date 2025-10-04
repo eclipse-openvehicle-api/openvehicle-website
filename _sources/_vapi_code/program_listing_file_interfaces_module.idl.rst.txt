@@ -1,0 +1,56 @@
+
+.. _program_listing_file_interfaces_module.idl:
+
+Program Listing for File module.idl
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_module.idl>` (``interfaces\module.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core.idl"
+   
+   module sdv
+   {
+       module core
+       {
+           typedef uint64 TModuleID;
+   
+           const TModuleID tCoreLibModule = 0xffffffffffffffffu;
+   
+           interface IModuleControl
+           {
+               TModuleID Load(in u8string ssModulePath);
+   
+               boolean Unload(in TModuleID tModuleID);
+   
+               boolean HasActiveObjects(in TModuleID tModuleID) const;
+           };
+   
+           interface IModuleControlConfig
+           {
+               boolean AddModuleSearchDir(in u8string ssDir);
+   
+               sequence<u8string> GetModuleSearchDirs() const;
+           };
+   
+           struct SModuleInfo
+           {
+               TModuleID   tModuleID;      
+               u8string    ssPath;         
+               u8string    ssFilename;     
+               uint32      uiVersion;      
+               boolean     bActive;        
+           };
+   
+           interface IModuleInfo
+           {
+               sequence<SModuleInfo> GetModuleList() const;
+   
+               sequence<SClassInfo> GetClassList(in TModuleID tModuleID) const;
+           };
+       };
+   };

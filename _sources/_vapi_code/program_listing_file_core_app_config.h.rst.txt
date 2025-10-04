@@ -1,0 +1,135 @@
+
+.. _program_listing_file_core_app_config.h:
+
+Program Listing for File app_config.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_app_config.h>` (``core\app_config.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef APP_CONFIG_H
+   #define APP_CONFIG_H
+   
+   #include "app_control.h"
+   #include "installation_manifest.h"
+   #include <interfaces/config.h>
+   #include <mutex>
+   #include <list>
+   #include <filesystem>
+   #include <vector>
+   #include <map>
+   
+   // @cond DOXYGEN_IGNORE
+   // Components are installed using two procedures:
+   // Procedure 1: by loading a configuration file
+   //  mainly done when running standalone or in essential mode
+   // Procedure 2: by installing using an interface
+   //  mainly done when running as server
+   //
+   // The installation of components must be executed using a separated process to ensure the components are not interfering with
+   // the main process during installation.
+   // The component information is stored in the manifest, exposed through an exported function, and read during installation and
+   // instantiation.
+   // Installed files have attributes: creation and change dates, executable file flag, CRC, relative sub-directory, compoonent flag.
+   // The installation might need companion files to be installed in various relative sub-directories.
+   // @endcond
+   
+   class CAppConfig : public sdv::IInterfaceAccess, public sdv::core::IConfig, public sdv::installation::IAppInstall
+   {
+   public:
+       CAppConfig() = default;
+   
+       // Interface map
+       // Note: only add globally accessible interfaces here (which are not limited by the type of application).
+       BEGIN_SDV_INTERFACE_MAP()
+       END_SDV_INTERFACE_MAP()
+   
+       bool LoadInstallationManifests();
+   
+       void UnloadInstallatonManifests();
+   
+       virtual sdv::core::EConfigProcessResult ProcessConfig(/*in*/ const sdv::u8string& ssContent) override;
+   
+       virtual sdv::core::EConfigProcessResult LoadConfig(/*in*/ const sdv::u8string& ssConfigPath) override;
+   
+       virtual bool SaveConfig(/*in*/ const sdv::u8string& ssConfigPath) const override;
+   
+       virtual bool AddConfigSearchDir(/*in*/ const sdv::u8string& ssDir) override;
+   
+       virtual void ResetConfigBaseline() override;
+   
+       virtual bool Install(/*in*/ const sdv::u8string& ssInstallName,
+           /*in*/ const sdv::sequence<sdv::installation::SFileDesc>& seqFiles) override;
+   
+       virtual bool Update(/*in*/ const sdv::u8string& ssInstallName,
+           /*in*/ const sdv::sequence<sdv::installation::SFileDesc>& seqFiles) override;
+   
+       virtual bool Uninstall(/*in*/ const sdv::u8string& ssInstallName) override;
+   
+       virtual sdv::sequence<sdv::u8string> GetInstallations() const override;
+   
+       virtual sdv::sequence<sdv::installation::SFileDesc> GetInstallationFiles(/*in*/ const sdv::u8string& ssInstallName) const override;
+   
+       std::filesystem::path FindInstalledModule(const std::filesystem::path& rpathRelModule);
+   
+       std::string FindInstalledModuleManifest(const std::filesystem::path& rpathRelModule);
+   
+       std::optional<CInstallManifest::SComponent> FindInstalledComponent(const std::string& rssClass) const;
+   
+   private:
+       void AddCurrentPath();
+   
+       struct SInstallation
+       {
+           sdv::sequence<sdv::installation::SFileDesc>  seqFiles;       
+       };
+   
+       std::mutex                              m_mtxSearchPaths;       
+       std::list<std::filesystem::path>        m_lstSearchPaths;       
+       std::filesystem::path                   m_pathLastSearchDir;    
+       std::mutex                              m_mtxInstallations;     
+       CInstallManifest                        m_manifestCore;         
+       CInstallManifest                        m_manifestExe;          
+       std::vector<CInstallManifest>           m_vecUserManifests;     
+       std::map<std::string, SInstallation>    m_mapInstallations;     
+   };
+   
+   #ifndef DO_NOT_INCLUDE_IN_UNIT_TEST
+   
+   class CAppConfigService : public sdv::CSdvObject
+   {
+   public:
+       CAppConfigService() = default;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_CHAIN_MEMBER(GetAppConfig())
+           SDV_INTERFACE_SET_SECTION_CONDITION(EnableAppConfigAccess(), 1)
+           SDV_INTERFACE_SECTION(1)
+           SDV_INTERFACE_ENTRY_MEMBER(sdv::core::IConfig, GetAppConfig())
+           SDV_INTERFACE_DEFAULT_SECTION()
+           SDV_INTERFACE_SET_SECTION_CONDITION(EnableAppInstallAccess(), 2)
+           SDV_INTERFACE_SECTION(2)
+           SDV_INTERFACE_ENTRY_MEMBER(sdv::installation::IAppInstall, GetAppConfig())
+           SDV_INTERFACE_DEFAULT_SECTION()
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_NAME("ConfigService")
+       DECLARE_OBJECT_SINGLETON()
+   
+       static CAppConfig& GetAppConfig();
+   
+       static bool EnableAppConfigAccess();
+   
+       static bool EnableAppInstallAccess();
+   };
+   DEFINE_SDV_OBJECT_NO_EXPORT(CAppConfigService)
+   
+   #endif
+   
+   #endif // !defined APP_CONFIG_H

@@ -1,0 +1,1148 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Class CIdlCompilerEnvironment &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/class_c_idl_compiler_environment';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Class...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-cidlcompilerenvironment">
+<span id="exhale-class-class-c-idl-compiler-environment"></span><h1>Class CIdlCompilerEnvironment<a class="headerlink" href="#class-cidlcompilerenvironment" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_sdv_idl_compiler_environment.h.html#file-sdv-idl-compiler-environment-h"><span class="std std-ref">File environment.h</span></a></p></li>
+</ul>
+<section id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Permalink to this heading">#</a></h2>
+<section id="base-types">
+<h3>Base Types<a class="headerlink" href="#base-types" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::idl::ICompilerOption</span></code> (<a class="reference internal" href="structsdv_1_1idl_1_1_i_compiler_option.html#exhale-struct-structsdv-1-1idl-1-1-i-compiler-option"><span class="std std-ref">Struct ICompilerOption</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::IInterfaceAccess</span></code> (<a class="reference internal" href="structsdv_1_1_i_interface_access.html#exhale-struct-structsdv-1-1-i-interface-access"><span class="std std-ref">Struct IInterfaceAccess</span></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this heading">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv423CIdlCompilerEnvironment">
+<span id="_CPPv323CIdlCompilerEnvironment"></span><span id="_CPPv223CIdlCompilerEnvironment"></span><span id="CIdlCompilerEnvironment"></span><span class="target" id="class_c_idl_compiler_environment"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CIdlCompilerEnvironment</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">idl</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1idl_1_1_i_compiler_option.html#_CPPv4N3sdv3idl15ICompilerOptionE" title="sdv::idl::ICompilerOption"><span class="n"><span class="pre">ICompilerOption</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><a class="headerlink" href="#_CPPv423CIdlCompilerEnvironment" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Parser environment management class. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-unnamed-group">Unnamed Group</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment22InterfaceTypeExtensionEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment22InterfaceTypeExtensionEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment22InterfaceTypeExtensionEv"></span><span id="CIdlCompilerEnvironment::InterfaceTypeExtensionC"></span><span class="target" id="class_c_idl_compiler_environment_1a97e55fe9de9baafd3dea80671751bfc9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InterfaceTypeExtension</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment22InterfaceTypeExtensionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Extensions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns true when the extension is enabled; false when not. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment22ExceptionTypeExtensionEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment22ExceptionTypeExtensionEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment22ExceptionTypeExtensionEv"></span><span id="CIdlCompilerEnvironment::ExceptionTypeExtensionC"></span><span class="target" id="class_c_idl_compiler_environment_1a6a1645f407c748b775b8027062069b34"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ExceptionTypeExtension</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment22ExceptionTypeExtensionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Extensions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns true when the extension is enabled; false when not. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment20PointerTypeExtensionEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment20PointerTypeExtensionEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment20PointerTypeExtensionEv"></span><span id="CIdlCompilerEnvironment::PointerTypeExtensionC"></span><span class="target" id="class_c_idl_compiler_environment_1a7c8bb0eaba2e0b20d6118f4550408c9a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PointerTypeExtension</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment20PointerTypeExtensionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Extensions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns true when the extension is enabled; false when not. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment16UnicodeExtensionEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment16UnicodeExtensionEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment16UnicodeExtensionEv"></span><span id="CIdlCompilerEnvironment::UnicodeExtensionC"></span><span class="target" id="class_c_idl_compiler_environment_1ad91f93f009333b9ebf558fe8b709f807"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UnicodeExtension</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment16UnicodeExtensionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Extensions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns true when the extension is enabled; false when not. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment26CaseSensitiveTypeExtensionEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment26CaseSensitiveTypeExtensionEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment26CaseSensitiveTypeExtensionEv"></span><span id="CIdlCompilerEnvironment::CaseSensitiveTypeExtensionC"></span><span class="target" id="class_c_idl_compiler_environment_1a0d9c57a0ae966960ddb9d1bebe05203a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CaseSensitiveTypeExtension</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment26CaseSensitiveTypeExtensionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Extensions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns true when the extension is enabled; false when not. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment30ContextDependentNamesExtensionEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment30ContextDependentNamesExtensionEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment30ContextDependentNamesExtensionEv"></span><span id="CIdlCompilerEnvironment::ContextDependentNamesExtensionC"></span><span class="target" id="class_c_idl_compiler_environment_1a48bf8bd2a279311b210ec5eea44835ff"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ContextDependentNamesExtension</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment30ContextDependentNamesExtensionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Extensions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns true when the extension is enabled; false when not. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment22MultiDimArrayExtensionEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment22MultiDimArrayExtensionEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment22MultiDimArrayExtensionEv"></span><span id="CIdlCompilerEnvironment::MultiDimArrayExtensionC"></span><span class="target" id="class_c_idl_compiler_environment_1a25c88fa6ea5a59b5d7cfce9f6a1f4388"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MultiDimArrayExtension</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment22MultiDimArrayExtensionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Extensions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns true when the extension is enabled; false when not. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N23CIdlCompilerEnvironment23CIdlCompilerEnvironmentEv">
+<span id="_CPPv3N23CIdlCompilerEnvironment23CIdlCompilerEnvironmentEv"></span><span id="_CPPv2N23CIdlCompilerEnvironment23CIdlCompilerEnvironmentEv"></span><span id="CIdlCompilerEnvironment::CIdlCompilerEnvironment"></span><span class="target" id="class_c_idl_compiler_environment_1a16ecad914cb5ffeac635d37e2cf6ab90"></span><span class="sig-name descname"><span class="n"><span class="pre">CIdlCompilerEnvironment</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N23CIdlCompilerEnvironment23CIdlCompilerEnvironmentEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Default constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N23CIdlCompilerEnvironment23CIdlCompilerEnvironmentERKNSt6vectorINSt6stringEEE">
+<span id="_CPPv3N23CIdlCompilerEnvironment23CIdlCompilerEnvironmentERKNSt6vectorINSt6stringEEE"></span><span id="_CPPv2N23CIdlCompilerEnvironment23CIdlCompilerEnvironmentERKNSt6vectorINSt6stringEEE"></span><span id="CIdlCompilerEnvironment::CIdlCompilerEnvironment__std::vector:ss:CR"></span><span class="target" id="class_c_idl_compiler_environment_1a5ba8b5bf2becd7d0e31ce6109322d6ea"></span><span class="sig-name descname"><span class="n"><span class="pre">CIdlCompilerEnvironment</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rvecArgs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N23CIdlCompilerEnvironment23CIdlCompilerEnvironmentERKNSt6vectorINSt6stringEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructor with program arguments. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rvecArgs</strong> – <strong>[in]</strong> Reference to the vector with program arguments </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN23CIdlCompilerEnvironment23CIdlCompilerEnvironmentE6size_tPPK9TCharType">
+<span id="_CPPv3I0EN23CIdlCompilerEnvironment23CIdlCompilerEnvironmentE6size_tPPK9TCharType"></span><span id="_CPPv2I0EN23CIdlCompilerEnvironment23CIdlCompilerEnvironmentE6size_tPPK9TCharType"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TCharType</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="class_c_idl_compiler_environment_1af85c1b42d193f129a16654340c6530aa"></span><span class="sig-name descname"><span class="n"><span class="pre">CIdlCompilerEnvironment</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nArgs</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN23CIdlCompilerEnvironment23CIdlCompilerEnvironmentE6size_tPPK9TCharType" title="CIdlCompilerEnvironment::CIdlCompilerEnvironment::TCharType"><span class="n"><span class="pre">TCharType</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">rgszArgs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN23CIdlCompilerEnvironment23CIdlCompilerEnvironmentE6size_tPPK9TCharType" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructor with program arguments. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TCharType</strong> – Character type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>nArgs</strong> – <strong>[in]</strong> The amount of arguments. </p></li>
+<li><p><strong>rgszArgs</strong> – <strong>[in]</strong> Array of arguments. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N23CIdlCompilerEnvironment12GetInterfaceEN3sdv12interface_idE">
+<span id="_CPPv3N23CIdlCompilerEnvironment12GetInterfaceEN3sdv12interface_idE"></span><span id="_CPPv2N23CIdlCompilerEnvironment12GetInterfaceEN3sdv12interface_idE"></span><span id="CIdlCompilerEnvironment::GetInterface__sdv::interface_id"></span><span class="target" id="class_c_idl_compiler_environment_1a11d844cb6cc3bb3312a9245662326d25"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1interface__t.html#_CPPv4N3sdv11interface_tE" title="sdv::interface_t"><span class="n"><span class="pre">interface_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetInterface</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1a2347c332dec12fa065d315aabc19c98e.html#_CPPv4N3sdv12interface_idE" title="sdv::interface_id"><span class="n"><span class="pre">interface_id</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">idInterface</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N23CIdlCompilerEnvironment12GetInterfaceEN3sdv12interface_idE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get access to another interface. Overload of IInterfaceAccess::GetInterface. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>idInterface</strong> – <strong>[in]</strong> The interface id to get access to. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pointer to the interface or NULL when the interface is not supported. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N23CIdlCompilerEnvironment11GetNextFileEv">
+<span id="_CPPv3N23CIdlCompilerEnvironment11GetNextFileEv"></span><span id="_CPPv2N23CIdlCompilerEnvironment11GetNextFileEv"></span><span id="CIdlCompilerEnvironment::GetNextFile"></span><span class="target" id="class_c_idl_compiler_environment_1a8ba3dd4331d00f1a9c8ceb4dd3c0c538"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetNextFile</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N23CIdlCompilerEnvironment11GetNextFileEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the path of the next file. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the path to the next file or an empty path. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment4HelpEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment4HelpEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment4HelpEv"></span><span id="CIdlCompilerEnvironment::HelpC"></span><span class="target" id="class_c_idl_compiler_environment_1a4bd8f42f54c6b2a8c2b0c77dd2fc22ec"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Help</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment4HelpEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Help was requested on the command line. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns ‘true’ when help was requested. Otherwise returns ‘false’. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment8ShowHelpEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment8ShowHelpEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment8ShowHelpEv"></span><span id="CIdlCompilerEnvironment::ShowHelpC"></span><span class="target" id="class_c_idl_compiler_environment_1acfbd6021733a56ed4e38e96b3ecc1431"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ShowHelp</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment8ShowHelpEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Show command line help. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment7VersionEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment7VersionEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment7VersionEv"></span><span id="CIdlCompilerEnvironment::VersionC"></span><span class="target" id="class_c_idl_compiler_environment_1af99a042d06423070ff480c766b9a5e53"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Version</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment7VersionEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Version information was requested on the command line. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns ‘true’ when version info was requested. Otherwise returns ‘false’. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment14GetIncludeDirsEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment14GetIncludeDirsEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment14GetIncludeDirsEv"></span><span id="CIdlCompilerEnvironment::GetIncludeDirsC"></span><span class="target" id="class_c_idl_compiler_environment_1a89f25c5e5810cbacb5661247d3fdf4ef"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetIncludeDirs</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment14GetIncludeDirsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the vector of include directories. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference to the vector of include directories. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment12GetOutputDirEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment12GetOutputDirEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment12GetOutputDirEv"></span><span id="CIdlCompilerEnvironment::GetOutputDirC"></span><span class="target" id="class_c_idl_compiler_environment_1a36ab6d03feac6149c3882f02f5d25a37"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetOutputDir</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment12GetOutputDirEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the output directory. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The output directory. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N23CIdlCompilerEnvironment13AddDefinitionEPKc">
+<span id="_CPPv3N23CIdlCompilerEnvironment13AddDefinitionEPKc"></span><span id="_CPPv2N23CIdlCompilerEnvironment13AddDefinitionEPKc"></span><span id="CIdlCompilerEnvironment::AddDefinition__cCP"></span><span class="target" id="class_c_idl_compiler_environment_1ac0283a137e4e5685e8eafbea0394232a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AddDefinition</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">szDefinition</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N23CIdlCompilerEnvironment13AddDefinitionEPKc" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Add macro definition in the form of name, name=value or name(arg1, arg2, arg3)=value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>szDefinition</strong> – <strong>[in]</strong> The definition string </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N23CIdlCompilerEnvironment13AddDefinitionERK6CTokenRK6CMacro">
+<span id="_CPPv3N23CIdlCompilerEnvironment13AddDefinitionERK6CTokenRK6CMacro"></span><span id="_CPPv2N23CIdlCompilerEnvironment13AddDefinitionERK6CTokenRK6CMacro"></span><span id="CIdlCompilerEnvironment::AddDefinition__CTokenCR.CMacroCR"></span><span class="target" id="class_c_idl_compiler_environment_1a22eb1e2266f8085c5c9e166fbfaaa7de"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AddDefinition</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="class_c_token.html#_CPPv46CToken" title="CToken"><span class="n"><span class="pre">CToken</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rtoken</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="class_c_macro.html#_CPPv46CMacro" title="CMacro"><span class="n"><span class="pre">CMacro</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rMacro</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N23CIdlCompilerEnvironment13AddDefinitionERK6CTokenRK6CMacro" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Add macro definition. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rtoken</strong> – <strong>[in]</strong> Token in the source file of the provided macro. </p></li>
+<li><p><strong>rMacro</strong> – <strong>[in]</strong> Reference to the macro to add. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N23CIdlCompilerEnvironment16RemoveDefinitionEPKc">
+<span id="_CPPv3N23CIdlCompilerEnvironment16RemoveDefinitionEPKc"></span><span id="_CPPv2N23CIdlCompilerEnvironment16RemoveDefinitionEPKc"></span><span id="CIdlCompilerEnvironment::RemoveDefinition__cCP"></span><span class="target" id="class_c_idl_compiler_environment_1ad891f335397e6c0ca2ea4190e050ea92"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RemoveDefinition</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">szMacro</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N23CIdlCompilerEnvironment16RemoveDefinitionEPKc" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Remove macro definition. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>If the macro doesn::t exists, doesn’t do anything. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>szMacro</strong> – <strong>[in]</strong> The name of the macro. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment7DefinedEPKc">
+<span id="_CPPv3NK23CIdlCompilerEnvironment7DefinedEPKc"></span><span id="_CPPv2NK23CIdlCompilerEnvironment7DefinedEPKc"></span><span id="CIdlCompilerEnvironment::Defined__cCPC"></span><span class="target" id="class_c_idl_compiler_environment_1a039e570ca7c93475a2cda8ca36241cb0"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Defined</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">szMacro</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment7DefinedEPKc" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Check whether a macro definition exists. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>szMacro</strong> – <strong>[in]</strong> The name of the macro. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ when the definition exists; ‘false’ otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment13TestAndExpandERKNSt6stringER8CCodePosbR13CUsedMacroSet">
+<span id="_CPPv3NK23CIdlCompilerEnvironment13TestAndExpandERKNSt6stringER8CCodePosbR13CUsedMacroSet"></span><span id="_CPPv2NK23CIdlCompilerEnvironment13TestAndExpandERKNSt6stringER8CCodePosbR13CUsedMacroSet"></span><span id="CIdlCompilerEnvironment::TestAndExpand__ssCR.CCodePosR.b.CUsedMacroSetRC"></span><span class="target" id="class_c_idl_compiler_environment_1a888203a716eeb922ff14d8a26aef3ae0"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TestAndExpand</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssIdentifier</span></span>, <a class="reference internal" href="class_c_code_pos.html#_CPPv48CCodePos" title="CCodePos"><span class="n"><span class="pre">CCodePos</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rcode</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bInMacroExpansion</span></span>, <a class="reference internal" href="typedef_macro_8h_1af80dedb627f221da944c25ece9ff5b7d.html#_CPPv413CUsedMacroSet" title="CUsedMacroSet"><span class="n"><span class="pre">CUsedMacroSet</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rsetPreviousExpanded</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment13TestAndExpandERKNSt6stringER8CCodePosbR13CUsedMacroSet" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Test for a macro and replace the code. </p>
+<p>This function will check for the existence of the macro with the supplied name. If it does, it will read any parameter from the code (depends on whether the macro needs parameters) and create a string with the filled in parameters. This string, then, is prepended to the code replacing the identifiert and its optional parameters. Reparsing of the code needs to take place - the return value is ‘true’. If there is no macro with the supplied name, the return value is ‘false’ and the supplied identifier is to be treated as an identifier. Macro parameters can have commas if they are parenthesized before. The value can have the ‘#’ unary operator to stringificate the following parameter and the ‘##’ operator to join the preceding or succeeding operator to the adjacent identifier. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssIdentifier</strong> – <strong>[in]</strong> Reference to the string object containing the name of the identifier to test for macro definition. </p></li>
+<li><p><strong>rcode</strong> – <strong>[inout]</strong> The code holding the potential parameters and to be replaced and prepended with the resolved macro. </p></li>
+<li><p><strong>bInMacroExpansion</strong> – <strong>[in]</strong> Set ‘true’ when the identifier was the (part) result of a macro expansion. If this is the case, previously used macros cannot be reused - to prevent circular expansion. </p></li>
+<li><p><strong>rsetPreviousExpanded</strong> – <strong>[inout]</strong> Reference to the set of previously expanded macros, preventing circular expansion. If the used macro set is empty, use the default set of the environment. This set will b eextended with macros used within the macro expansion. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ if macro replacement was successful, or ‘false’ when the identifier is not a macro. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment13TestAndExpandERKNSt6stringER8CCodePosb">
+<span id="_CPPv3NK23CIdlCompilerEnvironment13TestAndExpandERKNSt6stringER8CCodePosb"></span><span id="_CPPv2NK23CIdlCompilerEnvironment13TestAndExpandERKNSt6stringER8CCodePosb"></span><span id="CIdlCompilerEnvironment::TestAndExpand__ssCR.CCodePosR.bC"></span><span class="target" id="class_c_idl_compiler_environment_1a97f289222563e0b0f88228168bce291b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TestAndExpand</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssIdentifier</span></span>, <a class="reference internal" href="class_c_code_pos.html#_CPPv48CCodePos" title="CCodePos"><span class="n"><span class="pre">CCodePos</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rcode</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bInMacroExpansion</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment13TestAndExpandERKNSt6stringER8CCodePosb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Test for a macro and replace the code. </p>
+<p>This function will check for the existence of the macro with the supplied name. If it does, it will read any parameter from the code (depends on whether the macro needs parameters) and create a string with the filled in parameters. This string, then, is prepended to the code replacing the identifiert and its optional parameters. Reparsing of the code needs to take place - the return value is ‘true’. If there is no macro with the supplied name, the return value is ‘false’ and the supplied identifier is to be treated as an identifier. Macro parameters can have commas if they are parenthesized before. The value can have the ‘#’ unary operator to stringificate the following parameter and the ‘##’ operator to join the preceding or succeeding operator to the adjacent identifier. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssIdentifier</strong> – <strong>[in]</strong> Reference to the string object containing the name of the identifier to test for macro definition. </p></li>
+<li><p><strong>rcode</strong> – <strong>[inout]</strong> The code holding the potential parameters and to be replaced and prepended with the resolved macro. </p></li>
+<li><p><strong>bInMacroExpansion</strong> – <strong>[in]</strong> Set ‘true’ when the identifier was the (part) result of a macro expansion. If this is the case, previously used macros cannot be reused - to prevent circular expansion. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ if macro replacement was successful, or ‘false’ when the identifier is not a macro. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment12ResolveConstEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment12ResolveConstEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment12ResolveConstEv"></span><span id="CIdlCompilerEnvironment::ResolveConstC"></span><span class="target" id="class_c_idl_compiler_environment_1a82d62e8e48986237bea84430ba7410b1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ResolveConst</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment12ResolveConstEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Resolve const expressions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns ‘true’ when const expressions should be resolved. Otherwise the expression should be exported during code generation. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment11NoProxyStubEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment11NoProxyStubEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment11NoProxyStubEv"></span><span id="CIdlCompilerEnvironment::NoProxyStubC"></span><span class="target" id="class_c_idl_compiler_environment_1a97e36d6725a5258537b280fdffea36d5"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NoProxyStub</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment11NoProxyStubEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Suppress the generation of proxy and stub code. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns ‘true’ when proxy stub code should not be generated. Otherwise the proxy and stub code should be generated. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment22GetProxStubCMakeTargetEv">
+<span id="_CPPv3NK23CIdlCompilerEnvironment22GetProxStubCMakeTargetEv"></span><span id="_CPPv2NK23CIdlCompilerEnvironment22GetProxStubCMakeTargetEv"></span><span id="CIdlCompilerEnvironment::GetProxStubCMakeTargetC"></span><span class="target" id="class_c_idl_compiler_environment_1afe31b9990a545bf6cd89a68451d492bb"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetProxStubCMakeTarget</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment22GetProxStubCMakeTargetEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get library target name for the proxy stub cmake file. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the target name if set in the command line or an empty string otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment9GetOptionERKN3sdv8u8stringE">
+<span id="_CPPv3NK23CIdlCompilerEnvironment9GetOptionERKN3sdv8u8stringE"></span><span id="_CPPv2NK23CIdlCompilerEnvironment9GetOptionERKN3sdv8u8stringE"></span><span id="CIdlCompilerEnvironment::GetOption__sdv::u8stringCRC"></span><span class="target" id="class_c_idl_compiler_environment_1a2826fad002ea0a7cc90f0dd32c07f54e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ad4584b9d3937ef91dc3661773c068362.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetOption</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ad4584b9d3937ef91dc3661773c068362.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssOption</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment9GetOptionERKN3sdv8u8stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the compiler option. Overload of <a class="reference internal" href="structsdv_1_1idl_1_1_i_compiler_option.html#structsdv_1_1idl_1_1_i_compiler_option_1a6d6a07aa6ef5df5583511f9f0a520ed8"><span class="std std-ref">sdv::idl::ICompilerOption::GetOption</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssOption</strong> – <strong>[in]</strong> Reference to the string containing the name of the option to retrieve. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The requested compiler option (if available). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment12GetOptionCntERKN3sdv8u8stringE">
+<span id="_CPPv3NK23CIdlCompilerEnvironment12GetOptionCntERKN3sdv8u8stringE"></span><span id="_CPPv2NK23CIdlCompilerEnvironment12GetOptionCntERKN3sdv8u8stringE"></span><span id="CIdlCompilerEnvironment::GetOptionCnt__sdv::u8stringCRC"></span><span class="target" id="class_c_idl_compiler_environment_1a3e39d68b723b2e646ed617b4a0e1bc74"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetOptionCnt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ad4584b9d3937ef91dc3661773c068362.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssOption</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment12GetOptionCntERKN3sdv8u8stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the amount of option values. Overload of <a class="reference internal" href="structsdv_1_1idl_1_1_i_compiler_option.html#structsdv_1_1idl_1_1_i_compiler_option_1a7b478c4c9b06eca9c1f815937546591c"><span class="std std-ref">sdv::idl::ICompilerOption::GetOptionCnt</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssOption</strong> – <strong>[in]</strong> Reference to the string containing the name of the option to retrieve. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The amount of option values. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK23CIdlCompilerEnvironment10GetOptionNERKN3sdv8u8stringE8uint32_t">
+<span id="_CPPv3NK23CIdlCompilerEnvironment10GetOptionNERKN3sdv8u8stringE8uint32_t"></span><span id="_CPPv2NK23CIdlCompilerEnvironment10GetOptionNERKN3sdv8u8stringE8uint32_t"></span><span id="CIdlCompilerEnvironment::GetOptionN__sdv::u8stringCR.uint32_tC"></span><span class="target" id="class_c_idl_compiler_environment_1a66f82d58498ee7ea2b5c70c165d63ece"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ad4584b9d3937ef91dc3661773c068362.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetOptionN</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ad4584b9d3937ef91dc3661773c068362.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssOption</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiIndex</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK23CIdlCompilerEnvironment10GetOptionNERKN3sdv8u8stringE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the compiler option. Overload of <a class="reference internal" href="structsdv_1_1idl_1_1_i_compiler_option.html#structsdv_1_1idl_1_1_i_compiler_option_1a1531c275b942fc81918b00b8d24a3a3e"><span class="std std-ref">sdv::idl::ICompilerOption::GetOptionN</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssOption</strong> – <strong>[in]</strong> Reference to the string containing the name of the option to retrieve. </p></li>
+<li><p><strong>uiIndex</strong> – <strong>[in]</strong> The index of the option value. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The requested compiler option value. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

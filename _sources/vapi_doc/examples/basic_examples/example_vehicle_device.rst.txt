@@ -1,0 +1,67 @@
+.. _example-vehicle-device:
+
+Example Vehicle Device
+=======================
+
+.. note::
+   The code in the following example is different from typical :term:`Vehicle Device` s in the way that the device in the example reads from and writes to the :term:`Data Dispatch Service`. In real life an :term:`Vehicle Device` will either write or read from :term:`Data Dispatch Service`, not both together.
+
+To create a :term:`Vehicle Device` one just starts with a :ref:`general Component <example-general-component>`, sets the object type to ``AbstractDevice`` from the `EObjectType <exhale_define_component__impl_8h_1a23c0fa93f06b3d3dd3650e6dccd27913>`_ enum and provides :term:`interface` s to register callback functions which are triggered on signal updates.
+
+.. tab-set::
+
+   .. tab-item:: Example
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_vehicle_device.cpp
+         :tab-width: 4
+
+   .. tab-item:: Vehicle device
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_vehicle_device.cpp
+         :tab-width: 4
+         :emphasize-lines: 12, 41-42, 123
+
+      Set object type and name.
+
+   .. tab-item:: Publish (TX)
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_vehicle_device.cpp
+         :tab-width: 4
+         :emphasize-lines: 15, 28-33, 38, 91-99, 117
+
+      To write/send any data to the network the :term:`Data Dispatch Service` can be used. 
+      First the :term:`Vehicle Device` must act as publisher and add its signal to an existing TxSignal which was created by the :term:`Data Link`.
+      The method SetBrakeForce() is then published via an interface so that multiple basic services can set the signal value.
+
+      .. note::
+         See :ref:`Example Component with Initialization <example-general-componentwithinitialiation>` how to use :term:`Data Dispatch Service`.
+
+   .. tab-item:: Subscribe (RX)
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_vehicle_device.cpp
+         :tab-width: 4
+         :emphasize-lines: 14, 21-26, 37, 106-115, 118
+
+      To get updated on signal change the :term:`Vehicle Device` has to subscribe the method callBackFunctionSpeedSignal() to
+      an existing RxSignal which was created by the :term:`Data Link`.
+      Anyone who has registered a callback will then be noticed on signal update.
+
+   .. tab-item:: Reset Signals
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_vehicle_device.cpp
+         :tab-width: 4
+         :emphasize-lines: 46-53
+
+      On Shutdown the signals have to be reset.
+
+   .. tab-item:: Offer A Register Interface
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_vehicle_device.cpp
+         :tab-width: 4
+         :emphasize-lines: 61-69, 76-84, 119-120
+
+      Event driven approach: Implement the :term:`VAPI Interface` which allows any :term:`Basic Service` to register a callback 
+      (the :term:`Vehicle Device` event), which is called on any signal change so that a :term:`Basic Service` is automatically updated.
+
+
+

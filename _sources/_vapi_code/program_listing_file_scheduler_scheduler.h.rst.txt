@@ -1,0 +1,87 @@
+
+.. _program_listing_file_scheduler_scheduler.h:
+
+Program Listing for File scheduler.h
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_scheduler_scheduler.h>` (``scheduler\scheduler.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef THREAD_POOL_H
+   #define THREAD_POOL_H
+   
+   #include <thread>
+   #include <mutex>
+   #include <queue>
+   #include <deque>
+   #include <functional>
+   #include <memory>
+   #include <condition_variable>
+   #include <cstdint>
+   #include <list>
+   #include "../flags.h"
+   
+   class CTaskScheduler
+   {
+   public:
+       CTaskScheduler(size_t nMinIdle = 4, size_t nMaxBusy = 32);
+   
+       ~CTaskScheduler();
+   
+       enum class EScheduleFlags
+       {
+           normal = 0x0,   
+           priority = 0x1, 
+           no_queue = 0x2, 
+       };
+   
+       bool Schedule(std::function<void()> fnTask, hlpr::flags<EScheduleFlags> flags = EScheduleFlags::normal);
+   
+       void WaitForExecution();
+   
+       size_t GetThreadCount() const;
+   
+       size_t GetMaxThreadCount() const;
+   
+       size_t GetBusyThreadCount() const;
+   
+       size_t GetIdleThreadCount() const;
+   
+   private:
+       struct CThread
+       {
+       public:
+           CThread();
+   
+           ~CThread();
+   
+           void Execute(std::function<void()> fnTask);
+   
+       private:
+           void ThreadFunc();
+   
+           std::thread             m_thread;               
+           bool                    m_bShutdown = false;    
+           bool                    m_bStarted = false;     
+           std::function<void()>   m_fnTask;               
+           std::mutex              m_mtxSyncStart;         
+           std::condition_variable m_cvStarted;            
+           std::mutex              m_mtxSyncExecute;       
+           std::condition_variable m_cvExecute;            
+       };
+   
+       void Execute(std::list<std::shared_ptr<CThread>>::iterator itThread, std::function<void()> fnTask);
+   
+       size_t                                  m_nMinIdle = 4;         
+       size_t                                  m_nMaxBusy = 32;        
+       size_t                                  m_nMaxThreads = 0;      
+       mutable std::mutex                      m_mtxQueueAccess;       
+       std::queue<std::list<std::shared_ptr<CThread>>::iterator> m_queueIdleThreads; 
+       std::list<std::shared_ptr<CThread>>     m_lstThreads;           
+       std::deque<std::function<void()>>       m_dequeTasks;           
+   };
+   
+   #endif // !defined THREAD_POOL_H

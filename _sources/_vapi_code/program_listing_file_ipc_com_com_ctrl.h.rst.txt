@@ -1,0 +1,94 @@
+
+.. _program_listing_file_ipc_com_com_ctrl.h:
+
+Program Listing for File com_ctrl.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_ipc_com_com_ctrl.h>` (``ipc_com\com_ctrl.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef COM_CTRL_H
+   #define COM_CTRL_H
+   
+   #include <support/pssup.h>
+   #include <support/component_impl.h>
+   #include <interfaces/com.h>
+   
+   // Forward declaration
+   class CChannelConnector;
+   class CMarshallObject;
+   
+   class CCommunicationControl : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::com::IConnectionControl,
+       public sdv::ps::IMarshallAccess
+   {
+   public:
+       CCommunicationControl();
+   
+       virtual ~CCommunicationControl() override;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::ps::IMarshallAccess)
+           SDV_INTERFACE_ENTRY(sdv::com::IConnectionControl)
+           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
+       END_SDV_INTERFACE_MAP()
+   
+       // Component declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_SINGLETON()
+       DECLARE_OBJECT_CLASS_NAME("CommunicationControl")
+   
+       virtual void Initialize(const sdv::u8string& ssObjectConfig) override;
+   
+       virtual sdv::EObjectStatus GetStatus() const override;
+   
+       void SetOperationMode(sdv::EOperationMode eMode) override;
+   
+       virtual void Shutdown() override;
+   
+       virtual sdv::com::TConnectionID CreateServerConnection(/*in*/ sdv::com::EChannelType eChannelType,
+           /*in*/ sdv::IInterfaceAccess* pObject, /*in*/ uint32_t uiTimeoutMs, /*out*/ sdv::u8string& ssConnectionString) override;
+   
+       virtual sdv::com::TConnectionID CreateClientConnection(/*in*/ const sdv::u8string& ssConnectionString,
+           /*in*/ uint32_t uiTimeoutMs, /*out*/ sdv::IInterfaceAccess*& pProxy) override;
+   
+       virtual sdv::com::TConnectionID AssignServerEndpoint(/*in*/ sdv::IInterfaceAccess* pChannelEndpoint,
+           /*in*/ sdv::IInterfaceAccess* pObject, /*in*/ uint32_t uiTimeoutMs, /*in*/ bool bAllowReconnect) override;
+   
+       virtual sdv::com::TConnectionID AssignClientEndpoint(/*in*/ sdv::IInterfaceAccess* pChannelEndpoint,
+           /*in*/ uint32_t uiTimeoutMs, /*out*/ sdv::IInterfaceAccess*& pProxy) override;
+   
+       virtual void RemoveConnection(/*in*/ const sdv::com::TConnectionID& tConnectionID) override;
+   
+       virtual sdv::interface_t GetProxy(/*in*/ const sdv::ps::TMarshallID& tStubID, /*in*/ sdv::interface_id id) override;
+   
+       virtual sdv::ps::TMarshallID GetStub(/*in*/ sdv::interface_t ifc) override;
+   
+       std::shared_ptr<CMarshallObject> CreateProxy(sdv::interface_id id, sdv::ps::TMarshallID tStubID,
+           CChannelConnector& rConnector);
+   
+       std::shared_ptr<CMarshallObject> GetOrCreateStub(sdv::interface_t ifc);
+   
+       uint64_t CreateUniqueCallIndex();
+   
+       void SetConnectorContext(CChannelConnector* pConnectorContext);
+   
+       sdv::sequence<sdv::pointer<uint8_t>> CallStub(sdv::ps::TMarshallID tStubID, sdv::sequence<sdv::pointer<uint8_t>>& seqInputData);
+   
+   private:
+       sdv::EObjectStatus                              m_eObjectStatus = sdv::EObjectStatus::initialization_pending;   
+       std::mutex                                      m_mtxChannels;                  
+       std::vector<std::shared_ptr<CChannelConnector>> m_vecChannels;                  
+       std::vector<std::thread>                        m_vecInitialConnectMon;         
+       std::recursive_mutex                            m_mtxObjects;                   
+       std::vector<std::weak_ptr<CMarshallObject>>     m_vecMarshallObjects;           
+       std::map<sdv::interface_t, std::shared_ptr<CMarshallObject>> m_mapStubObjects;  
+       std::atomic_uint64_t                            m_uiCurrentCallCnt = 0;         
+       thread_local static CChannelConnector*          m_pConnectorContext;            
+   };
+   DEFINE_SDV_OBJECT(CCommunicationControl)
+   
+   #endif // !defined COM_CTRL_H

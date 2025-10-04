@@ -1,0 +1,31 @@
+
+.. _program_listing_file_sdv_idl_compiler_generator_cmake_generator.h:
+
+Program Listing for File cmake_generator.h
+==========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_generator_cmake_generator.h>` (``sdv_idl_compiler\generator\cmake_generator.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef CMAKE_GENERATOR_H
+   #define CMAKE_GENERATOR_H
+   
+   #include "../../../global/ipc_named_mutex.h"
+   
+   class CIdlCompilerCMakeGenerator : public CGenContext
+   {
+   public:
+       CIdlCompilerCMakeGenerator(sdv::IInterfaceAccess* pParser);
+   
+       virtual ~CIdlCompilerCMakeGenerator() override;
+   
+       bool Generate(const std::string& ssTargetLibName);
+   
+   private:
+       ipc::named_mutex        m_mtx;      
+   };
+   
+   #endif // !defined CMAKE_GENERATOR_H

@@ -1,0 +1,50 @@
+
+.. _program_listing_file_interfaces_log.idl:
+
+Program Listing for File log.idl
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_log.idl>` (``interfaces\log.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core.idl"
+   #include "process.idl"
+   
+   module sdv
+   {
+       module core
+       {
+           enum ELogSeverity : uint32
+           {
+               trace = 1,      
+               debug = 2,      
+               info = 3,       
+               warning = 4,    
+               error = 5,      
+               fatal = 6       
+           };
+   
+           interface ILoggerConfig
+           {
+               void SetProgramTag(in u8string ssTag);
+   
+               u8string GetProgramTag() const;
+   
+               void SetLogFilter(in ELogSeverity eSeverity, in ELogSeverity eViewSeverity);
+   
+               ELogSeverity GetLogFilter() const;
+   
+               ELogSeverity GetViewFilter() const;
+           };
+   
+           interface ILogger
+           {
+               void Log(in ELogSeverity eSeverity, in u8string ssSrcFile, in uint32 iSrcLine, in process::TProcessID tProcessID,
+                   in u8string ssObjectName, in u8string ssMessage);
+           };
+       };
+   };

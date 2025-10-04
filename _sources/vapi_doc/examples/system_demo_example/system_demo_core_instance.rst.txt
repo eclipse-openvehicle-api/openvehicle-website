@@ -1,0 +1,31 @@
+.. _vapi-system_example_core_instance:
+
+Application connected to core instance
+======================================
+
+In ``<outputfolder>/bin`` start the instance 3001 with following parameter: ``sdv_control STARTUP --instance3001``.
+
+.. image:: ../../../vapi_media/examples/system_demo_example/system_demo_screnshot_start_instance.png
+
+When the instance is running the application ``system_demo_example`` can be started as external application, meaning not loading the components but to connect to the running instance.
+
+In ``<outputfolder>/examples/bin`` start the application with following parameter: ``sys_demo_example -f../../bin --instance3001 --connect``.
+
+.. image:: ../../../vapi_media/examples/system_demo_example/system_demo_screnshot_core_instance.png
+
+
+the following shows the system:
+
+.. image:: ../../../vapi_media/examples/system_demo_example/system_demo_core_instance.png
+
+This code shows the basic code to connect to a running instance. It tries to connect to the example with the instance 3001. If successful it will get the interface of the ::term:`Complex Service`. It would also be possible to get the interfaces of the ::term:`Basic Service`.
+
+.. tab-set::
+
+   .. tab-item:: Configuration
+
+      .. literalinclude:: ../../../../examples/system_demo_example/example_app/system_extern_example.cpp
+         :tab-width: 4
+         :emphasize-lines: 37-42
+      
+      Just start the :ref:`sdv::app::CAppControl <exhale_class_class_c_app_control>` with a configuration instead of an empty string. Set Mode = External and Instance to the instance number the application has to connect to.

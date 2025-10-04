@@ -1,0 +1,1045 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Class CModuleControl &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/class_c_module_control';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Class CModuleControl</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-cmodulecontrol">
+<span id="exhale-class-class-c-module-control"></span><h1>Class CModuleControl<a class="headerlink" href="#class-cmodulecontrol" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_core_module_control.h.html#file-core-module-control-h"><span class="std std-ref">File module_control.h</span></a></p></li>
+</ul>
+<section id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Permalink to this heading">#</a></h2>
+<section id="base-types">
+<h3>Base Types<a class="headerlink" href="#base-types" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::IInterfaceAccess</span></code> (<a class="reference internal" href="structsdv_1_1_i_interface_access.html#exhale-struct-structsdv-1-1-i-interface-access"><span class="std std-ref">Struct IInterfaceAccess</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::core::IModuleControl</span></code> (<a class="reference internal" href="structsdv_1_1core_1_1_i_module_control.html#exhale-struct-structsdv-1-1core-1-1-i-module-control"><span class="std std-ref">Struct IModuleControl</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::core::IModuleControlConfig</span></code> (<a class="reference internal" href="structsdv_1_1core_1_1_i_module_control_config.html#exhale-struct-structsdv-1-1core-1-1-i-module-control-config"><span class="std std-ref">Struct IModuleControlConfig</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::core::IModuleInfo</span></code> (<a class="reference internal" href="structsdv_1_1core_1_1_i_module_info.html#exhale-struct-structsdv-1-1core-1-1-i-module-info"><span class="std std-ref">Struct IModuleInfo</span></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this heading">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv414CModuleControl">
+<span id="_CPPv314CModuleControl"></span><span id="_CPPv214CModuleControl"></span><span id="CModuleControl"></span><span class="target" id="class_c_module_control"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CModuleControl</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1core_1_1_i_module_control.html#_CPPv4N3sdv4core14IModuleControlE" title="sdv::core::IModuleControl"><span class="n"><span class="pre">IModuleControl</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1core_1_1_i_module_control_config.html#_CPPv4N3sdv4core20IModuleControlConfigE" title="sdv::core::IModuleControlConfig"><span class="n"><span class="pre">IModuleControlConfig</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1core_1_1_i_module_info.html#_CPPv4N3sdv4core11IModuleInfoE" title="sdv::core::IModuleInfo"><span class="n"><span class="pre">IModuleInfo</span></span></a><a class="headerlink" href="#_CPPv414CModuleControl" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Module control class. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>This class is also used to load the object from the core library without reloading the library itself again. It uses the module file name “core_services.sdv” and the ID -1 to identify the library. </p>
+</div>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControl14CModuleControlEv">
+<span id="_CPPv3N14CModuleControl14CModuleControlEv"></span><span id="_CPPv2N14CModuleControl14CModuleControlEv"></span><span id="CModuleControl::CModuleControl"></span><span class="target" id="class_c_module_control_1ae5d0ce08ca57ad824e31d6b83fd5c809"></span><span class="sig-name descname"><span class="n"><span class="pre">CModuleControl</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CModuleControl14CModuleControlEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Default constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControl14CModuleControlERK14CModuleControl">
+<span id="_CPPv3N14CModuleControl14CModuleControlERK14CModuleControl"></span><span id="_CPPv2N14CModuleControl14CModuleControlERK14CModuleControl"></span><span id="CModuleControl::CModuleControl__CModuleControlCR"></span><span class="target" id="class_c_module_control_1a7d67cda5c1bfc403ae9529c5416ed037"></span><span class="sig-name descname"><span class="n"><span class="pre">CModuleControl</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N14CModuleControl14CModuleControlERK14CModuleControl" title="CModuleControl::CModuleControl"><span class="n"><span class="pre">CModuleControl</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rctrl</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N14CModuleControl14CModuleControlERK14CModuleControl" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>No copy constructor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rctrl</strong> – <strong>[in]</strong> Reference to the module control class. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControl14CModuleControlERR14CModuleControl">
+<span id="_CPPv3N14CModuleControl14CModuleControlERR14CModuleControl"></span><span id="_CPPv2N14CModuleControl14CModuleControlERR14CModuleControl"></span><span id="CModuleControl::CModuleControl__CModuleControlRR"></span><span class="target" id="class_c_module_control_1afbb472290956a6d1aac161e01ca21508"></span><span class="sig-name descname"><span class="n"><span class="pre">CModuleControl</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N14CModuleControl14CModuleControlERR14CModuleControl" title="CModuleControl::CModuleControl"><span class="n"><span class="pre">CModuleControl</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rctrl</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N14CModuleControl14CModuleControlERR14CModuleControl" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>No move constructor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rctrl</strong> – <strong>[in]</strong> Reference to the module control class. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControlD0Ev">
+<span id="_CPPv3N14CModuleControlD0Ev"></span><span id="_CPPv2N14CModuleControlD0Ev"></span><span id="CModuleControl::~CModuleControl"></span><span class="target" id="class_c_module_control_1a25206daaca303da5196b1ef402a3e293"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~CModuleControl</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CModuleControlD0Ev" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Destructor unloads all modules. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControlaSERK14CModuleControl">
+<span id="_CPPv3N14CModuleControlaSERK14CModuleControl"></span><span id="_CPPv2N14CModuleControlaSERK14CModuleControl"></span><span id="CModuleControl::assign-operator__CModuleControlCR"></span><span class="target" id="class_c_module_control_1a03520f3c6fdff143b1c3759b612f3832"></span><a class="reference internal" href="#_CPPv414CModuleControl" title="CModuleControl"><span class="n"><span class="pre">CModuleControl</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv414CModuleControl" title="CModuleControl"><span class="n"><span class="pre">CModuleControl</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N14CModuleControlaSERK14CModuleControl" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>No assignment operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to this class. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControlaSERR14CModuleControl">
+<span id="_CPPv3N14CModuleControlaSERR14CModuleControl"></span><span id="_CPPv2N14CModuleControlaSERR14CModuleControl"></span><span id="CModuleControl::assign-operator__CModuleControlRR"></span><span class="target" id="class_c_module_control_1a680be2e221ececadc4d71d4508537c8f"></span><a class="reference internal" href="#_CPPv414CModuleControl" title="CModuleControl"><span class="n"><span class="pre">CModuleControl</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv414CModuleControl" title="CModuleControl"><span class="n"><span class="pre">CModuleControl</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">delete</span></span><a class="headerlink" href="#_CPPv4N14CModuleControlaSERR14CModuleControl" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>No move operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to this class. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControl18AddModuleSearchDirERKN3sdv8u8stringE">
+<span id="_CPPv3N14CModuleControl18AddModuleSearchDirERKN3sdv8u8stringE"></span><span id="_CPPv2N14CModuleControl18AddModuleSearchDirERKN3sdv8u8stringE"></span><span id="CModuleControl::AddModuleSearchDir__sdv::u8stringCR"></span><span class="target" id="class_c_module_control_1a391a9dd936adc59602f78b7be01c0f7b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AddModuleSearchDir</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ad4584b9d3937ef91dc3661773c068362.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ssDir</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N14CModuleControl18AddModuleSearchDirERKN3sdv8u8stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Sets a search path to a folder where a module can be found. Overload of <a class="reference internal" href="structsdv_1_1core_1_1_i_module_control_config.html#structsdv_1_1core_1_1_i_module_control_config_1a2be4338ebfd29a0d244ce780566e21fa"><span class="std std-ref">sdv::core::IModuleControlConfig::AddModuleSearchDir</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ssDir</strong> – <strong>[in]</strong> Relative or absolute path to an existing folder. To load a module out of the folder only the filename is required. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>returns true if folder exists, otherwise false </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14CModuleControl19GetModuleSearchDirsEv">
+<span id="_CPPv3NK14CModuleControl19GetModuleSearchDirsEv"></span><span id="_CPPv2NK14CModuleControl19GetModuleSearchDirsEv"></span><span id="CModuleControl::GetModuleSearchDirsC"></span><span class="target" id="class_c_module_control_1acb62ff7d0af8deb9dfa67a7b83f02808"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1sequence.html#_CPPv4I0_6size_tEN3sdv8sequenceE" title="sdv::sequence"><span class="n"><span class="pre">sequence</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ad4584b9d3937ef91dc3661773c068362.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetModuleSearchDirs</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK14CModuleControl19GetModuleSearchDirsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a sequence containing the current module search directories. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The sequence with the module search directories. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14CModuleControl13GetModuleListEv">
+<span id="_CPPv3NK14CModuleControl13GetModuleListEv"></span><span id="_CPPv2NK14CModuleControl13GetModuleListEv"></span><span id="CModuleControl::GetModuleListC"></span><span class="target" id="class_c_module_control_1a32d98267d203f01b516703bc3b984933"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1sequence.html#_CPPv4I0_6size_tEN3sdv8sequenceE" title="sdv::sequence"><span class="n"><span class="pre">sequence</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1core_1_1_s_module_info.html#_CPPv4N3sdv4core11SModuleInfoE" title="sdv::core::SModuleInfo"><span class="n"><span class="pre">SModuleInfo</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetModuleList</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK14CModuleControl13GetModuleListEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a list of loaded modules. Overload of <a class="reference internal" href="structsdv_1_1core_1_1_i_module_info.html#structsdv_1_1core_1_1_i_module_info_1a6d9baec24400fe46d33fdf6dd353035c"><span class="std std-ref">sdv::core::IModuleInfo::GetModuleList</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The module list. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14CModuleControl12GetClassListEN3sdv4core9TModuleIDE">
+<span id="_CPPv3NK14CModuleControl12GetClassListEN3sdv4core9TModuleIDE"></span><span id="_CPPv2NK14CModuleControl12GetClassListEN3sdv4core9TModuleIDE"></span><span id="CModuleControl::GetClassList__sdv::core::TModuleIDC"></span><span class="target" id="class_c_module_control_1a156c1a00f8f7f1ad4d87d8f87b5c0234"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1sequence.html#_CPPv4I0_6size_tEN3sdv8sequenceE" title="sdv::sequence"><span class="n"><span class="pre">sequence</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_s_class_info.html#_CPPv4N3sdv10SClassInfoE" title="sdv::SClassInfo"><span class="n"><span class="pre">SClassInfo</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetClassList</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1_1core_1a5d25b3481293064c5b67c82a71d0ae48.html#_CPPv4N3sdv4core9TModuleIDE" title="sdv::core::TModuleID"><span class="n"><span class="pre">TModuleID</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tModuleID</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK14CModuleControl12GetClassListEN3sdv4core9TModuleIDE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a list of classes exposed by the provided module. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tModuleID</strong> – <strong>[in]</strong> The module ID to request the list of classes for. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sequence with the class information structures. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControl4LoadERKN3sdv8u8stringE">
+<span id="_CPPv3N14CModuleControl4LoadERKN3sdv8u8stringE"></span><span id="_CPPv2N14CModuleControl4LoadERKN3sdv8u8stringE"></span><span id="CModuleControl::Load__sdv::u8stringCR"></span><span class="target" id="class_c_module_control_1aff31c23246a92e4ca5203a5f1610a377"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1_1core_1a5d25b3481293064c5b67c82a71d0ae48.html#_CPPv4N3sdv4core9TModuleIDE" title="sdv::core::TModuleID"><span class="n"><span class="pre">TModuleID</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Load</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ad4584b9d3937ef91dc3661773c068362.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ssModulePath</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N14CModuleControl4LoadERKN3sdv8u8stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Load the module. Overload of <a class="reference internal" href="structsdv_1_1core_1_1_i_module_control.html#structsdv_1_1core_1_1_i_module_control_1a9e1d75a37bf0ce85aef784d968c43241"><span class="std std-ref">sdv::core::IModuleControl::Load</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ssModulePath</strong> – <strong>[in]</strong> File name of the module to load. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the ID of the module or 0 if the module could not be loaded </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControl6UnloadEN3sdv4core9TModuleIDE">
+<span id="_CPPv3N14CModuleControl6UnloadEN3sdv4core9TModuleIDE"></span><span id="_CPPv2N14CModuleControl6UnloadEN3sdv4core9TModuleIDE"></span><span id="CModuleControl::Unload__sdv::core::TModuleID"></span><span class="target" id="class_c_module_control_1a01f34869f6d5738bdb3d344909419f92"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Unload</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1_1core_1a5d25b3481293064c5b67c82a71d0ae48.html#_CPPv4N3sdv4core9TModuleIDE" title="sdv::core::TModuleID"><span class="n"><span class="pre">TModuleID</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tModuleID</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N14CModuleControl6UnloadEN3sdv4core9TModuleIDE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Unload the module. Overload of <a class="reference internal" href="structsdv_1_1core_1_1_i_module_control.html#structsdv_1_1core_1_1_i_module_control_1aac98770203aa84cff677d7e3314b18dc"><span class="std std-ref">sdv::core::IModuleControl::Unload</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tModuleID</strong> – <strong>[in]</strong> Id representing a module, which has previous been loaded by Load </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns true if module is unloaded successfully otherwise false. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14CModuleControl16HasActiveObjectsEN3sdv4core9TModuleIDE">
+<span id="_CPPv3NK14CModuleControl16HasActiveObjectsEN3sdv4core9TModuleIDE"></span><span id="_CPPv2NK14CModuleControl16HasActiveObjectsEN3sdv4core9TModuleIDE"></span><span id="CModuleControl::HasActiveObjects__sdv::core::TModuleIDC"></span><span class="target" id="class_c_module_control_1acc8ad70e96d36aa64b19e1fcb3e5c40f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasActiveObjects</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1_1core_1a5d25b3481293064c5b67c82a71d0ae48.html#_CPPv4N3sdv4core9TModuleIDE" title="sdv::core::TModuleID"><span class="n"><span class="pre">TModuleID</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tModuleID</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK14CModuleControl16HasActiveObjectsEN3sdv4core9TModuleIDE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Checking for active objects. Overload of <a class="reference internal" href="structsdv_1_1core_1_1_i_module_control.html#structsdv_1_1core_1_1_i_module_control_1a24682098c866fbb9d39ab1032135d9b3"><span class="std std-ref">sdv::core::IModuleControl::HasActiveObjects</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tModuleID</strong> – <strong>[in]</strong> Id representing a module, which has previous been loaded by Load </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns true if there is an active object otherwise false. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControl17FindModuleByClassERKNSt6stringE">
+<span id="_CPPv3N14CModuleControl17FindModuleByClassERKNSt6stringE"></span><span id="_CPPv2N14CModuleControl17FindModuleByClassERKNSt6stringE"></span><span id="CModuleControl::FindModuleByClass__ssCR"></span><span class="target" id="class_c_module_control_1a4c7649c33323997df576c83a21853ca0"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="class_c_module_inst.html#_CPPv411CModuleInst" title="CModuleInst"><span class="n"><span class="pre">CModuleInst</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FindModuleByClass</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssClass</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CModuleControl17FindModuleByClassERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Find a module containing a class with the specified name. </p>
+<p>Find the first module containing a class with the specified name. For main and isolated applications, if the module wasn’t loaded, the installation manifests are checked and if a module with the class has been found, the module will be loaded. The order of checking the installation manifest is core-manifest, manifest in executable directory and manifest in supplied installation directory. <div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>Modules of system objects specified in the user installation are not returned. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssClass</strong> – <strong>[in]</strong> Reference to the class that should be searched for. The class is compared to the class name and the default name in the manifest. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a smart pointer to the module instance or NULL when the module hasn’t been found. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14CModuleControl9GetModuleEN3sdv4core9TModuleIDE">
+<span id="_CPPv3NK14CModuleControl9GetModuleEN3sdv4core9TModuleIDE"></span><span id="_CPPv2NK14CModuleControl9GetModuleEN3sdv4core9TModuleIDE"></span><span id="CModuleControl::GetModule__sdv::core::TModuleIDC"></span><span class="target" id="class_c_module_control_1a6e1e1bd3b367f36dfab9000297e81845"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="class_c_module_inst.html#_CPPv411CModuleInst" title="CModuleInst"><span class="n"><span class="pre">CModuleInst</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetModule</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1_1core_1a5d25b3481293064c5b67c82a71d0ae48.html#_CPPv4N3sdv4core9TModuleIDE" title="sdv::core::TModuleID"><span class="n"><span class="pre">TModuleID</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tModuleID</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK14CModuleControl9GetModuleEN3sdv4core9TModuleIDE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a class instance for the module. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tModuleID</strong> – <strong>[in]</strong> Id representing a module, which has previous been loaded by Load </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a smart pointer to the module instance or NULL when the module hasn’t been found. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControl9UnloadAllERKNSt6vectorIN3sdv4core9TModuleIDEEE">
+<span id="_CPPv3N14CModuleControl9UnloadAllERKNSt6vectorIN3sdv4core9TModuleIDEEE"></span><span id="_CPPv2N14CModuleControl9UnloadAllERKNSt6vectorIN3sdv4core9TModuleIDEEE"></span><span id="CModuleControl::UnloadAll__std::vector:sdv::core::TModuleID:CR"></span><span class="target" id="class_c_module_control_1ab6e300777f695c4c2c7d1ab85a828d2e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UnloadAll</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1_1core_1a5d25b3481293064c5b67c82a71d0ae48.html#_CPPv4N3sdv4core9TModuleIDE" title="sdv::core::TModuleID"><span class="n"><span class="pre">TModuleID</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rvecIgnoreModules</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CModuleControl9UnloadAllERKNSt6vectorIN3sdv4core9TModuleIDEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Unload all modules (with force-flag). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rvecIgnoreModules</strong> – <strong>[in]</strong> Reference to a vector containing all the modules to not unload. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControl19ResetConfigBaselineEv">
+<span id="_CPPv3N14CModuleControl19ResetConfigBaselineEv"></span><span id="_CPPv2N14CModuleControl19ResetConfigBaselineEv"></span><span id="CModuleControl::ResetConfigBaseline"></span><span class="target" id="class_c_module_control_1a7fb5bf1f01c4c9c21c5c18dd5e00a557"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ResetConfigBaseline</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CModuleControl19ResetConfigBaselineEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Reset the current config baseline. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControl10SaveConfigERKNSt3setINSt10filesystem4pathEEE">
+<span id="_CPPv3N14CModuleControl10SaveConfigERKNSt3setINSt10filesystem4pathEEE"></span><span id="_CPPv2N14CModuleControl10SaveConfigERKNSt3setINSt10filesystem4pathEEE"></span><span id="CModuleControl::SaveConfig__std::set:std::filesystem::path:CR"></span><span class="target" id="class_c_module_control_1afa3e950cc0f8ceddd321762357d2726f"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SaveConfig</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">set</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rsetIgnoreModule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CModuleControl10SaveConfigERKNSt3setINSt10filesystem4pathEEE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Save the configuration of all modules. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rsetIgnoreModule</strong> – <strong>[in]</strong> Set of modules not needing to add. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The string containing all the modules. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControl11ContextLoadERKNSt10filesystem4pathERKNSt6stringE">
+<span id="_CPPv3N14CModuleControl11ContextLoadERKNSt10filesystem4pathERKNSt6stringE"></span><span id="_CPPv2N14CModuleControl11ContextLoadERKNSt10filesystem4pathERKNSt6stringE"></span><span id="CModuleControl::ContextLoad__std::filesystem::pathCR.ssCR"></span><span class="target" id="class_c_module_control_1a006f0c77fefdcc64f6dc2a962583d6f5"></span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1_1core_1a5d25b3481293064c5b67c82a71d0ae48.html#_CPPv4N3sdv4core9TModuleIDE" title="sdv::core::TModuleID"><span class="n"><span class="pre">TModuleID</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ContextLoad</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rpathModule</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssManifest</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CModuleControl11ContextLoadERKNSt10filesystem4pathERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Load the module with the supplied module manifest. Only for main and isolated applications. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>When running the main application all complex services, applications and utilities run in their isolated environment. If multiple components are implemented in the module, of which one is suppose to run isolated, all of them run isolated. Isolated applications cannot load other modules if one was loaded already. Maintenance applications cannot load modules. All other applications load modules in their own process. Exception to the rul are proxy and stub components. System objects cannot be loaded this way at all. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rpathModule</strong> – <strong>[in]</strong> Absolute file path of the module to load. </p></li>
+<li><p><strong>rssManifest</strong> – <strong>[in]</strong> The module manifest deciding on where the module should run. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the ID of the module or 0 if the module could not be loaded </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CModuleControl13ContextUnloadEN3sdv4core9TModuleIDEb">
+<span id="_CPPv3N14CModuleControl13ContextUnloadEN3sdv4core9TModuleIDEb"></span><span id="_CPPv2N14CModuleControl13ContextUnloadEN3sdv4core9TModuleIDEb"></span><span id="CModuleControl::ContextUnload__sdv::core::TModuleID.b"></span><span class="target" id="class_c_module_control_1a79fed279ea97353630e397e408595c89"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ContextUnload</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">core</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1_1core_1a5d25b3481293064c5b67c82a71d0ae48.html#_CPPv4N3sdv4core9TModuleIDE" title="sdv::core::TModuleID"><span class="n"><span class="pre">TModuleID</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">tModuleID</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bForce</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CModuleControl13ContextUnloadEN3sdv4core9TModuleIDEb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Unload the module. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tModuleID</strong> – <strong>[in]</strong> Id representing a module, which has previous been loaded by ContextLoad. </p></li>
+<li><p><strong>bForce</strong> – <strong>[in]</strong> When set, the module instance class is cleared whether or not the module is unloaded or not. Use with extreme care (e.g. during shutdown). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns true if module is unloaded successfully otherwise false. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

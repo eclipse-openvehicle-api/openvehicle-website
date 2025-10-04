@@ -1,0 +1,211 @@
+
+.. _program_listing_file_support_local_service_access.h:
+
+Program Listing for File local_service_access.h
+===============================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_local_service_access.h>` (``support\local_service_access.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LOCAL_SERVICE_ACCESS_H
+   #define LOCAL_SERVICE_ACCESS_H
+   
+   #include "../interfaces/core.h"
+   #include "../interfaces/log.h"
+   #include "../interfaces/repository.h"
+   #include "../interfaces/com.h"
+   #include "interface_ptr.h"
+   #include <sstream>
+   #include <utility>
+   
+   #ifdef __GNUC__
+   // Needed for getpid()
+   #include <unistd.h>
+   #endif
+   
+   namespace sdv
+   {
+       // Forward declaration
+       interface IInterfaceAccess;
+   
+       namespace core
+       {
+   #ifndef SDV_CUSTOM_GETOBJECT
+           inline TInterfaceAccessPtr GetObject(const std::string& rssObjectName)
+           {
+               if (!GetCore()) return nullptr;
+               IObjectAccess* pRepository = GetCore<IObjectAccess>();
+               if (!pRepository) return nullptr;
+               return pRepository->GetObject(rssObjectName);
+           }
+   
+           inline TInterfaceAccessPtr GetObject(TObjectID tObjectID)
+           {
+               if (!GetCore()) return nullptr;
+               IObjectAccess* pRepository = GetCore<IObjectAccess>();
+               if (!pRepository) return nullptr;
+               return pRepository->GetObjectByID(tObjectID);
+           }
+   #else
+           TInterfaceAccessPtr GetObject(const std::string& rssObjectName);
+   
+           TInterfaceAccessPtr GetObject(TObjectID tObjectID);
+   #endif
+   
+           template <typename TInterface>
+           inline TInterface* GetObject(const std::string& rssObjectName)
+           {
+               return GetObject(rssObjectName).GetInterface<TInterface>();
+           }
+   
+           template <typename TInterface>
+           inline TInterface* GetObject(TObjectID tObjectID)
+           {
+               return GetObject(tObjectID).GetInterface<TInterface>();
+           }
+   
+           inline void Log(ELogSeverity eSeverity, const u8string& rssSrcFile, uint32_t uiSrcLine, const u8string& rssMessage)
+           {
+               ILogger* pLogger = GetCore() ? GetCore<ILogger>() : nullptr;
+   #ifdef _WIN32
+               if (pLogger) pLogger->Log(eSeverity, rssSrcFile, uiSrcLine, _getpid(), "", rssMessage);
+   #elif defined __unix__
+               if (pLogger) pLogger->Log(eSeverity, rssSrcFile, uiSrcLine, getpid(), "", rssMessage);
+   #else
+   #error The OS is currently not supported!
+   #endif
+           }
+   
+   #define SDV_LOG(severity, ...) sdv::core::internal::CSDVLogImpl(severity, __FILE__, __LINE__, __VA_ARGS__)
+   
+   #define SDV_LOG_TRACE(...) sdv::core::internal::CSDVLogImpl(sdv::core::ELogSeverity::trace, __FILE__, __LINE__, __VA_ARGS__)
+   
+   #define SDV_LOG_DEBUG(...) sdv::core::internal::CSDVLogImpl(sdv::core::ELogSeverity::debug, __FILE__, __LINE__, __VA_ARGS__)
+   
+   #define SDV_LOG_INFO(...) sdv::core::internal::CSDVLogImpl(sdv::core::ELogSeverity::info, __FILE__, __LINE__, __VA_ARGS__)
+   
+   #define SDV_LOG_WARNING(...) sdv::core::internal::CSDVLogImpl(sdv::core::ELogSeverity::warning, __FILE__, __LINE__, __VA_ARGS__)
+   
+   #define SDV_LOG_ERROR(...) sdv::core::internal::CSDVLogImpl(sdv::core::ELogSeverity::error, __FILE__, __LINE__, __VA_ARGS__)
+   
+   #define SDV_LOG_FATAL(...) sdv::core::internal::CSDVLogImpl(sdv::core::ELogSeverity::fatal, __FILE__, __LINE__, __VA_ARGS__)
+   
+           namespace internal
+           {
+               template <typename ...Args>
+               inline void CSDVLogImpl(ELogSeverity eSeverity, const char* szSrcFile, uint32_t uiSrcLine, Args&& ...args)
+               {
+                   std::ostringstream stream;
+                   (stream << ... << std::forward<Args>(args));
+   
+                   Log(eSeverity, szSrcFile ? szSrcFile : "", uiSrcLine, stream.str().c_str());
+               }
+           }
+   
+           inline TObjectPtr CreateUtility(const std::string& rssUtilityName, const std::string& rssUtilityConfig = std::string())
+           {
+               TInterfaceAccessPtr ptrRepository = GetObject("RepositoryService");
+               IRepositoryUtilityCreate* pUtilityCreate = ptrRepository.GetInterface<IRepositoryUtilityCreate>();
+               if (!pUtilityCreate) return nullptr;
+               return pUtilityCreate->CreateUtility(rssUtilityName, rssUtilityConfig);
+           }
+       } // namespace core
+   
+       namespace app
+       {
+           inline any_t GetAppAttribute(const std::string& rssAttribute)
+           {
+               const IAttributes* ptrAppAttributes = core::GetObject<IAttributes>("AppControlService");
+               if (!ptrAppAttributes) return {};
+               return ptrAppAttributes->Get(rssAttribute);
+           }
+   
+           inline bool ConsoleIsSilent()
+           {
+               return GetAppAttribute("console.info_level") == "silent";
+           }
+   
+           inline bool ConsoleIsVerbose()
+           {
+               return GetAppAttribute("console.info_level") == "verbose";
+           }
+   
+           inline uint32_t GetAppInstanceID()
+           {
+               return GetAppAttribute("app.instance_id");
+           }
+       } // namespace app
+   
+       namespace com
+       {
+           inline TObjectPtr ConnectToLocalServerRepository(uint32_t uiInstanceID = 0, size_t nRetries = 30)
+           {
+               com::IClientConnect* pClientConnect = core::GetObject<com::IClientConnect>("ConnectionService");
+               if (!pClientConnect)
+               {
+                   if (!app::ConsoleIsSilent())
+                       std::cerr << "ERROR: Could not access the connection service." << std::endl;
+                   return {};
+               }
+   
+               // Connect the client to the server and return the server repository interface.
+               std::string ssConnectString = R"code([Client]
+   Type = "Local"
+   )code";
+               if (uiInstanceID)
+                   ssConnectString += "Instance = " + std::to_string(uiInstanceID) + R"code(
+   )code";
+               try
+               {
+                   // Try to connect (30 times with 1 second in between).
+                   size_t nCnt = 0;
+                   sdv::TObjectPtr ptrRepository;
+                   while (!ptrRepository && nCnt < nRetries)
+                   {
+                       nCnt++;
+                       ptrRepository = pClientConnect->Connect(ssConnectString);
+                       if (!ptrRepository)
+                           std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+                   }
+   
+                   // Return the result
+                   return ptrRepository;
+               }
+               catch (const XAccessDenied& /*rExcept*/)
+               {
+                   if (!app::ConsoleIsSilent())
+                       std::cout << "Access denied trying to connect to a local repository with server instance ID#" <<
+                           (uiInstanceID?uiInstanceID : app::GetAppInstanceID()) << "." << std::endl;
+                   return {};
+               }
+               catch (const XNotFound& /*rExcept*/)
+               {
+                   if (!app::ConsoleIsSilent())
+                       std::cout << "Local repository with server instance ID#" <<
+                           (uiInstanceID?uiInstanceID : app::GetAppInstanceID()) << " not found." << std::endl;
+                   return {};
+               }
+               catch (const XInvalidState& rExcept)
+               {
+                   if (!app::ConsoleIsSilent())
+                       std::cout << "The local repository with server instance ID#" <<
+                           (uiInstanceID?uiInstanceID : app::GetAppInstanceID()) << " is in an invalid state: " << rExcept.what() <<
+                           std::endl;
+                   return {};
+               }
+               catch (const XTimeout& /*rExcept*/)
+               {
+                   if (!app::ConsoleIsSilent())
+                       std::cout << "Timeout occurred trying to connect to a local repository with server instance ID#" <<
+                           (uiInstanceID?uiInstanceID : app::GetAppInstanceID()) << "." << std::endl;
+                   return {};
+               }
+           }
+   
+       } // namespace core
+   } // namespace sdv
+   
+   #endif // !defined LOCAL_SERVICE_ACCESS_H

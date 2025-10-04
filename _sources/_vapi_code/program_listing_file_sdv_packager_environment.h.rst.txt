@@ -1,0 +1,505 @@
+
+.. _program_listing_file_sdv_packager_environment.h:
+
+Program Listing for File environment.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_packager_environment.h>` (``sdv_packager\environment.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef ENVIRONMENT_H
+   #define ENVIRONMENT_H
+   
+   #include <string>
+   #include <vector>
+   #include <filesystem>
+   #include <cstdint>
+   #include "../../global/cmdlnparser/cmdlnparser.h"
+   #include "../error_msg.h"
+   #include <interfaces/config.h>
+   
+   inline bool ichar_equals(char cLeft, char cRight)
+   {
+       return std::tolower(static_cast<unsigned char>(cLeft)) ==
+           std::tolower(static_cast<unsigned char>(cRight));
+   }
+   
+   inline bool iequals(const std::string& rssLeft, const std::string& rssRight)
+   {
+       return std::equal(rssLeft.begin(), rssLeft.end(), rssRight.begin(), rssRight.end(), ichar_equals);
+   }
+   
+   class CSdvPackagerEnvironment
+   {
+   public:
+   
+       struct SEnvironmentException : std::exception
+       {
+           SEnvironmentException(int nCodeParam, const std::string& rssDescriptionParam) :
+               nCode(nCodeParam), ssDescription(rssDescriptionParam)
+           {}
+   
+           virtual const char* what() const noexcept
+           {
+               return ssDescription.c_str();
+           }
+   
+           int             nCode = 0;          
+           std::string     ssDescription;      
+       };
+   
+       enum class EOperatingMode
+       {
+           none,               
+           pack,               
+           direct_install,     
+           install,            
+           uninstall,          
+           verify,             
+           show,               
+       };
+   
+       enum class EShowMask
+       {
+           all = 0x00ff,                   
+           info = 0x0001,                  
+           modules = 0x0010,               
+           components = 0x0020,            
+           console = 0x01000000,           
+           console_simple = 0x03000000,    
+           xml = 0x10000000,               
+           json = 0x20000000,              
+       };
+   
+       struct SVersion
+       {
+           size_t  nMajor = 0;     
+           size_t  nMinor = 0;     
+           size_t  nPatch = 0;     
+       };
+   
+       struct SModule
+       {
+           std::string             ssSearchString;     
+           std::filesystem::path   pathRelTarget;      
+       };
+   
+       CSdvPackagerEnvironment();
+   
+       CSdvPackagerEnvironment(const std::vector<std::string>& rvecArgs);
+   
+       template <typename TCharType>
+       CSdvPackagerEnvironment(size_t nArgs, const TCharType** rgszArgs);
+   
+       bool Help() const;
+   
+       void ShowHelp() const;
+   
+       void ReportInfo() const;
+   
+       bool Silent() const;
+   
+       bool Verbose() const;
+   
+       bool Version() const;
+   
+       bool CreateManifestOnly() const;
+   
+       EOperatingMode OperatingMode() const;
+   
+       bool KeepStructure() const;
+   
+       const std::vector<SModule>& ModuleList() const;
+   
+       const std::filesystem::path& PackagePath() const;
+   
+       const std::filesystem::path& SourceLocation() const;
+   
+       const std::filesystem::path& OutputLocation() const;
+   
+       const std::filesystem::path& TargetLocation() const;
+   
+       const std::filesystem::path& RootLocation() const;
+   
+       const std::filesystem::path& InstallLocation() const;
+   
+       bool Local() const;
+   
+       uint32_t InstanceID() const;
+   
+       bool Update() const;
+   
+       bool Overwrite() const;
+   
+       const std::filesystem::path& LocalConfigFile(std::vector<std::string>& rvecComponents) const;
+   
+       const std::vector<std::filesystem::path>& LocalConfigLocations() const;
+   
+       bool ActivateLocalConfig() const;
+   
+       bool InsertIntoUserConfig(std::vector<std::string>& rvecComponents) const;
+   
+       bool InsertIntoPlatformConfig(std::vector<std::string>& rvecComponents) const;
+   
+       bool InsertIntoVehicleInterfaceConfig(std::vector<std::string>& rvecComponents) const;
+   
+       bool InsertIntoVehicleAbstractionConfig(std::vector<std::string>& rvecComponents) const;
+   
+       const std::string& InstallName() const;
+   
+       const std::string& ProductName() const;
+   
+       const std::string& Description() const;
+   
+       const std::string& Author() const;
+   
+       const std::string& Address() const;
+   
+       const std::string& Copyrights() const;
+   
+       const std::string& PackageVersion() const;
+   
+       uint32_t ShowFlags() const;
+   
+       bool CheckShowFlag(EShowMask eMask) const;
+   
+       int Error() const;
+   
+       const std::string& ArgError() const;
+   
+   private:
+       void SplitConfigString(const std::string& rssInput, std::filesystem::path& rpath, std::vector<std::string>& rvecComponents);
+   
+       bool ProcessCommandLine(const std::vector<std::string>& rvecCommands);
+   
+       CCommandLine                m_cmdln;                            
+       bool                        m_bHelp = false;                    
+       bool                        m_bSilent = false;                  
+       bool                        m_bVerbose = false;                 
+       bool                        m_bVersion = false;                 
+       bool                        m_bKeepStructure = false;           
+       bool                        m_bCreateManifestOnly = false;      
+       bool                        m_bLocal = false;                   
+       bool                        m_bUpdate = false;                  
+       bool                        m_bOverwrite = false;               
+       EOperatingMode              m_eOperatingMode = EOperatingMode::none; 
+       std::vector<SModule>        m_vecModules;                       
+       std::filesystem::path       m_pathSourceLocation;               
+       std::filesystem::path       m_pathOutputLocation;               
+       std::filesystem::path       m_pathTargetLocation;               
+       std::filesystem::path       m_pathRootLocation;                 
+       std::filesystem::path       m_pathInstallLocation;              
+       std::filesystem::path       m_pathPackage;                      
+       uint32_t                    m_uiInstanceID = 1000u;             
+       std::string                 m_ssInstallName;                    
+       std::string                 m_ssProductName;                    
+       std::string                 m_ssDescription;                    
+       std::string                 m_ssAuthor;                         
+       std::string                 m_ssAddress;                        
+       std::string                 m_ssCopyrights;                     
+       std::string                 m_ssPackageVersion;                 
+       std::filesystem::path       m_pathConfigLocal;                  
+       std::vector<std::string>    m_vecConfigLocalComponents;         
+       bool                        m_bActivateLocalConfig = false;     
+       std::vector<std::filesystem::path> m_vecLocalConfigDirs;        
+       std::vector<std::string>    m_vecUserConfigComponents;          
+       std::vector<std::string>    m_vecPlatformConfigComponents;      
+       std::vector<std::string>    m_vecVehIfcConfigComponents;        
+       std::vector<std::string>    m_vecVehAbstrConfigComponents;      
+       bool                        m_bInsertIntoUserConfig = false;    
+       bool                        m_bInsertIntoPlatformConfig = false;
+       bool                        m_bInsertIntoVehIfcConfig = false;  
+       bool                        m_bInsertIntoVehAbstrConfig = false;
+       uint32_t                    m_uiShowFlags = 0;                  
+       int                         m_nError = NO_ERROR;                
+       std::string                 m_ssArgError;                       
+   };
+   
+   template <typename TCharType>
+   CSdvPackagerEnvironment::CSdvPackagerEnvironment(size_t nArgs, const TCharType** rgszArgs) :
+       m_cmdln(static_cast<uint32_t>(CCommandLine::EParseFlags::no_assignment_character))
+   {
+       m_cmdln.PrintMaxWidth(80);
+       m_cmdln.PrintSyntax(false);
+   
+       try
+       {
+           std::vector<std::string> vecCommands;
+   
+           // COMMANDS (selective argument groups 1-6):
+           //   PACK                       Pack modules and files into an installation package
+           //                              Usage: sdv_packager PACK <package name> <files> <options>
+           //   INSTALL                    Install a package into the system
+           //                              Usage: sdv_packager INSTALL <package path> <options>
+           //   DIRECT_INSTALL             Directly install modules and files into the system (without the creation of a package)
+           //                              Usage: sdv_packager DIRECT_INSTALL <package name> <files> <options>
+           //   UNINSTALL                  Remove an installation from the system
+           //                              Usage: sdv_packager UNINSTALL <package name> <options>
+           //   VERIFY                     Verify the consistency and the integrity of an installation package.
+           //                              Usage: sdv_packager VERIFY <package path> <options>
+           //   SHOW                       Show package information
+           //                              Usage: sdv_packager SHOW <ALL|INFO|MODULES|COMPONENTS> <package path> <options>
+           m_cmdln.DefineDefaultArgument(vecCommands, "COMMAND <...> <options>");
+   
+           // ARGUMENT SELECTION GROUP #0 - General options:
+           //     -?, --help              Show help
+           //     -s, --silent            Silent mode
+           //     -v, --verbose           Verbose mode
+           //     --version               Show version
+           auto& rArgHelpDef = m_cmdln.DefineOption("?", m_bHelp, "Show help", true, 0, 1, 2, 3, 4, 5, 6);
+           rArgHelpDef.AddSubOptionName("help");
+           auto& rArgSilentDef = m_cmdln.DefineOption("s", m_bSilent, "Do not show any information on STDOUT. Not compatible with "
+               "'--verbose'.");
+           rArgSilentDef.AddSubOptionName("silent");
+           auto& rArgVerboseDef = m_cmdln.DefineOption("v", m_bVerbose, "Provide verbose information. Not compatible with "
+               "'--silent'.");
+           rArgVerboseDef.AddSubOptionName("verbose");
+           m_cmdln.DefineSubOption("version", m_bVersion, "Show version information.");
+   
+           // ARGUMENT SELECTION GROUP #2 & #3 & #4: General options during installation/uninstallation
+           //     -L, --local                  Local installation
+           //     --instance<id>               Instance ID to use for installation
+           auto& rLocalArgDef = m_cmdln.DefineOption("L", m_bLocal, "Target the local system.", true, 2, 3, 4);
+           rLocalArgDef.AddSubOptionName("local");
+           auto& rInstance = m_cmdln.DefineSubOption("instance", m_uiInstanceID, "The instance ID of the SDV server instance when not "
+               "targeting the local system (default ID is 1000).", true, 2, 3, 4);
+   
+           // ARGUMENT SELECTION GROUP #1 - Packing:
+           //     -O<path>                     Optional destination location
+           //     --signature<path>            Path to the file to use to sign the package (not implemented yet)
+           m_cmdln.DefineGroup("Package creation");
+           m_cmdln.DefineOption("O", m_pathOutputLocation, "The output location (optional, default is current directory).", true, 1);
+   
+           // ARGUMENT SECLECTION GROUP #1 & #3 - Packing and direct installation:
+           //     -I<path>                     Optional source location
+           //     --keep_structure             Maintain original directory structure
+           //     --create_manifest_only       Create a manifest file only
+           //     --set_product<string>        Set the product name (if not identical to installation name).
+           //     --set_description<string>    Set the package description
+           //     --set_author<string>         Set author string
+           //     --set_address<string>        Set address string (multi-line)
+           //     --set_copyright<string>      Set copyright string
+           //     --set_version<string>        Set product version string (also use for updates).
+           m_cmdln.DefineOption("I", m_pathSourceLocation, "The source location (optional, default is current directory).", true,
+               1, 3);
+           m_cmdln.DefineSubOption("keep_structure", m_bKeepStructure, "Maintain the directory structure within the package. In "
+               "combination with the source location (current directory or directory provided by '-I' option).", true, 1, 3);
+           m_cmdln.DefineSubOption("create_manifest_only", m_bCreateManifestOnly, "Create manifest, but does not copy module files "
+               "from specified location. If provided, the manifest will be stored in the output directory (current directory or "
+               "directory provided by '-O' option).", true, 1);
+           m_cmdln.DefineSubOption("set_product", m_ssProductName, "Set the product name (default is package name).", true, 1, 3);
+           m_cmdln.DefineSubOption("set_description", m_ssDescription, "Set the package description.", true, 1, 3);
+           m_cmdln.DefineSubOption("set_author", m_ssAuthor, "Set author name.", true, 1, 3);
+           m_cmdln.DefineSubOption("set_address", m_ssAddress, "Set author address information.", true, 1, 3);
+           m_cmdln.DefineSubOption("set_copyright", m_ssCopyrights, "Set copyright information.", true, 1, 3);
+           m_cmdln.DefineSubOption("set_version", m_ssPackageVersion, "Set package version (needed to allow updates).", true, 1, 3);
+   
+           // ARGUMENT SELECTION GROUP #2 & #3 & #4- Installation from package and direct installation:
+           //     -T<path>                     Optional target location
+           //     -P, --update                 Use update if a previous package with older version has been found
+           //     -W, --overwrite              Use overwrite if a previous package has been found
+           //     --verify_signed              Verify whether the package is signed and if not return an error (not implemented)
+           m_cmdln.DefineGroup("Installation / uninstallation");
+           auto& rTargetLoc = m_cmdln.DefineOption("T", m_pathTargetLocation, "The target location for package installation. Required "
+               "when targeting a local system ('--local' option).", true, 2, 3, 4);
+           auto& rArgDefUpdate = m_cmdln.DefineOption("P", m_bUpdate, "Update the installation if an older version is existing.",
+               true, 2, 3);
+           rArgDefUpdate.AddSubOptionName("update");
+           auto& rArgDefOverwrite = m_cmdln.DefineOption("W", m_bOverwrite, "Overwrite the installation if an installation is "
+               "existing (regardless of the installed version).", true, 2, 3);
+           rArgDefOverwrite.AddSubOptionName("overwrite");
+   
+           // Configuration
+           // ARGUMENT SELECTION GROUP #2 & #3 & #4 - Update from package and directly and uninstallation:
+           //     --config_dir<paths...>       Local instance only; directory to configuration files to update.
+           m_cmdln.DefineGroup("Configuration update");
+           auto& rConfigDir = m_cmdln.DefineSubOption("config_dir", m_vecLocalConfigDirs, "One or more configuration directories "
+               "to scan for components being updated. Use with local systems only ('--local' option).", true, 2, 3, 4);
+   
+           //     --config_file<path>[=<x,>[all,-component,-...]|[+component,+....]]   Local instance only; configuration file.
+           //     --activate_config                                                    Local instance only; select config into settings.
+           //     --user_config[=<x,>[all,-component,-...]|[+component,+....]]         Server instance only; user configuration.
+           //     --platform_config[=<x,>[all,-component,-...]|[+component,+....]]     Server instance only; platform config.
+           //     --vehifc_config[=<x,>[all,-component,-...]|[+component,+....]]       Server instance only; vehicle interface config.
+           //     --vehabstr_config[=<x,>[all,-component,-...]|[+component,+....]]     Server instance only; vehicle abstraction config.
+           std::string ssConfigFileLocal;
+           auto& rConfigFile = m_cmdln.DefineSubOption("config_file", ssConfigFileLocal, "Update a user configuration file. For "
+               "usage, see explanatory text above. Use with local systems only ('--local' option).", true, 2, 3);
+           auto& rActivateConfig = m_cmdln.DefineSubOption("activate_config", m_bActivateLocalConfig, "Update the settings file to "
+               "automatically activate the provided configuration file. Use with local system only ('--local' option).", true, 2, 3);
+           std::string ssUserConfigServer, ssPlatformConfigServer, ssInterfaceConfigServer, ssAbstrConfigServer;
+           auto& rPlatformConfig = m_cmdln.DefineSubOption("platform_config", ssPlatformConfigServer, "Update the platform "
+               "configuration defining which components of this installation are used to interact with the hardware platform. For "
+               "usage, see explanatory text above. Use on server only.", true, 2, 3);
+           auto& rInterfaceConfig = m_cmdln.DefineSubOption("interface_config", ssInterfaceConfigServer, "Update the vehicle "
+               "interface configuration defining which components of this installation represent the vehicle interface. For usage, "
+               "see explanatory text above. Use on server only.", true, 2, 3);
+           auto& rAbstrConfig = m_cmdln.DefineSubOption("abstract_config", ssAbstrConfigServer, "Update the vehicle abstraction "
+               "configuration defining which components of this installation represent an abstracted vehicle to the application "
+               "components. For usage, see explanatory text above. Use on server only.", true, 2, 3);
+           auto& rUserConfig = m_cmdln.DefineSubOption("user_config", ssUserConfigServer, "Update the user configuration defining "
+               "which components of this installation need to be instantiated automatically. User configuration can only contain "
+               "complex services. For usage, see explanatory text above. Use on server only.", true, 2, 3);
+   
+           // ARGUMENT SELECTION GROUP #5 - Package verififcation
+           m_cmdln.DefineGroup("Verification options");
+           //     --verify_signed              Verify whether the package is signed and if not return an error (not implemented)
+   
+           // ARGUMENT SELECTION GROUP #6 - Show package information
+           //     --show_simple
+           //     --xml (not implemented)
+           //     --json (not implemented)
+           m_cmdln.DefineGroup("Show options");
+           bool bShowSimple = false;
+           m_cmdln.DefineSubOption("show_simple", bShowSimple, "Show package information in simple format.", true, 6);
+   
+           m_cmdln.Parse(static_cast<size_t>(nArgs), rgszArgs);
+   
+           // Process the command line
+           if (!ProcessCommandLine(vecCommands)) return;
+   
+           // Update show mask
+           if (bShowSimple)
+               m_uiShowFlags |= static_cast<uint32_t>(EShowMask::console_simple);
+           else // TODO: if not XML and JSON, add console
+               m_uiShowFlags |= static_cast<uint32_t>(EShowMask::console);
+   
+           // Split the configuration strings
+           if (!ssConfigFileLocal.empty())
+               SplitConfigString(ssConfigFileLocal, m_pathConfigLocal, m_vecConfigLocalComponents);
+           if (rUserConfig.OptionAvailableOnCommandLine())
+           {
+               m_bInsertIntoUserConfig = true;
+               std::filesystem::path rpathTemp;
+               SplitConfigString(ssUserConfigServer, rpathTemp, m_vecUserConfigComponents);
+               if (!rpathTemp.empty())
+               {
+                   m_nError = CMDLN_INVALID_CONFIG_STRING;
+                   m_ssArgError = CMDLN_INVALID_CONFIG_STRING_MSG;
+                   return;
+               }
+           }
+           if (rPlatformConfig.OptionAvailableOnCommandLine())
+           {
+               m_bInsertIntoPlatformConfig = true;
+               std::filesystem::path rpathTemp;
+               SplitConfigString(ssPlatformConfigServer, rpathTemp, m_vecPlatformConfigComponents);
+               if (!rpathTemp.empty())
+               {
+                   m_nError = CMDLN_INVALID_CONFIG_STRING;
+                   m_ssArgError = CMDLN_INVALID_CONFIG_STRING_MSG;
+                   return;
+               }
+           }
+           if (rInterfaceConfig.OptionAvailableOnCommandLine())
+           {
+               m_bInsertIntoVehIfcConfig = true;
+               std::filesystem::path rpathTemp;
+               SplitConfigString(ssInterfaceConfigServer, rpathTemp, m_vecVehIfcConfigComponents);
+               if (!rpathTemp.empty())
+               {
+                   m_nError = CMDLN_INVALID_CONFIG_STRING;
+                   m_ssArgError = CMDLN_INVALID_CONFIG_STRING_MSG;
+                   return;
+               }
+           }
+           if (rAbstrConfig.OptionAvailableOnCommandLine())
+           {
+               m_bInsertIntoVehAbstrConfig = true;
+               std::filesystem::path rpathTemp;
+               SplitConfigString(ssAbstrConfigServer, rpathTemp, m_vecVehAbstrConfigComponents);
+               if (!rpathTemp.empty())
+               {
+                   m_nError = CMDLN_INVALID_CONFIG_STRING;
+                   m_ssArgError = CMDLN_INVALID_CONFIG_STRING_MSG;
+                   return;
+               }
+           }
+   
+           // Check for the local flag and if set, this is not compatible to server options.
+           // Also if not set, local options are not allowed.
+           if (m_bLocal)
+           {
+               if (rInstance.OptionAvailableOnCommandLine())
+               {
+                   m_nError = CMDLN_INCOMPATIBLE_ARGUMENTS;
+                   m_ssArgError = "The option '--instance' cannot be used with with local installations ('--local' option).";
+                   return;
+               }
+               if (rUserConfig.OptionAvailableOnCommandLine() || rPlatformConfig.OptionAvailableOnCommandLine() ||
+                   rInterfaceConfig.OptionAvailableOnCommandLine() || rAbstrConfig.OptionAvailableOnCommandLine())
+               {
+                   m_nError = CMDLN_INCOMPATIBLE_ARGUMENTS;
+                   m_ssArgError = "The configuration options '--user_config', '--platform_config', '--vehifc_config' and "
+                       "'--vehabstr_config' cannot be used with with local installations ('--local' option).";
+                   return;
+               }
+               if (!rTargetLoc.OptionAvailableOnCommandLine())
+               {
+                   m_nError = CMDLN_TARGET_LOCATION_ERROR;
+                   m_ssArgError = "The target location option '-T' must be used when specifying local installations ('--local' "
+                       "option).";
+                   return;
+               }
+               if (rActivateConfig.OptionAvailableOnCommandLine() && !rConfigFile.OptionAvailableOnCommandLine())
+               {
+                   m_nError = CMDLN_INCOMPATIBLE_ARGUMENTS;
+                   m_ssArgError = "Activating a configuration file using the option '--activate_config' can only be used with when a "
+                       "configuration file is provided using the option '--config_file'.";
+                   return;
+               }
+           } else
+           {
+               if (rConfigFile.OptionAvailableOnCommandLine())
+               {
+                   m_nError = CMDLN_INCOMPATIBLE_ARGUMENTS;
+                   m_ssArgError = "The configuration file option '--config_path' can only be used with with local installations "
+                       "('--local' option).";
+                   return;
+               }
+               if (rActivateConfig.OptionAvailableOnCommandLine())
+               {
+                   m_nError = CMDLN_INCOMPATIBLE_ARGUMENTS;
+                   m_ssArgError = "The configuration file option '--activate_config' can only be used with with local "
+                       "installations ('--local' option).";
+                   return;
+               }
+               if (rConfigDir.OptionAvailableOnCommandLine())
+               {
+                   m_nError = CMDLN_INCOMPATIBLE_ARGUMENTS;
+                   m_ssArgError = "The configuration file option '--config_dir' can only be used with with local installations "
+                       "('--local' option).";
+                   return;
+               }
+               if (rTargetLoc.OptionAvailableOnCommandLine())
+               {
+                   m_nError = CMDLN_INCOMPATIBLE_ARGUMENTS;
+                   m_ssArgError = "The target location option '-T' can only be used with with local installations ('--local' option).";
+                   return;
+               }
+           }
+   
+           // Check update and overwrite
+           if (m_bUpdate && m_bOverwrite)
+           {
+               m_nError = CMDLN_UPDATE_OVERWRITE_ERROR;
+               m_ssArgError = CMDLN_UPDATE_OVERWRITE_ERROR_MSG;
+               return;
+           }
+       } catch (const SArgumentParseException& rsExcept)
+       {
+           // If not all fits, but help is requested, this is okay...
+           // Otherwise throw an environment exception.
+           if (!m_bHelp)
+           {
+               m_nError = CMDLN_ARG_ERR;
+               m_ssArgError = rsExcept.what();
+               return;
+           }
+       }
+   }
+   
+   #endif // !defined ENVIRONMENT_H

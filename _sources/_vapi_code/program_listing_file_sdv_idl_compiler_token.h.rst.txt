@@ -1,0 +1,143 @@
+
+.. _program_listing_file_sdv_idl_compiler_token.h:
+
+Program Listing for File token.h
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_token.h>` (``sdv_idl_compiler\token.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LOCATION_H
+   #define LOCATION_H
+   
+   #include "constvariant.h"
+   #include "lexerbase.h"
+   #include "parsecontext.h"
+   #include <cstdint>
+   #include <string>
+   #include <limits>
+   #include <cerrno>
+   #include <cstring>
+   #include <list>
+   #include <memory>
+   
+   // Forward declaration
+   class CCodePos;
+   
+   class CToken
+   {
+       friend CCodePos;
+   
+   public:
+       CToken() = default;
+   
+       CToken(const std::string& rssText, ETokenType eType = ETokenType::token_identifier);
+   
+       CToken(const std::string& rssText, ETokenLiteralType eLiteralType);
+   
+       CToken(const std::string& rssText, ETokenMetaType eMetaType);
+   
+       void MoveStart(int32_t iOffset);
+   
+       void MoveEnd(int32_t iOffset);
+   
+       bool operator==(const CToken& rtoken) const;
+   
+       bool operator!=(const CToken& rtoken) const;
+   
+       uint32_t GetLine() const;
+   
+       uint32_t GetCol() const;
+   
+       uint32_t GetEndLine() const;
+   
+       uint32_t GetEndCol() const;
+   
+       uint32_t GetLength() const;
+   
+       ETokenType GetType() const;
+   
+       ETokenLiteralType GetLiteralType() const;
+   
+       ETokenMetaType GetMetaType() const;
+   
+       operator bool() const;
+   
+       operator const std::string&() const;
+       const char* c_str() const;
+       std::string Left(uint32_t uiLen) const;
+   
+       std::string Right(uint32_t uiLen) const;
+   
+       bool operator==(const char* szString) const;
+   
+       bool operator!=(const char* szString) const;
+   
+       bool operator==(const std::string& rssString) const;
+   
+       bool operator!=(const std::string& rssString) const;
+   
+       bool IsLiteral() const;
+       bool IsInteger() const;
+       bool IsSigned() const;
+       bool IsUnsigned() const;
+       bool IsLong() const;
+       bool IsLongLong() const;
+       bool IsDecimal() const;
+       bool IsHexadecimal() const;
+       bool IsOctal() const;
+       bool IsBinary() const;
+       bool IsFloatingPoint() const;
+       bool IsFixedPoint() const;
+       bool IsCharacter() const;
+       bool IsCharacterSequence() const;
+       bool IsString() const;
+       bool IsAscii() const;
+       bool IsUtf8() const;
+       bool IsUtf16() const;
+       bool IsUtf32() const;
+       bool IsWide() const;
+       bool IsRawString() const;
+       bool IsBoolean() const;
+       bool IsNullptr() const;
+       CConstVariant ValueRef() const;
+   
+       void SetContext(const CContextPtr& rptrContext) { m_ptrContext = rptrContext; }
+   
+       CContextPtr GetContext() const { return m_ptrContext; }
+   
+   private:
+       template <typename... TChar>
+       bool Contains(char c, TChar... tChars) const;
+   
+       template <typename... TString>
+       bool Contains(const char* sz, TString... tStrings) const;
+   
+       bool Contains() const { return false; }
+   
+       CConstVariant ValueSignedInteger() const;
+       CConstVariant ValueUnsignedInteger() const;
+       CConstVariant ValueFloat() const;
+   
+       CConstVariant ValueBoolean() const;
+   
+       CConstVariant ValueNullptr() const;
+   
+       CConstVariant ValueString() const;
+   
+   private:
+       CContextPtr                     m_ptrContext;                                           
+       const char*                     m_szCode = nullptr;                                     
+       uint32_t                        m_uiLen = 0xffffffff;                                   
+       uint32_t                        m_uiLine = 0;                                           
+       uint32_t                        m_uiCol = 0;                                            
+       ETokenType                      m_eType = ETokenType::token_none;                       
+       ETokenLiteralType               m_eLiteralType = ETokenLiteralType::token_undefined;    
+       ETokenMetaType                  m_eMetaType = ETokenMetaType::token_undefined;          
+       mutable std::string             m_ssCache;                                              
+   };
+   
+   #endif // !defined LOCATION_H

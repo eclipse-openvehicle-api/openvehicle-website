@@ -1,0 +1,60 @@
+.. _vapi-system_example_fmu:
+
+How the FMU is build and used
+=============================
+
+The fmu code & cmake project is created by the ``sdv_dbc_util``. 
+
+The FMU can be found here: <outpufolder>/examples/system_demo_example/generated/fmu_DemoExampleFMU/fmus
+
+Before the project can be used, following steps needs to be done:
+
+- required configuration files have to be put into the subfolder.
+- function OpenAPILoad() needs to be updated in the model.cpp file.
+
+.. seealso:: :ref:`vapi-simulation`
+
+The prepared files are copied during cmake configuration.
+
+.. code-block:: rst	
+
+	file (COPY ${PROJECT_SOURCE_DIR}/fmu/resources/fmu_vehicle_devices_basic_services.toml DESTINATION ${PROJECT_SOURCE_DIR}/generated/fmu_DemoExampleFMU/DemoExampleFMU/resources)
+	file (COPY ${PROJECT_SOURCE_DIR}/fmu/resources/fmu_complex_service.toml DESTINATION ${PROJECT_SOURCE_DIR}/generated/fmu_DemoExampleFMU/DemoExampleFMU/resources)
+
+	# Overwrite model.cpp with an identical file but loads all components in OpenAPILoad(const std::string& resources)
+	file (COPY ${PROJECT_SOURCE_DIR}/fmu/model.cpp DESTINATION ${PROJECT_SOURCE_DIR}/generated/fmu_DemoExampleFMU/DemoExampleFMU)
+
+
+The following describes how the fmu is loaded and used in``OpenXilEnv``.
+
+.. code-block:: rst
+   
+   The script (*.src file)
+   .../examples/system_demo_example/fmu/vapi_system_demo.scr
+
+- Open XilEnvGui.exe
+- Generate new INI file
+- Recommended: in upper menu click on RT-Factor Icon to switch from fast to slow: Instead of a high (cycling) number the number should be around 1.
+
+.. figure:: ../../../vapi_media/openxilenv/rt-factor.png
+
+- in XiLEnv Control Panel: Click on 'Add...' in 'Process'
+
+.. figure:: ../../../vapi_media/openxilenv/control_panel.png
+
+- 'Start process' window opens, click on 'start an external process'
+- Select file 'DemoExampleFMU.fmu'
+- Right-Click somewhere 'New > Text' and open 'Blackboard'
+
+.. figure:: ../../../vapi_media/openxilenv/blackboard.png
+
+- Right-Click and open 'config'
+  
+.. figure:: ../../../vapi_media/openxilenv/config.png
+
+- Add the 4 signals
+- in XiLEnv Control Panel: Click on 'File...' in 'Internal Process Control' and add script file 'vapi_demo.scr'
+- in XiLEnv Control Panel: Click on 'Run' in 'Internal Process Control'
+
+.. figure:: ../../../vapi_media/openxilenv/process_control.png
+

@@ -1,0 +1,88 @@
+
+.. _program_listing_file_sdv_idl_compiler_preproc.h:
+
+Program Listing for File preproc.h
+==================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_preproc.h>` (``sdv_idl_compiler\preproc.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef PREPROC_H
+   #define PREPROC_H
+   
+   #include "token.h"
+   #include "codepos.h"
+   #include "environment.h"
+   #include <filesystem>
+   
+   // Forward declaration
+   class CLexer;
+   class CParser;
+   
+   class CPreprocessor
+   {
+   public:
+       CPreprocessor(CParser& rParser);
+   
+       CToken ProcessPreproc(CCodePos& rCode, const CContextPtr& rptrContext);
+   
+       void FinalProcessing(const CCodePos& rCode);
+   
+       bool CurrentSectionEnabled() const;
+   
+       virtual void IncludeFile(const std::filesystem::path& rpath, bool bLocal) = 0;
+   
+       virtual CIdlCompilerEnvironment& GetEnvironment() = 0;
+   
+   private:
+       void ProcessDefine(CLexer& rLexer, CCodePos& rCode, const CContextPtr& rptrContext);
+   
+       void ProcessUndef(CLexer& rLexer, CCodePos& rCode, const CContextPtr& rptrContext);
+   
+       void ProcessInclude(CLexer& rLexer, CCodePos& rCode, const CContextPtr& rptrContext, bool& rbLocal);
+   
+       void ProcessIf(CLexer& rLexer, CCodePos& rCode, const CContextPtr& rptrContext);
+   
+       void ProcessIfDef(CLexer& rLexer, CCodePos& rCode, const CContextPtr& rptrContext, bool bInverted);
+   
+       void ProcessElif(CLexer& rLexer, CCodePos& rCode, const CContextPtr& rptrContext);
+   
+       void ProcessElse(CLexer& rLexer, const CCodePos& rCode, const CContextPtr& rptrContext);
+   
+       void ProcessEndif(CLexer& rLexer, const CCodePos& rCode, const CContextPtr& rptrContext);
+   
+       void ProcessVerbatim(CLexer& rLexer, CCodePos& rCode, const CContextPtr& rptrContext);
+   
+       void ProcessVerbatimBlock(CLexer& rLexer, CCodePos& rCode, const CContextPtr& rptrContext);
+   
+       int64_t ConditionalCalc(CLexer& rLexer, CCodePos& rCode, const CContextPtr& rptrContext, uint32_t uiPrecedence = 100);
+   
+       enum class EConditionalInclusion
+       {
+           if_section,     
+           else_section    
+       };
+   
+       enum class EConditionalProcessing
+       {
+           disabled,       
+           current,        
+           previous,       
+           future          
+       };
+   
+       struct SConditionalControl
+       {
+           EConditionalInclusion   m_eInclusionControl;    
+           EConditionalProcessing  m_eProcessingControl;   
+       };
+   
+       CParser&                            m_rParser;                  
+       std::stack<SConditionalControl>     m_stackConditional;         
+   };
+   
+   
+   #endif // !defined PREPROC_H

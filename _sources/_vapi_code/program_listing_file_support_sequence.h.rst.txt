@@ -1,0 +1,208 @@
+
+.. _program_listing_file_support_sequence.h:
+
+Program Listing for File sequence.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_sequence.h>` (``support\sequence.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SDV_SEQUENCE_H
+   #define SDV_SEQUENCE_H
+   
+   #include <vector>
+   #include <algorithm>
+   #include <limits>
+   #include "iterator.h"
+   #include "pointer.h"
+   
+   namespace sdv
+   {
+       template <class T, size_t nFixedSize = 0>
+       class sequence
+       {
+       public:
+           using value_type = T;
+   
+           using iterator = internal::index_iterator<sequence<T, nFixedSize>, false, false>;
+   
+           using reverse_iterator = internal::index_iterator<sequence<T, nFixedSize>, false, true>;
+   
+           using const_iterator = internal::index_iterator<sequence<T, nFixedSize>, true, false>;
+   
+           using const_reverse_iterator = internal::index_iterator<sequence<T, nFixedSize>, true, true>;
+   
+           using reference = T&;
+   
+           using const_reference = const T&;
+   
+           sequence() noexcept;
+   
+           ~sequence();
+   
+           sequence(size_t nCount, const T& rtValue);
+   
+           explicit sequence(size_t nCount);
+   
+           template <class TIterator>
+           sequence(TIterator itFirst, TIterator itLast);
+   
+           sequence(const sequence& rseq);
+   
+           template <size_t nFixedSize2>
+           sequence(const sequence<T, nFixedSize2>& rseq);
+   
+           sequence(sequence&& rseq) noexcept;
+   
+           template <size_t nFixedSize2>
+           sequence(sequence<T, nFixedSize2>&& rseq) noexcept;
+   
+           sequence(std::vector<T>& rvec);
+   
+           sequence(std::initializer_list<T> ilist);
+   
+           sequence& operator=(const sequence& rseq);
+   
+           template <size_t nFixedSize2>
+           sequence& operator=(const sequence<T, nFixedSize2>& rseq);
+   
+           sequence& operator=(sequence&& rseq) noexcept;
+   
+           template <size_t nFixedSize2>
+           sequence& operator=(sequence<T, nFixedSize2>&& rseq) noexcept;
+   
+           sequence& operator=(const std::vector<T>& rvec);
+   
+           sequence& operator=(std::initializer_list<T> ilist);
+   
+           void assign(size_t nCount, const T& rtValue);
+   
+           template <class TIterator>
+           void assign(TIterator itFirst, TIterator itLast);
+   
+           void assign(std::initializer_list<T> ilist);
+   
+           reference at(size_t nPos);
+   
+           const_reference at(size_t nPos) const;
+   
+           reference operator[](size_t nPos);
+   
+           const_reference operator[](size_t nPos) const;
+   
+           T& front();
+   
+           const T& front() const;
+   
+           T& back();
+   
+           const T& back() const;
+   
+           operator std::vector<T>() const;
+   
+           const T* data() const noexcept;
+   
+           pointer<T, nFixedSize>& buffer() noexcept;
+   
+           iterator begin() noexcept;
+   
+           const_iterator begin() const noexcept;
+   
+           const_iterator cbegin() const noexcept;
+   
+           reverse_iterator rbegin() noexcept;
+   
+           const_reverse_iterator rbegin() const noexcept;
+   
+           const_reverse_iterator crbegin() const noexcept;
+   
+           iterator end() noexcept;
+   
+           const_iterator end() const noexcept;
+   
+           const_iterator cend() const noexcept;
+   
+           reverse_iterator rend() noexcept;
+   
+           const_reverse_iterator rend() const noexcept;
+   
+           const_reverse_iterator crend() const noexcept;
+   
+           bool empty() const;
+   
+           size_t size() const;
+   
+           size_t length() const;
+   
+           void reserve(size_t nNewCap = 0);
+   
+           size_t capacity() const noexcept;
+   
+           void shrink_to_fit();
+   
+           void clear();
+   
+           iterator insert(const_iterator itPos, const T& rtValue);
+   
+           iterator insert(const_iterator itPos, T&& rtValue);
+   
+           iterator insert(const_iterator itPos, size_t nCount, const T& rtValue);
+   
+           template <class TIterator>
+           iterator insert(const_iterator itPos, TIterator itFirst, TIterator itLast);
+   
+           iterator insert(const_iterator itPos, std::initializer_list<T> ilist);
+   
+           iterator erase(iterator itPos);
+   
+           iterator erase(const_iterator itPos);
+   
+           iterator erase(iterator itFirst, iterator itLast);
+   
+           iterator erase(const_iterator itFirst, const_iterator itLast);
+   
+           void push_back(const T& rtValue);
+   
+           void push_back(T&& rtValue);
+   
+           void pop_back();
+   
+           void resize(size_t nCount);
+   
+           void resize(size_t nCount, const value_type& rtValue);
+   
+           template <size_t nFixedSize2>
+           void swap(sequence<T, nFixedSize2>& rseq) noexcept;
+   
+       private:
+           pointer<T, nFixedSize>      m_ptrData;        
+       };
+   
+       template <class T, size_t nFixedSizeLeft, size_t nFixedSizeRight>
+       void swap(sequence<T, nFixedSizeLeft>& rseqLeft, sequence<T, nFixedSizeRight>& rseqRight) noexcept;
+   
+       template <class T, size_t nFixedSizeLeft, size_t nFixedSizeRight>
+       bool operator==(const sequence<T, nFixedSizeLeft>& rseqLeft, const sequence<T, nFixedSizeRight>& rseqRight);
+   
+       template <class T, size_t nFixedSizeLeft, size_t nFixedSizeRight>
+       bool operator!=(const sequence<T, nFixedSizeLeft>& rseqLeft, const sequence<T, nFixedSizeRight>& rseqRight);
+   
+       template <class T, size_t nFixedSizeLeft, size_t nFixedSizeRight>
+       bool operator<(const sequence<T, nFixedSizeLeft>& rseqLeft, const sequence<T, nFixedSizeRight>& rseqRight);
+   
+       template <class T, size_t nFixedSizeLeft, size_t nFixedSizeRight>
+       bool operator<=(const sequence<T, nFixedSizeLeft>& rseqLeft, const sequence<T, nFixedSizeRight>& rseqRight);
+   
+       template <class T, size_t nFixedSizeLeft, size_t nFixedSizeRight>
+       bool operator>(const sequence<T, nFixedSizeLeft>& rseqLeft, const sequence<T, nFixedSizeRight>& rseqRight);
+   
+       template <class T, size_t nFixedSizeLeft, size_t nFixedSizeRight>
+       bool operator>=(const sequence<T, nFixedSizeLeft>& rseqLeft, const sequence<T, nFixedSizeRight>& rseqRight);
+   } // namespace sdv
+   
+   #include "sequence.inl"
+   
+   #endif // !defined SDV_SEQUENCE_H

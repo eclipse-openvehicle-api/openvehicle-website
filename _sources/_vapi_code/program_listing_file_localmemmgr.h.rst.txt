@@ -1,0 +1,85 @@
+
+.. _program_listing_file_localmemmgr.h:
+
+Program Listing for File localmemmgr.h
+======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_localmemmgr.h>` (``localmemmgr.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LOCAL_MEM_MGR_H
+   #define LOCAL_MEM_MGR_H
+   
+   #define SDV_CORE_H
+   
+   #define NO_SDV_CORE_FUNC
+   #include "../export/interfaces/core.h"
+   #include "../export//support/interface_ptr.h"
+   
+   #include <support/mem_access.h>
+   #include <support/interface_ptr.h>
+   
+   class CLocalMemMgr : public sdv::core::IMemoryAlloc, public sdv::IInterfaceAccess,
+       public sdv::internal::IInternalMemAlloc
+   {
+   public:
+       CLocalMemMgr()
+       {}
+   
+       ~CLocalMemMgr()
+       {}
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IInterfaceAccess)
+           SDV_INTERFACE_ENTRY(sdv::core::IMemoryAlloc)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual sdv::pointer<uint8_t> Allocate(uint32_t uiLength) override
+       {
+           return sdv::internal::make_ptr<uint8_t>(this, uiLength);
+       }
+   
+   protected:
+       virtual void* Alloc(size_t nSize) override
+       {
+           void* p = malloc(nSize);
+           return p;
+       }
+   
+       virtual void* Realloc(void* pData, size_t nSize) override
+       {
+           void* p = realloc(pData, nSize);
+           return p;
+       }
+   
+       virtual void Free(void* pData) override
+       {
+           free(pData);
+       }
+   };
+   
+   #ifndef NO_SDV_LOCAL_CORE_FUNC
+   namespace sdv
+   {
+       namespace core
+       {
+           inline TInterfaceAccessPtr GetCore()
+           {
+               static CLocalMemMgr memmgr;
+               return &memmgr;
+           }
+   
+           template <typename TInterface>
+           inline TInterface* GetCore()
+           {
+               return GetCore().GetInterface<TInterface>();
+           }
+       }
+   }
+   #endif
+   
+   #endif // !defined(LOCAL_MEM_MGR_H)

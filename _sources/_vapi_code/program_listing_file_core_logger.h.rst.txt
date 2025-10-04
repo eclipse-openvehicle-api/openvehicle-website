@@ -1,0 +1,87 @@
+
+.. _program_listing_file_core_logger.h:
+
+Program Listing for File logger.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_logger.h>` (``core\logger.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LOGGER_H
+   #define LOGGER_H
+   
+   #include <interfaces/log.h>
+   #include <support/interface_ptr.h>
+   #include <support/component_impl.h>
+   #include "log_csv_writer.h"
+   
+   class CLogger : public sdv::IInterfaceAccess, public sdv::core::ILogger, public sdv::core::ILoggerConfig
+   {
+   public:
+       CLogger() = default;
+   
+       ~CLogger();
+   
+       // Interface table
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::core::ILogger)
+           SDV_INTERFACE_ENTRY(sdv::core::ILoggerConfig)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual void Log(/*in*/ sdv::core::ELogSeverity eSeverity, /*in*/ const sdv::u8string& ssSrcFile, /*in*/ uint32_t uiSrcLine,
+           /*in*/ sdv::process::TProcessID tProcessID, /*in*/ const sdv:: u8string& ssObjectName, /*in*/ const sdv::u8string& ssMessage) override;
+   
+       virtual void SetProgramTag(/*in*/ const sdv::u8string& ssTag) override;
+   
+       virtual sdv::u8string GetProgramTag() const override;
+   
+       virtual void SetLogFilter(/*in*/ sdv::core::ELogSeverity eSeverity, /*in*/ sdv::core::ELogSeverity eViewSeverity) override;
+   
+       virtual sdv::core::ELogSeverity GetLogFilter() const override;
+   
+       virtual sdv::core::ELogSeverity GetViewFilter() const override;
+   
+   private:
+       static std::string GetDateTime(std::chrono::time_point<std::chrono::system_clock> timestamp);
+   
+       std::recursive_mutex            m_mtxLogger;                                    
+       sdv::core::ELogSeverity         m_eFilter = sdv::core::ELogSeverity::info;      
+       sdv::core::ELogSeverity         m_eViewFilter = sdv::core::ELogSeverity::info;  
+       std::string                     m_ssProgramtag;                                 
+   #ifdef _WIN32
+       std::unique_ptr<CLogCSVWriter>  m_ptrWriter;                                    
+   #elif defined __unix__
+       bool                            m_bLogOpen = false;                             
+   #else
+   #error OS currently not supported!
+   #endif
+   };
+   
+   #ifndef DO_NOT_INCLUDE_IN_UNIT_TEST
+   
+   class CLoggerService : public sdv::CSdvObject
+   {
+   public:
+       CLoggerService() = default;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_CHAIN_MEMBER(GetDefaultLogger())
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_NAME("DefaultLoggerService")
+       DECLARE_OBJECT_SINGLETON()
+   
+       
+       static CLogger& GetDefaultLogger();
+   };
+   
+   DEFINE_SDV_OBJECT_NO_EXPORT(CLoggerService)
+   #endif
+   
+   #endif // !defined LOGGER_H

@@ -1,0 +1,201 @@
+
+.. _program_listing_file_sdv_idl_compiler_generator_definition_generator_base.h:
+
+Program Listing for File definition_generator_base.h
+====================================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_generator_definition_generator_base.h>` (``sdv_idl_compiler\generator\definition_generator_base.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef DEFINITION_GENERATOR_BASE_H
+   #define DEFINITION_GENERATOR_BASE_H
+   
+   #include "context.h"
+   #include <string>
+   #include <vector>
+   #include <map>
+   #include <memory>
+   #include <list>
+   
+   struct SSwitchVarContext
+   {
+       sdv::IInterfaceAccess*      pVarEntity = nullptr;       
+       std::string                 ssType;                     
+       std::string                 ssName;                     
+       std::string                 ssScopedName;               
+       std::vector<std::string>    vecUnionDecl;               
+   };
+   
+   struct SArrayIterationInfo
+   {
+       std::string     ssArrayIterator;        
+       std::string     ssCountExpression;      
+   };
+   
+   struct SSwitchCodeContext
+   {
+       std::shared_ptr<SSwitchVarContext>  ptrSwitchVar;               
+       std::string                         ssSwitchVarName;            
+       std::string                         ssSwitchValue;              
+       std::vector<SArrayIterationInfo>    vecArrayIterationInfo;      
+   };
+   
+   template <typename TDerivedContext>
+   class CDefEntityContext
+   {
+   public:
+       // Forward declaration
+       struct SIterator;
+   
+       friend SIterator;
+   
+       CDefEntityContext(const CGenContext& rContext, sdv::IInterfaceAccess* pEntity);
+   
+       CDefEntityContext(CDefEntityContext& rcontext, sdv::IInterfaceAccess* pEntity);
+   
+       virtual ~CDefEntityContext();
+   
+       virtual TDerivedContext& operator<<(const TDerivedContext& rContext);
+   
+       std::string GetScope() const;
+   
+       bool IsCompound() const;
+   
+       bool IsStructural() const;
+   
+       std::string GetIndent(bool bDefBody = true, bool bFuncImpl = false) const;
+   
+       void IncrIndent();
+   
+       void DecrIndent();
+   
+       void DisableIndent();
+   
+       void EnableIndent();
+   
+       void EnableDeepIndent();
+   
+       sdv::IInterfaceAccess* GetDefEntity() const;
+   
+       template <typename TInterface>
+       TInterface* GetDefEntity() const;
+   
+       struct SIterator
+       {
+           friend CDefEntityContext<TDerivedContext>;
+   
+       private:
+           SIterator(CDefEntityContext<TDerivedContext>& rContextParam);
+   
+       public:
+   
+           SIterator(const SIterator& rsIterator) = delete;
+   
+           SIterator(SIterator&& rsIterator);
+   
+           ~SIterator();
+   
+           void Release();
+   
+           SIterator& operator++();
+   
+           uint32_t operator++(int iVal);
+   
+           operator uint32_t() const;
+   
+       private:
+           CDefEntityContext<TDerivedContext>&     rContext;       
+           bool                                    bValid = false; 
+           typename std::list<uint32_t>::iterator  itPos{};        
+       };
+   
+       SIterator CreateIterator();
+   
+       uint32_t GetCurrentIteration();
+   
+       void AssignSwitchVarContext(const std::shared_ptr<SSwitchVarContext>& rptrSwitchVarContext);
+   
+       template <typename TSwitchCodeContext = SSwitchCodeContext>
+       std::shared_ptr<TSwitchCodeContext> GetOrCreateSwitchCodeContext(const std::string& rssSwitchVarName,
+           const std::shared_ptr<SSwitchVarContext>& rptrSwitchVar, const std::vector<SArrayIterationInfo>& rvecArrayIndices);
+   
+       bool HasMultipleSwitchCodeContexts() const;
+   
+       template <typename TSwitchCodeContext = SSwitchCodeContext>
+       std::vector<std::shared_ptr<TSwitchCodeContext>> GetSwitchCodeContexts(
+           const std::string& rssScopedSwitchVar = std::string()) const;
+   
+   private:
+       std::list<uint32_t>::iterator CreateIteratorObject();
+   
+       void RemoveIteratorObject(std::list<uint32_t>::iterator itPos);
+   
+       const CGenContext&      m_rGenContext;              
+       sdv::IInterfaceAccess*  m_pDefEntity = nullptr;     
+       std::string             m_ssIndent;                 
+       std::string             m_ssIndentBackup;           
+       bool                    m_bDeepDefIndent = false;   
+       uint32_t                m_uiItIdx = 0;              
+   
+       std::vector<std::shared_ptr<SSwitchVarContext>> m_vecSwitchVars;
+   
+       using TSwitchCodeMap = std::map<std::string, std::shared_ptr<SSwitchCodeContext>>;
+   
+       std::shared_ptr<TSwitchCodeMap> m_ptrSwitchCodeMap;
+   
+       std::list<uint32_t> m_lstIterators;
+   };
+   
+   template <typename TDefEntityContext>
+   class CDefinitionGeneratorBase : public CGenContext
+   {
+       static_assert(std::is_base_of_v<CDefEntityContext<TDefEntityContext>, TDefEntityContext>);
+   public:
+       CDefinitionGeneratorBase(sdv::IInterfaceAccess* pParser);
+   
+       virtual bool Generate();
+   
+   protected:
+       virtual void GetTargetFileInfo(std::string& rssTargetSubDir, std::string& rssTargetFileEnding) = 0;
+   
+       virtual std::string GetFileHeaderText() const = 0;
+   
+       virtual void StreamIntoFile(TDefEntityContext& rcontext, std::ofstream& rfstream);
+   
+       virtual void StreamIncludeSection(TDefEntityContext& rcontext);
+   
+       virtual bool ProcessEntities(TDefEntityContext& rcontext, sdv::idl::IEntityIterator* pIterator);
+   
+       virtual void StreamMetaEntity(TDefEntityContext& rcontext, sdv::IInterfaceAccess* pEntity);
+   
+       virtual bool StreamDeclaration(TDefEntityContext& rcontext, sdv::IInterfaceAccess* pEntity);
+   
+       virtual void StreamDefinition(TDefEntityContext& rcontext, sdv::IInterfaceAccess* pEntity, bool bInline = false,
+           bool bAnonymousDecl = false);
+   
+       std::shared_ptr<SSwitchVarContext> GetOrCreateVarBasedSwitch(sdv::IInterfaceAccess* pSwitchVarEntity);
+   
+       virtual void DetectUnionContainerForProcessing(TDefEntityContext& rcontext, const std::string& rssMemberScope,
+           sdv::IInterfaceAccess* pDeclEntity, const std::vector<SArrayIterationInfo>& rvecArrayIndices = {});
+   
+       virtual void ProcessUnionInContainerContext(TDefEntityContext& rcontext, std::string rssMemberScopeUnionDecl,
+           std::string rssMemberScopeSwitchVar, sdv::IInterfaceAccess* pUnionDef,
+           const std::vector<SArrayIterationInfo>& rvecArrayIndices = std::vector<SArrayIterationInfo>());
+   
+       void DetectUnionJointContainerForSwitchVar(TDefEntityContext& rcontext, sdv::IInterfaceAccess* pSwitchVarEntity,
+           sdv::IInterfaceAccess* pEntity);
+   
+       virtual void ProcessUnionJointContainerForSwitchVar(TDefEntityContext& rcontext, sdv::IInterfaceAccess* pSwitchVarEntity,
+           sdv::IInterfaceAccess* pContainerEntity);
+   
+   private:
+       std::map<std::string, std::shared_ptr<SSwitchVarContext>> m_mapSwitchFunc;
+   };
+   
+   // Include the code as well
+   #include "definition_generator_base.inl"
+   
+   #endif // !defined DEFINITION_GENERATOR_BASE_H

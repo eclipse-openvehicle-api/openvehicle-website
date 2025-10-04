@@ -1,0 +1,690 @@
+
+.. _program_listing_file_support_string.h:
+
+Program Listing for File string.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_string.h>` (``support\string.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SDV_STRING_H
+   #define SDV_STRING_H
+   
+   #include <string>
+   #include <algorithm>
+   #include <ostream>
+   #include <istream>
+   #include <filesystem>
+   #include "iterator.h"
+   #include "pointer.h"
+   
+   namespace sdv
+   {
+       template <typename TCharType, bool bUnicode = true, size_t nFixedSize = 0>
+       class string_base
+       {
+       public:
+           using value_type = TCharType;
+   
+           using iterator = internal::index_iterator<string_base<TCharType, bUnicode, nFixedSize>, false, false>;
+   
+           using reverse_iterator = internal::index_iterator<string_base<TCharType, bUnicode, nFixedSize>, false, true>;
+   
+           using const_iterator = internal::index_iterator<string_base<TCharType, bUnicode, nFixedSize>, true, false>;
+   
+           using const_reverse_iterator = internal::index_iterator<string_base<TCharType, bUnicode, nFixedSize>, true, true>;
+   
+           using reference = TCharType&;
+   
+           using const_reference = const TCharType&;
+   
+           static constexpr bool is_unicode = bUnicode;
+   
+           static constexpr size_t npos = static_cast<size_t>(-1);
+   
+           string_base() noexcept;
+   
+           ~string_base();
+   
+           string_base(const string_base& rss);
+   
+           template <typename TCharType2, bool bUnicode2, size_t nFixedSize2>
+           explicit string_base(const string_base<TCharType2, bUnicode2, nFixedSize2>& rss);
+   
+           string_base(string_base&& rss) noexcept;
+   
+           template <size_t nFixedSize2>
+           string_base(string_base<TCharType, bUnicode, nFixedSize2>&& rss);
+   
+           template <typename TCharType2>
+           string_base(const std::basic_string<TCharType2>& rss);
+   
+           string_base(const TCharType* szStr);
+   
+           string_base(size_t nCount, TCharType c);
+   
+           template <size_t nFixedSize2>
+           string_base(const string_base<TCharType, bUnicode, nFixedSize2>& rss, size_t nPos);
+   
+           string_base(const std::basic_string<TCharType>& rss, size_t nPos);
+   
+           template <size_t nFixedSize2>
+           string_base(const string_base<TCharType, bUnicode, nFixedSize2>& rss, size_t nPos, size_t nCount);
+   
+           string_base(const std::basic_string<TCharType>& rss, size_t nPos, size_t nCount);
+   
+           string_base(const TCharType* sz, size_t nCount);
+   
+           template <class TIterator>
+           string_base(TIterator itFirst, TIterator itLast);
+   
+           string_base(std::initializer_list<TCharType> ilist);
+   
+           string_base& operator=(const string_base& rss);
+   
+           template <size_t nFixedSize2>
+           string_base& operator=(const string_base<TCharType, bUnicode, nFixedSize2>& rss);
+   
+           string_base& operator=(string_base&& rss) noexcept;
+   
+           template <size_t nFixedSize2>
+           string_base& operator=(string_base<TCharType, bUnicode, nFixedSize2>&& rss);
+   
+           string_base& operator=(const std::basic_string<TCharType>& rss);
+   
+           string_base& operator=(const TCharType* szStr);
+   
+           string_base& operator=(std::initializer_list<TCharType> ilist);
+   
+           string_base& assign(size_t nCount, TCharType c);
+   
+           template <size_t nFixedSize2>
+           string_base& assign(const string_base<TCharType, bUnicode, nFixedSize2>& rss);
+   
+           string_base& assign(const std::basic_string<TCharType>& rss);
+   
+           template <size_t nFixedSize2>
+           string_base& assign(const string_base<TCharType, bUnicode, nFixedSize2>& rss, size_t nPos, size_t nCount = npos);
+   
+           string_base& assign(const std::basic_string<TCharType>& rss, size_t nPos, size_t nCount = npos);
+   
+           template <size_t nFixedSize2>
+           string_base& assign(string_base<TCharType, bUnicode, nFixedSize2>&& rss);
+   
+           string_base& assign(const TCharType* sz, size_t nCount);
+   
+           string_base& assign(const TCharType* sz);
+   
+           template <class TIterator>
+           string_base& assign(TIterator itFirst, TIterator itLast);
+   
+           string_base& assign(std::initializer_list<TCharType> ilist);
+   
+           reference at(size_t nPos);
+   
+           const_reference at(size_t nPos) const;
+   
+           reference operator[](size_t nPos);
+   
+           const_reference operator[](size_t nPos) const;
+   
+           TCharType& front();
+   
+           const TCharType& front() const;
+   
+           TCharType& back();
+   
+           const TCharType& back() const;
+   
+           template <typename TCharType2, bool bUnicode2, size_t nFixedSize2>
+           operator string_base<TCharType2, bUnicode2, nFixedSize2>() const;
+   
+           operator std::basic_string<TCharType>() const;
+   
+           const TCharType* data() const noexcept;
+   
+           pointer<TCharType, nFixedSize ? nFixedSize + 1 : 0>& buffer() noexcept;
+   
+           const TCharType* c_str() const noexcept;
+   
+           iterator begin() noexcept;
+   
+           const_iterator begin() const noexcept;
+   
+           const_iterator cbegin() const noexcept;
+   
+           reverse_iterator rbegin() noexcept;
+   
+           const_reverse_iterator rbegin() const noexcept;
+   
+           const_reverse_iterator crbegin() const noexcept;
+   
+           iterator end() noexcept;
+   
+           const_iterator end() const noexcept;
+   
+           const_iterator cend() const noexcept;
+   
+           reverse_iterator rend() noexcept;
+   
+           const_reverse_iterator rend() const noexcept;
+   
+           const_reverse_iterator crend() const noexcept;
+   
+           bool empty() const;
+   
+           size_t size() const;
+   
+           size_t length() const;
+   
+           void reserve(size_t nNewCap = 0);
+   
+           size_t capacity() const noexcept;
+   
+           void shrink_to_fit();
+   
+           void clear();
+   
+           string_base& insert(size_t nIndex, size_t nCount, TCharType c);
+   
+           string_base& insert(size_t nIndex, const TCharType* sz);
+   
+           string_base& insert(size_t nIndex, const TCharType* sz, size_t nCount);
+   
+           template <size_t nFixedSize2>
+           string_base& insert(size_t nIndex, const string_base<TCharType, bUnicode, nFixedSize2>& rss);
+   
+           template <size_t nFixedSize2>
+           string_base& insert(size_t nIndex, const string_base<TCharType, bUnicode, nFixedSize2>& rss, size_t nPos, size_t nCount = npos);
+   
+           string_base& insert(size_t nIndex, const std::basic_string<TCharType>& rss);
+   
+           string_base& insert(size_t nIndex, const std::basic_string<TCharType>& rss, size_t nPos, size_t nCount = npos);
+   
+           iterator insert(const_iterator itPos, TCharType c);
+   
+           iterator insert(const_iterator itPos, size_t nCount, TCharType c);
+   
+           template <class TIterator>
+           iterator insert(const_iterator itPos, TIterator itFirst, TIterator itLast);
+   
+           iterator insert(const_iterator itPos, std::initializer_list<TCharType> ilist);
+   
+           string_base& erase(size_t nIndex = 0, size_t nCount = npos);
+   
+           iterator erase(const_iterator itPos);
+   
+           iterator erase(const_iterator itFirst, const_iterator itLast);
+   
+           void push_back(TCharType c);
+   
+           void pop_back();
+   
+           string_base& append(size_t nCount, TCharType c);
+   
+           template <size_t nFixedSize2>
+           string_base& append(const string_base<TCharType, bUnicode, nFixedSize2>& rss);
+   
+           string_base& append(const std::basic_string<TCharType>& rss);
+   
+           template <size_t nFixedSize2>
+           string_base& append(const string_base<TCharType, bUnicode, nFixedSize2>& rss, size_t nPos, size_t nCount = npos);
+   
+           string_base& append(const std::basic_string<TCharType>& rss, size_t nPos, size_t nCount = npos);
+   
+           string_base& append(const TCharType* sz, size_t nCount);
+   
+           string_base& append(const TCharType* sz);
+   
+           template <class TIterator>
+           string_base& append(TIterator itFirst, TIterator itLast);
+   
+           string_base& append(std::initializer_list<TCharType> ilist);
+   
+           template <size_t nFixedSize2>
+           string_base& operator+=(const string_base<TCharType, bUnicode, nFixedSize2>& rss);
+   
+           string_base& operator+=(const std::basic_string<TCharType>& rss);
+   
+           string_base& operator+=(TCharType c);
+   
+           string_base& operator+=(const TCharType* sz);
+   
+           string_base& operator+=(std::initializer_list<TCharType> ilist);
+   
+           template <size_t nFixedSize2>
+           int compare(const string_base<TCharType, bUnicode, nFixedSize2>& rss) const noexcept;
+   
+           int compare(const std::basic_string<TCharType>& rss) const noexcept;
+   
+           template <size_t nFixedSize2>
+           int compare(size_t nPos1, size_t nCount1, const string_base<TCharType, bUnicode, nFixedSize2>& rss) const;
+   
+           int compare(size_t nPos1, size_t nCount1, const std::basic_string<TCharType>& rss) const;
+   
+           template <size_t nFixedSize2>
+           int compare(size_t nPos1, size_t nCount1, const string_base<TCharType, bUnicode, nFixedSize2>& rss, size_t nPos2, size_t nCount2 = npos) const;
+   
+           int compare(size_t nPos1, size_t nCount1, const std::basic_string<TCharType>& rss, size_t nPos2, size_t nCount2 = npos) const;
+   
+           int compare(const TCharType* sz) const;
+   
+           int compare(size_t nPos1, size_t nCount1, const TCharType* sz) const;
+   
+           int compare(size_t nPos1, size_t nCount1, const TCharType* sz, size_t nCount2) const;
+   
+           template <size_t nFixedSize2>
+           string_base& replace(size_t nPos, size_t nCount, const string_base<TCharType, bUnicode, nFixedSize2>& rss);
+   
+           string_base& replace(size_t nPos, size_t nCount, const std::basic_string<TCharType>& rss);
+   
+           template <size_t nFixedSize2>
+           string_base& replace(const_iterator itFirst, const_iterator itLast, const string_base<TCharType, bUnicode, nFixedSize2>& rss);
+   
+           string_base& replace(const_iterator itFirst, const_iterator itLast, const std::basic_string<TCharType>& rss);
+   
+           template <size_t nFixedSize2>
+           string_base& replace(
+               size_t nPos, size_t nCount, const string_base<TCharType, bUnicode, nFixedSize2>& rss, size_t nPos2, size_t nCount2 = npos);
+   
+           string_base& replace(size_t nPos, size_t nCount, const std::basic_string<TCharType>& rss, size_t nPos2, size_t nCount2 = npos);
+   
+           string_base& replace(size_t nPos, size_t nCount, const TCharType* sz, size_t nCount2);
+   
+           string_base& replace(const_iterator itFirst, const_iterator itLast, const TCharType* sz, size_t nCount2);
+   
+           string_base& replace(size_t nPos, size_t nCount, const TCharType* sz);
+   
+           string_base& replace(const_iterator itFirst, const_iterator itLast, const TCharType* sz);
+   
+           string_base& replace(size_t nPos, size_t nCount, size_t nCount2, TCharType c);
+   
+           string_base& replace(const_iterator itFirst, const_iterator itLast, size_t nCount2, TCharType c);
+   
+           template <class TIterator>
+           string_base& replace(const_iterator itFirst, const_iterator itLast, TIterator itFirst2, TIterator itLast2);
+   
+           string_base& replace(const_iterator itFirst, const_iterator itLast, std::initializer_list<TCharType> ilist);
+   
+           string_base substr(size_t nPos = 0, size_t nCount = npos) const;
+   
+           size_t copy(TCharType* szDest, size_t nCount, size_t nPos = 0) const;
+   
+           void resize(size_t nCount);
+   
+           void resize(size_t nCount, TCharType c);
+   
+           template <size_t nFixedSize2>
+           void swap(string_base<TCharType, bUnicode, nFixedSize2>& rss);
+   
+           template <size_t nFixedSize2>
+           size_t find(const string_base<TCharType, bUnicode, nFixedSize2>& rss, size_t nPos = 0) const noexcept;
+   
+           size_t find(const std::basic_string<TCharType>& rss, size_t nPos = 0) const noexcept;
+   
+           size_t find(const TCharType* sz, size_t nPos, size_t nCount) const;
+   
+           size_t find(const TCharType* sz, size_t nPos = 0) const;
+   
+           size_t find(TCharType c, size_t nPos = 0) const noexcept;
+   
+           template <size_t nFixedSize2>
+           size_t rfind(const string_base<TCharType, bUnicode, nFixedSize2>& rss, size_t nPos = npos) const noexcept;
+   
+           size_t rfind(const std::basic_string<TCharType>& rss, size_t nPos = npos) const noexcept;
+   
+           size_t rfind(const TCharType* sz, size_t nPos, size_t nCount) const;
+   
+           size_t rfind(const TCharType* sz, size_t nPos = npos) const;
+   
+           size_t rfind(TCharType c, size_t nPos = npos) const noexcept;
+   
+           template <size_t nFixedSize2>
+           size_t find_first_of(const string_base<TCharType, bUnicode, nFixedSize2>& rss, size_t nPos = 0) const noexcept;
+   
+           size_t find_first_of(const std::basic_string<TCharType>& rss, size_t nPos = 0) const noexcept;
+   
+           size_t find_first_of(const TCharType* sz, size_t nPos, size_t nCount) const;
+   
+           size_t find_first_of(const TCharType* sz, size_t nPos = 0) const;
+   
+           size_t find_first_of(TCharType c, size_t nPos = 0) const noexcept;
+   
+           template <size_t nFixedSize2>
+           size_t find_first_not_of(const string_base<TCharType, bUnicode, nFixedSize2>& rss, size_t nPos = 0) const noexcept;
+   
+           size_t find_first_not_of(const std::basic_string<TCharType>& rss, size_t nPos = 0) const noexcept;
+   
+           size_t find_first_not_of(const TCharType* sz, size_t nPos, size_t nCount) const;
+   
+           size_t find_first_not_of(const TCharType* sz, size_t nPos = 0) const;
+   
+           size_t find_first_not_of(TCharType c, size_t nPos = 0) const noexcept;
+   
+           template <size_t nFixedSize2>
+           size_t find_last_of(const string_base<TCharType, bUnicode, nFixedSize2>& rss, size_t nPos = npos) const noexcept;
+   
+           size_t find_last_of(const std::basic_string<TCharType>& rss, size_t nPos = npos) const noexcept;
+   
+           size_t find_last_of(const TCharType* sz, size_t nPos, size_t nCount) const;
+   
+           size_t find_last_of(const TCharType* sz, size_t nPos = npos) const;
+   
+           size_t find_last_of(TCharType c, size_t nPos = npos) const noexcept;
+   
+           template <size_t nFixedSize2>
+           size_t find_last_not_of(const string_base<TCharType, bUnicode, nFixedSize2>& rss, size_t nPos = npos) const noexcept;
+   
+           size_t find_last_not_of(const std::basic_string<TCharType>& rss, size_t nPos = npos) const noexcept;
+   
+           size_t find_last_not_of(const TCharType* sz, size_t nPos, size_t nCount) const;
+   
+           size_t find_last_not_of(const TCharType* sz, size_t nPos = npos) const;
+   
+           size_t find_last_not_of(TCharType c, size_t nPos = npos) const noexcept;
+   
+       private:
+           pointer<TCharType, nFixedSize ? nFixedSize + 1 : 0> m_ptrData; 
+       };
+   
+       using string = string_base<char, false, 0>;
+   
+       template <size_t nFixedSize>
+       using fixed_string = string_base<char, false, nFixedSize>;
+   
+       using wstring = string_base<wchar_t, true, 0>;
+   
+       template <size_t nFixedSize>
+       using fixed_wstring = string_base<wchar_t, true, nFixedSize>;
+   
+       using u8string = string_base<char, true, 0>;
+   
+       template <size_t nFixedSize>
+       using fixed_u8string = string_base<char, true, nFixedSize>;
+   
+       using u16string = string_base<char16_t, true, 0>;
+   
+       template <size_t nFixedSize>
+       using fixed_u16string = string_base<char16_t, true, nFixedSize>;
+   
+       using u32string = string_base<char32_t, true, 0>;
+   
+       template <size_t nFixedSize>
+       using fixed_u32string = string_base<char32_t, true, nFixedSize>;
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft, bool bUnicodeRight, size_t nFixedSizeRight>
+       string_base<TCharType, bUnicodeLeft, nFixedSizeLeft> operator+(
+           const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>&  rssLeft,
+           const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       string_base<TCharType, bUnicodeLeft, nFixedSizeLeft> operator+(
+           const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           const std::basic_string<TCharType>&rssRight);
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       string_base<TCharType, bUnicodeRight, nFixedSizeRight> operator+(
+           const std::basic_string<TCharType>& rssLeft,
+           const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       string_base<TCharType, bUnicodeLeft, nFixedSizeLeft> operator+(
+           const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           const TCharType* szRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       string_base<TCharType, bUnicodeLeft, nFixedSizeLeft> operator+(
+           const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           TCharType cRight);
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       string_base<TCharType, bUnicodeRight, nFixedSizeRight> operator+(
+           const TCharType* szLeft,
+           const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight);
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       string_base<TCharType, bUnicodeRight, nFixedSizeRight> operator+(
+           TCharType cLeft,
+           const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft, bool bUnicodeRight, size_t nFixedSizeRight>
+       string_base<TCharType, bUnicodeLeft, nFixedSizeLeft> operator+(
+           string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>&& rssLeft,
+           string_base<TCharType, bUnicodeRight, nFixedSizeRight>&& rssRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft, bool bUnicodeRight, size_t nFixedSizeRight>
+       string_base<TCharType, bUnicodeLeft, nFixedSizeLeft> operator+(
+           string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>&& rssLeft,
+           const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       string_base<TCharType, bUnicodeLeft, nFixedSizeLeft> operator+(
+           string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>&& rssLeft,
+           const std::basic_string<TCharType>& rssRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       string_base<TCharType, bUnicodeLeft, nFixedSizeLeft> operator+(
+           string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>&& rssLeft,
+           const TCharType* szRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       string_base<TCharType, bUnicodeLeft, nFixedSizeLeft> operator+(
+           string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>&& rssLeft,
+           TCharType cRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft, bool bUnicodeRight, size_t nFixedSizeRight>
+       string_base<TCharType, bUnicodeRight, nFixedSizeRight> operator+(
+           const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           string_base<TCharType, bUnicodeRight, nFixedSizeRight>&& rssRight);
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       string_base<TCharType, bUnicodeRight, nFixedSizeRight> operator+(
+           const std::basic_string<TCharType>& rssLeft,
+           string_base<TCharType, bUnicodeRight, nFixedSizeRight>&& rssRight);
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       string_base<TCharType, bUnicodeRight, nFixedSizeRight> operator+(
+           const TCharType* szLeft,
+           string_base<TCharType, bUnicodeRight, nFixedSizeRight>&& rssRight);
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       string_base<TCharType, bUnicodeRight, nFixedSizeRight> operator+(
+           TCharType cLeft,
+           string_base<TCharType, bUnicodeRight, nFixedSizeRight>&& rssRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft, bool bUnicodeRight, size_t nFixedSizeRight>
+       void swap(string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight);
+   
+       template <typename TCharType, bool bUnicode, size_t nFixedSize>
+       std::basic_ostream<TCharType, std::char_traits<TCharType>>& operator<<(
+           std::basic_ostream<TCharType, std::char_traits<TCharType>>& rstream,
+           const string_base<TCharType, bUnicode, nFixedSize>& rss);
+   
+       template <typename TCharType, bool bUnicode, size_t nFixedSize>
+       std::basic_istream<TCharType, std::char_traits<TCharType>>& operator>>(
+           std::basic_istream<TCharType, std::char_traits<TCharType>>& rstream, string_base<TCharType, bUnicode, nFixedSize>& rss);
+   
+       template <typename TCharType, bool bUnicode, size_t nFixedSize>
+       std::basic_istream<TCharType, std::char_traits<TCharType>>& getline(
+           std::basic_istream<TCharType, std::char_traits<TCharType>>& rstream, string_base<TCharType, bUnicode, nFixedSize>& rss,
+           TCharType cDelim);
+   
+       template <typename TCharType, bool bUnicode, size_t nFixedSize>
+       std::basic_istream<TCharType, std::char_traits<TCharType>>& getline(
+           std::basic_istream<TCharType, std::char_traits<TCharType>>&& rstream, string_base<TCharType, bUnicode, nFixedSize>& rss,
+           TCharType cDelim);
+   
+       template <typename TCharType, bool bUnicode, size_t nFixedSize>
+       std::basic_istream<TCharType, std::char_traits<TCharType>>& getline(
+           std::basic_istream<TCharType, std::char_traits<TCharType>>& rstream, string_base<TCharType, bUnicode, nFixedSize>& rss);
+   
+       template <typename TCharType, bool bUnicode, size_t nFixedSize>
+       std::basic_istream<TCharType, std::char_traits<TCharType>>& getline(
+           std::basic_istream<TCharType, std::char_traits<TCharType>>&& rstream, string_base<TCharType, bUnicode, nFixedSize>& rss);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator==(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       bool operator==(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           const std::basic_string<TCharType>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator==(const std::basic_string<TCharType>& rssLeft,
+           const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator!=(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       bool operator!=(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           const std::basic_string<TCharType>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator!=(const std::basic_string<TCharType>& rssLeft,
+           const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator<(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       bool operator<(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft, const std::basic_string<TCharType>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator<(const std::basic_string<TCharType>& rssLeft, const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator<=(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       bool operator<=(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft, const std::basic_string<TCharType>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator<=(const std::basic_string<TCharType>& rssLeft, const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator>(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       bool operator>(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           const std::basic_string<TCharType>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator>(const std::basic_string<TCharType>& rssLeft, const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator>=(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       bool operator>=(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft,
+           const std::basic_string<TCharType>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator>=(const std::basic_string<TCharType>& rssLeft,
+           const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight) noexcept;
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       bool operator==(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft, const TCharType* szRight);
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator==(const TCharType* szLeft, const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       bool operator!=(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft, const TCharType* szRight);
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator!=(const TCharType* szLeft, const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       bool operator<(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft, const TCharType* szRight);
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator<(const TCharType* szLeft, const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       bool operator<=(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft, const TCharType* szRight);
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator<=(const TCharType* szLeft, const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       bool operator>(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft, const TCharType* szRight);
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator>(const TCharType* szLeft, const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight);
+   
+       template <typename TCharType, bool bUnicodeLeft, size_t nFixedSizeLeft>
+       bool operator>=(const string_base<TCharType, bUnicodeLeft, nFixedSizeLeft>& rssLeft, const TCharType* szRight);
+   
+       template <typename TCharType, bool bUnicodeRight, size_t nFixedSizeRight>
+       bool operator>=(const TCharType* szLeft, const string_base<TCharType, bUnicodeRight, nFixedSizeRight>& rssRight);
+   
+       template <typename TCharType>
+       string MakeAnsiString(const TCharType* sz, size_t nCount = string::npos, char cFill = '_');
+   
+       template <typename TCharType>
+       u8string MakeUtf8String(const TCharType* sz, size_t nCount = u8string::npos);
+   
+       template <typename TCharType>
+       u16string MakeUtf16String(const TCharType* sz, size_t nCount = u16string::npos);
+   
+       template <typename TCharType>
+       u32string MakeUtf32String(const TCharType* sz, size_t nCount = u32string::npos);
+   
+       template <typename TCharType>
+       wstring MakeWString(const TCharType* sz, size_t nCount = wstring::npos);
+   
+       template <typename TCharType, bool bUnicode, size_t nFixedSize>
+       string MakeAnsiString(const string_base<TCharType, bUnicode, nFixedSize>& rss, char cFill = '_');
+   
+       template <typename TCharType, bool bUnicode, size_t nFixedSize>
+       wstring MakeWString(const string_base<TCharType, bUnicode, nFixedSize>& rss);
+   
+       template <typename TCharType, bool bUnicode, size_t nFixedSize>
+       u8string MakeUtf8String(const string_base<TCharType, bUnicode, nFixedSize>& rss);
+   
+       template <typename TCharType, bool bUnicode, size_t nFixedSize>
+       u16string MakeUtf16String(const string_base<TCharType, bUnicode, nFixedSize>& rss);
+   
+       template <typename TCharType, bool bUnicode, size_t nFixedSize>
+       u32string MakeUtf32String(const string_base<TCharType, bUnicode, nFixedSize>& rss);
+   
+       template <typename TCharType>
+       string MakeAnsiString(const std::basic_string<TCharType>& rss, char cFill = '_');
+   
+       template <typename TCharType>
+       wstring MakeWString(const std::basic_string<TCharType>& rss);
+   
+       template <typename TCharType>
+       u8string MakeUtf8String(const std::basic_string<TCharType>& rss);
+   
+       template <typename TCharType>
+       u16string MakeUtf16String(const std::basic_string<TCharType>& rss);
+   
+       template <typename TCharType>
+       u32string MakeUtf32String(const std::basic_string<TCharType>& rss);
+   
+       template <typename TCharTypeSrc, bool bUnicodeSrc, size_t nFixedSizeSrc, typename TCharTypeDst, bool bUnicodeDst, size_t nFixedSizeDst>
+       string_base<TCharTypeDst, bUnicodeDst, nFixedSizeDst> MakeString(const string_base<TCharTypeSrc, bUnicodeSrc, nFixedSizeSrc>& rss);
+   
+       template <typename TCharTypeSrc, typename TCharTypeDst, bool bUnicodeDst, size_t nFixedSizeDst>
+       string_base<TCharTypeDst, bUnicodeDst, nFixedSizeDst> MakeString(const std::basic_string<TCharTypeSrc>& rss);
+   
+       template <typename TCharType, bool bUnicode, size_t nFixedSize>
+       std::filesystem::path MakePath(const string_base<TCharType, bUnicode, nFixedSize>& rssPath);
+   
+   } // namespace sdv
+   
+   #include "string.inl"
+   
+   #endif // !defined SDV_STRING_H

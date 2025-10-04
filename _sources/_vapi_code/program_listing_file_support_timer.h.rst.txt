@@ -1,0 +1,142 @@
+
+.. _program_listing_file_support_timer.h:
+
+Program Listing for File timer.h
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_support_timer.h>` (``support\timer.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef VAPI_TASK_TIMER_H
+   #define VAPI_TASK_TIMER_H
+   
+   #include "../interfaces/timer.h"
+   #include "interface_ptr.h"
+   #include "local_service_access.h"
+   #include <functional>
+   
+   namespace sdv
+   {
+       namespace core
+       {
+           class CTaskTimer
+           {
+           public:
+               CTaskTimer() = default;
+   
+               CTaskTimer(uint32_t uiPeriod, std::function<void()> fnCallback) :
+                   m_ptrCallback(std::make_unique<STimerCallback>(fnCallback))
+               {
+                   if (!m_ptrCallback) return;
+                   if (!uiPeriod) return;
+   
+                   // Get the task timer service.
+                   sdv::core::ITaskTimer* pTaskTimer = sdv::core::GetObject<sdv::core::ITaskTimer>("TaskTimerService");
+                   if (!pTaskTimer)
+                   {
+                       pTaskTimer = sdv::core::GetObject<sdv::core::ITaskTimer>("SimulationTaskTimerService");
+                       if (!pTaskTimer) return;
+                   }
+   
+                   // Create the timer
+                   m_pTimer = pTaskTimer->CreateTimer(uiPeriod, m_ptrCallback.get());
+               }
+   
+               CTaskTimer(uint32_t uiPeriod, sdv::IInterfaceAccess* pTask)
+               {
+                   if (!uiPeriod) return;
+   
+                   // Get the task timer service.
+                   sdv::core::ITaskTimer* pTaskTimer = sdv::core::GetObject<sdv::core::ITaskTimer>("TaskTimerService");
+                   if (!pTaskTimer)
+                   {
+                       pTaskTimer = sdv::core::GetObject<sdv::core::ITaskTimer>("SimulationTaskTimerService");
+                       if (!pTaskTimer) return;
+                   }
+   
+                   // Create the timer
+                   m_pTimer = pTaskTimer->CreateTimer(uiPeriod, pTask);
+               }
+   
+               CTaskTimer(const CTaskTimer&) = delete;
+   
+               CTaskTimer(CTaskTimer&& rtimer) noexcept :
+                   m_pTimer(rtimer.m_pTimer), m_uiPeriod(rtimer.m_uiPeriod), m_ptrCallback(std::move(rtimer.m_ptrCallback))
+               {
+                   rtimer.m_pTimer = nullptr;
+                   rtimer.m_uiPeriod = 0;
+               }
+   
+               ~CTaskTimer()
+               {
+                   Reset();
+               }
+   
+               CTaskTimer& operator=(const CTaskTimer&) = delete;
+   
+               CTaskTimer& operator=(CTaskTimer&& rtimer) noexcept
+               {
+                   Reset();
+                   m_pTimer = rtimer.m_pTimer;
+                   m_ptrCallback = std::move(rtimer.m_ptrCallback);
+                   m_uiPeriod = rtimer.m_uiPeriod;
+                   rtimer.m_pTimer = nullptr;
+                   rtimer.m_uiPeriod = 0;
+                   return *this;
+               }
+   
+               operator bool() const
+               {
+                   return m_pTimer;
+               }
+   
+               void Reset()
+               {
+                   if (m_pTimer)
+                   {
+                       IObjectDestroy* pDestroy = m_pTimer->GetInterface<IObjectDestroy>();
+                       if (pDestroy)
+                           pDestroy->DestroyObject();
+                       m_pTimer = nullptr;
+                   }
+                   m_ptrCallback.reset();
+                   m_uiPeriod = 0ul;
+               }
+   
+               uint32_t GetPeriod() const
+               {
+                   return m_uiPeriod;
+               }
+   
+           private:
+               struct STimerCallback : public IInterfaceAccess, public core::ITaskExecute
+               {
+                   STimerCallback(std::function<void()> fnCallback) : m_fnCallback(fnCallback)
+                   {}
+   
+               protected:
+                   // Interface map
+                   BEGIN_SDV_INTERFACE_MAP()
+                       SDV_INTERFACE_ENTRY(core::ITaskExecute)
+                   END_SDV_INTERFACE_MAP()
+   
+                   virtual void Execute() override
+                   {
+                       if (m_fnCallback) m_fnCallback();
+                   }
+   
+               private:
+                   std::function<void()>       m_fnCallback;           
+               };
+   
+               sdv::IInterfaceAccess*          m_pTimer = nullptr;     
+               uint32_t                        m_uiPeriod = 0ul;       
+               std::unique_ptr<STimerCallback> m_ptrCallback;          
+           };
+       }
+   }
+   
+   #endif // !defined VAPI_TASK_TIMER_H

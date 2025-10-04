@@ -1,0 +1,71 @@
+Example Interface
+=================
+
+.. note::
+   :term:`Interface` s are typically located in C++ header files that only contain :term:`Interface` s and each header file includes only :term:`Interface` s that are relevant for the same context, since they are needed by both the developer for the implementation of the interface and the developer that uses the interface in other components. See also :term:`Interface Set`.
+
+To create am Interface an IDL file is required. The 'sdv_idl_compiler.exe' takes this file an creates the interface header file. 
+
+.. tab-set::
+
+   .. tab-item:: IDL Example
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_idl.h
+         :tab-width: 4
+
+   .. tab-item:: IDL compiler outcome
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_interfaces.h
+         :tab-width: 4
+         :start-at: ISayHello
+         :end-at: };
+
+   .. tab-item:: 'interface' Keyword
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_interfaces.h
+         :tab-width: 4
+         :start-at: ISayHello
+         :end-at: };
+         :emphasize-lines: 1
+
+      The keyword ``interface`` is an alias to the C++ keyword ``struct``.
+
+   .. tab-item:: Members
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_interfaces.h
+         :tab-width: 4
+         :start-at: ISayHello
+         :end-at: };
+         :emphasize-lines: 3
+
+      Within an :term:`Interface` any number of **pure virtual** functions may be declared to represent the functionality of the interface, but **nothing else**.
+
+   .. tab-item:: Interface ID
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_interfaces.h
+         :tab-width: 4
+         :start-at: ISayHello
+         :end-at: };
+         :emphasize-lines: 4
+
+      Unique Interface ID created and added by the IDL compiler, do not change!
+
+
+To get help about the ``sdv_idl_compiler.exe`` command line commands type ``sdv_idl_compiler.exe --help``.
+
+.. figure:: ../../../vapi_media/examples/screenshot/sdv_idl_compiler.png
+   :align: center
+
+See the `OMG specification page <https://www.python.org>`_ for the IDL description.
+
+The OMG specification for the IDL description can be found here: 
+https://www.omg.org/spec/UML/2.5.1/About-UML/#:~:text=A%20specification%20defining%20a%20graphical%20language%20for%20visualizing%2C,and%20documenting%20the%20artifacts%20of%20distributed%20object%20systems/'
+
+Following data types are not supported by the 'sdv_idl_compiler.exe' yet:
+
+* any data type
+* map data type
+* fixed-point data type
+
+A example how the IDL is compiled in the cmake build script can be seen here:
+/sdv_services/CMakeLists.txt

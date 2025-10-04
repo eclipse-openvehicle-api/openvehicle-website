@@ -1,0 +1,126 @@
+
+.. _program_listing_file_data_dispatch_service_signal.h:
+
+Program Listing for File signal.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_data_dispatch_service_signal.h>` (``data_dispatch_service\signal.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef SIGNAL_H
+   #define SIGNAL_H
+   
+   #include <support/interface_ptr.h>
+   #include <interfaces/dispatch.h>
+   #include "trigger.h"
+   
+   // Forward declaration
+   class CDispatchService;
+   class CSignal;
+   
+   class CProvider : public sdv::IInterfaceAccess, public sdv::IObjectDestroy, public sdv::core::ISignalWrite
+   {
+   public:
+       explicit CProvider(CSignal& rSignal);
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
+           SDV_INTERFACE_ENTRY(sdv::core::ISignalWrite)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual void DestroyObject() override;
+   
+       virtual void Write(/*in*/ sdv::any_t anyVal, /*in*/ sdv::IInterfaceAccess* pTransaction) override;
+   
+       void Write(const sdv::any_t& ranyVal, uint64_t uiTransactionID);
+   
+   private:
+       sdv::CLifetimeCookie    m_cookie = sdv::CreateLifetimeCookie(); 
+       CSignal&                m_rSignal;                              
+   };
+   
+   class CConsumer : public sdv::IInterfaceAccess, public sdv::IObjectDestroy, public sdv::core::ISignalRead
+   {
+   public:
+       CConsumer(CSignal& rSignal, sdv::IInterfaceAccess* pEvent = nullptr);
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
+           SDV_INTERFACE_ENTRY(sdv::core::ISignalRead)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual void DestroyObject() override;
+   
+       virtual sdv::any_t Read(/*in*/ sdv::IInterfaceAccess* pTransaction) const override;
+   
+       void Write(const sdv::any_t& ranyVal, uint64_t uiTransactionID);
+   
+       void Distribute(const sdv::any_t& ranyVal);
+   
+   private:
+       sdv::CLifetimeCookie    m_cookie = sdv::CreateLifetimeCookie(); 
+       CSignal&                            m_rSignal;                  
+       sdv::core::ISignalReceiveEvent*     m_pEvent = nullptr;         
+   };
+   
+   class CSignal
+   {
+   public:
+       struct SSignalObjectHelper
+       {
+           virtual ~SSignalObjectHelper() = default;
+       };
+   
+       CSignal(CDispatchService& rDispatchSvc, const sdv::u8string& rssName, sdv::core::ESignalDirection eDirection,
+           sdv::any_t anyDefVal = sdv::any_t());
+   
+       ~CSignal();
+   
+       sdv::u8string GetName() const;
+   
+       sdv::core::ESignalDirection GetDirection() const;
+   
+       sdv::any_t GetDefVal() const;
+   
+       CProvider* CreateProvider();
+   
+       void RemoveProvider(CProvider* pProvider);
+   
+       CConsumer* CreateConsumer(sdv::IInterfaceAccess* pEvent = nullptr);
+   
+       void RemoveConsumer(CConsumer* pConsumer);
+   
+       void WriteFromProvider(const sdv::any_t& ranyVal, uint64_t uiTransactionID, std::set<CTrigger*>& rsetTriggers);
+   
+       sdv::any_t ReadFromConsumer(uint64_t uiTransactionID) const;
+   
+       void DistributeToConsumers(const sdv::any_t& ranyVal);
+   
+       void AddTrigger(CTrigger* pTrigger);
+   
+       void RemoveTrigger(CTrigger* pTrigger);
+   
+       bool EqualsDefaultValue() const;
+   
+   private:
+       sdv::CLifetimeCookie            m_cookie = sdv::CreateLifetimeCookie();                 
+       CDispatchService&               m_rDispatchSvc;                                         
+       sdv::u8string                   m_ssName;                                               
+       sdv::core::ESignalDirection     m_eDirection = sdv::core::ESignalDirection::sigdir_tx;  
+       sdv::any_t                      m_anyDefVal;                                            
+       mutable std::mutex              m_mtxVal;                                               
+       mutable std::pair<uint64_t, sdv::any_t> m_rgprVal[16];                                  
+       mutable size_t                  m_nValIndex = 0;                                        
+       mutable std::mutex              m_mtxSignalObjects;                                     
+       std::map<CProvider*, std::unique_ptr<CProvider>> m_mapProviders;                        
+       std::map<CConsumer*, std::unique_ptr<CConsumer>> m_mapConsumers;                        
+       std::mutex                      m_mtxTriggers;                                          
+       std::set<CTrigger*>             m_setTriggers;                                          
+   };
+   
+   #endif // !defined SIGNAL_H

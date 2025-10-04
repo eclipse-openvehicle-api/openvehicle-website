@@ -1,0 +1,48 @@
+
+.. _program_listing_file_sdv_packager_packager.h:
+
+Program Listing for File packager.h
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_packager_packager.h>` (``sdv_packager\packager.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef PACKAGER_H
+   #define PACKAGER_H
+   
+   #include "environment.h"
+   
+   class CPackager
+   {
+   public:
+       CPackager(CSdvPackagerEnvironment& renv);
+   
+       bool Execute();
+   
+       int Error() const;
+   
+       const std::string& ArgError() const;
+   
+   private:
+       bool Pack();
+   
+       bool Unpack();
+   
+       bool Copy();
+   
+       bool Remove();
+   
+       bool CheckIntegrity();
+   
+       bool ShowContent();
+       
+       CSdvPackagerEnvironment                m_env;                              
+       int                         m_nError = NO_ERROR;                
+       std::string                 m_ssArgError;                       
+   };
+   
+   
+   #endif // !defined PACKAGER_H

@@ -1,0 +1,300 @@
+
+.. _program_listing_file_interfaces_config.idl:
+
+Program Listing for File config.idl
+===================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_config.idl>` (``interfaces\config.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core.idl"
+   
+   module sdv
+   {
+       #verbatim_begin
+   #include "../support/string.h"
+       #verbatim_end
+   
+   
+       exception XCannotOpenFile : XSysExcept
+       {
+           const char _description[] = "Cannot open a file.";
+   
+           u8string    ssPath;     
+       };
+   
+       exception XFileCorrupt : XSysExcept
+       {
+           const char _description[] = "The inetrnal structure of the file is not as expected.";
+   
+           u8string    ssPath;     
+       };
+   
+       exception XCannotReadFileTimesOrAttributes : XSysExcept
+       {
+           const char _description[] = "Cannot read file times or attributes.";
+   
+           u8string    ssPath;     
+       };
+   
+       exception XCannotChangeFileTimesOrAttributes : XSysExcept
+       {
+           const char _description[] = "Cannot change file times or attributes.";
+   
+           u8string    ssPath;     
+       };
+   
+       exception XCannotCreateDir : XSysExcept
+       {
+           const char _description[] = "Cannot create a directory.";
+   
+           u8string    ssPath;     
+       };
+   
+       exception XCannotRemoveDir : XSysExcept
+       {
+           const char _description[] = "Cannot remove a directory.";
+   
+           u8string    ssPath;     
+       };
+   
+       exception XInvalidPath : XSysExcept
+       {
+           const char _description[] = "An invalid path was supplied.";
+   
+           u8string    ssPath;  
+       };
+   
+       exception XDuplicateFile : XSysExcept
+       {
+           const char _description[] = "A file with the same path already exists.";
+   
+           u8string    ssFilePath;  
+       };
+   
+       module core
+       {
+           enum EConfigProcessResult : int32
+           {
+               failed = 0,                     
+               successful = 1,                 
+               partially_successful = -1,      
+           };
+   
+           local interface IConfig
+           {
+               EConfigProcessResult ProcessConfig(in u8string ssContent);
+   
+               EConfigProcessResult LoadConfig(in u8string ssConfigPath);
+   
+               boolean SaveConfig(in u8string ssConfigPath) const;
+   
+               boolean AddConfigSearchDir(in u8string ssDir);
+   
+               void ResetConfigBaseline();
+           };
+       };      // module core
+   
+       module installation
+       {
+           struct SPackageVersion
+           {
+               uint32 uiMajor;             
+               uint32 uiMinor;             
+               uint32 uiPatch;             
+           };
+   
+           struct SPackageHeader
+           {
+               EEndian     eEndian;                
+               uint8       uiReserved;             
+               uint16      uiVersion;              
+               uint32      uiOffset;               
+               uint8       rguiSignature[8];       
+               uint64      uiCreationDate;         
+               u8string    ssManifest;             
+           };
+   
+           struct SPackageHeaderChecksum
+           {
+               uint32      uiChecksum;             
+           };
+   
+           struct SPackageFooter
+           {
+               uint32      uiChecksum;             
+           };
+   
+           struct SFileDesc
+           {
+               u8string            ssFileName;         
+               uint64              uiCreationDate;     
+               uint64              uiChangeDate;       
+               boolean             bAttrReadonly;      
+               boolean             bAttrExecutable;    
+               pointer<uint8>      ptrContent;         
+           };
+   
+           enum EPackageBLOBType : uint32
+           {
+               binary_file = 1,                
+               final_entry = 0xffffffff,       
+           };
+   
+           struct SPackageBLOB
+           {
+               EPackageBLOBType    eBLOBType;          
+               uint32              uiChecksumInit;     
+               uint32              uiBLOBSize;         
+   
+               union switch (eBLOBType)
+               {
+               case EPackageBLOBType::binary_file:
+                   SFileDesc       sFileDesc;      
+               case final_entry:
+               };
+           };
+   
+           struct SPackageBLOBChecksum
+           {
+               uint32      uiChecksum;             
+           };
+   
+           exception XFailedToCompose : XSysExcept
+           {
+               const char _description[] = "Faled to compose an installation package.";
+   
+               u8string    ssInstallName;     
+           };
+   
+           exception XNoManifest : XSysExcept
+           {
+               const char _description[] = "The installation manifest could not be found or created.";
+           };
+   
+           exception XInvalidManifest : XSysExcept
+           {
+               const char _description[] = "The installation manifest could not be loaded.";
+           };
+   
+           exception XFailedSaveManifest : XSysExcept
+           {
+               const char _description[] = "The installation manifest could not be saved.";
+   
+               u8string    ssInstallName;      
+               u8string    ssPath;             
+           };
+   
+           exception XFailedManifestCreation : XSysExcept
+           {
+               const char _description[] = "The installation manifest could not be created.";
+   
+               u8string    ssInstallName;     
+           };
+   
+           exception XDuplicateManifest : XSysExcept
+           {
+               const char _description[] = "A duplicate installation manifest was found.";
+   
+               u8string    ssInstallName1;     
+               u8string    ssInstallName2;     
+           };
+   
+           exception XDuplicateInstall : XSysExcept
+           {
+               const char _description[] = "An installation exists already.";
+   
+               u8string    ssInstallName;     
+           };
+   
+           exception XModuleNotFound : XSysExcept
+           {
+               const char _description[] = "A module with the supplied name could not be found.";
+   
+               u8string    ssPath;     
+           };
+   
+           exception XComponentNotLoadable : XSysExcept
+           {
+               const char _description[] = "One or more components cannot be loaded.";
+   
+               sequence<u8string>   seqComponents;     
+           };
+   
+           exception XIncorrectCRC : XSysExcept
+           {
+               const char _description[] = "The installation package has an invalid CRC.";
+           };
+   
+           exception XIncompatiblePackage : XSysExcept
+           {
+               const char _description[] = "The installation package is incompatible.";
+           };
+   
+           exception XIncorrectPath : XSysExcept
+           {
+               const char _description[] = "Invalid module target path.";
+   
+               u8string    ssPath;     
+           };
+   
+           exception XMissingBasePath : XSysExcept
+           {
+               const char _description[] = "A base path is required for processing.";
+           };
+   
+           exception XInstallationNotFound : XSysExcept
+           {
+               const char _description[] = "THe installation was not found.";
+   
+               u8string    ssInstallName;     
+           };
+   
+           exception XUninstallCouldNotUnload : XSysExcept
+           {
+               const char _description[] = "Unable to unload the installation.";
+   
+               u8string    ssInstallName;     
+           };
+   
+           /*
+           TODO EVE
+           Installation needs to be more flexible...
+           - Components can have calibration values. They content is stored in the config.
+           - A configuration can be made using the components and the names of the components (VSS???)
+           - Installing and configuring devices and system and basic services is possible when sdv_core is started in update mode.
+           - Installing and configuring complex services is possible at any time dynamically.
+           - Installation and configuring only in config mode
+           - extend the functionality of the sdv_packager utility to create more detailed config.
+           */
+   
+           interface IAppInstall
+           {
+               boolean Install(in u8string ssInstallName, in sequence<SFileDesc> seqFiles)
+                   raises(XDuplicateInstall, XModuleNotFound, XComponentNotLoadable, XIncorrectCRC,
+                       XIncorrectPath);
+   
+               boolean Update(in u8string ssInstallName, in sequence<SFileDesc> seqFiles)
+                   raises(XInstallationNotFound, XModuleNotFound, XComponentNotLoadable, XIncorrectCRC,
+                       XIncorrectPath);
+   
+               boolean Uninstall(in u8string ssInstallName) raises(XInstallationNotFound, XUninstallCouldNotUnload);
+   
+               sequence<u8string> GetInstallations() const;
+   
+               sequence<SFileDesc> GetInstallationFiles(in u8string ssInstallName) const raises(XInstallationNotFound);
+           };
+       }; // module installation
+   
+       module helper
+       {
+           interface IModuleManifestHelper
+           {
+               u8string ReadModuleManifest(in u8string ssModule);
+           };
+       }; //  module helper
+   }; // module sdv

@@ -1,0 +1,53 @@
+
+.. _program_listing_file_sdv_idl_compiler_entities_module_entity.h:
+
+Program Listing for File module_entity.h
+========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_entities_module_entity.h>` (``sdv_idl_compiler\entities\module_entity.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef MODULE_ENTITY_H
+   #define MODULE_ENTITY_H
+   
+   #include "definition_entity.h"
+   #include <map>
+   #include "../constvariant.h"
+   
+   class CModuleEntity : public CDefinitionEntity
+   {
+   public:
+       CModuleEntity(const CContextPtr& rptrContext, CEntityPtr ptrParent);
+   
+   protected:
+       CModuleEntity(CParser& rParser, const CContextPtr& rptrContext);
+   
+   public:
+       virtual ~CModuleEntity() override = default;
+   
+       virtual sdv::idl::EEntityType GetType() const override { return sdv::idl::EEntityType::type_module; }
+   
+       // Suppress cppcheck warning of a useless override. The function is here for better understanding.
+       // cppcheck-suppress uselessOverride
+       virtual void Process() override;
+   
+       virtual bool Supports(EDefinitionSupport eSupport) const override;
+   
+       // Suppress warning of cppcheck of a useless override. The function implementation improves readability.
+       // cppcheck-suppress uselessOverride
+       virtual bool IsRootEntity() const override { return false; }
+   
+       virtual bool IsExtendable() const override;
+   
+       // Suppress cppcheck warning of a useless override. The function is here for better understanding.
+       // cppcheck-suppress uselessOverride
+       virtual bool SupportsChildren() const override;
+   
+   private:
+   };
+   
+   
+   #endif // !defined(MODULE_ENTITY_H)

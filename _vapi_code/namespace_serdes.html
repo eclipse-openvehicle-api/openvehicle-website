@@ -1,0 +1,933 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Namespace serdes &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/namespace_serdes';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Namespace serdes</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="namespace-serdes">
+<span id="id1"></span><h1>Namespace serdes<a class="headerlink" href="#namespace-serdes" title="Permalink to this heading">#</a></h1>
+<p>Serializer/deserializer namespace.</p>
+<nav class="contents local" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#classes" id="id2">Classes</a></p></li>
+</ul>
+</nav>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes.html#exhale-class-classserdes-1-1-c-serdes"><span class="std std-ref">Template Class CSerdes</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1app_1_1_e_app_context_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1app-1-1-e-app-context-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::app::EAppContext &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1app_1_1_e_app_operation_state_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1app-1-1-e-app-operation-state-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::app::EAppOperationState &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1app_1_1_i_app_operation_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1app-1-1-i-app-operation-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::app::IAppOperation * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1app_1_1_i_app_shutdown_request_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1app-1-1-i-app-shutdown-request-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::app::IAppShutdownRequest * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1app_1_1_s_app_event_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1app-1-1-s-app-event-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::app::SAppEvent &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1can_1_1_e_error_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1can-1-1-e-error-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::can::EError &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1can_1_1_s_error_frame_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1can-1-1-s-error-frame-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::can::SErrorFrame &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1can_1_1_s_message_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1can-1-1-s-message-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::can::SMessage &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1com_1_1_e_channel_type_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1com-1-1-e-channel-type-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::com::EChannelType &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1com_1_1_i_client_connect_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1com-1-1-i-client-connect-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::com::IClientConnect * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1com_1_1_i_request_channel_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1com-1-1-i-request-channel-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::com::IRequestChannel * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1com_1_1_s_connection_i_d_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1com-1-1-s-connection-i-d-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::com::SConnectionID &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_e_config_process_result_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-e-config-process-result-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::EConfigProcessResult &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_e_log_severity_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-e-log-severity-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::ELogSeverity &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_e_object_info_flags_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-e-object-info-flags-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::EObjectInfoFlags &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_e_signal_direction_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-e-signal-direction-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::ESignalDirection &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_link_core_repository_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-link-core-repository-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::ILinkCoreRepository * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_logger_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-logger-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::ILogger * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_logger_config_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-logger-config-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::ILoggerConfig * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_module_control_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-module-control-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::IModuleControl * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_module_control_config_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-module-control-config-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::IModuleControlConfig * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_module_info_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-module-info-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::IModuleInfo * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_object_access_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-object-access-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::IObjectAccess * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_register_foreign_object_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-register-foreign-object-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::IRegisterForeignObject * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_repository_control_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-repository-control-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::IRepositoryControl * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_repository_info_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-repository-info-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::IRepositoryInfo * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_repository_utility_create_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-repository-utility-create-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::IRepositoryUtilityCreate * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_task_execute_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-task-execute-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::ITaskExecute * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_task_timer_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-task-timer-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::ITaskTimer * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_timer_simulation_step_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-timer-simulation-step-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::ITimerSimulationStep * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_tx_trigger_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-tx-trigger-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::ITxTrigger * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_i_tx_trigger_callback_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-i-tx-trigger-callback-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::ITxTriggerCallback * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_s_module_info_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-s-module-info-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::SModuleInfo &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_s_object_info_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-s-object-info-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::SObjectInfo &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_s_signal_registration_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-s-signal-registration-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::SSignalRegistration &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_x_alloc_failed_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-x-alloc-failed-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::XAllocFailed &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1core_1_1_x_no_mem_mgr_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1core-1-1-x-no-mem-mgr-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::core::XNoMemMgr &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_e_attribute_flags_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-e-attribute-flags-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::EAttributeFlags &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_e_endian_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-e-endian-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::EEndian &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_e_object_flags_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-e-object-flags-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::EObjectFlags &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_e_object_status_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-e-object-status-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::EObjectStatus &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_e_object_type_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-e-object-type-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::EObjectType &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_e_operation_mode_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-e-operation-mode-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::EOperationMode &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1hardware_1_1_i_hardware_i_d_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1hardware-1-1-i-hardware-i-d-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::hardware::IHardwareID * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1helper_1_1_i_module_manifest_helper_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1helper-1-1-i-module-manifest-helper-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::helper::IModuleManifestHelper * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_i_attributes_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-i-attributes-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::IAttributes * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_e_decl_type_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-e-decl-type-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::EDeclType &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_e_entity_type_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-e-entity-type-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::EEntityType &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_attribute_entity_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-attribute-entity-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IAttributeEntity * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_case_entity_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-case-entity-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::ICaseEntity * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_compiler_info_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-compiler-info-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::ICompilerInfo * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_compiler_option_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-compiler-option-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::ICompilerOption * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_declaration_entity_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-declaration-entity-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IDeclarationEntity * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_declaration_type_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-declaration-type-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IDeclarationType * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_definition_entity_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-definition-entity-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IDefinitionEntity * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_entity_comments_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-entity-comments-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IEntityComments * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_entity_comments_1_1_e_comment_mask_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-entity-comments-1-1-e-comment-mask-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IEntityComments::ECommentMask &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_entity_context_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-entity-context-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IEntityContext * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_entity_context_1_1_e_location_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-entity-context-1-1-e-location-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IEntityContext::ELocation &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_entity_info_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-entity-info-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IEntityInfo * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_entity_iterator_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-entity-iterator-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IEntityIterator * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_enum_entity_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-enum-entity-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IEnumEntity * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_forward_declaration_entity_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-forward-declaration-entity-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IForwardDeclarationEntity * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_interface_entity_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-interface-entity-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IInterfaceEntity * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_meta_entity_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-meta-entity-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IMetaEntity * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_meta_entity_1_1_e_type_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-meta-entity-1-1-e-type-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IMetaEntity::EType &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_operation_entity_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-operation-entity-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IOperationEntity * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_parameter_entity_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-parameter-entity-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IParameterEntity * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_parameter_entity_1_1_e_parameter_direction_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-parameter-entity-1-1-e-parameter-direction-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IParameterEntity::EParameterDirection &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_union_entity_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-union-entity-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IUnionEntity * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_i_union_entity_1_1_e_switch_interpret_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-i-union-entity-1-1-e-switch-interpret-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::IUnionEntity::ESwitchInterpret &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_s_array_dimension_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-s-array-dimension-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::SArrayDimension &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_s_array_dimension_1_1_e_dimension_type_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-s-array-dimension-1-1-e-dimension-type-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::SArrayDimension::EDimensionType &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1idl_1_1_x_compile_error_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1idl-1-1-x-compile-error-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::idl::XCompileError &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_i_interface_access_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-i-interface-access-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::IInterfaceAccess * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_e_package_b_l_o_b_type_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-e-package-b-l-o-b-type-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::EPackageBLOBType &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_i_app_install_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-i-app-install-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::IAppInstall * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_s_file_desc_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-s-file-desc-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::SFileDesc &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_s_package_b_l_o_b_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-s-package-b-l-o-b-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::SPackageBLOB &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_s_package_b_l_o_b_checksum_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-s-package-b-l-o-b-checksum-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::SPackageBLOBChecksum &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_s_package_footer_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-s-package-footer-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::SPackageFooter &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_s_package_header_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-s-package-header-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::SPackageHeader &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_s_package_header_checksum_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-s-package-header-checksum-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::SPackageHeaderChecksum &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_s_package_version_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-s-package-version-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::SPackageVersion &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_component_not_loadable_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-component-not-loadable-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XComponentNotLoadable &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_duplicate_install_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-duplicate-install-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XDuplicateInstall &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_duplicate_manifest_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-duplicate-manifest-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XDuplicateManifest &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_failed_manifest_creation_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-failed-manifest-creation-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XFailedManifestCreation &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_failed_save_manifest_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-failed-save-manifest-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XFailedSaveManifest &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_failed_to_compose_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-failed-to-compose-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XFailedToCompose &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_incompatible_package_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-incompatible-package-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XIncompatiblePackage &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_incorrect_c_r_c_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-incorrect-c-r-c-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XIncorrectCRC &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_incorrect_path_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-incorrect-path-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XIncorrectPath &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_installation_not_found_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-installation-not-found-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XInstallationNotFound &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_invalid_manifest_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-invalid-manifest-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XInvalidManifest &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_missing_base_path_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-missing-base-path-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XMissingBasePath &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_module_not_found_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-module-not-found-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XModuleNotFound &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_no_manifest_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-no-manifest-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XNoManifest &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1installation_1_1_x_uninstall_could_not_unload_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1installation-1-1-x-uninstall-could-not-unload-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::installation::XUninstallCouldNotUnload &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_i_object_control_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-i-object-control-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::IObjectControl * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_i_object_destroy_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-i-object-destroy-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::IObjectDestroy * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_i_object_factory_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-i-object-factory-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::IObjectFactory * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_i_object_lifetime_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-i-object-lifetime-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::IObjectLifetime * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ipc_1_1_e_connect_status_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ipc-1-1-e-connect-status-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ipc::EConnectStatus &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ipc_1_1_i_channel_access_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ipc-1-1-i-channel-access-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ipc::IChannelAccess * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ipc_1_1_i_connect_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ipc-1-1-i-connect-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ipc::IConnect * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ipc_1_1_i_connect_event_callback_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ipc-1-1-i-connect-event-callback-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ipc::IConnectEventCallback * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ipc_1_1_i_create_endpoint_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ipc-1-1-i-create-endpoint-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ipc::ICreateEndpoint * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ipc_1_1_i_data_receive_callback_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ipc-1-1-i-data-receive-callback-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ipc::IDataReceiveCallback * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ipc_1_1_i_data_send_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ipc-1-1-i-data-send-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ipc::IDataSend * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ipc_1_1_s_channel_endpoint_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ipc-1-1-s-channel-endpoint-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ipc::SChannelEndpoint &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1process_1_1_e_process_rights_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1process-1-1-e-process-rights-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::process::EProcessRights &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_e_marshall_data_interpret_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-e-marshall-data-interpret-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::EMarshallDataInterpret &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_e_marshall_flags_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-e-marshall-flags-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::EMarshallFlags &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_i_marshall_access_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-i-marshall-access-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::IMarshallAccess * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_i_marshall_link_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-i-marshall-link-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::IMarshallLink * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_i_marshall_object_ident_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-i-marshall-object-ident-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::IMarshallObjectIdent * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_i_proxy_control_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-i-proxy-control-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::IProxyControl * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_i_stub_link_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-i-stub-link-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::IStubLink * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_s_marshall_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-s-marshall-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::SMarshall &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_s_marshall_address_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-s-marshall-address-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::SMarshallAddress &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_s_marshall_i_d_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-s-marshall-i-d-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::SMarshallID &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_x_marshall_except_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-x-marshall-except-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::XMarshallExcept &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_x_marshall_integrity_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-x-marshall-integrity-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::XMarshallIntegrity &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_x_marshall_missing_data_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-x-marshall-missing-data-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::XMarshallMissingData &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_x_marshall_no_object_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-x-marshall-no-object-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::XMarshallNoObject &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_x_marshall_not_initialized_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-x-marshall-not-initialized-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::XMarshallNotInitialized &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_x_marshall_timeout_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-x-marshall-timeout-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::XMarshallTimeout &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1ps_1_1_x_marshall_version_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1ps-1-1-x-marshall-version-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::ps::XMarshallVersion &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_s_class_info_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-s-class-info-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::SClassInfo &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1toml_1_1_e_node_type_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1toml-1-1-e-node-type-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::toml::ENodeType &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1toml_1_1_i_node_collection_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1toml-1-1-i-node-collection-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::toml::INodeCollection * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1toml_1_1_i_node_info_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1toml-1-1-i-node-info-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::toml::INodeInfo * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1toml_1_1_i_t_o_m_l_parser_01_5_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1toml-1-1-i-t-o-m-l-parser-01-5-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::toml::ITOMLParser * &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1toml_1_1_x_t_o_m_l_parse_exception_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1toml-1-1-x-t-o-m-l-parse-exception-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::toml::XTOMLParseException &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_access_denied_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-access-denied-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XAccessDenied &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_buffer_too_small_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-buffer-too-small-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XBufferTooSmall &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_cannot_change_file_times_or_attributes_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-cannot-change-file-times-or-attributes-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XCannotChangeFileTimesOrAttributes &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_cannot_create_dir_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-cannot-create-dir-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XCannotCreateDir &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_cannot_open_file_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-cannot-open-file-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XCannotOpenFile &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_cannot_read_file_times_or_attributes_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-cannot-read-file-times-or-attributes-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XCannotReadFileTimesOrAttributes &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_cannot_remove_dir_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-cannot-remove-dir-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XCannotRemoveDir &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_duplicate_file_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-duplicate-file-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XDuplicateFile &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_file_corrupt_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-file-corrupt-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XFileCorrupt &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_hash_not_matching_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-hash-not-matching-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XHashNotMatching &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_index_out_of_range_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-index-out-of-range-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XIndexOutOfRange &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_invalid_iterator_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-invalid-iterator-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XInvalidIterator &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_invalid_path_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-invalid-path-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XInvalidPath &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_invalid_ref_count_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-invalid-ref-count-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XInvalidRefCount &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_invalid_state_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-invalid-state-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XInvalidState &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_no_interface_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-no-interface-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XNoInterface &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_not_found_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-not-found-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XNotFound &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_null_pointer_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-null-pointer-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XNullPointer &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_offset_past_buffer_size_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-offset-past-buffer-size-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XOffsetPastBufferSize &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_sys_except_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-sys-except-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XSysExcept &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_timeout_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-timeout-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XTimeout &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_unhandled_exception_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-unhandled-exception-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XUnhandledException &gt;</span></a></p></li>
+<li><p><a class="reference internal" href="classserdes_1_1_c_serdes_3_01sdv_1_1_x_unknown_exception_01_4.html#exhale-class-classserdes-1-1-c-serdes-3-01sdv-1-1-x-unknown-exception-01-4"><span class="std std-ref">Template Class CSerdes&lt; sdv::XUnknownException &gt;</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+.. _example-access-components:
+
+Example access to other components
+==================================
+
+Access to other components is really simple.
+
+.. tab-set::
+
+   .. tab-item:: Example
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_access_to_other_components..cpp
+         :tab-width: 4
+
+   .. tab-item:: Store Interfaces
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_access_to_other_components..cpp
+         :tab-width: 4
+         :emphasize-lines: 27
+
+      When interfaces are needed for more than a one-time use it is a good idea to store them in member variables to reduce the overhead of fetching the interface.
+
+   .. tab-item:: Get Object by Name
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_access_to_other_components..cpp
+         :tab-width: 4
+         :emphasize-lines: 15, 17
+
+      With the ``sdv::core::GetObject`` function one gets the ``sdv::core::IInterfaceAccessPtr`` of the object with the given name (see the *Object Name* highlight at :ref:`How to create a general VAPI Component <example-general-component>`).
+
+   .. tab-item:: Get Interface by Type
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_access_to_other_components..cpp
+         :tab-width: 4
+         :emphasize-lines: 15, 18
+
+      With the ``GetInterface`` templated function one can get access to the interfaces of an ``IInterfaceAccessPtr`` object.
+
+   .. tab-item:: Check interface validity
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_access_to_other_components..cpp
+         :tab-width: 4
+         :emphasize-lines: 17-20
+
+      Since ``GetInterface`` returns ``nullptr`` if the given interface is not part of the object or if the object could not be found, it is recommended to check for ``nullptr`` s before continuing.
+
+   .. tab-item:: Use of an interface
+
+      .. literalinclude:: ../../../../examples/_howto_examples/source/example_access_to_other_components.cpp
+         :tab-width: 4
+         :emphasize-lines: 38-39
+
+      To use an interface one just calls the appropriate functions defined by it, since it is no more than a pointer to its type.
+
+.. note::
+   For objects to be accessible they need to be declared in the :term:`Config File` which has to be loaded by ``sdv::core:CVAPIControl::Initialize`` in a :term:`VAPI Core Process`. See also the :ref:`Example of a Config File <example-config-file>`.
+

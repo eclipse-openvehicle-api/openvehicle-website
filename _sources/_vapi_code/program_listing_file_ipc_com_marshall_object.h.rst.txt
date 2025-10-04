@@ -1,0 +1,72 @@
+
+.. _program_listing_file_ipc_com_marshall_object.h:
+
+Program Listing for File marshall_object.h
+==========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_ipc_com_marshall_object.h>` (``ipc_com\marshall_object.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef MARSHALL_OBJECT_H
+   #define MARSHALL_OBJECT_H
+   
+   #include <interfaces/ipc.h>
+   #include <support/component_impl.h>
+   #include <support/interface_ptr.h>
+   #include <interfaces/core_ps.h>
+   
+   // Forward declarations
+   class CCommunicationControl;
+   class CChannelConnector;
+   
+   inline sdv::process::TProcessID GetProcessID()
+   {
+       static sdv::process::TProcessID tProcessID = 0;
+       if (!tProcessID)
+       {
+           const sdv::process::IProcessInfo* pProcessInfo = sdv::core::GetObject<sdv::process::IProcessInfo>("ProcessControlService");
+           if (!pProcessInfo) return 0;
+           tProcessID = pProcessInfo->GetProcessID();
+       }
+       return tProcessID;
+   }
+   
+   class CMarshallObject : public sdv::ps::IMarshall
+   {
+   public:
+       CMarshallObject(CCommunicationControl& rcontrol);
+   
+       ~CMarshallObject();
+   
+       bool IsValid() const;
+   
+       void Reset();
+   
+       sdv::interface_t InitializeAsProxy(uint32_t uiProxyIndex, sdv::interface_id id, sdv::ps::TMarshallID tStubID,
+           CChannelConnector& rConnector);
+   
+       bool InitializeAsStub(uint32_t uiStubIndex, sdv::interface_t ifc);
+   
+       sdv::ps::TMarshallID GetMarshallID() const;
+   
+       sdv::interface_t GetProxy();
+   
+       virtual sdv::sequence<sdv::pointer<uint8_t>> Call(/*inout*/ sdv::sequence<sdv::pointer<uint8_t>>& seqInputData) override;
+   
+   private:
+       enum class EType {unknown, proxy, stub};
+   
+       CCommunicationControl&      m_rcontrol;                 
+       EType                       m_eType = EType::unknown;   
+       sdv::ps::TMarshallID        m_tMarshallID = {};         
+       sdv::ps::IMarshall*         m_pMarshall = nullptr;      
+       sdv::TObjectPtr             m_ptrMarshallObject;        
+       sdv::ps::TMarshallID        m_tStubID = {};             
+       sdv::interface_t            m_ifcProxy = {};            
+       CChannelConnector*          m_pConnector = nullptr;     
+   };
+   
+   #endif // !defined MARSHALL_OBJECT_H

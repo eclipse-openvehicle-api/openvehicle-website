@@ -1,0 +1,88 @@
+
+.. _program_listing_file_sdv_idl_compiler_logger.h:
+
+Program Listing for File logger.h
+=================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_sdv_idl_compiler_logger.h>` (``sdv_idl_compiler\logger.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LOGGER_H
+   #define LOGGER_H
+   
+   #include <iostream>
+   #include <sstream>
+   #include <cstdint>
+   
+   enum class EVerbosityMode
+   {
+       report_none = -1,       
+       report_errors = 0,      
+       report_all = 10,        
+   };
+   
+   class CLogControl
+   {
+   public:
+       CLogControl();
+   
+       void SetVerbosityMode(EVerbosityMode eMode);
+   
+       EVerbosityMode GetVerbosityMode() const;
+   
+       void IncreaseIndent();
+       void DecreaseIndent();
+       void Log(const std::string& rssText, bool bError = false) const;
+   
+   private:
+       int32_t         m_iIndent = -1;                                     
+       mutable bool    m_bNewline = true;                                  
+       EVerbosityMode  m_eVerbosityMode = EVerbosityMode::report_errors;   
+   };
+   
+   extern CLogControl g_log_control;
+   
+   class CLog : public std::ostream
+   {
+   public:
+       template <typename... TArgs>
+       CLog(TArgs... tArgs);
+   
+       ~CLog();
+   
+   private:
+       static void ComposeString([[maybe_unused]] std::stringstream& rss) {}
+   
+       template <typename TArg, typename... TArgs>
+       static void ComposeString(std::stringstream& rss, TArg tArg, TArgs... tAdditionalArgs)
+       {
+           rss << tArg;
+           ComposeString(rss, tAdditionalArgs...);
+       }
+   
+       class CLogStringBuf : public std::stringbuf
+       {
+       protected:
+           virtual int sync() override;
+       };
+   
+       std::string     m_ssTask;       
+       CLogStringBuf   m_buffer;       
+   };
+   
+   template <typename... TArgs>
+   inline CLog::CLog(TArgs... tArgs) : std::ostream(&m_buffer)
+   {
+       std::stringstream sstreamTaskDescr;
+       ComposeString(sstreamTaskDescr, tArgs...);
+       m_ssTask = sstreamTaskDescr.str();
+   
+       g_log_control.IncreaseIndent();
+       if (!m_ssTask.empty())
+           *this << "Entering: " << m_ssTask << std::endl;
+   }
+   
+   #endif // !defined(LOGGER_H)

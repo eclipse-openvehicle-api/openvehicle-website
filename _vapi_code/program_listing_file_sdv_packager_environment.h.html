@@ -1,0 +1,1258 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Program Listing for File environment.h &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/program_listing_file_sdv_packager_environment.h';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+                        Sysgtem Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Program...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="program-listing-for-file-environment-h">
+<span id="program-listing-file-sdv-packager-environment-h"></span><h1>Program Listing for File environment.h<a class="headerlink" href="#program-listing-for-file-environment-h" title="Permalink to this heading">#</a></h1>
+<p>↰ <a class="reference internal" href="file_sdv_packager_environment.h.html#file-sdv-packager-environment-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">sdv_packager\environment.h</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef ENVIRONMENT_H</span>
+<span class="cp">#define ENVIRONMENT_H</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;filesystem&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdint&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../../global/cmdlnparser/cmdlnparser.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../error_msg.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;interfaces/config.h&gt;</span>
+
+<span class="kr">inline</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">ichar_equals</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="n">cLeft</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">cRight</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">tolower</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cLeft</span><span class="p">))</span><span class="w"> </span><span class="o">==</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">tolower</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cRight</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">iequals</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssLeft</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssRight</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">equal</span><span class="p">(</span><span class="n">rssLeft</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">rssLeft</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">rssRight</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">rssRight</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">ichar_equals</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CSdvPackagerEnvironment</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">SEnvironmentException</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">exception</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">SEnvironmentException</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">nCodeParam</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssDescriptionParam</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
+<span class="w">            </span><span class="n">nCode</span><span class="p">(</span><span class="n">nCodeParam</span><span class="p">),</span><span class="w"> </span><span class="n">ssDescription</span><span class="p">(</span><span class="n">rssDescriptionParam</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{}</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">ssDescription</span><span class="p">.</span><span class="n">c_str</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">int</span><span class="w">             </span><span class="n">nCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">     </span><span class="n">ssDescription</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EOperatingMode</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">none</span><span class="p">,</span>
+<span class="w">        </span><span class="n">pack</span><span class="p">,</span>
+<span class="w">        </span><span class="n">direct_install</span><span class="p">,</span>
+<span class="w">        </span><span class="n">install</span><span class="p">,</span>
+<span class="w">        </span><span class="n">uninstall</span><span class="p">,</span>
+<span class="w">        </span><span class="n">verify</span><span class="p">,</span>
+<span class="w">        </span><span class="n">show</span><span class="p">,</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EShowMask</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">all</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00ff</span><span class="p">,</span>
+<span class="w">        </span><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0001</span><span class="p">,</span>
+<span class="w">        </span><span class="n">modules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0010</span><span class="p">,</span>
+<span class="w">        </span><span class="n">components</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0020</span><span class="p">,</span>
+<span class="w">        </span><span class="n">console</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x01000000</span><span class="p">,</span>
+<span class="w">        </span><span class="n">console_simple</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x03000000</span><span class="p">,</span>
+<span class="w">        </span><span class="n">xml</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x10000000</span><span class="p">,</span>
+<span class="w">        </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x20000000</span><span class="p">,</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">SVersion</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w">  </span><span class="n">nMajor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w">  </span><span class="n">nMinor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w">  </span><span class="n">nPatch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">SModule</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">             </span><span class="n">ssSearchString</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="w">   </span><span class="n">pathRelTarget</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="n">CSdvPackagerEnvironment</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">CSdvPackagerEnvironment</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rvecArgs</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TCharType</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="n">CSdvPackagerEnvironment</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">nArgs</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">TCharType</span><span class="o">**</span><span class="w"> </span><span class="n">rgszArgs</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Help</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ShowHelp</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReportInfo</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Silent</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Verbose</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Version</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">CreateManifestOnly</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">EOperatingMode</span><span class="w"> </span><span class="nf">OperatingMode</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">KeepStructure</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">SModule</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">ModuleList</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">PackagePath</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">SourceLocation</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">OutputLocation</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">TargetLocation</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">RootLocation</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">InstallLocation</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Local</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">InstanceID</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Update</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Overwrite</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">LocalConfigFile</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rvecComponents</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">LocalConfigLocations</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">ActivateLocalConfig</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">InsertIntoUserConfig</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rvecComponents</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">InsertIntoPlatformConfig</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rvecComponents</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">InsertIntoVehicleInterfaceConfig</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rvecComponents</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">InsertIntoVehicleAbstractionConfig</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rvecComponents</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">InstallName</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">ProductName</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Description</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Author</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Address</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Copyrights</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">PackageVersion</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">ShowFlags</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">CheckShowFlag</span><span class="p">(</span><span class="n">EShowMask</span><span class="w"> </span><span class="n">eMask</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="nf">Error</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">ArgError</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SplitConfigString</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssInput</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rpath</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rvecComponents</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">ProcessCommandLine</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rvecCommands</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">CCommandLine</span><span class="w">                </span><span class="n">m_cmdln</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bHelp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bSilent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bVerbose</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bVersion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bKeepStructure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bCreateManifestOnly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bLocal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bUpdate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bOverwrite</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="n">EOperatingMode</span><span class="w">              </span><span class="n">m_eOperatingMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EOperatingMode</span><span class="o">::</span><span class="n">none</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">SModule</span><span class="o">&gt;</span><span class="w">        </span><span class="n">m_vecModules</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="w">       </span><span class="n">m_pathSourceLocation</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="w">       </span><span class="n">m_pathOutputLocation</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="w">       </span><span class="n">m_pathTargetLocation</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="w">       </span><span class="n">m_pathRootLocation</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="w">       </span><span class="n">m_pathInstallLocation</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="w">       </span><span class="n">m_pathPackage</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w">                    </span><span class="n">m_uiInstanceID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000u</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">                 </span><span class="n">m_ssInstallName</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">                 </span><span class="n">m_ssProductName</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">                 </span><span class="n">m_ssDescription</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">                 </span><span class="n">m_ssAuthor</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">                 </span><span class="n">m_ssAddress</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">                 </span><span class="n">m_ssCopyrights</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">                 </span><span class="n">m_ssPackageVersion</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="w">       </span><span class="n">m_pathConfigLocal</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w">    </span><span class="n">m_vecConfigLocalComponents</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bActivateLocalConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_vecLocalConfigDirs</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w">    </span><span class="n">m_vecUserConfigComponents</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w">    </span><span class="n">m_vecPlatformConfigComponents</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w">    </span><span class="n">m_vecVehIfcConfigComponents</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w">    </span><span class="n">m_vecVehAbstrConfigComponents</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bInsertIntoUserConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bInsertIntoPlatformConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bInsertIntoVehIfcConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bInsertIntoVehAbstrConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32_t</span><span class="w">                    </span><span class="n">m_uiShowFlags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w">                         </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NO_ERROR</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">                 </span><span class="n">m_ssArgError</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TCharType</span><span class="o">&gt;</span>
+<span class="n">CSdvPackagerEnvironment</span><span class="o">::</span><span class="n">CSdvPackagerEnvironment</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">nArgs</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">TCharType</span><span class="o">**</span><span class="w"> </span><span class="n">rgszArgs</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
+<span class="w">    </span><span class="n">m_cmdln</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">CCommandLine</span><span class="o">::</span><span class="n">EParseFlags</span><span class="o">::</span><span class="n">no_assignment_character</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">PrintMaxWidth</span><span class="p">(</span><span class="mi">80</span><span class="p">);</span>
+<span class="w">    </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">PrintSyntax</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">try</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vecCommands</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// COMMANDS (selective argument groups 1-6):</span>
+<span class="w">        </span><span class="c1">//   PACK                       Pack modules and files into an installation package</span>
+<span class="w">        </span><span class="c1">//                              Usage: sdv_packager PACK &lt;package name&gt; &lt;files&gt; &lt;options&gt;</span>
+<span class="w">        </span><span class="c1">//   INSTALL                    Install a package into the system</span>
+<span class="w">        </span><span class="c1">//                              Usage: sdv_packager INSTALL &lt;package path&gt; &lt;options&gt;</span>
+<span class="w">        </span><span class="c1">//   DIRECT_INSTALL             Directly install modules and files into the system (without the creation of a package)</span>
+<span class="w">        </span><span class="c1">//                              Usage: sdv_packager DIRECT_INSTALL &lt;package name&gt; &lt;files&gt; &lt;options&gt;</span>
+<span class="w">        </span><span class="c1">//   UNINSTALL                  Remove an installation from the system</span>
+<span class="w">        </span><span class="c1">//                              Usage: sdv_packager UNINSTALL &lt;package name&gt; &lt;options&gt;</span>
+<span class="w">        </span><span class="c1">//   VERIFY                     Verify the consistency and the integrity of an installation package.</span>
+<span class="w">        </span><span class="c1">//                              Usage: sdv_packager VERIFY &lt;package path&gt; &lt;options&gt;</span>
+<span class="w">        </span><span class="c1">//   SHOW                       Show package information</span>
+<span class="w">        </span><span class="c1">//                              Usage: sdv_packager SHOW &lt;ALL|INFO|MODULES|COMPONENTS&gt; &lt;package path&gt; &lt;options&gt;</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineDefaultArgument</span><span class="p">(</span><span class="n">vecCommands</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;COMMAND &lt;...&gt; &lt;options&gt;&quot;</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// ARGUMENT SELECTION GROUP #0 - General options:</span>
+<span class="w">        </span><span class="c1">//     -?, --help              Show help</span>
+<span class="w">        </span><span class="c1">//     -s, --silent            Silent mode</span>
+<span class="w">        </span><span class="c1">//     -v, --verbose           Verbose mode</span>
+<span class="w">        </span><span class="c1">//     --version               Show version</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rArgHelpDef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineOption</span><span class="p">(</span><span class="s">&quot;?&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_bHelp</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Show help&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span>
+<span class="w">        </span><span class="n">rArgHelpDef</span><span class="p">.</span><span class="n">AddSubOptionName</span><span class="p">(</span><span class="s">&quot;help&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rArgSilentDef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineOption</span><span class="p">(</span><span class="s">&quot;s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_bSilent</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Do not show any information on STDOUT. Not compatible with &quot;</span>
+<span class="w">            </span><span class="s">&quot;&#39;--verbose&#39;.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">rArgSilentDef</span><span class="p">.</span><span class="n">AddSubOptionName</span><span class="p">(</span><span class="s">&quot;silent&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rArgVerboseDef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineOption</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_bVerbose</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Provide verbose information. Not compatible with &quot;</span>
+<span class="w">            </span><span class="s">&quot;&#39;--silent&#39;.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">rArgVerboseDef</span><span class="p">.</span><span class="n">AddSubOptionName</span><span class="p">(</span><span class="s">&quot;verbose&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;version&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_bVersion</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Show version information.&quot;</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// ARGUMENT SELECTION GROUP #2 &amp; #3 &amp; #4: General options during installation/uninstallation</span>
+<span class="w">        </span><span class="c1">//     -L, --local                  Local installation</span>
+<span class="w">        </span><span class="c1">//     --instance&lt;id&gt;               Instance ID to use for installation</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rLocalArgDef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineOption</span><span class="p">(</span><span class="s">&quot;L&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_bLocal</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Target the local system.&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+<span class="w">        </span><span class="n">rLocalArgDef</span><span class="p">.</span><span class="n">AddSubOptionName</span><span class="p">(</span><span class="s">&quot;local&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rInstance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;instance&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_uiInstanceID</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;The instance ID of the SDV server instance when not &quot;</span>
+<span class="w">            </span><span class="s">&quot;targeting the local system (default ID is 1000).&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// ARGUMENT SELECTION GROUP #1 - Packing:</span>
+<span class="w">        </span><span class="c1">//     -O&lt;path&gt;                     Optional destination location</span>
+<span class="w">        </span><span class="c1">//     --signature&lt;path&gt;            Path to the file to use to sign the package (not implemented yet)</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineGroup</span><span class="p">(</span><span class="s">&quot;Package creation&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineOption</span><span class="p">(</span><span class="s">&quot;O&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_pathOutputLocation</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;The output location (optional, default is current directory).&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// ARGUMENT SECLECTION GROUP #1 &amp; #3 - Packing and direct installation:</span>
+<span class="w">        </span><span class="c1">//     -I&lt;path&gt;                     Optional source location</span>
+<span class="w">        </span><span class="c1">//     --keep_structure             Maintain original directory structure</span>
+<span class="w">        </span><span class="c1">//     --create_manifest_only       Create a manifest file only</span>
+<span class="w">        </span><span class="c1">//     --set_product&lt;string&gt;        Set the product name (if not identical to installation name).</span>
+<span class="w">        </span><span class="c1">//     --set_description&lt;string&gt;    Set the package description</span>
+<span class="w">        </span><span class="c1">//     --set_author&lt;string&gt;         Set author string</span>
+<span class="w">        </span><span class="c1">//     --set_address&lt;string&gt;        Set address string (multi-line)</span>
+<span class="w">        </span><span class="c1">//     --set_copyright&lt;string&gt;      Set copyright string</span>
+<span class="w">        </span><span class="c1">//     --set_version&lt;string&gt;        Set product version string (also use for updates).</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineOption</span><span class="p">(</span><span class="s">&quot;I&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_pathSourceLocation</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;The source location (optional, default is current directory).&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span>
+<span class="w">            </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;keep_structure&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_bKeepStructure</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Maintain the directory structure within the package. In &quot;</span>
+<span class="w">            </span><span class="s">&quot;combination with the source location (current directory or directory provided by &#39;-I&#39; option).&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;create_manifest_only&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_bCreateManifestOnly</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Create manifest, but does not copy module files &quot;</span>
+<span class="w">            </span><span class="s">&quot;from specified location. If provided, the manifest will be stored in the output directory (current directory or &quot;</span>
+<span class="w">            </span><span class="s">&quot;directory provided by &#39;-O&#39; option).&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;set_product&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_ssProductName</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Set the product name (default is package name).&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;set_description&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_ssDescription</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Set the package description.&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;set_author&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_ssAuthor</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Set author name.&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;set_address&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_ssAddress</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Set author address information.&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;set_copyright&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_ssCopyrights</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Set copyright information.&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;set_version&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_ssPackageVersion</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Set package version (needed to allow updates).&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// ARGUMENT SELECTION GROUP #2 &amp; #3 &amp; #4- Installation from package and direct installation:</span>
+<span class="w">        </span><span class="c1">//     -T&lt;path&gt;                     Optional target location</span>
+<span class="w">        </span><span class="c1">//     -P, --update                 Use update if a previous package with older version has been found</span>
+<span class="w">        </span><span class="c1">//     -W, --overwrite              Use overwrite if a previous package has been found</span>
+<span class="w">        </span><span class="c1">//     --verify_signed              Verify whether the package is signed and if not return an error (not implemented)</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineGroup</span><span class="p">(</span><span class="s">&quot;Installation / uninstallation&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rTargetLoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineOption</span><span class="p">(</span><span class="s">&quot;T&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_pathTargetLocation</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;The target location for package installation. Required &quot;</span>
+<span class="w">            </span><span class="s">&quot;when targeting a local system (&#39;--local&#39; option).&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rArgDefUpdate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineOption</span><span class="p">(</span><span class="s">&quot;P&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_bUpdate</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Update the installation if an older version is existing.&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">rArgDefUpdate</span><span class="p">.</span><span class="n">AddSubOptionName</span><span class="p">(</span><span class="s">&quot;update&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rArgDefOverwrite</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineOption</span><span class="p">(</span><span class="s">&quot;W&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_bOverwrite</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Overwrite the installation if an installation is &quot;</span>
+<span class="w">            </span><span class="s">&quot;existing (regardless of the installed version).&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">rArgDefOverwrite</span><span class="p">.</span><span class="n">AddSubOptionName</span><span class="p">(</span><span class="s">&quot;overwrite&quot;</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// Configuration</span>
+<span class="w">        </span><span class="c1">// ARGUMENT SELECTION GROUP #2 &amp; #3 &amp; #4 - Update from package and directly and uninstallation:</span>
+<span class="w">        </span><span class="c1">//     --config_dir&lt;paths...&gt;       Local instance only; directory to configuration files to update.</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineGroup</span><span class="p">(</span><span class="s">&quot;Configuration update&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rConfigDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;config_dir&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_vecLocalConfigDirs</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;One or more configuration directories &quot;</span>
+<span class="w">            </span><span class="s">&quot;to scan for components being updated. Use with local systems only (&#39;--local&#39; option).&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">//     --config_file&lt;path&gt;[=&lt;x,&gt;[all,-component,-...]|[+component,+....]]   Local instance only; configuration file.</span>
+<span class="w">        </span><span class="c1">//     --activate_config                                                    Local instance only; select config into settings.</span>
+<span class="w">        </span><span class="c1">//     --user_config[=&lt;x,&gt;[all,-component,-...]|[+component,+....]]         Server instance only; user configuration.</span>
+<span class="w">        </span><span class="c1">//     --platform_config[=&lt;x,&gt;[all,-component,-...]|[+component,+....]]     Server instance only; platform config.</span>
+<span class="w">        </span><span class="c1">//     --vehifc_config[=&lt;x,&gt;[all,-component,-...]|[+component,+....]]       Server instance only; vehicle interface config.</span>
+<span class="w">        </span><span class="c1">//     --vehabstr_config[=&lt;x,&gt;[all,-component,-...]|[+component,+....]]     Server instance only; vehicle abstraction config.</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssConfigFileLocal</span><span class="p">;</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rConfigFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;config_file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ssConfigFileLocal</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Update a user configuration file. For &quot;</span>
+<span class="w">            </span><span class="s">&quot;usage, see explanatory text above. Use with local systems only (&#39;--local&#39; option).&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rActivateConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;activate_config&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_bActivateLocalConfig</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Update the settings file to &quot;</span>
+<span class="w">            </span><span class="s">&quot;automatically activate the provided configuration file. Use with local system only (&#39;--local&#39; option).&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssUserConfigServer</span><span class="p">,</span><span class="w"> </span><span class="n">ssPlatformConfigServer</span><span class="p">,</span><span class="w"> </span><span class="n">ssInterfaceConfigServer</span><span class="p">,</span><span class="w"> </span><span class="n">ssAbstrConfigServer</span><span class="p">;</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rPlatformConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;platform_config&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ssPlatformConfigServer</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Update the platform &quot;</span>
+<span class="w">            </span><span class="s">&quot;configuration defining which components of this installation are used to interact with the hardware platform. For &quot;</span>
+<span class="w">            </span><span class="s">&quot;usage, see explanatory text above. Use on server only.&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rInterfaceConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;interface_config&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ssInterfaceConfigServer</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Update the vehicle &quot;</span>
+<span class="w">            </span><span class="s">&quot;interface configuration defining which components of this installation represent the vehicle interface. For usage, &quot;</span>
+<span class="w">            </span><span class="s">&quot;see explanatory text above. Use on server only.&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rAbstrConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;abstract_config&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ssAbstrConfigServer</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Update the vehicle abstraction &quot;</span>
+<span class="w">            </span><span class="s">&quot;configuration defining which components of this installation represent an abstracted vehicle to the application &quot;</span>
+<span class="w">            </span><span class="s">&quot;components. For usage, see explanatory text above. Use on server only.&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rUserConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;user_config&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ssUserConfigServer</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Update the user configuration defining &quot;</span>
+<span class="w">            </span><span class="s">&quot;which components of this installation need to be instantiated automatically. User configuration can only contain &quot;</span>
+<span class="w">            </span><span class="s">&quot;complex services. For usage, see explanatory text above. Use on server only.&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// ARGUMENT SELECTION GROUP #5 - Package verififcation</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineGroup</span><span class="p">(</span><span class="s">&quot;Verification options&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">//     --verify_signed              Verify whether the package is signed and if not return an error (not implemented)</span>
+
+<span class="w">        </span><span class="c1">// ARGUMENT SELECTION GROUP #6 - Show package information</span>
+<span class="w">        </span><span class="c1">//     --show_simple</span>
+<span class="w">        </span><span class="c1">//     --xml (not implemented)</span>
+<span class="w">        </span><span class="c1">//     --json (not implemented)</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineGroup</span><span class="p">(</span><span class="s">&quot;Show options&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">bShowSimple</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">DefineSubOption</span><span class="p">(</span><span class="s">&quot;show_simple&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bShowSimple</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Show package information in simple format.&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">m_cmdln</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">nArgs</span><span class="p">),</span><span class="w"> </span><span class="n">rgszArgs</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// Process the command line</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ProcessCommandLine</span><span class="p">(</span><span class="n">vecCommands</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// Update show mask</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bShowSimple</span><span class="p">)</span>
+<span class="w">            </span><span class="n">m_uiShowFlags</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">EShowMask</span><span class="o">::</span><span class="n">console_simple</span><span class="p">);</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="c1">// TODO: if not XML and JSON, add console</span>
+<span class="w">            </span><span class="n">m_uiShowFlags</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">EShowMask</span><span class="o">::</span><span class="n">console</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// Split the configuration strings</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ssConfigFileLocal</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">            </span><span class="n">SplitConfigString</span><span class="p">(</span><span class="n">ssConfigFileLocal</span><span class="p">,</span><span class="w"> </span><span class="n">m_pathConfigLocal</span><span class="p">,</span><span class="w"> </span><span class="n">m_vecConfigLocalComponents</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rUserConfig</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">())</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">m_bInsertIntoUserConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="w"> </span><span class="n">rpathTemp</span><span class="p">;</span>
+<span class="w">            </span><span class="n">SplitConfigString</span><span class="p">(</span><span class="n">ssUserConfigServer</span><span class="p">,</span><span class="w"> </span><span class="n">rpathTemp</span><span class="p">,</span><span class="w"> </span><span class="n">m_vecUserConfigComponents</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rpathTemp</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INVALID_CONFIG_STRING</span><span class="p">;</span>
+<span class="w">                </span><span class="n">m_ssArgError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INVALID_CONFIG_STRING_MSG</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rPlatformConfig</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">())</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">m_bInsertIntoPlatformConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="w"> </span><span class="n">rpathTemp</span><span class="p">;</span>
+<span class="w">            </span><span class="n">SplitConfigString</span><span class="p">(</span><span class="n">ssPlatformConfigServer</span><span class="p">,</span><span class="w"> </span><span class="n">rpathTemp</span><span class="p">,</span><span class="w"> </span><span class="n">m_vecPlatformConfigComponents</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rpathTemp</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INVALID_CONFIG_STRING</span><span class="p">;</span>
+<span class="w">                </span><span class="n">m_ssArgError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INVALID_CONFIG_STRING_MSG</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rInterfaceConfig</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">())</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">m_bInsertIntoVehIfcConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="w"> </span><span class="n">rpathTemp</span><span class="p">;</span>
+<span class="w">            </span><span class="n">SplitConfigString</span><span class="p">(</span><span class="n">ssInterfaceConfigServer</span><span class="p">,</span><span class="w"> </span><span class="n">rpathTemp</span><span class="p">,</span><span class="w"> </span><span class="n">m_vecVehIfcConfigComponents</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rpathTemp</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INVALID_CONFIG_STRING</span><span class="p">;</span>
+<span class="w">                </span><span class="n">m_ssArgError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INVALID_CONFIG_STRING_MSG</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rAbstrConfig</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">())</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">m_bInsertIntoVehAbstrConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="w"> </span><span class="n">rpathTemp</span><span class="p">;</span>
+<span class="w">            </span><span class="n">SplitConfigString</span><span class="p">(</span><span class="n">ssAbstrConfigServer</span><span class="p">,</span><span class="w"> </span><span class="n">rpathTemp</span><span class="p">,</span><span class="w"> </span><span class="n">m_vecVehAbstrConfigComponents</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rpathTemp</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INVALID_CONFIG_STRING</span><span class="p">;</span>
+<span class="w">                </span><span class="n">m_ssArgError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INVALID_CONFIG_STRING_MSG</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// Check for the local flag and if set, this is not compatible to server options.</span>
+<span class="w">        </span><span class="c1">// Also if not set, local options are not allowed.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_bLocal</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rInstance</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INCOMPATIBLE_ARGUMENTS</span><span class="p">;</span>
+<span class="w">                </span><span class="n">m_ssArgError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;The option &#39;--instance&#39; cannot be used with with local installations (&#39;--local&#39; option).&quot;</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rUserConfig</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">rPlatformConfig</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">()</span><span class="w"> </span><span class="o">||</span>
+<span class="w">                </span><span class="n">rInterfaceConfig</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">rAbstrConfig</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INCOMPATIBLE_ARGUMENTS</span><span class="p">;</span>
+<span class="w">                </span><span class="n">m_ssArgError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;The configuration options &#39;--user_config&#39;, &#39;--platform_config&#39;, &#39;--vehifc_config&#39; and &quot;</span>
+<span class="w">                    </span><span class="s">&quot;&#39;--vehabstr_config&#39; cannot be used with with local installations (&#39;--local&#39; option).&quot;</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">rTargetLoc</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_TARGET_LOCATION_ERROR</span><span class="p">;</span>
+<span class="w">                </span><span class="n">m_ssArgError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;The target location option &#39;-T&#39; must be used when specifying local installations (&#39;--local&#39; &quot;</span>
+<span class="w">                    </span><span class="s">&quot;option).&quot;</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rActivateConfig</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">rConfigFile</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INCOMPATIBLE_ARGUMENTS</span><span class="p">;</span>
+<span class="w">                </span><span class="n">m_ssArgError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Activating a configuration file using the option &#39;--activate_config&#39; can only be used with when a &quot;</span>
+<span class="w">                    </span><span class="s">&quot;configuration file is provided using the option &#39;--config_file&#39;.&quot;</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rConfigFile</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INCOMPATIBLE_ARGUMENTS</span><span class="p">;</span>
+<span class="w">                </span><span class="n">m_ssArgError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;The configuration file option &#39;--config_path&#39; can only be used with with local installations &quot;</span>
+<span class="w">                    </span><span class="s">&quot;(&#39;--local&#39; option).&quot;</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rActivateConfig</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INCOMPATIBLE_ARGUMENTS</span><span class="p">;</span>
+<span class="w">                </span><span class="n">m_ssArgError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;The configuration file option &#39;--activate_config&#39; can only be used with with local &quot;</span>
+<span class="w">                    </span><span class="s">&quot;installations (&#39;--local&#39; option).&quot;</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rConfigDir</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INCOMPATIBLE_ARGUMENTS</span><span class="p">;</span>
+<span class="w">                </span><span class="n">m_ssArgError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;The configuration file option &#39;--config_dir&#39; can only be used with with local installations &quot;</span>
+<span class="w">                    </span><span class="s">&quot;(&#39;--local&#39; option).&quot;</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rTargetLoc</span><span class="p">.</span><span class="n">OptionAvailableOnCommandLine</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_INCOMPATIBLE_ARGUMENTS</span><span class="p">;</span>
+<span class="w">                </span><span class="n">m_ssArgError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;The target location option &#39;-T&#39; can only be used with with local installations (&#39;--local&#39; option).&quot;</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// Check update and overwrite</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_bUpdate</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">m_bOverwrite</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_UPDATE_OVERWRITE_ERROR</span><span class="p">;</span>
+<span class="w">            </span><span class="n">m_ssArgError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_UPDATE_OVERWRITE_ERROR_MSG</span><span class="p">;</span>
+<span class="w">            </span><span class="k">return</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">SArgumentParseException</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rsExcept</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// If not all fits, but help is requested, this is okay...</span>
+<span class="w">        </span><span class="c1">// Otherwise throw an environment exception.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_bHelp</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">m_nError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CMDLN_ARG_ERR</span><span class="p">;</span>
+<span class="w">            </span><span class="n">m_ssArgError</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rsExcept</span><span class="p">.</span><span class="n">what</span><span class="p">();</span>
+<span class="w">            </span><span class="k">return</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#endif </span><span class="c1">// !defined ENVIRONMENT_H</span>
+</pre></div>
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
+        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+    </ul>
+    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
+ </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".sidebar-link");
+    const currentPath = window.location.pathname;
+    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
+    const docRoot = docRootMatch ? docRootMatch[1] : '/';
+    const relPath = currentPath.replace(docRoot, '');
+    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+    let prefix = '';
+    if (upLevels > 0) {
+      prefix = '../'.repeat(upLevels);
+    }
+    links.forEach(link => {
+      const target = link.getAttribute("data-target");
+      link.setAttribute("href", prefix + target);
+    });
+  });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

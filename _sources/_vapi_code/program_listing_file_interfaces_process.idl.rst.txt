@@ -1,0 +1,55 @@
+
+.. _program_listing_file_interfaces_process.idl:
+
+Program Listing for File process.idl
+====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_process.idl>` (``interfaces\process.idl``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: idl
+
+   
+   #include "core.idl"
+   
+   module sdv
+   {
+       module process
+       {
+           typedef uint32 TProcessID;
+   
+           local interface IProcessLifetimeCallback
+           {
+               void ProcessTerminated(in TProcessID tProcessID, in int64 iRetValue);
+           };
+   
+           local interface IProcessLifetime
+           {
+               uint32 RegisterMonitor(in TProcessID tProcessID, in IInterfaceAccess pMonitor);
+   
+               void UnregisterMonitor(in uint32 uiCookie);
+   
+               boolean WaitForTerminate(in TProcessID tProcessID, in  uint32 uiWaitMs);
+           };
+   
+           enum EProcessRights : uint32
+           {
+               default_rights = 0,     
+               parent_rights = 10,     
+               reduced_rights = 20,    
+           };
+   
+           local interface IProcessControl
+           {
+               TProcessID Execute(in u8string ssModule, in sequence<u8string> seqArgs, in EProcessRights eRights);
+   
+               boolean Terminate(in TProcessID tProcessID);
+           };
+   
+           local interface IProcessInfo
+           {
+               TProcessID GetProcessID() const;
+           };
+       };
+   };
