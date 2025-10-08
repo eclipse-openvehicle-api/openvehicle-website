@@ -616,8 +616,68 @@ document.write(`
                   
   <section id="key-building-blocks-of-open-vehicle-api">
 <span id="vapi-key-building-blocks"></span><h1>Key Building Blocks of Open Vehicle API<a class="headerlink" href="#key-building-blocks-of-open-vehicle-api" title="Permalink to this heading">#</a></h1>
+<p><strong>Purpose of the framework:</strong> To develop software components that are isolated, modular, and interference-free.</p>
 <p>For more features the Open Vehicle API offers go to <a class="reference internal" href="main_goals.html#vapi-key-features"><span class="std std-ref">Key Features</span></a>.</p>
 <p>Here we describe the major building blocks the framework contains.</p>
+<section id="free-of-interference">
+<h2>Free of Interference<a class="headerlink" href="#free-of-interference" title="Permalink to this heading">#</a></h2>
+<p>In simple words: It’s a C++ framework for building modular software systems where each <a class="reference internal" href="glossary.html#term-Complex-Service"><span class="xref std std-term">Complex Service</span></a> runs in its own process and communicates through interfaces defined in IDL. This design ensures isolation, scalability, and maintainability.</p>
+<p><strong>Key Design Principles</strong></p>
+<ol class="arabic simple">
+<li><p>Process Isolation</p>
+<ul class="simple">
+<li><p>Each component runs in its own process, ensuring complete separation of memory and execution context.</p></li>
+<li><p>This prevents unintended side effects and improves fault tolerance.</p></li>
+</ul>
+</li>
+<li><p>Interface-Driven Communication</p>
+<ul class="simple">
+<li><p>Components interact via well-defined interfaces.</p></li>
+<li><p>Interfaces are described using IDL (Interface Definition Language), enabling language-agnostic and structured communication.</p></li>
+</ul>
+</li>
+<li><p>Loose Coupling</p>
+<ul class="simple">
+<li><p>Components are decoupled from each other.</p></li>
+<li><p>Changes in one component do not affect others, as long as the interface contract remains stable.</p></li>
+</ul>
+</li>
+<li><p>Scalability &amp; Maintainability</p>
+<ul class="simple">
+<li><p>New components can be added without modifying existing ones.</p></li>
+<li><p>Easier testing and debugging due to isolated execution.</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>Technical Highlights</strong></p>
+<ul class="simple">
+<li><p>IDL Usage:</p>
+<ul>
+<li><p>Defines the interfaces for communication.</p></li>
+<li><p>Enables automatic generation of stubs/skeletons for IPC (Inter-Process Communication).</p></li>
+</ul>
+</li>
+<li><p>IPC Mechanism:</p>
+<ul>
+<li><p>Could be based on sockets, shared memory, message queues, or a custom protocol.</p></li>
+<li><p>Ensures reliable and efficient data exchange between processes.</p></li>
+</ul>
+</li>
+<li><p>Component Lifecycle Management:</p>
+<ul>
+<li><p>Each component can be started, stopped, and monitored independently.</p></li>
+<li><p>Optional: Include a supervisor or orchestrator module.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Benefits</strong></p>
+<ul class="simple">
+<li><p>Robustness: Failures in one component don’t crash the entire system.</p></li>
+<li><p>Security: Process boundaries help enforce access control and sandboxing.</p></li>
+<li><p>Flexibility: Easy to replace or upgrade components.</p></li>
+<li><p>Testability: Components can be unit-tested in isolation.</p></li>
+</ul>
+</section>
 <section id="vehicle-and-platform-abstraction">
 <h2>Vehicle and Platform Abstraction<a class="headerlink" href="#vehicle-and-platform-abstraction" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -799,25 +859,30 @@ document.write(`
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div>
 
 <div class="toggle-sidebar">
@@ -835,25 +900,30 @@ document.write(`
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div></div>
               
             

@@ -653,10 +653,10 @@ document.write(`
 <h2>Enums<a class="headerlink" href="#enums" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1ps_1a994137688c692fe3c25ffd9c707f4dc6.html#exhale-enum-namespacesdv-1-1ps-1a994137688c692fe3c25ffd9c707f4dc6"><span class="std std-ref">Enum ECallResult</span></a></p></li>
-<li><p><a class="reference internal" href="enum_namespacesdv_1_1ps_1ab865f4af1cc82fab95e1f235e8ad8ec5.html#exhale-enum-namespacesdv-1-1ps-1ab865f4af1cc82fab95e1f235e8ad8ec5"><span class="std std-ref">Enum EMarshallDataInterpret</span></a></p></li>
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1ps_1a6b3a1976180c5342946ab9a5a5728764.html#exhale-enum-namespacesdv-1-1ps-1a6b3a1976180c5342946ab9a5a5728764"><span class="std std-ref">Enum EMarshallDataInterpret</span></a></p></li>
-<li><p><a class="reference internal" href="enum_namespacesdv_1_1ps_1ad427b38409f5ab8199410b0a08036e12.html#exhale-enum-namespacesdv-1-1ps-1ad427b38409f5ab8199410b0a08036e12"><span class="std std-ref">Enum EMarshallFlags</span></a></p></li>
+<li><p><a class="reference internal" href="enum_namespacesdv_1_1ps_1ab865f4af1cc82fab95e1f235e8ad8ec5.html#exhale-enum-namespacesdv-1-1ps-1ab865f4af1cc82fab95e1f235e8ad8ec5"><span class="std std-ref">Enum EMarshallDataInterpret</span></a></p></li>
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1ps_1a9f446a0ec4d110c63cf099c99306c657.html#exhale-enum-namespacesdv-1-1ps-1a9f446a0ec4d110c63cf099c99306c657"><span class="std std-ref">Enum EMarshallFlags</span></a></p></li>
+<li><p><a class="reference internal" href="enum_namespacesdv_1_1ps_1ad427b38409f5ab8199410b0a08036e12.html#exhale-enum-namespacesdv-1-1ps-1ad427b38409f5ab8199410b0a08036e12"><span class="std std-ref">Enum EMarshallFlags</span></a></p></li>
 </ul>
 </section>
 <section id="functions">
@@ -705,25 +705,30 @@ document.write(`
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div>
 
 <div class="toggle-sidebar">
@@ -741,25 +746,30 @@ document.write(`
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div></div>
               
             

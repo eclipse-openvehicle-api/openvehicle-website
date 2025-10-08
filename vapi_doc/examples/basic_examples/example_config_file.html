@@ -632,6 +632,21 @@ document.write(`
 <input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
 </input><label class="sd-tab-label" for="sd-tab-item-0">
 Example</label><div class="sd-tab-content docutils">
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Configuration</span><span class="p">]</span>
+<span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
+
+<span class="p">[[</span><span class="n">Component</span><span class="p">]]</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;module_example.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;class_example&quot;</span>
+<span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;object_name_example&quot;</span>
+<span class="n">Message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;It&#39;s me&quot;</span>
+<span class="n">Id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span>
+<span class="n">Pi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.1415926</span>
+<span class="n">Boolean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
+<span class="n">Array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="mi">17</span><span class="w"> </span><span class="p">]</span>
+<span class="n">Table</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">77</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.2</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;das ist ein string&quot;</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
 </div>
 <input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
 </input><label class="sd-tab-label" for="sd-tab-item-1">
@@ -1665,25 +1680,30 @@ Print variables</label><div class="sd-tab-content docutils">
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div>
 
 <div class="toggle-sidebar">
@@ -1701,25 +1721,30 @@ Print variables</label><div class="sd-tab-content docutils">
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div></div>
               
             

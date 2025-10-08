@@ -3,9 +3,75 @@
 Key Building Blocks of Open Vehicle API
 =======================================
 
+**Purpose of the framework:** To develop software components that are isolated, modular, and interference-free.
+
 For more features the Open Vehicle API offers go to :ref:`Key Features <vapi-key_features>`.
 
 Here we describe the major building blocks the framework contains.
+
+
+Free of Interference
+--------------------
+
+In simple words: It's a C++ framework for building modular software systems where each :term:`Complex Service` runs in its own process and communicates through interfaces defined in IDL. This design ensures isolation, scalability, and maintainability.
+
+**Key Design Principles**
+
+1. Process Isolation
+   
+   - Each component runs in its own process, ensuring complete separation of memory and execution context.
+   - This prevents unintended side effects and improves fault tolerance.
+
+2. Interface-Driven Communication  
+  
+   - Components interact via well-defined interfaces.
+   - Interfaces are described using IDL (Interface Definition Language), enabling language-agnostic and structured communication.
+
+3. Loose Coupling  
+  
+   - Components are decoupled from each other.
+   - Changes in one component do not affect others, as long as the interface contract remains stable.
+
+4. Scalability & Maintainability  
+  
+   - New components can be added without modifying existing ones.
+   - Easier testing and debugging due to isolated execution.
+
+**Technical Highlights**
+
+- IDL Usage:  
+  
+  - Defines the interfaces for communication.
+  - Enables automatic generation of stubs/skeletons for IPC (Inter-Process Communication).
+
+- IPC Mechanism:
+   
+  - Could be based on sockets, shared memory, message queues, or a custom protocol.
+  - Ensures reliable and efficient data exchange between processes.
+
+- Component Lifecycle Management:
+  
+  - Each component can be started, stopped, and monitored independently.
+  - Optional: Include a supervisor or orchestrator module.
+
+**Benefits**
+
+- Robustness: Failures in one component don’t crash the entire system.
+- Security: Process boundaries help enforce access control and sandboxing.
+- Flexibility: Easy to replace or upgrade components.
+- Testability: Components can be unit-tested in isolation.
+
+
+
+
+
+
+
+
+
+
+
+
 
 Vehicle and Platform Abstraction
 --------------------------------

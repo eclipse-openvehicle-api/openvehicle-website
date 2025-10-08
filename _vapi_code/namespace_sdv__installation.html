@@ -654,8 +654,8 @@ document.write(`
 <section id="enums">
 <h2>Enums<a class="headerlink" href="#enums" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference internal" href="enum_namespacesdv_1_1installation_1a5510449057dc1173e2953e48906e7ed8.html#exhale-enum-namespacesdv-1-1installation-1a5510449057dc1173e2953e48906e7ed8"><span class="std std-ref">Enum EPackageBLOBType</span></a></p></li>
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1installation_1a9bf8242aedcdc6b1f0245c6275c82848.html#exhale-enum-namespacesdv-1-1installation-1a9bf8242aedcdc6b1f0245c6275c82848"><span class="std std-ref">Enum EPackageBLOBType</span></a></p></li>
+<li><p><a class="reference internal" href="enum_namespacesdv_1_1installation_1a5510449057dc1173e2953e48906e7ed8.html#exhale-enum-namespacesdv-1-1installation-1a5510449057dc1173e2953e48906e7ed8"><span class="std std-ref">Enum EPackageBLOBType</span></a></p></li>
 </ul>
 </section>
 <section id="unions">
@@ -698,25 +698,30 @@ document.write(`
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div>
 
 <div class="toggle-sidebar">
@@ -734,25 +739,30 @@ document.write(`
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div></div>
               
             

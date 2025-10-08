@@ -643,8 +643,8 @@ document.write(`
 <ul class="simple">
 <li><p><a class="reference internal" href="function_base64_8h_1a521d98a9f8bc0b6f6bcae69f1b631420.html#exhale-function-base64-8h-1a521d98a9f8bc0b6f6bcae69f1b631420"><span class="std std-ref">Function Base64Decode</span></a></p></li>
 <li><p><a class="reference internal" href="function_base64_8h_1a797c60723d4e05fd18284176639d7bd8.html#exhale-function-base64-8h-1a797c60723d4e05fd18284176639d7bd8"><span class="std std-ref">Function Base64DecodePlainText</span></a></p></li>
-<li><p><a class="reference internal" href="function_base64_8h_1adc0076f94e056236fb90c6bf5e4362ac.html#exhale-function-base64-8h-1adc0076f94e056236fb90c6bf5e4362ac"><span class="std std-ref">Template Function Base64Encode(const TConvert&amp;)</span></a></p></li>
 <li><p><a class="reference internal" href="function_base64_8h_1abf248096b82a4eab7228ce8680992136.html#exhale-function-base64-8h-1abf248096b82a4eab7228ce8680992136"><span class="std std-ref">Function Base64Encode(const char *, std::size_t)</span></a></p></li>
+<li><p><a class="reference internal" href="function_base64_8h_1adc0076f94e056236fb90c6bf5e4362ac.html#exhale-function-base64-8h-1adc0076f94e056236fb90c6bf5e4362ac"><span class="std std-ref">Template Function Base64Encode(const TConvert&amp;)</span></a></p></li>
 <li><p><a class="reference internal" href="function_base64_8h_1a2b4445b9eb65749ae73d8ec6efec0833.html#exhale-function-base64-8h-1a2b4445b9eb65749ae73d8ec6efec0833"><span class="std std-ref">Function Base64EncodePlainText</span></a></p></li>
 <li><p><a class="reference internal" href="function_base64_8h_1a0c39d4df58b8b65423a40830d6411965.html#exhale-function-base64-8h-1a0c39d4df58b8b65423a40830d6411965"><span class="std std-ref">Template Function DecodeBase64(const std::string&amp;)</span></a></p></li>
 <li><p><a class="reference internal" href="function_base64_8h_1a3fe37b6bc9e10d65829cf10a36fae5ba.html#exhale-function-base64-8h-1a3fe37b6bc9e10d65829cf10a36fae5ba"><span class="std std-ref">Specialized Template Function DecodeBase64(const std::string&amp;)</span></a></p></li>
@@ -691,25 +691,30 @@ document.write(`
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div>
 
 <div class="toggle-sidebar">
@@ -727,25 +732,30 @@ document.write(`
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div></div>
               
             

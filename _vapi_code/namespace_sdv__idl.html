@@ -654,10 +654,10 @@ document.write(`
 <ul class="simple">
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1idl_1a1d5758e60949ecefbaed4bdab2b45d88.html#exhale-enum-namespacesdv-1-1idl-1a1d5758e60949ecefbaed4bdab2b45d88"><span class="std std-ref">Enum ECommentMask</span></a></p></li>
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1idl_1a7a70043b285f0f006497dfb95c17f8fd.html#exhale-enum-namespacesdv-1-1idl-1a7a70043b285f0f006497dfb95c17f8fd"><span class="std std-ref">Enum EDeclType</span></a></p></li>
-<li><p><a class="reference internal" href="enum_namespacesdv_1_1idl_1a7a70043b285f0f006497dfb95c17f8fd.html#exhale-enum-namespacesdv-1-1idl-1a7a70043b285f0f006497dfb95c17f8fd"><span class="std std-ref">Enum EDeclType</span></a></p></li>
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1idl_1a9a3c695822d595a209ef8cc253d26e4e.html#exhale-enum-namespacesdv-1-1idl-1a9a3c695822d595a209ef8cc253d26e4e"><span class="std std-ref">Enum EDeclType</span></a></p></li>
-<li><p><a class="reference internal" href="enum_namespacesdv_1_1idl_1aff11114d3aa3d363243cc46b68a005f6.html#exhale-enum-namespacesdv-1-1idl-1aff11114d3aa3d363243cc46b68a005f6"><span class="std std-ref">Enum EEntityType</span></a></p></li>
+<li><p><a class="reference internal" href="enum_namespacesdv_1_1idl_1a7a70043b285f0f006497dfb95c17f8fd.html#exhale-enum-namespacesdv-1-1idl-1a7a70043b285f0f006497dfb95c17f8fd"><span class="std std-ref">Enum EDeclType</span></a></p></li>
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1idl_1a15ad03805fbe6e6a1a3764feb180adde.html#exhale-enum-namespacesdv-1-1idl-1a15ad03805fbe6e6a1a3764feb180adde"><span class="std std-ref">Enum EEntityType</span></a></p></li>
+<li><p><a class="reference internal" href="enum_namespacesdv_1_1idl_1aff11114d3aa3d363243cc46b68a005f6.html#exhale-enum-namespacesdv-1-1idl-1aff11114d3aa3d363243cc46b68a005f6"><span class="std std-ref">Enum EEntityType</span></a></p></li>
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1idl_1a15ad03805fbe6e6a1a3764feb180adde.html#exhale-enum-namespacesdv-1-1idl-1a15ad03805fbe6e6a1a3764feb180adde"><span class="std std-ref">Enum EEntityType</span></a></p></li>
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1idl_1a6c9401593b2ce0a627230a34520f73f8.html#exhale-enum-namespacesdv-1-1idl-1a6c9401593b2ce0a627230a34520f73f8"><span class="std std-ref">Enum ELocation</span></a></p></li>
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1idl_1aa2c3fd72b10adf0b227888d6a3ff031e.html#exhale-enum-namespacesdv-1-1idl-1aa2c3fd72b10adf0b227888d6a3ff031e"><span class="std std-ref">Enum EParameterDirection</span></a></p></li>
@@ -778,25 +778,30 @@ document.write(`
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div>
 
 <div class="toggle-sidebar">
@@ -814,25 +819,30 @@ document.write(`
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div></div>
               
             

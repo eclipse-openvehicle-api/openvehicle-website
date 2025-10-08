@@ -632,25 +632,270 @@ document.write(`
 <input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
 </input><label class="sd-tab-label" for="sd-tab-item-0">
 Example</label><div class="sd-tab-content docutils">
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdexcept&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;example_interfaces.h&quot;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/component_impl.h&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CAccessComponent</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IShowExample</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">CAccessComponent</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">m_HelloInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;Hello_Component&quot;</span><span class="p">).</span><span class="n">GetInterface</span><span class="o">&lt;</span><span class="n">ISayHello</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">sdv</span><span class="o">::</span><span class="n">TInterfaceAccessPtr</span><span class="w"> </span><span class="n">helloComp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;Hello_Component&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_GoodbyeInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">helloComp</span><span class="p">.</span><span class="n">GetInterface</span><span class="o">&lt;</span><span class="n">ISayGoodbye</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_HelloInterface</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">m_GoodbyeInterface</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Could not get all needed interfaces!&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">IShowExample</span><span class="p">)</span>
+<span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Access_Component&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">BasicService</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Show</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">m_HelloInterface</span><span class="o">-&gt;</span><span class="n">SayHello</span><span class="p">();</span>
+<span class="w">        </span><span class="n">m_GoodbyeInterface</span><span class="o">-&gt;</span><span class="n">SayGoodbye</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">ISayHello</span><span class="w"> </span><span class="o">*</span><span class="w">   </span><span class="n">m_HelloInterface</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ISayGoodbye</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_GoodbyeInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CAccessComponent</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
 </input><label class="sd-tab-label" for="sd-tab-item-1">
 Store Interfaces</label><div class="sd-tab-content docutils">
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdexcept&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;example_interfaces.h&quot;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/component_impl.h&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CAccessComponent</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IShowExample</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">CAccessComponent</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">m_HelloInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;Hello_Component&quot;</span><span class="p">).</span><span class="n">GetInterface</span><span class="o">&lt;</span><span class="n">ISayHello</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">sdv</span><span class="o">::</span><span class="n">TInterfaceAccessPtr</span><span class="w"> </span><span class="n">helloComp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;Hello_Component&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_GoodbyeInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">helloComp</span><span class="p">.</span><span class="n">GetInterface</span><span class="o">&lt;</span><span class="n">ISayGoodbye</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_HelloInterface</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">m_GoodbyeInterface</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Could not get all needed interfaces!&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="hll"><span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">IShowExample</span><span class="p">)</span>
+</span><span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Access_Component&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">BasicService</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Show</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">m_HelloInterface</span><span class="o">-&gt;</span><span class="n">SayHello</span><span class="p">();</span>
+<span class="w">        </span><span class="n">m_GoodbyeInterface</span><span class="o">-&gt;</span><span class="n">SayGoodbye</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">ISayHello</span><span class="w"> </span><span class="o">*</span><span class="w">   </span><span class="n">m_HelloInterface</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ISayGoodbye</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_GoodbyeInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CAccessComponent</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>When interfaces are needed for more than a one-time use it is a good idea to store them in member variables to reduce the overhead of fetching the interface.</p>
 </div>
 <input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
 </input><label class="sd-tab-label" for="sd-tab-item-2">
 Get Object by Name</label><div class="sd-tab-content docutils">
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdexcept&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;example_interfaces.h&quot;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/component_impl.h&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CAccessComponent</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IShowExample</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">CAccessComponent</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="hll"><span class="w">        </span><span class="n">m_HelloInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;Hello_Component&quot;</span><span class="p">).</span><span class="n">GetInterface</span><span class="o">&lt;</span><span class="n">ISayHello</span><span class="o">&gt;</span><span class="p">();</span>
+</span>
+<span class="hll"><span class="w">        </span><span class="n">sdv</span><span class="o">::</span><span class="n">TInterfaceAccessPtr</span><span class="w"> </span><span class="n">helloComp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;Hello_Component&quot;</span><span class="p">);</span>
+</span><span class="w">        </span><span class="n">m_GoodbyeInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">helloComp</span><span class="p">.</span><span class="n">GetInterface</span><span class="o">&lt;</span><span class="n">ISayGoodbye</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_HelloInterface</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">m_GoodbyeInterface</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Could not get all needed interfaces!&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">IShowExample</span><span class="p">)</span>
+<span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Access_Component&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">BasicService</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Show</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">m_HelloInterface</span><span class="o">-&gt;</span><span class="n">SayHello</span><span class="p">();</span>
+<span class="w">        </span><span class="n">m_GoodbyeInterface</span><span class="o">-&gt;</span><span class="n">SayGoodbye</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">ISayHello</span><span class="w"> </span><span class="o">*</span><span class="w">   </span><span class="n">m_HelloInterface</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ISayGoodbye</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_GoodbyeInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CAccessComponent</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>With the <code class="docutils literal notranslate"><span class="pre">sdv::core::GetObject</span></code> function one gets the <code class="docutils literal notranslate"><span class="pre">sdv::core::IInterfaceAccessPtr</span></code> of the object with the given name (see the <em>Object Name</em> highlight at <a class="reference internal" href="example_general_component.html#example-general-component"><span class="std std-ref">How to create a general VAPI Component</span></a>).</p>
 </div>
 <input id="sd-tab-item-3" name="sd-tab-set-0" type="radio">
 </input><label class="sd-tab-label" for="sd-tab-item-3">
 Get Interface by Type</label><div class="sd-tab-content docutils">
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdexcept&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;example_interfaces.h&quot;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/component_impl.h&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CAccessComponent</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IShowExample</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">CAccessComponent</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="hll"><span class="w">        </span><span class="n">m_HelloInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;Hello_Component&quot;</span><span class="p">).</span><span class="n">GetInterface</span><span class="o">&lt;</span><span class="n">ISayHello</span><span class="o">&gt;</span><span class="p">();</span>
+</span>
+<span class="w">        </span><span class="n">sdv</span><span class="o">::</span><span class="n">TInterfaceAccessPtr</span><span class="w"> </span><span class="n">helloComp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;Hello_Component&quot;</span><span class="p">);</span>
+<span class="hll"><span class="w">        </span><span class="n">m_GoodbyeInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">helloComp</span><span class="p">.</span><span class="n">GetInterface</span><span class="o">&lt;</span><span class="n">ISayGoodbye</span><span class="o">&gt;</span><span class="p">();</span>
+</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_HelloInterface</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">m_GoodbyeInterface</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Could not get all needed interfaces!&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">IShowExample</span><span class="p">)</span>
+<span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Access_Component&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">BasicService</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Show</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">m_HelloInterface</span><span class="o">-&gt;</span><span class="n">SayHello</span><span class="p">();</span>
+<span class="w">        </span><span class="n">m_GoodbyeInterface</span><span class="o">-&gt;</span><span class="n">SayGoodbye</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">ISayHello</span><span class="w"> </span><span class="o">*</span><span class="w">   </span><span class="n">m_HelloInterface</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ISayGoodbye</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_GoodbyeInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CAccessComponent</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>With the <code class="docutils literal notranslate"><span class="pre">GetInterface</span></code> templated function one can get access to the interfaces of an <code class="docutils literal notranslate"><span class="pre">IInterfaceAccessPtr</span></code> object.</p>
 </div>
 <input id="sd-tab-item-4" name="sd-tab-set-0" type="radio">
 </input><label class="sd-tab-label" for="sd-tab-item-4">
 Check interface validity</label><div class="sd-tab-content docutils">
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdexcept&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;example_interfaces.h&quot;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/component_impl.h&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CAccessComponent</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IShowExample</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">CAccessComponent</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">m_HelloInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;Hello_Component&quot;</span><span class="p">).</span><span class="n">GetInterface</span><span class="o">&lt;</span><span class="n">ISayHello</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="hll"><span class="w">        </span><span class="n">sdv</span><span class="o">::</span><span class="n">TInterfaceAccessPtr</span><span class="w"> </span><span class="n">helloComp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;Hello_Component&quot;</span><span class="p">);</span>
+</span><span class="hll"><span class="w">        </span><span class="n">m_GoodbyeInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">helloComp</span><span class="p">.</span><span class="n">GetInterface</span><span class="o">&lt;</span><span class="n">ISayGoodbye</span><span class="o">&gt;</span><span class="p">();</span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_HelloInterface</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">m_GoodbyeInterface</span><span class="p">)</span>
+</span><span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Could not get all needed interfaces!&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">IShowExample</span><span class="p">)</span>
+<span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Access_Component&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">BasicService</span><span class="p">);</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Show</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">m_HelloInterface</span><span class="o">-&gt;</span><span class="n">SayHello</span><span class="p">();</span>
+<span class="w">        </span><span class="n">m_GoodbyeInterface</span><span class="o">-&gt;</span><span class="n">SayGoodbye</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">ISayHello</span><span class="w"> </span><span class="o">*</span><span class="w">   </span><span class="n">m_HelloInterface</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ISayGoodbye</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_GoodbyeInterface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CAccessComponent</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>Since <code class="docutils literal notranslate"><span class="pre">GetInterface</span></code> returns <code class="docutils literal notranslate"><span class="pre">nullptr</span></code> if the given interface is not part of the object or if the object could not be found, it is recommended to check for <code class="docutils literal notranslate"><span class="pre">nullptr</span></code> s before continuing.</p>
 </div>
 <input id="sd-tab-item-5" name="sd-tab-set-0" type="radio">
@@ -764,25 +1009,30 @@ Use of an interface</label><div class="sd-tab-content docutils">
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div>
 
 <div class="toggle-sidebar">
@@ -800,25 +1050,30 @@ Use of an interface</label><div class="sd-tab-content docutils">
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div></div>
               
             

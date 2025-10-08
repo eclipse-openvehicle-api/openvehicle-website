@@ -693,40 +693,32 @@ Used for:</p>
 <h2>Tool Options<a class="headerlink" href="#tool-options" title="Permalink to this heading">#</a></h2>
 <p><strong>sdv_vss_util</strong></p>
 <p>Generates IDL files and component code from the VSS CSV file.</p>
-<dl class="simple">
-<dt>Options::</dt><dd><p>–prefix&lt;string&gt;           Adds a prefix to signal identifiers.
-–enable_components        Generates component code in addition to IDL.
-–version&lt;string&gt;          Optional version tag.
--O&lt;path&gt;                   Required output directory.</p>
-</dd>
-</dl>
+<p><strong>Options</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>--prefix&lt;string&gt;           Adds a prefix to signal identifiers.
+--enable_components        Generates component code in addition to IDL.
+--version&lt;string&gt;          Optional version tag.
+-O&lt;path&gt;                   Required output directory.
+</pre></div>
+</div>
 <p><strong>sdv_dbc_util</strong></p>
 <p>Generates CAN datalink code and optionally FMU-compatible code from DBC files.</p>
-<dl class="simple">
-<dt>Options::</dt><dd><p>–dl_lib_name&lt;string&gt;      Name of the generated datalink library.
-–nodes&lt;string&gt;[,&lt;string&gt;] Specifies which nodes to implement.
-–module&lt;string&gt;           FMU module identifier.
--O&lt;path&gt;                   Output directory.</p>
-</dd>
-</dl>
+<p><strong>Options</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>--dl_lib_name&lt;string&gt;      Name of the generated datalink library.
+--nodes&lt;string&gt;[,&lt;string&gt;] Specifies which nodes to implement.
+--module&lt;string&gt;           FMU module identifier.
+-O&lt;path&gt;                   Output directory.
+</pre></div>
+</div>
 <p><strong>sdv_idl_compiler</strong> <em>(optional)</em></p>
 <p>Compiles IDL files into proxy/stub code for inter-process communication.</p>
-<dl>
-<dt>Options::</dt><dd><dl class="option-list">
-<dt><kbd><span class="option">-I<var>&lt;path&gt;</var></span></kbd></dt>
-<dd><p>Include directories.</p>
-</dd>
-<dt><kbd><span class="option">-O<var>&lt;path&gt;</var></span></kbd></dt>
-<dd><p>Output directory.</p>
-</dd>
-<dt><kbd><span class="option">--no_ps</span></kbd></dt>
-<dd><p>Skip proxy/stub generation.</p>
-</dd>
-</dl>
-<p>–ps_lib_name&lt;string&gt;      Name of proxy/stub library.
-–strict                   Enforce OMG-IDL conformance.</p>
-</dd>
-</dl>
+<p><strong>Options</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>-I&lt;path&gt;                   Include directories.
+-O&lt;path&gt;                   Output directory.
+--no_ps                    Skip proxy/stub generation.
+--ps_lib_name&lt;string&gt;      Name of proxy/stub library.
+--strict                   Enforce OMG-IDL conformance.
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -780,25 +772,30 @@ Used for:</p>
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div>
 
 <div class="toggle-sidebar">
@@ -816,25 +813,30 @@ Used for:</p>
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div></div>
               
             

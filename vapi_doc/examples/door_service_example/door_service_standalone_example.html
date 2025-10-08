@@ -637,7 +637,7 @@ document.write(`
 <img alt="../../../_images/door_standalone_example.png" src="../../../_images/door_standalone_example.png" />
 <p>The example shows how to write an application independent from the underlying vehicle. It request the interfaces of the doors and will use the available interfaces and ignores the rest. Therefore the service is independent from the number of doors.</p>
 <p>The standalone application loads all components in its own process. The <a class="reference internal" href="../../glossary.html#term-Complex-Service"><span class="xref std std-term">Complex Service</span></a> will automatically started in another process. Therefore the <a class="reference internal" href="../../glossary.html#term-Proxy"><span class="xref std std-term">Proxy</span></a> and <a class="reference internal" href="../../glossary.html#term-Stub"><span class="xref std std-term">Stub</span></a> of the <a class="reference internal" href="../../glossary.html#term-Basic-Service"><span class="xref std std-term">Basic Service</span></a> <a class="reference internal" href="../../glossary.html#term-Interface"><span class="xref std std-term">Interface</span></a> s is required while for the <a class="reference internal" href="../../glossary.html#term-Vehicle-Device"><span class="xref std std-term">Vehicle Device</span></a> <a class="reference internal" href="../../glossary.html#term-Interface"><span class="xref std std-term">Interface</span></a> it is not. <a class="reference internal" href="../../glossary.html#term-Proxy"><span class="xref std std-term">Proxy</span></a> and <a class="reference internal" href="../../glossary.html#term-Stub"><span class="xref std std-term">Stub</span></a> is created by the <code class="docutils literal notranslate"><span class="pre">sdv_idl_compiler</span></code> when compiling the IDL files.</p>
-<p>Because the <span class="xref std std-term">Data Dispatch Service`and :term:`Vehcile Device</span> is in the same process the values can be read and displayed.</p>
+<p>Because the <a class="reference internal" href="../../glossary.html#term-Data-Dispatch-Service"><span class="xref std std-term">Data Dispatch Service</span></a> and <a class="reference internal" href="../../glossary.html#term-Vehicle-Device"><span class="xref std std-term">Vehicle Device</span></a> is in the same process the values can be read and displayed.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>There is one difference to the other examples: It does not use the utility <code class="docutils literal notranslate"><span class="pre">sdv_vss_util</span></code> to autogenerate <a class="reference internal" href="../../glossary.html#term-Vehicle-Device"><span class="xref std std-term">Vehicle Device</span></a> s and <a class="reference internal" href="../../glossary.html#term-Basic-Service"><span class="xref std std-term">Basic Service</span></a> s . Instead, the RX and TX are handled in one component. The code is checked in while in the other examples the code for the <a class="reference internal" href="../../glossary.html#term-Vehicle-Device"><span class="xref std std-term">Vehicle Device</span></a> s and <a class="reference internal" href="../../glossary.html#term-Basic-Service"><span class="xref std std-term">Basic Service</span></a> is created in the CMake configuration.</p>
@@ -694,25 +694,30 @@ document.write(`
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div>
 
 <div class="toggle-sidebar">
@@ -730,25 +735,30 @@ document.write(`
     <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
     <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
  </ul>
-
+ 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".sidebar-link");
-    const currentPath = window.location.pathname;
-    const docRootMatch = currentPath.match(/^(.*\/html\/)/);
-    const docRoot = docRootMatch ? docRootMatch[1] : '/';
-    const relPath = currentPath.replace(docRoot, '');
-    const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-    let prefix = '';
-    if (upLevels > 0) {
-      prefix = '../'.repeat(upLevels);
-    }
-    links.forEach(link => {
-      const target = link.getAttribute("data-target");
-      link.setAttribute("href", prefix + target);
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
+        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
+        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+
+        const relPath = currentPath.replace(docRoot, '');
+        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
+        let prefix = '';
+        if (upLevels > 0) {
+            prefix = '../'.repeat(upLevels);
+        }
+
+        links.forEach(link => {
+            const target = link.getAttribute("data-target");
+            link.setAttribute("href", prefix + target);
+        });
     });
-  });
 </script>
+
 </div></div>
               
             
