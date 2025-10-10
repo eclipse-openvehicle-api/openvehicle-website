@@ -721,82 +721,88 @@ document.write(`
                 <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
   <h3>Contents</h3>
   <ul>
-    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
-    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
-    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
-    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
-    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <li><a class="sidebar-link" href="vapi_doc/glossary.html" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" href="vapi_doc/get_started.html" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" href="vapi_doc/q_and_a.html" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" href="vapi_doc/entry.html" data-target="vapi_doc/entry.html">Documentation</a></li>
     <ul>
-        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
-        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
+        <li><a class="sidebar-link" href="search.html" data-target="search.html" target="_blank">Search</a></li>
     </ul>
-    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
-    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
- </ul>
- 
+    <li><a class="sidebar-link" href="vapi_pages/team.html" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
+</ul>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const links = document.querySelectorAll(".sidebar-link");
         const currentPath = window.location.pathname;
 
-        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
-        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
-        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
 
-        const relPath = currentPath.replace(docRoot, '');
-        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-        let prefix = '';
-        if (upLevels > 0) {
-            prefix = '../'.repeat(upLevels);
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
+
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
         }
-
-        links.forEach(link => {
-            const target = link.getAttribute("data-target");
-            link.setAttribute("href", prefix + target);
-        });
     });
 </script>
+
 
 </div>
 
 <div class="toggle-sidebar">
   <h3>Contents</h3>
   <ul>
-    <li><a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a></li>
-    <li><a class="sidebar-link" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
-    <li><a class="sidebar-link" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
-    <li><a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
-    <li><a class="sidebar-link" data-target="vapi_doc/entry.html"> Documentation</a></li>
+    <li><a class="sidebar-link" href="vapi_doc/glossary.html" data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link" href="vapi_doc/get_started.html" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link" href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link" href="vapi_doc/q_and_a.html" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link" href="vapi_doc/entry.html" data-target="vapi_doc/entry.html">Documentation</a></li>
     <ul>
-        <li><a class="sidebar-link" data-target="genindex.html" target="_blank"> Index</a></li>
-        <li><a class="sidebar-link" data-target="search.html" target="_blank"> Search</a></li>
+        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
+        <li><a class="sidebar-link" href="search.html" data-target="search.html" target="_blank">Search</a></li>
     </ul>
-    <li><a class="sidebar-link" data-target="vapi_pages/team.html">Team</a></li>
-    <li><a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a></li>
- </ul>
- 
+    <li><a class="sidebar-link" href="vapi_pages/team.html" data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link" href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
+</ul>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const links = document.querySelectorAll(".sidebar-link");
         const currentPath = window.location.pathname;
 
-        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages'
-        const docRootMatch = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages)\//);
-        const docRoot = docRootMatch ? docRootMatch[1] : '/';
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
 
-        const relPath = currentPath.replace(docRoot, '');
-        const upLevels = relPath.split('/').length - 1; // -1 because last part is filename
-        let prefix = '';
-        if (upLevels > 0) {
-            prefix = '../'.repeat(upLevels);
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
+
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
         }
-
-        links.forEach(link => {
-            const target = link.getAttribute("data-target");
-            link.setAttribute("href", prefix + target);
-        });
     });
 </script>
+
 
 </div></div>
               
