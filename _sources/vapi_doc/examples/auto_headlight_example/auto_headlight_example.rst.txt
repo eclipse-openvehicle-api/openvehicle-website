@@ -1,13 +1,24 @@
 .. _vapi-auto-headlight-example:
 
 Auto Headlight Example
-======================
+===========================
 
-.. attention:: Purpose: Demonstration with open source software ``OpenXilEnv`` and ``Carla``
+.. attention:: Purpose: Vehcile function demonstration / simulation with open source software ``OpenXilEnv`` and ``Carla``
+
+.. image:: ../../../vapi_media/examples/auto_headlight_example/headlightexample.jfif
 
 .. note:: 
    | Example can be found in ``<output-folder>/examples/bin``:
    | auto_headlight_app
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Sub pages of the auto headlight example
+
+   1_auto_headlight_setup_simulation
+   2_auto_headlight_configureopenxil
+   3_auto_headlight_execute_sim_without_scripts
+   4_auto_headlight_execute_sim_with_scripts   
 
 .. hint:: 
    
@@ -16,33 +27,82 @@ Auto Headlight Example
    - Two input signals represents the the GPS position of the vehicle.
    - One output signal switches the heeadlight on or off.
    - The function (complex service) has internally a map containing the position of tunnels so it can switch on automatically the light.  
+  
+VSS Interfaces
+-------------------
+.. note:: 
+  These following interfaces are not part of the standard but custom interfaces for demonstration purpose. 
 
-.. image:: ../../../vapi_media/examples/auto_headlight_example/auto_headlight_example.png
+These values represent the GPS position of the vehicle:
 
-The 3 Signals of the headlight example.
+- **Vehicle.Position.CurrentLatitude**  
+  VSS signal for current latitude value (GPS-based).
 
-Screenshots of running the Application (:term:`Complex Service`) in a simulation:
+- **Vehicle.Position.CurrentLongitude**  
+  VSS signal for current longitude value (GPS-based).
 
-.. image:: autohedlight_01.png
+Additionally, one output signal is used for the headlight:
 
-Simulation Software ``OpenXilEnv``, loading ``Carla FMU`` and ``Open Vehicle API FMU``.
+- **Vehicle.Body.Light.Front.LowBeam**  
+  VSS signal for front low beam headlight.
 
-.. image:: autohedlight_02.png
+These signals should be described in a CSV file. Using the utility tool `SDV_VSS_UTIL`, an IDL (Interface Description Language) file shall be generated for vehicle devices and basic services.
 
-Before entering the tunnel, the headlights are off.
+The utility tool `SDV_IDL_COMPILER` generates header and source files for the vehicle devices and basic services using their respective IDL files.
 
-.. image:: autohedlight_03.png
+These steps are typically automated via commands written in the `CMakeLists.txt` file, executed during the configuration or build process.
 
-After entering the tunnel, the headlights are turned on.
+Generated Devices and Services
+-----------------------------------
 
-.. image:: autohedlight_04.png
+The generated vehicle devices and basic services include:
 
-Inside the tunnel, the headlights are on.
+- **Interfaces for event registration/unregistration**  
+  These allow updates on the current latitude and longitude of the vehicle via callback functions.
 
-.. image:: autohedlight_05.png
+- **Interfaces for output transmission**  
+  Used to send values to the vehicle network, typically triggered by higher-level logic.  
+  In this example, headlight data is updated using callbacks.
 
-Shortly before exiting the tunnel, the headlights are still on.
+- **Subscribing to signal updates**  
+  Subscription to a signal shall take place and which trigger a callback to handle the updated value.
+  Transmission and reception methods may vary.
 
-.. image:: autohedlight_06.png
+- **Unit conversions**  
+  Vehicle devices may include unit conversions for abstraction.  
+  In this example, no conversion is needed as the algorithm uses a compatible unit system.
 
-After leaving the tunnel, the headlights are turned off.
+**Generated Vehicle Devices:**
+
+- `Vehicle.Position.CurrentLatitude_Device`
+- `Vehicle.Position.CurrentLongitude_Device`
+- `Vehicle.Body.Light.Front.LowBeam_Device`
+
+**Generated Basic Services:**
+
+- `Vehicle.Position.CurrentLatitude_Service`
+- `Vehicle.Position.CurrentLongitude_Service`
+- `Vehicle.Body.Light.Front.LowBeam_Service`
+
+These above mentioned devices are illustrated in the picture below. 
+
+.. image:: ../../../vapi_media/examples/auto_headlight_example/auto_headlight_example_arch.png
+
+.. note::  
+  :term:`Basic Service` s include :term:`Proxy` and :term:`Stub` components for communication with remote or isolated processes. :term:`Vehicle Device` s do **not** include these components, as their interfaces must not be reachable from isolated process.
+
+Complex Service
+-------------------
+
+The algorithm is implemented in the **Auto Headlight Service**, a :term:`Complex Service`.
+
+- During initialization, tunnel start and end points are parsed from a TOML file to calculate a bounding box.
+- The headlight is switched **on/off** based on the vehicle's current position (latitude and longitude).
+- If the position is **within** the bounding box → headlight is **on**.  
+  If the position is **outside** → headlight is **off**.
+
+**Service Communication:**
+
+- Complex services run in a isolated process and access basic services via proxy and stub.
+- Updates on vehicle position are received through callbacks from basic services.
+- Headlight status is calculated and written using headlight interfaces, which call the respective basic service and vehicle device interfaces to update the status.

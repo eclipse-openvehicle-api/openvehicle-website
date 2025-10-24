@@ -1,0 +1,1536 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Step-by-Step: Written Code for Wiper Example &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/stylesheet.css?v=1697948e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=c23bb7f6"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'vapi_doc/step_by_step_guide/step_by_step_written_code';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Simulation / Testing / FMU" href="../simulation.html" />
+    <link rel="prev" title="Step-by-Step: TOML Configuration Files" href="step_by_step_toml_files.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link dropdown-item nav-internal" href="step_by_step_index.html">
+                        Step by Step Example
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../sdv_tools/system_control.html">
+                        System Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link dropdown-item nav-internal" href="step_by_step_index.html">
+                        Step by Step Example
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../sdv_tools/core_tools.html">
+                        SDV Tools
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../sdv_tools/auto_code_generation.html">
+                        Auto code generation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../sdv_tools/packaging_and_installation.html">
+                        Packaging & installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../sdv_tools/system_control.html">
+                        System Control
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="step_by_step_index.html" class="nav-link">Guide: Create Example Step By Step</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Step-by-Step...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="step-by-step-written-code-for-wiper-example">
+<span id="vapi-step-by-step-written-code"></span><h1>Step-by-Step: Written Code for Wiper Example<a class="headerlink" href="#step-by-step-written-code-for-wiper-example" title="Permalink to this heading">#</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>This guide documents the manually written code components for the Wiper example in the SDV framework. It complements the auto-generated code by implementing application logic, complex service coordination, and user interaction via console.</p>
+<p>The application loads configuration files in TOML format, registers input/output signals, and runs a control loop that reacts to user input
+and sensor data. This document explains the structure and logic of the application, focusing on the most critical components.</p>
+</section>
+<section id="implementation-steps">
+<h2>Implementation Steps<a class="headerlink" href="#implementation-steps" title="Permalink to this heading">#</a></h2>
+<p>This section walks through the key steps required to initialize and run the Wiper application in the SDV framework.</p>
+<section id="application-initialization">
+<h3>Application Initialization<a class="headerlink" href="#application-initialization" title="Permalink to this heading">#</a></h3>
+<p>First, we need the <cite>Initialize()</cite> method, which sets up the runtime environment, loads configuration files, and registers signals.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">CWiperControl::Initialize</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialize call started&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_bInitialized</span><span class="p">)</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsSDVFrameworkEnvironmentSet</span><span class="p">())</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_appcontrol</span><span class="p">.</span><span class="n">SetFrameworkRuntimeDirectory</span><span class="p">(</span><span class="s">&quot;../../bin&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_appcontrol</span><span class="p">.</span><span class="n">Startup</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">))</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialize startup failed.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Starting the load config file&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">bResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load dispatch example: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;data_dispatch_wiper.toml&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load task timer: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;task_timer_wiper.toml&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load vehicle devices and basic services for wiper: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wiper_vehicle_device_and_basic_service.toml&quot;</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Ended the load config file&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">bResult</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">                </span><span class="n">SDV_LOG_ERROR</span><span class="p">(</span><span class="s">&quot;One or more configurations could not be loaded. Cannot continue.&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">m_bInitialized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="setting-the-framework-runtime-directory">
+<h4>Setting the Framework Runtime Directory<a class="headerlink" href="#setting-the-framework-runtime-directory" title="Permalink to this heading">#</a></h4>
+<p>It is recommended to call <cite>IsSDVFrameworkEnvironmentSet()</cite> to verify that the SDV runtime path is available via system environment variables. If not, the path should be set manually using <cite>SetFrameworkRuntimeDirectory()</cite>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsSDVFrameworkEnvironmentSet</span><span class="p">())</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="n">m_appcontrol</span><span class="p">.</span><span class="n">SetFrameworkRuntimeDirectory</span><span class="p">(</span><span class="s">&quot;../../bin&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="starting-the-sdv-application">
+<h4>Starting the SDV Application<a class="headerlink" href="#starting-the-sdv-application" title="Permalink to this heading">#</a></h4>
+<p>You also need to call the <cite>Startup()</cite> function to start the application control.</p>
+<p>The <cite>Startup()</cite> function is a critical step in initializing the SDV application control. It performs several essential tasks:</p>
+<ul class="simple">
+<li><p>Starts the SDV runtime and prepares the internal framework services.</p></li>
+<li><p>Retrieves the application context, including instance ID and retry settings.</p></li>
+<li><p>Establishes communication with the server repository if the context is external.</p></li>
+<li><p>Links the local and server repositories, enabling access to shared services and data.</p></li>
+</ul>
+<p>Without calling <cite>Startup()</cite>:</p>
+<ul class="simple">
+<li><p>The application won’t be able to load configuration files.</p></li>
+<li><p>Signal registration will fail because the dispatch service won’t be initialized.</p></li>
+<li><p>Any interaction with the SDV core (e.g., accessing interfaces or repositories) will be unavailable.</p></li>
+</ul>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_appcontrol</span><span class="p">.</span><span class="n">Startup</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">))</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialize startup failed.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="loading-configuration-files">
+<h4>Loading Configuration Files<a class="headerlink" href="#loading-configuration-files" title="Permalink to this heading">#</a></h4>
+<p>After that, load the required configuration files using <cite>LoadConfigFile()</cite>.</p>
+<p>This function loads TOML configuration files that define how services like dispatch, timers, and devices behave.</p>
+<p>Why it’s important:</p>
+<ul class="simple">
+<li><p>It enables modular configuration without recompiling the application.</p></li>
+<li><p>It ensures that all required services are initialized with correct parameters.</p></li>
+<li><p>It provides runtime flexibility and easier debugging.</p></li>
+</ul>
+<p>Code:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">LoadConfigFile</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">inputMsg</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">configFileName</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inputMsg</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_appcontrol</span><span class="p">.</span><span class="n">LoadConfig</span><span class="p">(</span><span class="n">configFileName</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">EConfigProcessResult</span><span class="o">::</span><span class="n">successful</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">                </span><span class="n">msg</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;ok</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">msg</span><span class="p">.</span><span class="n">c_str</span><span class="p">();</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">msg</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;FAILED.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">msg</span><span class="p">.</span><span class="n">c_str</span><span class="p">();</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>And it is called in the <cite>Initialize()</cite> function for each .toml file.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="n">bResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load dispatch example: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;data_dispatch_wiper.toml&quot;</span><span class="p">);</span>
+<span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load task timer: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;task_timer_wiper.toml&quot;</span><span class="p">);</span>
+<span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load vehicle devices and basic services for wiper: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wiper_vehicle_device_and_basic_service.toml&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<details>
+<summary> See full wiper_application.cpp</summary>
+<pre>
+
+#include "wiper_application.h"
+#include "signal_names.h"
+
+#ifdef _WIN32
+#include <conio.h>
+#else
+#include <fcntl.h>
+#endif
+
+bool CWiperControl::LoadConfigFile(const std::string& inputMsg, const std::string& configFileName)
+{
+        std::string msg = inputMsg;
+        if (m_appcontrol.LoadConfig(configFileName) == sdv::core::EConfigProcessResult::successful)
+        {
+                msg.append("ok\n");
+                std::cout << msg.c_str();
+                return true;
+        }
+
+        msg.append("FAILED.\n");
+        std::cout << msg.c_str();
+        return false;
+}
+
+bool CWiperControl::IsSDVFrameworkEnvironmentSet()
+{
+        const char* envVariable = std::getenv("SDV_FRAMEWORK_RUNTIME");
+        return envVariable != nullptr;
+}
+
+bool CWiperControl::Initialize()
+{
+
+        std::cout << "Initialize call started" << std::endl;
+        if (m_bInitialized)
+                return true;
+
+        if (!IsSDVFrameworkEnvironmentSet())
+        {
+                m_appcontrol.SetFrameworkRuntimeDirectory("../../bin");
+                std::cout << "SDVFrameworkEnvironmentSet" << std::endl;
+        }
+
+        if (!m_appcontrol.Startup(""))
+        {
+                std::cout << "Initialize startup failed." << std::endl;
+                return false;
+        }
+
+        std::cout << "Starting the load config file" << std::endl;
+
+        bool bResult = LoadConfigFile("Load dispatch example: ", "data_dispatch_wiper.toml");
+        bResult &= LoadConfigFile("Load task timer: ", "task_timer_wiper.toml");
+        bResult &= LoadConfigFile("Load vehicle devices and basic services for wiper: ", "wiper_vehicle_device_and_basic_service.toml");
+
+        std::cout << "Ended the load config file" << std::endl;
+
+        if (!bResult)
+        {
+                SDV_LOG_ERROR("One or more configurations could not be loaded. Cannot continue.");
+                return false;
+        }
+
+        m_bInitialized = true;
+        return true;
+}
+
+void CWiperControl::Shutdown()
+{
+        if (m_bInitialized)
+        {
+                m_appcontrol.Shutdown();
+                m_bInitialized = false;
+        }
+}
+
+</pre>
+</details><br>
+
+     <details>
+     <summary> See full wiper_application.h</summary>
+     <pre>
+     #include <support/app_control.h>
+     #include <support/signal_support.h>
+
+     /**
+      * @brief Application Class for the Wiper Example
+      */
+     class CWiperControl
+     {
+     public:
+             /**
+              * @brief Initialize the application and load configuration files
+              * @return true on success, false otherwise
+              */
+             bool Initialize();
+
+             /**
+              * @brief Shutdown the application
+              */
+             void Shutdown();
+
+     private:
+             /**
+              * @brief Check if SDV_FRAMEWORK_RUNTIME environment variable is set
+              * @return true if set, false otherwise
+              */
+             bool IsSDVFrameworkEnvironmentSet();
+
+             /**
+              * @brief Load a configuration file and print result
+              * @param inputMsg Message to display
+              * @param configFileName Name of the TOML config file
+              * @return true on success, false otherwise
+              */
+             bool LoadConfigFile(const std::string& inputMsg, const std::string& configFileName);
+
+             sdv::app::CAppControl m_appcontrol;
+             bool m_bInitialized = false;
+
+             sdv::core::CSignal m_signalRainDetected;
+             sdv::core::CSignal m_signalWiperMode;
+             sdv::core::CSignal m_signalFrontWiperActive;
+             sdv::core::CSignal m_signalRearWiperActive;
+     };
+
+     </pre>
+     </details></section>
+</section>
+<section id="verifying-the-implementation">
+<h3>Verifying the Implementation<a class="headerlink" href="#verifying-the-implementation" title="Permalink to this heading">#</a></h3>
+<p>Next, we create a <cite>main()</cite> function to test the implementation so far.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Main call&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CWiperControl</span><span class="w"> </span><span class="n">appobj</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">appobj</span><span class="p">.</span><span class="n">Initialize</span><span class="p">())</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;ERROR: Failed to initialize application control.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">else</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Application control initialized successfully.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<details>
+<summary> See full wiper_example.cpp</summary>
+<pre>
+#include <iostream>
+#include "wiper_application.h"
+#include "console.h"
+
+int main()
+{
+        std::cout << "Main call" << std::endl;
+        CWiperControl appobj;
+        if (!appobj.Initialize())
+        {
+                std::cout << "ERROR: Failed to initialize application control." << std::endl;
+                return 1;
+        }
+        else
+        {
+                std::cout << "Application control initialized successfully." << std::endl;
+        }
+
+        return 0;
+}
+</pre>
+</details><br></section>
+<section id="build-and-execution">
+<h3>Build and Execution<a class="headerlink" href="#build-and-execution" title="Permalink to this heading">#</a></h3>
+<section id="define-the-executable-with-cmake">
+<h4>Define the executable with CMake<a class="headerlink" href="#define-the-executable-with-cmake" title="Permalink to this heading">#</a></h4>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c">######################################################################################################################################################################</span>
+<span class="c">#                                                                   basic_system wiper application</span>
+<span class="c">######################################################################################################################################################################</span>
+
+<span class="c"># Copy the config files</span>
+<span class="nb">file</span><span class="w"> </span><span class="p">(</span><span class="s">COPY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/config/data_dispatch_wiper.toml</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/bin/config</span><span class="p">)</span>
+<span class="nb">file</span><span class="w"> </span><span class="p">(</span><span class="s">COPY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/config/task_timer_wiper.toml</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/bin/config</span><span class="p">)</span>
+<span class="nb">file</span><span class="w"> </span><span class="p">(</span><span class="s">COPY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/config/wiper_vehicle_device_and_basic_service.toml</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/bin/config</span><span class="p">)</span>
+
+<span class="c"># Define the executable</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">wiper_example</span>
+<span class="w">        </span><span class="s">wiper_app/wiper_example.cpp</span>
+<span class="w">        </span><span class="s">wiper_app/wiper_application.cpp</span>
+<span class="w">        </span><span class="s">wiper_app/wiper_application.h</span>
+<span class="w">        </span><span class="s">wiper_app/signal_names.h</span>
+<span class="w">        </span><span class="p">)</span>
+
+<span class="nb">if</span><span class="w"> </span><span class="p">(</span><span class="s">CMAKE_CXX_COMPILER_ID</span><span class="w"> </span><span class="s">STREQUAL</span><span class="w"> </span><span class="s2">&quot;GNU&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">if</span><span class="w"> </span><span class="p">(</span><span class="s">WIN32</span><span class="p">)</span>
+<span class="w">                </span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">wiper_example</span><span class="w"> </span><span class="s">Ws2_32</span><span class="w"> </span><span class="s">Winmm</span><span class="w"> </span><span class="s">Rpcrt4.lib</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">else</span><span class="p">()</span>
+<span class="w">                </span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">wiper_example</span><span class="w">  </span><span class="o">${</span><span class="nv">CMAKE_DL_LIBS</span><span class="o">}</span><span class="w"> </span><span class="s">rt</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_THREAD_LIBS_INIT</span><span class="o">}</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">endif</span><span class="p">()</span>
+<span class="nb">else</span><span class="p">()</span>
+<span class="w">        </span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">wiper_example</span><span class="w"> </span><span class="s">Rpcrt4.lib</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+<details>
+<summary> See full CMakeLists.txt</summary>
+<pre>
+        project(WiperDemoExample)
+
+        # Use new policy for project version settings and default warning level
+        cmake_policy(SET CMP0048 NEW)   # requires CMake 3.14
+        cmake_policy(SET CMP0092 NEW)   # requires CMake 3.15
+
+        set(CMAKE_CXX_STANDARD 17)
+
+        # Library symbols are hidden by default
+        set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+
+        # Include directory to the core framework
+        include_directories(${SDV_FRAMEWORK_DEV_INCLUDE})
+
+        ######################################################################################################################################################################
+        #                                                                   preparation
+        ######################################################################################################################################################################
+
+        # REMARK: The code generation for the proxy/stub, interface definitions and serialization, the vehicle devices and the basic
+        # services are generated during the configuration phase of CMake. This is necessary, since CMakeFiles.txt files are generated and
+        # they have to be available during the configuration phase of CMake to be taken into the build process. Requisite for the code
+        # generation during the configuration time of CMake is the availability of the tools to do the generation. Hence the tools cannot be
+        # created during the build process, which is executed after the configuration process.
+
+        # Execute sdv_vss_util to create IDL files for devices and basic services.
+        message("Create interface code for devices and basic services of wiper example.")
+        execute_process(COMMAND "${SDV_VSS_UTIL}" "${PROJECT_SOURCE_DIR}/vss_wiper_example.csv" "-O${PROJECT_SOURCE_DIR}/generated/" --prefixwiper --version1.0.0.1 --enable_components)
+
+        # Execute the IDL compiler for the VSS interfaces to digest interface code. Compile with --no_ps as we do not need proxies and stubs as we do not like to expose these interfaces for complex services or applications
+        message("Compiling vss_vehiclebodyweatherrain_vd_tx.idl")
+        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+        message("Compiling vss_vehiclebodyweatherrain_vd_rx.idl")
+        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+        message("Compiling vss_vehiclebodywindshieldwiperFront_bs_tx.idl")
+        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+        message("Compiling vss_vehiclebodywindshieldwiperfront_vd_tx.idl")
+        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+        message("Compiling vss_vehiclebodywindshieldwiperMode_bs_rx.idl")
+        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+        message("Compiling vss_vehiclebodywindshieldwipermode_vd_rx.idl")
+        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+        message("Compiling vss_vehiclebodywindshieldwiperrear_bs_tx.idl")
+        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+        message("Compiling vss_vehiclebodywindshieldwiperrear_vd_tx.idl")
+        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+
+        # Execute sdv_dbc_util to create data link code & FMU code.
+        message("Create data link for wiper example")
+        execute_process(COMMAND ${SDV_DBC_UTIL} "${PROJECT_SOURCE_DIR}/datalink_wiper_example.dbc" "-O${PROJECT_SOURCE_DIR}/generated/" --nodeswiper --version1.0.0.1 --moduleWiperExampleFMU --dl_lib_namecan_dl_wiper)
+
+        ######################################################################################################################################################################
+        #                                                                   data link component
+        ######################################################################################################################################################################
+
+        # REMARK: CAN data link code was generated during the configuration phase of CMake. Following below is the build step to build the
+        # component that was generated.
+
+        message("Include: example component can_dl_wiper")
+        add_subdirectory(generated/can_dl)
+
+        #######################################################################################################################################################################
+        ##                                                                   vehicle devices and basic services
+        #######################################################################################################################################################################
+
+        # REMARK: Proxy/stub and vehicle device and basic service code was generated during the configuration phase of CMake. Following
+        # below are the build steps to build the components that were generated.
+
+        message("Include: wiper proxy/stub for vehicle devices and basic services")
+        include_directories(${CMAKE_CURRENT_LIST_DIR}/generated/vss_files)
+        #add_subdirectory(generated/vss_files/ps)
+
+        add_subdirectory(generated/vss_files/bs_frontwiper)
+        add_subdirectory(generated/vss_files/bs_rainsensor)
+        add_subdirectory(generated/vss_files/bs_rearwiper)
+        add_subdirectory(generated/vss_files/bs_wipermode)
+
+        add_subdirectory(generated/vss_files/vd_frontwiper)
+        add_subdirectory(generated/vss_files/vd_rainsensor)
+        add_subdirectory(generated/vss_files/vd_rearwiper)
+        add_subdirectory(generated/vss_files/vd_wipermode)
+
+        ######################################################################################################################################################################
+        #                                                                   basic_system wiper application
+        ######################################################################################################################################################################
+
+        # Copy the config files
+        file (COPY ${PROJECT_SOURCE_DIR}/config/data_dispatch_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+        file (COPY ${PROJECT_SOURCE_DIR}/config/task_timer_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+        file (COPY ${PROJECT_SOURCE_DIR}/config/wiper_vehicle_device_and_basic_service.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+
+        # Define the executable
+        add_executable(wiper_example
+                wiper_app/wiper_example.cpp
+                wiper_app/wiper_application.cpp
+                wiper_app/wiper_application.h
+                wiper_app/signal_names.h
+                )
+
+        if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+                if (WIN32)
+                        target_link_libraries(wiper_example Ws2_32 Winmm Rpcrt4.lib)
+                else()
+                        target_link_libraries(wiper_example  ${CMAKE_DL_LIBS} rt ${CMAKE_THREAD_LIBS_INIT})
+                endif()
+        else()
+                target_link_libraries(wiper_example Rpcrt4.lib)
+        endif()
+
+</pre>
+</details><br><details>
+<summary>View Bin Folder Structure after Build </summary>
+<pre>
+bin/
++-- config/
+    +-- data_dispatch_wiper.toml
+    +-- task_timer_wiper.toml
+    +-- wiper_vehicle_device_and_basic_service.toml
++-- wiper_example.exe
++-- can_dl_wiper.sdv
++-- wiper_bs_frontwiper_tx.sdv
++-- wiper_bs_rainsensor_rx.sdv
++-- wiper_bs_rearwiper_tx.sdv
++-- wiper_bs_wipermode_tx.sdv
++-- wiper_vd_frontwiper_tx.sdv
++-- wiper_vd_rainsensor_rx.sdv
++-- wiper_vd_rearwiper_tx.sdv
++-- wiper_vd_wipermode_rx.sdv
+</pre>
+</details><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Make sure that the Framework project and your project (<cite>tmp_project</cite>) are built using the same compiler configuration.</p>
+</div>
+<p>The build should complete successfully, but during runtime you may encounter an error 😢</p>
+</section>
+<section id="sdv-logs">
+<h4>SDV Logs<a class="headerlink" href="#sdv-logs" title="Permalink to this heading">#</a></h4>
+<p>To see a detailed description of the error, go to <cite>build/…/bin</cite> and check the SDV log file.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">SDV_LOG_10212__2025.10.21_09-54-20.log</span>
+</pre></div>
+</div>
+<details>
+<summary>View SDV_LOG_10212__2025.10.21_09-54-20.log </summary>
+<pre>
+     sep=;
+     Timestamp;Severity;Tag;Message
+     2025.10.21 09:54:20.742377;Info;";"(0): Begin logging..."
+     2025.10.21 09:54:20.742524;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(120): SDV Application start at 2025-10-21 09:54:20 GTB Daylight Time"
+     2025.10.21 09:54:20.742613;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""core_services.sdv"""
+     2025.10.21 09:54:20.939897;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""process_control.sdv"""
+     2025.10.21 09:54:21.263126;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""data_dispatch_service.sdv"""
+     2025.10.21 09:54:21.449191;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""task_timer.sdv"""
+     2025.10.21 09:54:21.564740;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_frontwiper_tx.sdv"""
+     2025.10.21 09:54:21.686766;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_rainsensor_rx.sdv"""
+     2025.10.21 09:54:21.773725;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_rearwiper_tx.sdv"""
+     2025.10.21 09:54:21.875479;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_wipermode_rx.sdv"""
+     2025.10.21 09:54:21.959318;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_frontwiper_tx.sdv"""
+     2025.10.21 09:54:22.051349;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_rainsensor_rx.sdv"""
+     2025.10.21 09:54:22.120009;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_rearwiper_tx.sdv"""
+     2025.10.21 09:54:22.208582;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_wipermode_rx.sdv"""
+     2025.10.21 09:54:22.209309;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_frontwiper\vd_frontwiper.cpp(32): Could not get signal: CAN_Output.FrontWiperActive [CVehicleDevice]"
+     2025.10.21 09:54:22.209724;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Front_Device"
+     2025.10.21 09:54:22.210399;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_rainsensor\vd_rainsensor.cpp(32): Could not get signal: CAN_Input.RainDetected [CVehicleDeviceRainSensor]"
+     2025.10.21 09:54:22.210873;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Weather.Rain_Device"
+     2025.10.21 09:54:22.211498;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_rearwiper\vd_rearwiper.cpp(32): Could not get signal: CAN_Output.RearWiperActive [CVehicleDevice]"
+     2025.10.21 09:54:22.212190;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Rear_Device"
+     2025.10.21 09:54:22.212906;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_wipermode\vd_wipermode.cpp(32): Could not get signal: CAN_Input.WiperMode [CVehicleDeviceWiperMode]"
+     2025.10.21 09:54:22.213216;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Mode_Device"
+     2025.10.21 09:54:22.213658;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\bs_frontwiper\bs_frontwiper.cpp(18): Could not get interface 'IVSS_WriteIsFrontActive': [CBasicServiceFrontWiper]"
+     2025.10.21 09:54:22.214368;Error;";"D:/Repo_VAPI/vapi-cpp-vehicle-api-platform/export/support/component_impl.h(662): Failed to instantiate object of class Vehicle.Body.Windshield.Wiper.Front_Service - exception thrown during construction! "
+     2025.10.21 09:54:22.214764;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Front_Service"
+     2025.10.21 09:54:22.215299;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\bs_rainsensor\bs_rainsensor.cpp(18): Could not get interface 'IVSS_Detected': [CBasicServiceRainSensor]"
+     2025.10.21 09:54:22.215790;Error;";"D:/Repo_VAPI/vapi-cpp-vehicle-api-platform/export/support/component_impl.h(662): Failed to instantiate object of class Vehicle.Body.Weather.Rain_Service - exception thrown during construction! "
+     2025.10.21 09:54:22.216127;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Weather.Rain_Service"
+     2025.10.21 09:54:22.216481;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\bs_rearwiper\bs_rearwiper.cpp(18): Could not get interface 'IVSS_WriteIsRearActive': [CBasicServiceRearWiper]"
+     2025.10.21 09:54:22.216836;Error;";"D:/Repo_VAPI/vapi-cpp-vehicle-api-platform/export/support/component_impl.h(662): Failed to instantiate object of class Vehicle.Body.Windshield.Wiper.Rear_Service - exception thrown during construction! "
+     2025.10.21 09:54:22.217160;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Rear_Service"
+     2025.10.21 09:54:22.218443;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\bs_wipermode\bs_wipermode.cpp(18): Could not get interface 'IVSS_Mode': [CBasicServiceWiperMode]"
+     2025.10.21 09:54:22.219018;Error;";"D:/Repo_VAPI/vapi-cpp-vehicle-api-platform/export/support/component_impl.h(662): Failed to instantiate object of class Vehicle.Body.Windshield.Wiper.Mode_Service - exception thrown during construction! "
+     2025.10.21 09:54:22.219504;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Mode_Service"
+     2025.10.21 09:54:22.220283;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\wiper_app\wiper_application.cpp(95): One or more configurations could not be loaded. Cannot continue."
+     2025.10.21 09:54:22.261455;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_wipermode_rx.sdv"""
+     2025.10.21 09:54:22.261681;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_rearwiper_tx.sdv"""
+     2025.10.21 09:54:22.261804;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_rainsensor_rx.sdv"""
+     2025.10.21 09:54:22.261911;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_frontwiper_tx.sdv"""
+     2025.10.21 09:54:22.262035;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_wipermode_rx.sdv"""
+     2025.10.21 09:54:22.262149;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_rearwiper_tx.sdv"""
+     2025.10.21 09:54:22.262266;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_rainsensor_rx.sdv"""
+     2025.10.21 09:54:22.262380;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_frontwiper_tx.sdv"""
+     2025.10.21 09:54:22.262602;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""task_timer.sdv"""
+     2025.10.21 09:54:22.262872;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""data_dispatch_service.sdv"""
+     2025.10.21 09:54:22.263158;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""process_control.sdv"""
+     2025.10.21 09:54:22.263244;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(559): SDV Application end at 2025-10-21 09:54:22 GTB Daylight Time"
+     2025.10.21 09:54:22.263277;Info;";"(0): End logging..."
+
+</pre>
+</details><br></section>
+</section>
+<section id="signal-definition-and-registration">
+<h3>Signal Definition and Registration<a class="headerlink" href="#signal-definition-and-registration" title="Permalink to this heading">#</a></h3>
+<p>You will see errors for each signals because the signals were not defined and registered.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">2025.10.21 09:54:22.209309;Error;&quot;;&quot;D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_frontwiper\vd_frontwiper.cpp(32): Could not get signal: CAN_Output.FrontWiperActive [CVehicleDevice]&quot;</span>
+<span class="go">2025.10.21 09:54:22.209724;Error;&quot;;&quot;D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Front_Device&quot;</span>
+</pre></div>
+</div>
+<section id="signal-name-definitions">
+<h4>Signal Name Definitions<a class="headerlink" href="#signal-name-definitions" title="Permalink to this heading">#</a></h4>
+<p>To Register the signals first you need to create the <cite>signal_names.h</cite> file.</p>
+<p>This file defines the signal names used in the application. It uses conditional inclusion to either import external definitions or define them locally.</p>
+<p>Why it’s important:</p>
+<ul class="simple">
+<li><p>Centralizes signal naming for consistency.</p></li>
+<li><p>Supports both standalone and integrated builds.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The signal names defined here correspond to the values in the column <strong>`DBC CAN name includes CAN message name`</strong> from the input <cite>.csv</cite> file.</p>
+</div>
+<p>Code:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * namespace for the signal names</span>
+<span class="cm"> * in case /interfaces/signal_identifier.h</span>
+<span class="cm"> * exists, use the file, otherwise define the namespace</span>
+<span class="cm"> */</span>
+<span class="cp">#ifndef SIGNAL_NAMES_H</span>
+<span class="cp">#define SIGNAL_NAMES_H</span>
+
+<span class="cp">#ifdef __has_include</span>
+<span class="cp">#if __has_include(&quot;../interfaces/signal_identifier.h&quot;)</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../interfaces/signal_identifier.h&quot;</span>
+<span class="cp">#else</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">wiper</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="c1">// Data Dispatch Service  signal names          to  dbc variable names                   C-type  RX/TX    vss name space</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">        </span><span class="n">dsRainDetected</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CAN_Input.RainDetected&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">        </span><span class="n">dsWiperMode</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CAN_Input.WiperMode&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">        </span><span class="n">dsFrontWiperActive</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CAN_Output.FrontWiperActive&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">        </span><span class="n">dsRearWiperActive</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CAN_Output.RearWiperActive&quot;</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// wiper</span>
+
+<span class="cp">#endif</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#endif </span><span class="c1">// SIGNAL_NAMES_H</span>
+</pre></div>
+</div>
+</section>
+<section id="register-signals">
+<h4>Register Signals<a class="headerlink" href="#register-signals" title="Permalink to this heading">#</a></h4>
+<p>After you defined the signals, then you need to register them.
+This function should registers the signals used by the application to communicate with the SDV signal bus.</p>
+<p>Why it’s important:</p>
+<ul class="simple">
+<li><p>Without signal registration, the application cannot receive sensor input or send control commands.</p></li>
+<li><p>It connects the application to the SDV Dispatch Service, enabling real-time interaction.</p></li>
+<li><p>It defines the communication interface of the application.</p></li>
+</ul>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">CWiperControl::RegisterSignals</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">CDispatchService</span><span class="w"> </span><span class="n">dispatch</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">m_signalRainDetected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dispatch</span><span class="p">.</span><span class="n">RegisterRxSignal</span><span class="p">(</span><span class="n">wiper</span><span class="o">::</span><span class="n">dsRainDetected</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_signalWiperMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dispatch</span><span class="p">.</span><span class="n">RegisterRxSignal</span><span class="p">(</span><span class="n">wiper</span><span class="o">::</span><span class="n">dsWiperMode</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_signalFrontWiperActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dispatch</span><span class="p">.</span><span class="n">RegisterTxSignal</span><span class="p">(</span><span class="n">wiper</span><span class="o">::</span><span class="n">dsFrontWiperActive</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">m_signalRearWiperActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dispatch</span><span class="p">.</span><span class="n">RegisterTxSignal</span><span class="p">(</span><span class="n">wiper</span><span class="o">::</span><span class="n">dsRearWiperActive</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><cite>dsRainDetected</cite> is the signal name from signal_names.h</p>
+</div>
+<p><strong>What is CDispatchService class and what RegisterRxSignal and RegisterTxSignal do?</strong></p>
+<p>CDispatchService Class Overview:</p>
+<p>The CDispatchService class is a convenience wrapper within the Software Defined Vehicle (SDV) framework that facilitates interaction with the <strong>Data Dispatch Service</strong>. It provides methods to register, publish, and subscribe to signals used for communication between software components.</p>
+<p>Purpose of RegisterTxSignal and RegisterRxSignal:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>RegisterTxSignal</strong>:</dt><dd><p>Registers a signal for <strong>transmission</strong> (Tx) over the network. This is used when your component is a <strong>data provider</strong> and wants to send out signal values.
+It initializes the signal with a default value and prepares it for dispatching.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>RegisterRxSignal</strong>:</dt><dd><p>Registers a signal for <strong>reception</strong> (Rx) from the network. This is used when your component is a <strong>data consumer</strong> and wants to receive updates from other components.
+It sets up the signal to be handled by the dispatch service.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="update-the-application-initialization-function-with-registering-signals">
+<h4>Update the Application Initialization function with Registering Signals<a class="headerlink" href="#update-the-application-initialization-function-with-registering-signals" title="Permalink to this heading">#</a></h4>
+<p>RegisterSignals() has to be called before loading the config file for vehicle devices and basic services.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">CWiperControl::Initialize</span><span class="p">()</span>
+<span class="p">{</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialize call started&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_bInitialized</span><span class="p">)</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsSDVFrameworkEnvironmentSet</span><span class="p">())</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_appcontrol</span><span class="p">.</span><span class="n">SetFrameworkRuntimeDirectory</span><span class="p">(</span><span class="s">&quot;../../bin&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;SDVFrameworkEnvironmentSet&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_appcontrol</span><span class="p">.</span><span class="n">Startup</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">))</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialize startup failed.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// Switch to config mode.</span>
+<span class="w">        </span><span class="n">m_appcontrol</span><span class="p">.</span><span class="n">SetConfigMode</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Starting the load config file&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">bResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load dispatch example: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;data_dispatch_wiper.toml&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load task timer: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;task_timer_wiper.toml&quot;</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Register signals&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">RegisterSignals</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load vehicle devices and basic services for wiper: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wiper_vehicle_device_and_basic_service.toml&quot;</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Ended the load config file&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">bResult</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">                </span><span class="n">SDV_LOG_ERROR</span><span class="p">(</span><span class="s">&quot;One or more configurations could not be loaded. Cannot continue.&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">m_bInitialized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="build-and-execution-again">
+<h4>Build and Execution again<a class="headerlink" href="#build-and-execution-again" title="Permalink to this heading">#</a></h4>
+<p>Your Build and Execution should be done with success now and you can check the SDV_LOG again and you should see no errors. 🎉</p>
+<details>
+<summary>View SDV_LOG_16168__2025.10.21_11-23-25.log </summary>
+<pre>
+     sep=;
+     Timestamp;Severity;Tag;Message
+     2025.10.21 11:23:25.270052;Info;";"(0): Begin logging..."
+     2025.10.21 11:23:25.270130;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(120): SDV Application start at 2025-10-21 11:23:25 GTB Daylight Time"
+     2025.10.21 11:23:25.270192;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""core_services.sdv"""
+     2025.10.21 11:23:25.457656;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""process_control.sdv"""
+     2025.10.21 11:23:25.748654;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""data_dispatch_service.sdv"""
+     2025.10.21 11:23:25.882185;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""task_timer.sdv"""
+     2025.10.21 11:23:25.970786;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_frontwiper_tx.sdv"""
+     2025.10.21 11:23:26.067877;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_rainsensor_rx.sdv"""
+     2025.10.21 11:23:26.138250;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_rearwiper_tx.sdv"""
+     2025.10.21 11:23:26.219724;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_wipermode_rx.sdv"""
+     2025.10.21 11:23:26.289734;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_frontwiper_tx.sdv"""
+     2025.10.21 11:23:26.357879;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_rainsensor_rx.sdv"""
+     2025.10.21 11:23:26.419689;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_rearwiper_tx.sdv"""
+     2025.10.21 11:23:26.490471;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_wipermode_rx.sdv"""
+     2025.10.21 11:23:26.554869;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_wipermode_rx.sdv"""
+     2025.10.21 11:23:26.555302;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_rearwiper_tx.sdv"""
+     2025.10.21 11:23:26.555631;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_rainsensor_rx.sdv"""
+     2025.10.21 11:23:26.555934;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_frontwiper_tx.sdv"""
+     2025.10.21 11:23:26.556240;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_wipermode_rx.sdv"""
+     2025.10.21 11:23:26.556535;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_rearwiper_tx.sdv"""
+     2025.10.21 11:23:26.556834;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_rainsensor_rx.sdv"""
+     2025.10.21 11:23:26.557120;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_frontwiper_tx.sdv"""
+     2025.10.21 11:23:26.557633;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""task_timer.sdv"""
+     2025.10.21 11:23:26.558005;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""data_dispatch_service.sdv"""
+     2025.10.21 11:23:26.558821;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""process_control.sdv"""
+     2025.10.21 11:23:26.559089;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(559): SDV Application end at 2025-10-21 11:23:26 GTB Daylight Time"
+     2025.10.21 11:23:26.559199;Info;";"(0): End logging..."
+
+</pre>
+</details><br></section>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="step_by_step_toml_files.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Step-by-Step: TOML Configuration Files</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../simulation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Simulation / Testing / FMU</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
+        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
+    </ul>
+    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
+</ul>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
+
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
+
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
+        } 
+    });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
+        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
+    </ul>
+    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
+</ul>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
+
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
+
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
+        } 
+    });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

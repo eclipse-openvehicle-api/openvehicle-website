@@ -16,6 +16,7 @@ A :term:`Complex Service` is meant to run in it own process and is supposed to c
 .. hint:: 
 
    .. code-block:: text
+      :emphasize-lines: 7, 13
 
       General layout of a standalone application:
 
@@ -35,6 +36,9 @@ A :term:`Complex Service` is meant to run in it own process and is supposed to c
 
       - unregister signals in case no data link component was used
       appcontrol.Shutdown();
+
+.. important:: 
+   First, the configuration mode must be set. After that, the software modules can be loaded and configured. After setting the running mode no further modules can be loaded. A CAN component, for example, establishes its connections to the sockets and starts its Read/Write thread in configuration mode, but it does not yet read or write any CAN messages. Only after the running mode is set it should read and send messages
 
 Basic Examples
 --------------
@@ -56,8 +60,8 @@ Headlight Example
    
    auto_headlight_example/auto_headlight_example
 
-**Headlight example:** This example shows a simple function. If the vehicle is in a tunnel, the headlights are turned on
-Outside of the tunnel the lights are switched off.
+**Headlight example:** This example shows the following :term:`Vehicle Function` : If the vehicle is in a tunnel, the headlights are turned on. Outside of the tunnel the lights are switched off. It is a perfect example to simulate the vehicle and to visualize the :term:`Vehicle Function` by the source software ``OpenXilEnv`` and ``Carla`` .
+ 
 
 Door Service Example
 --------------------

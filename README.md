@@ -1,1 +1,0 @@
-"# Open Vehicle API documentation" 

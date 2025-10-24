@@ -1,0 +1,86 @@
+.. _vapi-auto-without-scripts:
+
+3. Auto Headlight : Run simulation by manual process
+======================================================
+
+Loading examples manually without usage of script.
+------------------------------------------------------
+
+- Make sure the simulation setup is ready to use. Follow chapter :doc:`1_auto_headlight_setup_simulation` and Chapter :doc:`2_auto_headlight_configureopenxil` if unsure.
+   
+- Auto Headlight example will be shown in detail as procedure will be similar in loading for others as well.
+   
+- Open the control panel and in process section, click on add button.
+  
+.. image:: ../../../vapi_media/examples/auto_headlight_example/manual_add_ext_proc.png
+
+- Click on "Start external process" button and browse for a FMU either Carla or VAPI example FMU. 
+  
+.. image:: ../../../vapi_media/examples/auto_headlight_example/manual_start_ext_proc.png
+
+- Autoheadlight fmu is loaded and user can see signals in widgets being updated.
+  
+.. image:: ../../../vapi_media/examples/auto_headlight_example/manual_ext_proc_loaded.png
+
+- In similar way again in control panel, add an external process but now its Carla FMU. After Carla bridge is loaded, screen will look similar to the screenshot shown below.Ignore the console window. it can be placed in the background.
+
+.. image:: ../../../vapi_media/examples/auto_headlight_example/manual_carla_bridge_loaded.png
+
+.. hint:: 
+    
+  Carla FMUs for examples are located in ``examples\auto_headlight_example\simulation_artifacts\``
+
+- Now configure some Carla parameters in the carla io variable widget to get the correct camera placement and control.
+    
+.. image:: ../../../vapi_media/examples/auto_headlight_example/manual_toggle_view.png
+
+- CARLAin__toggle_view = 1; second image shows the result of changing this value.
+  
+.. image:: ../../../vapi_media/examples/auto_headlight_example/manual_toggled_view.png
+
+- CARLAin_operation_mode = 4; This enables keyboard control of vehicle.
+
+- CARLAin_toggle_display = 1; This activates front view camera angle of vehicle will be shown as shown below.
+
+.. image:: ../../../vapi_media/examples/auto_headlight_example/manual_toggle_display.png
+
+- Add the trigger file in control panel' Equation section , this trigger file has details of signals between Carla and VAPI FMU.
+  
+.. image:: ../../../vapi_media/examples/auto_headlight_example/manual_trigger_file.png
+
+- Click on file and browse for respective trigger file and then click on run to activate the trigger file.
+  
+.. image:: ../../../vapi_media/examples/auto_headlight_example/manual_run_triggerfile.png
+
+- Now click on screen where the vehicle is currently being simulated, so that window context becomes active for keyboard usage. And start driving towards tunnel. As soon as vehicle enters tunnel, the headlight is switched on and as vehicle is driven outside of tunnel, headlight switches off as programmed in the vapi FMU. 
+
+.. image:: ../../../vapi_media/examples/auto_headlight_example/manual_example_ready.png
+
+.. note:: 
+  
+  Use following keys on your keyboard to control the vehicle motion in carla environment.
+   - "W" -> Acceleration or Gas pedal. Hold it to move continuously and leave to slow down.
+   - "A" -> Steer Left.
+   - "D" -> Steer Right.
+   - "S" -> Apply Brake.
+   - "R" -> Toggle to enable or disable reverse gear.
+
+  .. image:: ../../../vapi_media/examples/auto_headlight_example/keys.png
+
+Switching between examples 
+----------------------------
+- User needs to terminate the loaded external processes to load another scenario/example. 
+
+- User needs to select control panel present at the right top section. 
+ 
+.. image:: ../../../vapi_media/examples/auto_headlight_example/controlpanel.png
+
+- and in control panel, user needs to click on "remove" in the process section.
+ 
+.. image:: ../../../vapi_media/examples/auto_headlight_example/removebutton.png
+
+- User can select multiple processes and click ok to to terminate the selected processes.
+
+.. image:: ../../../vapi_media/examples/auto_headlight_example/process_selection.png
+
+- This procedure makes sure all the external FMUs are shutdown and new examples can be loaded. This process has to be followed when switching between different examples.

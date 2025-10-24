@@ -1,0 +1,193 @@
+.. _vapi-cmake-in-the-project:
+
+CMake in the project
+====================
+
+.. tip:: Useful to know: CMake Configuration vs Build Steps
+
+    **Configuration-Time Commands**
+
+    - `configure_file(...)`: Generates config headers.
+    - `file(COPY ...)`: Copies files during configuration.
+    - `set(...)`: Defines variables used in build logic.
+    - `execute_process(COMMAND ...)`: Executes an executable.
+
+    **Build-Time Commands**
+
+    - `add_library(...)`: Defines targets built during the build step.
+    - `add_executable(...)`: Defines targets built during the build step.
+    - `target_link_libraries(...)`: Links libraries during build.
+
+**Basic CMake commands:**
+
+.. code-block:: text
+
+    message("Output directory: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+
+Prints the given string and/or CMake variable to the console.
+
+.. code-block:: text
+
+    cmake_minimum_required (<version_no>)
+
+- Sets the minimum required version of cmake for the project. It will affects the way of cmake configuration and build process.
+- It is necessary to invoke this command at the beginning top level of CMakeLists.txt file before invoking any other command.
+
+.. code-block:: text
+
+    cmake_policy (<version_no>)
+
+- It will mention cmake to use the new or old behavior of the mentioned <policy_no>. 
+- And also cmake_minimum_required() will implicitly invokes this command.
+
+.. code-block:: text
+
+    set(CMAKE_CXX_STANDARD <standard_no>)
+
+This command will set the C++ standard to given <standard_no>.
+
+.. code-block:: text
+
+    $ENV{env_var}
+
+ENV is an operator through which we can read the value of the given environment variable <env_var>.
+
+.. code-block:: text
+
+    if(DEFINED env_var) or if (NOT DEFINED env_var) 
+    endif()
+
+To check whether the env_var was defined or not. 
+
+.. code-block:: text
+
+    add_compile_options(<option>)
+
+It will add options which will be used to get compiled for targets. 
+
+.. code-block:: text
+
+    find_package(<package_name>)
+
+- cmake will find the mentioned package and will load its package specific details.
+- example : find_package(Threads).
+
+**CMake commands to build the projects:**
+
+.. code-block:: text
+
+    add_subdirectory(<sub_directory_name>)
+
+It adds the mentioned <sub_directory_name> to the cmake build process.
+
+.. code-block:: text
+
+    project(project_name)
+
+It sets the project name and stores in the given variable <project_name>.
+
+.. code-block:: text   
+
+    include_directories(<directory_name>) 
+
+- The include files which are stored in given <directory_name> or environment variable will be added to the cmake build process. 
+- example include the framework headre files: 
+
+    include_directories(${SDV_FRAMEWORK_DEV_INCLUDE}).
+
+.. code-block:: text
+
+    execute_process(COMMAND <command1> <argument1> <argument2> ....)
+
+It executes one or more child processes or commands sequentially. Since the command runs an .exe, no intermediate command interpreter is executed. It is widly used to auto generated code with ``sdv_dbc_util`` and ``sdv_vss_util``.
+
+.. code-block:: text
+
+    file (COPY <filename> DESTINATION <destination_directory>)
+
+- Copies files during configuration.
+- Mainly used to copy the configuration files to the output sub folder. 
+- example to copy a configuration file: 
+
+    file (COPY ${PROJECT_SOURCE_DIR}/config/CanComSimulation.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config).
+
+.. code-block:: text
+
+    add_custom_target(<target_name>
+    ALL
+    DEPENDS
+        <dependencies>
+        ....
+    COMMAND <commands>
+    VERBATIM
+    )
+
+- It will adds a target with the mentioned name and will executes the mentioned commands. 
+- This target will be added to the default build target, so it will run every time.
+- when the target was built, the mentioned dependencies also will be updated.
+- example:
+
+    add_custom_target(example_interface_config
+    ALL
+    DEPENDS can_dl_example
+    COMMAND "${SDV_PACKAGER}" DIRECT_INSTALL ExampleInterfaceComponents --instance3001 can_dl_example.sdv 
+    VERBATIM
+    )
+    
+.. code-block:: text
+
+    add_dependencies(<target> <target-dependency>...)
+
+- It will make sure that mentioned top level dependency target got compiled before <target> does. 
+- example: add_dependencies(example_application  ExampleGeneralComponent ExampleAccessToOtherComponents).
+
+.. code-block:: text
+
+    add_test(NAME <test_name> COMMAND <command>)
+
+- Adds a test called <test_name> to the project. 
+- enable_testing() command should be invoked in order to generate tests by cmake. 
+- example : add_test(NAME configuration_example COMMAND configuration_example).
+
+**Build SDV binaries:**
+
+.. code-block:: text
+
+    add_library(<target_name> <type>
+    <path_to_include_files>
+    <path_to_source_files>
+    )
+
+- This command will add a library which was mentioned as demo_complex_service which will be built from the given source and include files.
+- type - SHARED or STATIC or MODULE : The mentioned library will be created as a dynamic or static or module based library.
+- example : add_library(ExampleVehicleDevice SHARED Code/Example_VehicleDevice.cpp).
+
+.. code-block:: text
+
+    set_target_properties(<target_name> PROPERTIES <property1> <value1>)
+    set_target_properties(<target_name> PROPERTIES <property2> <value2>)
+
+- It sets the properties of values which will affects the given one or more targets. 
+- example for the sdv binaries: 
+
+    - set_target_properties(<target_name> PROPERTIES SUFFIX ".sdv").
+    - set_target_properties(<target_name> PROPERTIES OUTPUT_NAME "door_complex_service")
+    - set_target_properties(<target_name> PROPERTIES PREFIX "")
+
+**Build SDV executables:**
+
+.. code-block:: text
+
+    target_link_libraries(<executable_name> <lib1> <lib2> <lib3>)
+
+- It links all the mentioned libraries to the given target. 
+- example : target_link_libraries(system_extern_example Ws2_32 Winmm Rpcrt4.lib).
+
+.. code-block:: text
+
+    add_executable(<executable_name>
+    <path_to_source_files>
+    )
+
+- It creates an executable which will be built from the mentioned source and include files. 
+- example: add_executable(system_extern_example  example_app/system_extern_example.cpp).

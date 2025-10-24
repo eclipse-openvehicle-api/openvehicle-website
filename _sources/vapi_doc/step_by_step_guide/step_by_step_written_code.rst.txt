@@ -1,0 +1,792 @@
+.. _vapi-step_by_step_written_code:
+
+Step-by-Step: Written Code for Wiper Example
+==================================================
+
+Overview
+--------
+
+This guide documents the manually written code components for the Wiper example in the SDV framework. It complements the auto-generated code by implementing application logic, complex service coordination, and user interaction via console.
+
+The application loads configuration files in TOML format, registers input/output signals, and runs a control loop that reacts to user input
+and sensor data. This document explains the structure and logic of the application, focusing on the most critical components.
+
+
+Implementation Steps
+--------------------------------------------------
+
+This section walks through the key steps required to initialize and run the Wiper application in the SDV framework.
+
+Application Initialization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+First, we need the `Initialize()` method, which sets up the runtime environment, loads configuration files, and registers signals.
+
+.. code-block:: cpp
+
+	bool CWiperControl::Initialize()
+	{
+		std::cout << "Initialize call started" << std::endl;
+		if (m_bInitialized)
+			return true;
+
+		if (!IsSDVFrameworkEnvironmentSet())
+		{
+			m_appcontrol.SetFrameworkRuntimeDirectory("../../bin");
+		}
+	  
+		if (!m_appcontrol.Startup(""))
+		{
+			std::cout << "Initialize startup failed." << std::endl;
+			return false;
+		}
+
+		std::cout << "Starting the load config file" << std::endl;
+
+		bool bResult = LoadConfigFile("Load dispatch example: ", "data_dispatch_wiper.toml");
+		bResult &= LoadConfigFile("Load task timer: ", "task_timer_wiper.toml");
+		bResult &= LoadConfigFile("Load vehicle devices and basic services for wiper: ", "wiper_vehicle_device_and_basic_service.toml");
+
+		std::cout << "Ended the load config file" << std::endl;
+
+		if (!bResult)
+		{
+			SDV_LOG_ERROR("One or more configurations could not be loaded. Cannot continue.");
+			return false;
+		}
+
+		m_bInitialized = true;
+		return true;
+	}
+
+Setting the Framework Runtime Directory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is recommended to call `IsSDVFrameworkEnvironmentSet()` to verify that the SDV runtime path is available via system environment variables. If not, the path should be set manually using `SetFrameworkRuntimeDirectory()`.
+
+.. code-block:: cpp
+
+		if (!IsSDVFrameworkEnvironmentSet())
+		{
+			m_appcontrol.SetFrameworkRuntimeDirectory("../../bin");
+		}
+
+Starting the SDV Application
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		
+You also need to call the `Startup()` function to start the application control.
+
+The `Startup()` function is a critical step in initializing the SDV application control. It performs several essential tasks:
+
+- Starts the SDV runtime and prepares the internal framework services.
+- Retrieves the application context, including instance ID and retry settings.
+- Establishes communication with the server repository if the context is external.
+- Links the local and server repositories, enabling access to shared services and data.
+
+Without calling `Startup()`:
+
+- The application won't be able to load configuration files.
+- Signal registration will fail because the dispatch service won't be initialized.
+- Any interaction with the SDV core (e.g., accessing interfaces or repositories) will be unavailable.
+
+.. code-block:: cpp
+
+	if (!m_appcontrol.Startup(""))
+	{
+		std::cout << "Initialize startup failed." << std::endl;
+		return false;
+	}
+
+Loading Configuration Files
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+After that, load the required configuration files using `LoadConfigFile()`.
+
+This function loads TOML configuration files that define how services like dispatch, timers, and devices behave.
+
+Why it's important:
+
+- It enables modular configuration without recompiling the application.
+- It ensures that all required services are initialized with correct parameters.
+- It provides runtime flexibility and easier debugging.
+
+Code:
+
+.. code-block:: cpp
+
+	bool LoadConfigFile(const std::string& inputMsg, const std::string& configFileName)
+	{
+		std::string msg = inputMsg;
+		if (m_appcontrol.LoadConfig(configFileName) == sdv::core::EConfigProcessResult::successful)
+		{
+			msg.append("ok\n");
+			std::cout << msg.c_str();
+			return true;
+		}
+
+		msg.append("FAILED.\n");
+		std::cout << msg.c_str();
+		return false;
+	}
+
+And it is called in the `Initialize()` function for each .toml file.
+
+.. code-block:: cpp
+	
+	bool bResult = LoadConfigFile("Load dispatch example: ", "data_dispatch_wiper.toml");
+	bResult &= LoadConfigFile("Load task timer: ", "task_timer_wiper.toml");
+	bResult &= LoadConfigFile("Load vehicle devices and basic services for wiper: ", "wiper_vehicle_device_and_basic_service.toml");	
+
+.. raw:: html
+
+	<details>
+	<summary> See full wiper_application.cpp</summary>
+	<pre>
+	
+	#include "wiper_application.h"
+	#include "signal_names.h"
+
+	#ifdef _WIN32
+	#include <conio.h>
+	#else
+	#include <fcntl.h>
+	#endif
+
+	bool CWiperControl::LoadConfigFile(const std::string& inputMsg, const std::string& configFileName)
+	{
+		std::string msg = inputMsg;
+		if (m_appcontrol.LoadConfig(configFileName) == sdv::core::EConfigProcessResult::successful)
+		{
+			msg.append("ok\n");
+			std::cout << msg.c_str();
+			return true;
+		}
+
+		msg.append("FAILED.\n");
+		std::cout << msg.c_str();
+		return false;
+	}
+
+	bool CWiperControl::IsSDVFrameworkEnvironmentSet()
+	{
+		const char* envVariable = std::getenv("SDV_FRAMEWORK_RUNTIME");
+		return envVariable != nullptr;
+	}
+
+	bool CWiperControl::Initialize()
+	{
+
+		std::cout << "Initialize call started" << std::endl;
+		if (m_bInitialized)
+			return true;
+
+		if (!IsSDVFrameworkEnvironmentSet())
+		{
+			m_appcontrol.SetFrameworkRuntimeDirectory("../../bin");
+			std::cout << "SDVFrameworkEnvironmentSet" << std::endl;
+		}
+	  
+		if (!m_appcontrol.Startup(""))
+		{
+			std::cout << "Initialize startup failed." << std::endl;
+			return false;
+		}
+
+		std::cout << "Starting the load config file" << std::endl;
+
+		bool bResult = LoadConfigFile("Load dispatch example: ", "data_dispatch_wiper.toml");
+		bResult &= LoadConfigFile("Load task timer: ", "task_timer_wiper.toml");
+		bResult &= LoadConfigFile("Load vehicle devices and basic services for wiper: ", "wiper_vehicle_device_and_basic_service.toml");
+
+		std::cout << "Ended the load config file" << std::endl;
+
+		if (!bResult)
+		{
+			SDV_LOG_ERROR("One or more configurations could not be loaded. Cannot continue.");
+			return false;
+		}
+
+		m_bInitialized = true;
+		return true;
+	}
+
+	void CWiperControl::Shutdown()
+	{
+		if (m_bInitialized)
+		{
+			m_appcontrol.Shutdown();
+			m_bInitialized = false;
+		}
+	}
+	
+	</pre>
+	</details> 
+
+.. raw:: html
+
+   <br>
+
+	<details>
+	<summary> See full wiper_application.h</summary>
+	<pre>
+	#include <support/app_control.h>
+	#include <support/signal_support.h>
+
+	/**
+	 * @brief Application Class for the Wiper Example
+	 */
+	class CWiperControl
+	{
+	public:
+		/**
+		 * @brief Initialize the application and load configuration files
+		 * @return true on success, false otherwise
+		 */
+		bool Initialize();
+
+		/**
+		 * @brief Shutdown the application
+		 */
+		void Shutdown();
+
+	private:
+		/**
+		 * @brief Check if SDV_FRAMEWORK_RUNTIME environment variable is set
+		 * @return true if set, false otherwise
+		 */
+		bool IsSDVFrameworkEnvironmentSet();
+
+		/**
+		 * @brief Load a configuration file and print result
+		 * @param inputMsg Message to display
+		 * @param configFileName Name of the TOML config file
+		 * @return true on success, false otherwise
+		 */
+		bool LoadConfigFile(const std::string& inputMsg, const std::string& configFileName);
+
+		sdv::app::CAppControl m_appcontrol;
+		bool m_bInitialized = false;
+
+		sdv::core::CSignal m_signalRainDetected;
+		sdv::core::CSignal m_signalWiperMode;
+		sdv::core::CSignal m_signalFrontWiperActive;
+		sdv::core::CSignal m_signalRearWiperActive;
+	};
+	
+	</pre>
+	</details> 
+
+
+Verifying the Implementation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Next, we create a `main()` function to test the implementation so far.
+
+.. code-block:: cpp
+
+	int main()
+	{
+		std::cout << "Main call" << std::endl;
+		CWiperControl appobj;
+		if (!appobj.Initialize())
+		{
+			std::cout << "ERROR: Failed to initialize application control." << std::endl;
+			return 1;
+		}
+		else
+		{
+			std::cout << "Application control initialized successfully." << std::endl;
+		}
+
+		return 0;
+	}
+	
+.. raw:: html
+
+	<details>
+	<summary> See full wiper_example.cpp</summary>
+	<pre>
+	#include <iostream>
+	#include "wiper_application.h"
+	#include "console.h"
+
+	int main()
+	{
+		std::cout << "Main call" << std::endl;
+		CWiperControl appobj;
+		if (!appobj.Initialize())
+		{
+			std::cout << "ERROR: Failed to initialize application control." << std::endl;
+			return 1;
+		}
+		else
+		{
+			std::cout << "Application control initialized successfully." << std::endl;
+		}
+
+		return 0;
+	}
+	</pre>
+	</details> 
+	
+.. raw:: html
+
+   <br>
+   
+Build and Execution
+~~~~~~~~~~~~~~~~~~~~
+
+Define the executable with CMake
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: cmake
+
+	######################################################################################################################################################################
+	#                                                                   basic_system wiper application
+	######################################################################################################################################################################
+
+	# Copy the config files
+	file (COPY ${PROJECT_SOURCE_DIR}/config/data_dispatch_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+	file (COPY ${PROJECT_SOURCE_DIR}/config/task_timer_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+	file (COPY ${PROJECT_SOURCE_DIR}/config/wiper_vehicle_device_and_basic_service.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+
+	# Define the executable
+	add_executable(wiper_example
+		wiper_app/wiper_example.cpp
+		wiper_app/wiper_application.cpp
+		wiper_app/wiper_application.h
+		wiper_app/signal_names.h
+		)
+
+	if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+		if (WIN32)
+			target_link_libraries(wiper_example Ws2_32 Winmm Rpcrt4.lib)
+		else()
+			target_link_libraries(wiper_example  ${CMAKE_DL_LIBS} rt ${CMAKE_THREAD_LIBS_INIT})
+		endif()
+	else()
+		target_link_libraries(wiper_example Rpcrt4.lib)
+	endif()
+
+	
+.. raw:: html
+
+	<details>
+	<summary> See full CMakeLists.txt</summary>
+	<pre>
+		project(WiperDemoExample)
+
+		# Use new policy for project version settings and default warning level
+		cmake_policy(SET CMP0048 NEW)   # requires CMake 3.14
+		cmake_policy(SET CMP0092 NEW)   # requires CMake 3.15
+
+		set(CMAKE_CXX_STANDARD 17)
+
+		# Library symbols are hidden by default
+		set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+
+		# Include directory to the core framework
+		include_directories(${SDV_FRAMEWORK_DEV_INCLUDE})
+
+		######################################################################################################################################################################
+		#                                                                   preparation
+		######################################################################################################################################################################
+
+		# REMARK: The code generation for the proxy/stub, interface definitions and serialization, the vehicle devices and the basic
+		# services are generated during the configuration phase of CMake. This is necessary, since CMakeFiles.txt files are generated and
+		# they have to be available during the configuration phase of CMake to be taken into the build process. Requisite for the code
+		# generation during the configuration time of CMake is the availability of the tools to do the generation. Hence the tools cannot be
+		# created during the build process, which is executed after the configuration process.
+
+		# Execute sdv_vss_util to create IDL files for devices and basic services.
+		message("Create interface code for devices and basic services of wiper example.")
+		execute_process(COMMAND "${SDV_VSS_UTIL}" "${PROJECT_SOURCE_DIR}/vss_wiper_example.csv" "-O${PROJECT_SOURCE_DIR}/generated/" --prefixwiper --version1.0.0.1 --enable_components)
+
+		# Execute the IDL compiler for the VSS interfaces to digest interface code. Compile with --no_ps as we do not need proxies and stubs as we do not like to expose these interfaces for complex services or applications
+		message("Compiling vss_vehiclebodyweatherrain_vd_tx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+		message("Compiling vss_vehiclebodyweatherrain_vd_rx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+		message("Compiling vss_vehiclebodywindshieldwiperFront_bs_tx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+		message("Compiling vss_vehiclebodywindshieldwiperfront_vd_tx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+		message("Compiling vss_vehiclebodywindshieldwiperMode_bs_rx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+		message("Compiling vss_vehiclebodywindshieldwipermode_vd_rx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+		message("Compiling vss_vehiclebodywindshieldwiperrear_bs_tx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+		message("Compiling vss_vehiclebodywindshieldwiperrear_vd_tx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+
+		# Execute sdv_dbc_util to create data link code & FMU code.
+		message("Create data link for wiper example")
+		execute_process(COMMAND ${SDV_DBC_UTIL} "${PROJECT_SOURCE_DIR}/datalink_wiper_example.dbc" "-O${PROJECT_SOURCE_DIR}/generated/" --nodeswiper --version1.0.0.1 --moduleWiperExampleFMU --dl_lib_namecan_dl_wiper)
+
+		######################################################################################################################################################################
+		#                                                                   data link component
+		######################################################################################################################################################################
+
+		# REMARK: CAN data link code was generated during the configuration phase of CMake. Following below is the build step to build the
+		# component that was generated.
+
+		message("Include: example component can_dl_wiper")
+		add_subdirectory(generated/can_dl)
+
+		#######################################################################################################################################################################
+		##                                                                   vehicle devices and basic services
+		#######################################################################################################################################################################
+
+		# REMARK: Proxy/stub and vehicle device and basic service code was generated during the configuration phase of CMake. Following
+		# below are the build steps to build the components that were generated.
+
+		message("Include: wiper proxy/stub for vehicle devices and basic services")
+		include_directories(${CMAKE_CURRENT_LIST_DIR}/generated/vss_files)
+		#add_subdirectory(generated/vss_files/ps)
+
+		add_subdirectory(generated/vss_files/bs_frontwiper)
+		add_subdirectory(generated/vss_files/bs_rainsensor)
+		add_subdirectory(generated/vss_files/bs_rearwiper)
+		add_subdirectory(generated/vss_files/bs_wipermode)
+
+		add_subdirectory(generated/vss_files/vd_frontwiper)
+		add_subdirectory(generated/vss_files/vd_rainsensor)
+		add_subdirectory(generated/vss_files/vd_rearwiper)
+		add_subdirectory(generated/vss_files/vd_wipermode)
+
+		######################################################################################################################################################################
+		#                                                                   basic_system wiper application
+		######################################################################################################################################################################
+
+		# Copy the config files
+		file (COPY ${PROJECT_SOURCE_DIR}/config/data_dispatch_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+		file (COPY ${PROJECT_SOURCE_DIR}/config/task_timer_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+		file (COPY ${PROJECT_SOURCE_DIR}/config/wiper_vehicle_device_and_basic_service.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+
+		# Define the executable
+		add_executable(wiper_example
+			wiper_app/wiper_example.cpp
+			wiper_app/wiper_application.cpp
+			wiper_app/wiper_application.h
+			wiper_app/signal_names.h
+			)
+
+		if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+			if (WIN32)
+				target_link_libraries(wiper_example Ws2_32 Winmm Rpcrt4.lib)
+			else()
+				target_link_libraries(wiper_example  ${CMAKE_DL_LIBS} rt ${CMAKE_THREAD_LIBS_INIT})
+			endif()
+		else()
+			target_link_libraries(wiper_example Rpcrt4.lib)
+		endif()
+		
+	</pre>
+	</details> 
+
+
+.. raw:: html
+
+   <br>
+
+.. raw:: html
+
+   <details>
+   <summary>View Bin Folder Structure after Build </summary>
+   <pre>
+   bin/
+   +-- config/
+       +-- data_dispatch_wiper.toml
+       +-- task_timer_wiper.toml
+       +-- wiper_vehicle_device_and_basic_service.toml
+   +-- wiper_example.exe
+   +-- can_dl_wiper.sdv
+   +-- wiper_bs_frontwiper_tx.sdv
+   +-- wiper_bs_rainsensor_rx.sdv
+   +-- wiper_bs_rearwiper_tx.sdv
+   +-- wiper_bs_wipermode_tx.sdv
+   +-- wiper_vd_frontwiper_tx.sdv
+   +-- wiper_vd_rainsensor_rx.sdv
+   +-- wiper_vd_rearwiper_tx.sdv
+   +-- wiper_vd_wipermode_rx.sdv
+   </pre>
+   </details>
+
+
+
+.. warning::  
+   Make sure that the Framework project and your project (`tmp_project`) are built using the same compiler configuration.
+
+The build should complete successfully, but during runtime you may encounter an error 😢
+
+SDV Logs
+^^^^^^^^
+
+To see a detailed description of the error, go to `build/.../bin` and check the SDV log file.
+
+.. code-block:: console
+
+	SDV_LOG_10212__2025.10.21_09-54-20.log
+
+.. raw:: html
+
+   <details>
+   <summary>View SDV_LOG_10212__2025.10.21_09-54-20.log </summary>
+   <pre>
+	sep=;
+	Timestamp;Severity;Tag;Message
+	2025.10.21 09:54:20.742377;Info;";"(0): Begin logging..."
+	2025.10.21 09:54:20.742524;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(120): SDV Application start at 2025-10-21 09:54:20 GTB Daylight Time"
+	2025.10.21 09:54:20.742613;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""core_services.sdv"""
+	2025.10.21 09:54:20.939897;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""process_control.sdv"""
+	2025.10.21 09:54:21.263126;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""data_dispatch_service.sdv"""
+	2025.10.21 09:54:21.449191;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""task_timer.sdv"""
+	2025.10.21 09:54:21.564740;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_frontwiper_tx.sdv"""
+	2025.10.21 09:54:21.686766;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_rainsensor_rx.sdv"""
+	2025.10.21 09:54:21.773725;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_rearwiper_tx.sdv"""
+	2025.10.21 09:54:21.875479;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_wipermode_rx.sdv"""
+	2025.10.21 09:54:21.959318;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_frontwiper_tx.sdv"""
+	2025.10.21 09:54:22.051349;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_rainsensor_rx.sdv"""
+	2025.10.21 09:54:22.120009;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_rearwiper_tx.sdv"""
+	2025.10.21 09:54:22.208582;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_wipermode_rx.sdv"""
+	2025.10.21 09:54:22.209309;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_frontwiper\vd_frontwiper.cpp(32): Could not get signal: CAN_Output.FrontWiperActive [CVehicleDevice]"
+	2025.10.21 09:54:22.209724;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Front_Device"
+	2025.10.21 09:54:22.210399;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_rainsensor\vd_rainsensor.cpp(32): Could not get signal: CAN_Input.RainDetected [CVehicleDeviceRainSensor]"
+	2025.10.21 09:54:22.210873;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Weather.Rain_Device"
+	2025.10.21 09:54:22.211498;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_rearwiper\vd_rearwiper.cpp(32): Could not get signal: CAN_Output.RearWiperActive [CVehicleDevice]"
+	2025.10.21 09:54:22.212190;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Rear_Device"
+	2025.10.21 09:54:22.212906;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_wipermode\vd_wipermode.cpp(32): Could not get signal: CAN_Input.WiperMode [CVehicleDeviceWiperMode]"
+	2025.10.21 09:54:22.213216;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Mode_Device"
+	2025.10.21 09:54:22.213658;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\bs_frontwiper\bs_frontwiper.cpp(18): Could not get interface 'IVSS_WriteIsFrontActive': [CBasicServiceFrontWiper]"
+	2025.10.21 09:54:22.214368;Error;";"D:/Repo_VAPI/vapi-cpp-vehicle-api-platform/export/support/component_impl.h(662): Failed to instantiate object of class Vehicle.Body.Windshield.Wiper.Front_Service - exception thrown during construction! "
+	2025.10.21 09:54:22.214764;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Front_Service"
+	2025.10.21 09:54:22.215299;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\bs_rainsensor\bs_rainsensor.cpp(18): Could not get interface 'IVSS_Detected': [CBasicServiceRainSensor]"
+	2025.10.21 09:54:22.215790;Error;";"D:/Repo_VAPI/vapi-cpp-vehicle-api-platform/export/support/component_impl.h(662): Failed to instantiate object of class Vehicle.Body.Weather.Rain_Service - exception thrown during construction! "
+	2025.10.21 09:54:22.216127;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Weather.Rain_Service"
+	2025.10.21 09:54:22.216481;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\bs_rearwiper\bs_rearwiper.cpp(18): Could not get interface 'IVSS_WriteIsRearActive': [CBasicServiceRearWiper]"
+	2025.10.21 09:54:22.216836;Error;";"D:/Repo_VAPI/vapi-cpp-vehicle-api-platform/export/support/component_impl.h(662): Failed to instantiate object of class Vehicle.Body.Windshield.Wiper.Rear_Service - exception thrown during construction! "
+	2025.10.21 09:54:22.217160;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Rear_Service"
+	2025.10.21 09:54:22.218443;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\bs_wipermode\bs_wipermode.cpp(18): Could not get interface 'IVSS_Mode': [CBasicServiceWiperMode]"
+	2025.10.21 09:54:22.219018;Error;";"D:/Repo_VAPI/vapi-cpp-vehicle-api-platform/export/support/component_impl.h(662): Failed to instantiate object of class Vehicle.Body.Windshield.Wiper.Mode_Service - exception thrown during construction! "
+	2025.10.21 09:54:22.219504;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Mode_Service"
+	2025.10.21 09:54:22.220283;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\wiper_app\wiper_application.cpp(95): One or more configurations could not be loaded. Cannot continue."
+	2025.10.21 09:54:22.261455;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_wipermode_rx.sdv"""
+	2025.10.21 09:54:22.261681;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_rearwiper_tx.sdv"""
+	2025.10.21 09:54:22.261804;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_rainsensor_rx.sdv"""
+	2025.10.21 09:54:22.261911;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_frontwiper_tx.sdv"""
+	2025.10.21 09:54:22.262035;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_wipermode_rx.sdv"""
+	2025.10.21 09:54:22.262149;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_rearwiper_tx.sdv"""
+	2025.10.21 09:54:22.262266;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_rainsensor_rx.sdv"""
+	2025.10.21 09:54:22.262380;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_frontwiper_tx.sdv"""
+	2025.10.21 09:54:22.262602;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""task_timer.sdv"""
+	2025.10.21 09:54:22.262872;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""data_dispatch_service.sdv"""
+	2025.10.21 09:54:22.263158;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""process_control.sdv"""
+	2025.10.21 09:54:22.263244;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(559): SDV Application end at 2025-10-21 09:54:22 GTB Daylight Time"
+	2025.10.21 09:54:22.263277;Info;";"(0): End logging..."
+
+   </pre>
+   </details>
+
+.. raw:: html
+	
+	<br>
+
+Signal Definition and Registration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You will see errors for each signals because the signals were not defined and registered.
+
+.. code-block:: console
+
+	2025.10.21 09:54:22.209309;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_frontwiper\vd_frontwiper.cpp(32): Could not get signal: CAN_Output.FrontWiperActive [CVehicleDevice]"
+	2025.10.21 09:54:22.209724;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Front_Device"
+
+Signal Name Definitions
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+To Register the signals first you need to create the `signal_names.h` file.
+
+This file defines the signal names used in the application. It uses conditional inclusion to either import external definitions or define them locally.
+
+Why it's important:
+
+- Centralizes signal naming for consistency.
+- Supports both standalone and integrated builds.
+
+.. note::
+	The signal names defined here correspond to the values in the column **`DBC CAN name includes CAN message name`** from the input `.csv` file.
+
+Code:
+
+.. code-block:: cpp
+
+	/**
+	 * namespace for the signal names
+	 * in case /interfaces/signal_identifier.h
+	 * exists, use the file, otherwise define the namespace
+	 */
+	#ifndef SIGNAL_NAMES_H
+	#define SIGNAL_NAMES_H
+
+	#ifdef __has_include
+	#if __has_include("../interfaces/signal_identifier.h")
+	#include "../interfaces/signal_identifier.h"
+	#else
+
+	namespace wiper
+	{
+		// Data Dispatch Service  signal names          to  dbc variable names                   C-type  RX/TX    vss name space
+		static std::string        dsRainDetected        = "CAN_Input.RainDetected";   
+		static std::string        dsWiperMode           = "CAN_Input.WiperMode";      
+		static std::string        dsFrontWiperActive    = "CAN_Output.FrontWiperActive"; 
+		static std::string        dsRearWiperActive     = "CAN_Output.RearWiperActive";
+	} // wiper
+
+	#endif
+	#endif
+
+	#endif // SIGNAL_NAMES_H
+
+
+Register Signals
+^^^^^^^^^^^^^^^^^
+
+After you defined the signals, then you need to register them.
+This function should registers the signals used by the application to communicate with the SDV signal bus.
+
+Why it's important:
+
+- Without signal registration, the application cannot receive sensor input or send control commands.
+- It connects the application to the SDV Dispatch Service, enabling real-time interaction.
+- It defines the communication interface of the application.
+
+.. code-block:: cpp
+
+	bool CWiperControl::RegisterSignals()
+	{
+		sdv::core::CDispatchService dispatch;
+
+		m_signalRainDetected = dispatch.RegisterRxSignal(wiper::dsRainDetected);
+		m_signalWiperMode = dispatch.RegisterRxSignal(wiper::dsWiperMode);
+		m_signalFrontWiperActive = dispatch.RegisterTxSignal(wiper::dsFrontWiperActive, 0);
+		m_signalRearWiperActive = dispatch.RegisterTxSignal(wiper::dsRearWiperActive, 0);
+
+		return true;
+	}
+	
+.. note::
+	`dsRainDetected` is the signal name from signal_names.h
+	
+**What is CDispatchService class and what RegisterRxSignal and RegisterTxSignal do?**
+
+CDispatchService Class Overview:
+
+The CDispatchService class is a convenience wrapper within the Software Defined Vehicle (SDV) framework that facilitates interaction with the **Data Dispatch Service**. It provides methods to register, publish, and subscribe to signals used for communication between software components.
+
+Purpose of RegisterTxSignal and RegisterRxSignal:
+
+- **RegisterTxSignal**: 
+	Registers a signal for **transmission** (Tx) over the network. This is used when your component is a **data provider** and wants to send out signal values.
+	It initializes the signal with a default value and prepares it for dispatching.
+- **RegisterRxSignal**:
+	Registers a signal for **reception** (Rx) from the network. This is used when your component is a **data consumer** and wants to receive updates from other components.
+	It sets up the signal to be handled by the dispatch service.
+
+Update the Application Initialization function with Registering Signals
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+RegisterSignals() has to be called before loading the config file for vehicle devices and basic services.
+
+.. code-block:: cpp
+
+	bool CWiperControl::Initialize()
+	{
+
+		std::cout << "Initialize call started" << std::endl;
+		if (m_bInitialized)
+			return true;
+
+		if (!IsSDVFrameworkEnvironmentSet())
+		{
+			m_appcontrol.SetFrameworkRuntimeDirectory("../../bin");
+			std::cout << "SDVFrameworkEnvironmentSet" << std::endl;
+		}
+	  
+		if (!m_appcontrol.Startup(""))
+		{
+			std::cout << "Initialize startup failed." << std::endl;
+			return false;
+		}
+
+		// Switch to config mode.
+		m_appcontrol.SetConfigMode();
+
+		std::cout << "Starting the load config file" << std::endl;
+
+		bool bResult = LoadConfigFile("Load dispatch example: ", "data_dispatch_wiper.toml");
+		bResult &= LoadConfigFile("Load task timer: ", "task_timer_wiper.toml");
+
+		std::cout << "Register signals" << std::endl;
+		bResult &= RegisterSignals();
+
+		bResult &= LoadConfigFile("Load vehicle devices and basic services for wiper: ", "wiper_vehicle_device_and_basic_service.toml");
+
+		std::cout << "Ended the load config file" << std::endl;
+
+		if (!bResult)
+		{
+			SDV_LOG_ERROR("One or more configurations could not be loaded. Cannot continue.");
+			return false;
+		}
+
+		m_bInitialized = true;
+		return true;
+	}
+	
+Build and Execution again
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Your Build and Execution should be done with success now and you can check the SDV_LOG again and you should see no errors. 🎉
+
+.. raw:: html
+
+   <details>
+   <summary>View SDV_LOG_16168__2025.10.21_11-23-25.log </summary>
+   <pre>
+	sep=;
+	Timestamp;Severity;Tag;Message
+	2025.10.21 11:23:25.270052;Info;";"(0): Begin logging..."
+	2025.10.21 11:23:25.270130;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(120): SDV Application start at 2025-10-21 11:23:25 GTB Daylight Time"
+	2025.10.21 11:23:25.270192;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""core_services.sdv"""
+	2025.10.21 11:23:25.457656;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""process_control.sdv"""
+	2025.10.21 11:23:25.748654;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""data_dispatch_service.sdv"""
+	2025.10.21 11:23:25.882185;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""task_timer.sdv"""
+	2025.10.21 11:23:25.970786;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_frontwiper_tx.sdv"""
+	2025.10.21 11:23:26.067877;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_rainsensor_rx.sdv"""
+	2025.10.21 11:23:26.138250;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_rearwiper_tx.sdv"""
+	2025.10.21 11:23:26.219724;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_wipermode_rx.sdv"""
+	2025.10.21 11:23:26.289734;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_frontwiper_tx.sdv"""
+	2025.10.21 11:23:26.357879;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_rainsensor_rx.sdv"""
+	2025.10.21 11:23:26.419689;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_rearwiper_tx.sdv"""
+	2025.10.21 11:23:26.490471;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_wipermode_rx.sdv"""
+	2025.10.21 11:23:26.554869;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_wipermode_rx.sdv"""
+	2025.10.21 11:23:26.555302;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_rearwiper_tx.sdv"""
+	2025.10.21 11:23:26.555631;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_rainsensor_rx.sdv"""
+	2025.10.21 11:23:26.555934;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_frontwiper_tx.sdv"""
+	2025.10.21 11:23:26.556240;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_wipermode_rx.sdv"""
+	2025.10.21 11:23:26.556535;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_rearwiper_tx.sdv"""
+	2025.10.21 11:23:26.556834;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_rainsensor_rx.sdv"""
+	2025.10.21 11:23:26.557120;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_frontwiper_tx.sdv"""
+	2025.10.21 11:23:26.557633;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""task_timer.sdv"""
+	2025.10.21 11:23:26.558005;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""data_dispatch_service.sdv"""
+	2025.10.21 11:23:26.558821;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""process_control.sdv"""
+	2025.10.21 11:23:26.559089;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(559): SDV Application end at 2025-10-21 11:23:26 GTB Daylight Time"
+	2025.10.21 11:23:26.559199;Info;";"(0): End logging..."
+   
+   </pre>
+   </details>
+   
+.. raw:: html
+	
+	<br>

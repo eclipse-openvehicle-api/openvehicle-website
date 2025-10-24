@@ -1,0 +1,130 @@
+.. _vapi-auto-setup-sim:
+
+
+1. Setting up Simulation Environment
+====================================
+.. hint:: 
+    
+    Following software is required for simulating :
+      
+    - CARLA Simulator 
+    - OpenXilEnv 
+
+Prerequisites
+-------------
+
+CARLA Simulator
+~~~~~~~~~~~~~~~
+
+- CARLA is an open-source simulator for autonomous driving research. It provides a highly realistic 3D environment where developers and researchers can test and train self-driving algorithms without needing a physical vehicle.
+- Github Repo : https://github.com/carla-simulator/carla?tab=MIT-1-ov-file#
+- License: https://github.com/carla-simulator/carla/blob/ue5-dev/LICENSE
+- Purpose: Used for driving simulation, sensor data generation, and environment modeling.
+- Version : >= 09.14 (used or tested for demonstration.feel free to use other versions also)
+- Documentation : https://carla.readthedocs.io/en/latest/start_quickstart/
+
+OpenXilEnv
+~~~~~~~~~~
+
+- OpenXilEnv is an environment to setup a SIL system on Windows or Linux platforms.It has configurable graphical user interface base on Qt. There exist value display/change, oscilloscope, calibration, slider, knob, etc.. for interaction. 
+- Github Repo : https://github.com/eclipse-openxilenv/openxilenv
+- License: https://github.com/eclipse-openxilenv/openxilenv/blob/main/LICENSE.txt
+- Purpose: Used for testing VAPI developed functions.
+- Version : 
+
+Python
+~~~~~~~~~~~~
+
+- version: 3.7.0 
+
+FMUs
+~~~~~~~~~~~~
+
+FMU is functional mockup Interfaces which is standard to build the binaries or files used for simulation. These following FMUs are mandatory in executing the simulation.
+
+Carla Bridge FMU
+^^^^^^^^^^^^^^^^^^
+Carla bridge FMU contains binaries for connecting to Carla server and VAPI Instance via Openxil software. This is based on the source https://github.com/modelica/Reference-FMUs .
+Python programs have been implemented to call the respective Carla APIs . IF user has access to the carla bridge source, then there is possibility to add desired signals but with respect to Carla supported functions only. This was defined according to specifications in internal ZF Hackathon as part of SofDCar project.
+
+Carla Bridge FMU files :
+
+- ``examples\auto_headlight_example\simulation_artifacts\carlabridge_coupecar.fmu`` 
+- ``examples\auto_headlight_example\simulation_artifacts\carlabridge_patrolcar.fmu``
+
+Headlight Example - Any of those mentioned can be used as for headlight example both are compatible.
+   
+Door examples - As this example depends on no. of doors in the vehicle, different vehicles are implemented.
+   
+Two door variant ``carlabridge_coupecar``.
+Four door variant ``carlabridge_patrolcar``.
+
+If There are any changes required, feel free to use the source files to add the desired CARLA functionality , It is not documented as its outside the scope of VAPI.
+Carla Bridge Source file location - ``examples\auto_headlight_example\simulation_artifacts\carlabridgesourcefiles.zip``
+
+VAPI Headlight FMU
+^^^^^^^^^^^^^^^^^^^^^^^^
+VAPI FMU for headlight example is already described in Cmakelist and after configuration and build process, Headlight fmu package is generated and can be used for simulation.
+Generated files can be found in following location : ``build\***cmake_preset****\examples\auto_headlamp_example\generated\fmu_AutoHeadlightFMU\fmus``. 
+
+Steps to setup the simulation
+-----------------------------
+
+1. Open the terminal/CMD window.
+   
+2. Run following commands to set the python environment similar to below mentioned order.
+   
+   - set path=**insert_python_folder_path_**;%path%
+   
+   .. code-block:: console	
+            
+       set path=C:\tempsim\Python;%path%
+   
+   - set PYVENVLIB=**insert_python_folder_path_**
+   
+   .. code-block:: console	
+            
+       set PYVENVLIB=C:\tempsim\Python
+   
+   - set PYVENVEXE=**insert_python_folder_path_**\python.exe
+   
+   .. code-block:: console	
+            
+       set PYVENVEXE=C:\tempsim\Python\python.exe
+     
+3. start the carla server. by using following command.
+    
+   .. code-block:: console	
+       
+       start CarlaServer\WindowsNoEditor\CarlaUE4.exe
+
+4. Go to the location  where OpenXilEnv executable is located and Start the OpenXilEnv executable . Arguments can be passed but optional.
+    
+   .. code-block:: console	
+       
+       .\XilEnvGui.exe  
+
+   .. image:: ../../../vapi_media/examples/auto_headlight_example/openxilnewini.png    
+
+   - After opening OpenXilEnv, possibility to create a new .ini file or existing one.
+  
+   .. hint:: 
+      
+         Arguments can be passed but optional. If there is existing .ini file to load the widgets , feel free to pass argument with respective .ini file as shown below.
+      
+         .. code-block:: console	
+         
+            .\XilEnvGui.exe -ini doordemo.ini
+   
+5. Now the Simulation setup is ready if you have followed all the steps which are mentioned above without any issues.
+
+6. You can follow next sections for executing the simulation:
+   
+- Setting up widgets and configuring signals in OpenXilEnv software to the developed function. Go to chapter :doc:`2_auto_headlight_configureopenxil`
+- Execute the simulation without help of scripts by manually doing each step. Go to Chapter :doc:`3_auto_headlight_execute_sim_without_scripts`
+- If you have scripts ready , then go to Chapter :doc:`4_auto_headlight_execute_sim_with_scripts`
+
+
+   
+      
+   

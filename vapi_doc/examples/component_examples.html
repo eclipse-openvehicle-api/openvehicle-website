@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/stylesheet.css?v=ea7d9345" />
+    <link rel="stylesheet" type="text/css" href="../../_static/stylesheet.css?v=1697948e" />
     <link rel="stylesheet" type="text/css" href="../../_static/key_features.css?v=1f1425ec" />
     <link rel="stylesheet" type="text/css" href="../../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../../_static/fonts/font.css?v=e743f546" />
@@ -248,8 +248,22 @@
                 
 
                     <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
                       <a class="nav-link dropdown-item nav-internal" href="#">
                         Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../step_by_step_guide/step_by_step_index.html">
+                        Step by Step Example
                       </a>
                     </li>
                 
@@ -305,7 +319,7 @@
 
                     <li class="nav-item">
                       <a class="nav-link dropdown-item nav-internal" href="../sdv_tools/system_control.html">
-                        Sysgtem Control
+                        System Control
                       </a>
                     </li>
                 
@@ -469,8 +483,22 @@ document.write(`
                 
 
                     <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
                       <a class="nav-link dropdown-item nav-internal" href="#">
                         Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../step_by_step_guide/step_by_step_index.html">
+                        Step by Step Example
                       </a>
                     </li>
                 
@@ -526,7 +554,7 @@ document.write(`
 
                     <li class="nav-item">
                       <a class="nav-link dropdown-item nav-internal" href="../sdv_tools/system_control.html">
-                        Sysgtem Control
+                        System Control
                       </a>
                     </li>
                 
@@ -632,20 +660,24 @@ sdv::app::CAppControl appcontrol;
 appcontrol.AddModuleSearchDir(&lt;path_to_component_binaries&gt;);
 appcontrol.Startup(&quot;&quot;);
 appcontrol.SetConfigMode();
-appcontrol.AddConfigSearchDir(&lt;path_to_configuration_files&gt;);
-
+<span class="hll">appcontrol.AddConfigSearchDir(&lt;path_to_configuration_files&gt;);
+</span>
 appcontrol-&gt;LoadConfig(&lt;load_data_dispatch_service&gt;);
 appcontrol-&gt;LoadConfig(&lt;load_tasktimer_service&gt;);
 - register your signals or load a data link component (which will register signals)
 appcontrol-&gt;LoadConfig(&lt;load_your_components&gt;);
-appcontrol.SetRunningMode();
-
+<span class="hll">appcontrol.SetRunningMode();
+</span>
    ... run your application
 
 - unregister signals in case no data link component was used
 appcontrol.Shutdown();
 </pre></div>
 </div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>First, the configuration mode must be set. After that, the software modules can be loaded and configured. After setting the running mode no further modules can be loaded. A CAN component, for example, establishes its connections to the sockets and starts its Read/Write thread in configuration mode, but it does not yet read or write any CAN messages. Only after the running mode is set it should read and send messages</p>
 </div>
 <section id="basic-examples">
 <h2>Basic Examples<a class="headerlink" href="#basic-examples" title="Permalink to this heading">#</a></h2>
@@ -677,8 +709,7 @@ appcontrol.Shutdown();
 <li class="toctree-l1"><a class="reference internal" href="auto_headlight_example/auto_headlight_example.html">Auto Headlight Example</a></li>
 </ul>
 </div>
-<p><strong>Headlight example:</strong> This example shows a simple function. If the vehicle is in a tunnel, the headlights are turned on
-Outside of the tunnel the lights are switched off.</p>
+<p><strong>Headlight example:</strong> This example shows the following <a class="reference internal" href="../glossary.html#term-Vehicle-Function"><span class="xref std std-term">Vehicle Function</span></a> : If the vehicle is in a tunnel, the headlights are turned on. Outside of the tunnel the lights are switched off. It is a perfect example to simulate the vehicle and to visualize the <a class="reference internal" href="../glossary.html#term-Vehicle-Function"><span class="xref std std-term">Vehicle Function</span></a> by the source software <code class="docutils literal notranslate"><span class="pre">OpenXilEnv</span></code> and <code class="docutils literal notranslate"><span class="pre">Carla</span></code> .</p>
 </section>
 <section id="door-service-example">
 <h2>Door Service Example<a class="headerlink" href="#door-service-example" title="Permalink to this heading">#</a></h2>
@@ -765,17 +796,17 @@ Also the helper utilities <code class="docutils literal notranslate"><span class
                 <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
   <h3>Contents</h3>
   <ul>
-    <li><a class="sidebar-link" href="vapi_doc/glossary.html" data-target="vapi_doc/glossary.html">Glossary</a></li>
-    <li><a class="sidebar-link" href="vapi_doc/get_started.html" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
-    <li><a class="sidebar-link" href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
-    <li><a class="sidebar-link" href="vapi_doc/q_and_a.html" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
-    <li><a class="sidebar-link" href="vapi_doc/entry.html" data-target="vapi_doc/entry.html">Documentation</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
     <ul>
         <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
-        <li><a class="sidebar-link" href="search.html" data-target="search.html" target="_blank">Search</a></li>
+        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
     </ul>
-    <li><a class="sidebar-link" href="vapi_pages/team.html" data-target="vapi_pages/team.html">Team</a></li>
-    <li><a class="sidebar-link" href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
+    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
 </ul>
 
 <script>
@@ -799,27 +830,25 @@ Also the helper utilities <code class="docutils literal notranslate"><span class
                     link.setAttribute("href", prefix + target);
                 }
             });
-        }
+        } 
     });
 </script>
-
-
 </div>
 
 <div class="toggle-sidebar">
   <h3>Contents</h3>
   <ul>
-    <li><a class="sidebar-link" href="vapi_doc/glossary.html" data-target="vapi_doc/glossary.html">Glossary</a></li>
-    <li><a class="sidebar-link" href="vapi_doc/get_started.html" data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
-    <li><a class="sidebar-link" href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
-    <li><a class="sidebar-link" href="vapi_doc/q_and_a.html" data-target="vapi_doc/q_and_a.html">Q & A</a></li>
-    <li><a class="sidebar-link" href="vapi_doc/entry.html" data-target="vapi_doc/entry.html">Documentation</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
     <ul>
         <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
-        <li><a class="sidebar-link" href="search.html" data-target="search.html" target="_blank">Search</a></li>
+        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
     </ul>
-    <li><a class="sidebar-link" href="vapi_pages/team.html" data-target="vapi_pages/team.html">Team</a></li>
-    <li><a class="sidebar-link" href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
+    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
 </ul>
 
 <script>
@@ -843,11 +872,9 @@ Also the helper utilities <code class="docutils literal notranslate"><span class
                     link.setAttribute("href", prefix + target);
                 }
             });
-        }
+        } 
     });
 </script>
-
-
 </div></div>
               
             
