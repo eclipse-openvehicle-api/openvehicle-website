@@ -1,0 +1,134 @@
+.. _vapi-configuration-toml-file:
+
+Configuration
+=============
+
+For the configuration of :term:`VAPI Component` s and a system in general toml files are used.
+
+What is a .toml File ?
+~~~~~~~~~~~~~~~~~~~~~~
+
+- A .toml file is a configuration file format used for defining settings in a clear and human-readable way. 
+- TOML stands for Tom's Obvious, Minimal Language. 
+- It's designed to be easy to read and write, making it a popular choice for configuration in many modern tools and programming environments.
+
+Key Features of .toml Files
+----------------------------
+
+- Human-readable syntax: Easy to understand and edit.
+- Supports various data types: Strings, integers, floats, booleans, dates, arrays, and tables.
+
+Example .toml File
+-------------------
+.. code-block:: text
+
+    [[Component]]
+    Path = "can_com_silkit.sdv"
+    Class = "CAN_Com_SilKit"
+    DebugInfo = true
+    SyncMode = true
+    SilKitParticipantName = "CAN1"
+    CanSilKitNetwork = "PrivateCAN"
+    RegistryURI = "silkit://localhost:8500"
+    SilKitConfig = """{
+            "Logging": {
+                 "Sinks": [ { "Type": "Stdout", "Level": "Info" } ]
+                     },
+                 }"""
+
+The example shows the configuration of a software component:
+
+- Path: Binary file to be loaded by the system
+- Class: Object to be created by the system
+- Everything else: configuration data for the software component
+
+.. seealso:: Examples :ref:`Config File <example-config-file>` and :ref:`Component With Initialization <example-general-componentwithinitialiation>`.    
+
+Structure of .toml file
+------------------------
+
+- Tables: Defined using square brackets [table_name].
+- Key-value pairs: Inside tables, you define settings like key = value.
+- Arrays: Lists of values, e.g., ports = [8001, 8002].
+- Nested tables: You can nest tables using dotted notation like [servers.alpha].
+
+Use Cases
+----------
+
+- Load of :term:`VAPI Component` s.
+
+.. raw:: html
+
+   <details>
+   <summary> Example of a list of components </summary>
+   <pre>
+
+    [Installation]
+    Version = 100
+    Name = "core"
+
+    [Properties]
+    Product = "core"
+
+    [[Module]]
+    Path="can_com_silkit.sdv"
+
+    [[Module]]
+    Path="can_com_sim.sdv"
+    [[Module.Component]]
+    Class = "CAN_Com_Sim"
+    DefaultName = "CAN_Communication_Object"
+    Type = "Device"
+    Singleton = true
+
+    [[Module]]
+    Path="core_ps.sdv"
+    [[Module.Component]]
+    Class = "Stub_2567106319432256464"
+    Aliases = ["Stub_sdv_app_IAppOperation"]
+    Type = "Stub"
+
+    [[Module.Component]]
+    Class = "Stub_86458473787080481"
+    Aliases = ["Stub_sdv_app_IAppShutdownRequest"]
+    Type = "Stub"
+
+    [[Module.Component]]
+    Class = "Proxy_2567106319432256464"
+    Aliases = ["Proxy_sdv_app_IAppOperation"]
+    Type = "Proxy"
+
+    [[Module]]
+    Path="simulation_task_timer.sdv"
+    [[Module.Component]]
+    Class = "SimulationTaskTimerService"
+    Type = "System"
+    Singleton = true
+
+    [[Module]]
+    Path="task_timer.sdv"
+    [[Module.Component]]
+    Class = "TaskTimerService"
+    Type = "System"
+    Singleton = true
+   </pre>
+   </details>
+
+- Configuration / initialization of :term:`VAPI Component` s.
+
+.. raw:: html
+
+    <details>
+    <summary> Example for a configuration of a component </summary>
+    <pre>
+
+        [Configuration]
+        Version = 100
+
+        [[Component]]
+        Path = "can_com_sim.sdv"
+        Class = "CAN_Com_Sim"
+        Source="system_demo_receiver.asc"
+        Target="system_demo_writer.asc"
+    </pre>
+    </details>    

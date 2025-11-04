@@ -76,7 +76,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'vapi_doc/services';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Core Tools" href="sdv_tools/core_tools.html" />
+    <link rel="next" title="Configuration" href="components_services/toml_file_explanation.html" />
     <link rel="prev" title="Key Building Blocks of Open Vehicle API" href="key_building_blocks.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -297,29 +297,8 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/core_tools.html">
-                        SDV Tools
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/auto_code_generation.html">
-                        Auto code generation
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/packaging_and_installation.html">
-                        Packaging & installation
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/system_control.html">
-                        System Control
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/sdv_executables.html">
+                        SDV Executables
                       </a>
                     </li>
                 
@@ -532,29 +511,8 @@ document.write(`
                 
 
                     <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/core_tools.html">
-                        SDV Tools
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/auto_code_generation.html">
-                        Auto code generation
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/packaging_and_installation.html">
-                        Packaging & installation
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/system_control.html">
-                        System Control
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/sdv_executables.html">
+                        SDV Executables
                       </a>
                     </li>
                 
@@ -644,117 +602,26 @@ document.write(`
                   
   <section id="components-services">
 <span id="vapi-components-services"></span><h1>Components &amp; Services<a class="headerlink" href="#components-services" title="Permalink to this heading">#</a></h1>
-<section id="logger">
-<h2>Logger<a class="headerlink" href="#logger" title="Permalink to this heading">#</a></h2>
-<p>For logging the following macros can be used: <code class="docutils literal notranslate"><span class="pre">SDV_LOG_TRACE(...)</span></code>, <code class="docutils literal notranslate"><span class="pre">SDV_LOG_DEBUG(...)</span></code>, <code class="docutils literal notranslate"><span class="pre">SDV_LOG_INFO(...)</span></code>, <code class="docutils literal notranslate"><span class="pre">SDV_LOG_WARNING(...)</span></code>, <code class="docutils literal notranslate"><span class="pre">SDV_LOG_ERROR(...)</span></code> or <code class="docutils literal notranslate"><span class="pre">SDV_LOG(...)</span></code>.
-In the log itself, additional information such as file, line and timestamp are recorded.
-Before usage, the sdv::app::CAppControl must be initialized.</p>
-<p><strong>Output File:</strong></p>
-<p><strong>Windows:</strong> In Windows, the log file is available in the project’s build output folder. The file name is started with the program tag, includes timestamp and file extension is <em>.log</em>.</p>
-<p>For example: <em>VAPI_LOG_2023.07.10_09-59-05.log</em>.</p>
-<p><strong>Linux:</strong> In Linux <em>syslogd</em> is used for logging. If <em>syslog</em> is not available in system it needs to installed by using following commands:</p>
-<ul class="simple">
-<li><p>Get the update first: <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">update</span></code></p></li>
-<li><p>Install syslogd: <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">inetutils-syslogd</span></code></p></li>
-<li><p>Restart the syslogd: <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">service</span> <span class="pre">inetutils-syslogd</span> <span class="pre">restart</span></code></p></li>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="components_services/toml_file_explanation.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="components_services/toml_file_explanation.html#what-is-a-toml-file">What is a .toml File ?</a></li>
 </ul>
-<p>To see the log you need to navigate to <em>/var/</em> folder in the root. There <em>syslog</em> file might be directly available, otherwise it’s located in <em>/var/log/</em> directory.</p>
-</section>
-<section id="tasktimer">
-<span id="vapi-tasktimer"></span><h2>TaskTimer<a class="headerlink" href="#tasktimer" title="Permalink to this heading">#</a></h2>
-<p>The <a class="reference internal" href="../_vapi_code/structsdv_1_1core_1_1_i_task_timer.html#exhale-struct-structsdv-1-1core-1-1-i-task-timer"><span class="std std-ref">ITaskTimer</span></a> functionality, which is implemented as part of the VAPI <a class="reference internal" href="glossary.html#term-Platform-Abstraction"><span class="xref std std-term">Platform Abstraction</span></a>, allows for periodic execution/scheduling of tasks. It can be accessed via the  <a class="reference internal" href="../_vapi_code/class_c_task_timer_service.html#exhale-class-class-c-task-timer-service"><span class="std std-ref">CTaskTimerService</span></a>.
-A task in this context is any object (living on the heap) implementing the <a class="reference internal" href="../_vapi_code/structsdv_1_1core_1_1_i_task_execute.html#exhale-struct-structsdv-1-1core-1-1-i-task-execute"><span class="std std-ref">ITaskExecute::Execute</span></a> - the implementation of ITaskExecute::Execute may contain arbitrary user-defined code.</p>
-<p>To define and schedule one’s own task, ITaskExecute is to be implemented and provided to core::ITaskTimer::CreateTimer as an argument alongside the desired period between executions.
-Afterwards, the provided interface is called periodically until core::ITaskTimer::ShutDownTask is called with the task-id assigned by core::ITaskTimer::CreateTimer.
-After a call to core::ITaskTimer::ShutDownTask no more calls to ITaskExecute::Execute for the task of the given task-id are made.</p>
-<p>During this execution period, the ITaskExecute pointer provided to core::ITaskTimer::CreateTimer may not be invalidated and the object must be kept alive.
-When managing multiple tasks, it is recommended to use smart pointers for storage of tasks in containers, such as vectors or maps, to prevent a move and delete sequence from affecting the underlying task objects.</p>
-<p>Following is a code snippet of a SDV object, which implements ITaskExecute and schedules its own execution. Included is only Initialize() and Execute(), the full code can be found in examples. The example code, as well as an executable running it, is contained in the projects ‘task_timer_example’ and ‘task_timer_component_example’.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;chrono&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;interfaces/core.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;interfaces/timer.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/component_impl.h&gt;</span>
-
-<span class="n">class</span><span class="w"> </span><span class="n">DemoTimerComponent</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span><span class="p">,</span><span class="w"> </span><span class="n">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span><span class="p">,</span><span class="w"> </span><span class="n">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">ITaskExecute</span>
-<span class="p">{</span>
-<span class="n">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">Device</span><span class="p">)</span>
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Timer_Example&quot;</span><span class="p">)</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">Initialize</span><span class="p">()</span><span class="w"> </span><span class="n">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initializing...&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">        </span><span class="c1">// Getting the platform abstraction interface access pointer via GetObject.</span>
-<span class="w">        </span><span class="n">sdv</span><span class="o">::</span><span class="n">TInterfaceAccessPtr</span><span class="w"> </span><span class="n">ptrTaskTimer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;TaskTimerService&quot;</span><span class="p">);</span>
-<span class="w">        </span><span class="c1">// Getting access to the task timer interface.</span>
-<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">taskTimerIfc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ptrTaskTimer</span><span class="p">.</span><span class="n">GetInterface</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">ITaskTimer</span><span class="o">&gt;</span><span class="p">();</span>
-
-<span class="w">        </span><span class="c1">// Checking if the interface is available</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">taskTimerIfc</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="c1">// Call to the &#39;CreateTimer&#39; function to execute the task every 500 ms.</span>
-<span class="w">            </span><span class="c1">// &#39;Execute&#39; function is implemented in this class which is printing the current</span>
-<span class="w">            </span><span class="c1">// timestamp while executing the task.</span>
-<span class="w">            </span><span class="n">m_pTimer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">taskTimerIfc</span><span class="o">-&gt;</span><span class="n">CreateTimer</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="n">this</span><span class="p">);</span>
-
-<span class="w">            </span><span class="c1">//updating the object status to running.</span>
-<span class="w">            </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">running</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="k">else</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="c1">// If not initialized properly prints the error message to the console and update the</span>
-<span class="w">            </span><span class="c1">// object status to the initialization_failure.</span>
-<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialization failure: Cannot access task timer interface&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">            </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialization_failure</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">    * @brief Execute function contains the task to be executed in provided period.</span>
-<span class="cm">    * This function will be called periodically. Currently it&#39;s kept simple which just prints the current timestamp to the console.</span>
-<span class="cm">    */</span>
-<span class="w">    </span><span class="n">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Execute</span><span class="p">()</span><span class="w"> </span><span class="n">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Executing the task with timestamp:&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">system_clock</span><span class="o">::</span><span class="n">to_time_t</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">system_clock</span><span class="o">::</span><span class="n">now</span><span class="p">())</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">    </span><span class="p">};</span>
-
-<span class="n">private</span><span class="o">:</span>
-<span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="w"> </span><span class="n">m_pTimer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nullptr</span><span class="p">;</span><span class="w"> </span><span class="c1">//!&lt; Timer object returned by CreateTimer and later used to ShutDownTask.</span>
-<span class="p">};</span>
-</pre></div>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="components_services/logger.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="components_services/timer_service.html">Timer Services</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="components_services/timer_service.html#tasktimer">TaskTimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components_services/timer_service.html#simulation-tasktimer">Simulation TaskTimer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="components_services/can_communication.html">CAN Implementations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="components_services/can_communication.html#can-implementation-based-on-asc-text-file">CAN implementation based on asc text file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components_services/can_communication.html#can-implementation-based-on-socket-can">CAN implementation based on socket can</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components_services/can_communication.html#can-implementation-based-on-vector-sil-kit">CAN implementation based on Vector SIL-Kit</a></li>
+</ul>
+</li>
+</ul>
 </div>
-<div class="admonition caution">
-<p class="admonition-title">Caution</p>
-<p>A Tasktimer is crucial for safety and accuracy. It cannot be created or recreated in runtime mode. A tasktimer must be created in configuration mode. Any timing which must be deleted and recreated at runtime like in the example doors must be iimplemented in an own thread.</p>
-</div>
-</section>
-<section id="simulation-tasktimer">
-<h2>Simulation TaskTimer<a class="headerlink" href="#simulation-tasktimer" title="Permalink to this heading">#</a></h2>
-<p>For the Open Source Simulation Software <code class="docutils literal notranslate"><span class="pre">OpenXilEnv</span></code> we implemented another <a class="reference internal" href="../_vapi_code/class_c_simulation_timer.html#exhale-class-class-c-simulation-timer"><span class="std std-ref">Class CSimulationTimer</span></a>. The
-simulation Software runs in ‘cycles’ with defined steps. The <a class="reference internal" href="../_vapi_code/class_c_task_timer_service.html#exhale-class-class-c-task-timer-service"><span class="std std-ref">CTaskTimerService</span></a> runs must faster so the simulation gets out of context.</p>
-<p>To synchronize the simulation with the <a class="reference internal" href="glossary.html#term-VAPI-Framework"><span class="xref std std-term">VAPI Framework</span></a>: the simulation timer expects to get the <a class="reference internal" href="../_vapi_code/structsdv_1_1core_1_1_i_timer_simulation_step.html#exhale-struct-structsdv-1-1core-1-1-i-timer-simulation-step"><span class="std std-ref">Struct ITimerSimulationStep</span></a>, how much time was passed since the last cycle. The full code can be found in examples.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Get the task timer service.</span>
-<span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">ITimerSimulationStep</span><span class="o">*</span><span class="w"> </span><span class="n">pTimerSimulationStep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">ITimerSimulationStep</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;SimulationTaskTimerService&quot;</span><span class="p">);</span>
-<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">pTimerSimulationStep</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Error, Simulation timer available &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="c1">//run for 3 seconds - in that time task timer callbacks in the module get triggered</span>
-<span class="kt">uint32_t</span><span class="w"> </span><span class="n">counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3000</span><span class="p">;</span>
-<span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="w"> </span><span class="nf">sleepDuration</span><span class="w"> </span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">counter</span><span class="o">--</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pTimerSimulationStep</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">                </span><span class="n">pTimerSimulationStep</span><span class="o">-&gt;</span><span class="n">SimulationStep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
-<span class="w">        </span><span class="p">}</span>
-
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">sleepDuration</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
 </section>
 
 
@@ -777,11 +644,11 @@ simulation Software runs in ‘cycles’ with defined steps. The <a class="refer
       </div>
     </a>
     <a class="right-next"
-       href="sdv_tools/core_tools.html"
+       href="components_services/toml_file_explanation.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Core Tools</p>
+        <p class="prev-next-title">Configuration</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

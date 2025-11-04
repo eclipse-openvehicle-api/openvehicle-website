@@ -4,9 +4,30 @@ Packaging & Installation
 ========================
 
 
+.. note:: Installation part is under construction. That's why in the cmake files we have to copy toml files after we created packages with the ``sdv_packager``
 
-Installation: under construction. That's why in the cmake files we have to copy toml files after we created packages with the ``sdv_packager``
+sdv_packager
+~~~~~~~~~~~~
 
-Later these files will be written.
+**Description:**
+Creates, installs, verifies, and uninstalls SDV component installation packages.  
 
+**Role:**
+Used to bundle and deploy components after code generation. Supports both traditional packaging and direct installation workflows.
 
+**Available Commands:**
+- ``PACK``, ``INSTALL``, ``DIRECT_INSTALL``, ``UNINSTALL``, ``VERIFY``, ``SHOW``
+
+**Example Usage:**
+
+.. code-block:: console
+
+    sdv_packager.exe DIRECT_INSTALL ExampleInterfaceComponents --instance<1000> -I<C:\Repo_VAPI\vapi-cpp-vehicle-api-platform\build\gcc_w64_mingw_debug\bin> --interface_config --overwrite
+
+        commands:
+        PACK            = *create an installation package*
+        INSTALL         = *install an installation package*                              
+        DIRECT_INSTALL  = *install the components directly without creating an installation package*
+        UNINSTALL       = *uninstall a previously installed installation package*
+        VERIFY          = *verify the integrity of the installation package*
+        SHOW            = *show information about the installation package*

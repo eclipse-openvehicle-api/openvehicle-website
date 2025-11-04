@@ -1,0 +1,23 @@
+.. _vapi-logger_component:
+
+Logging
+=======
+
+For logging the following macros can be used: ``SDV_LOG_TRACE(...)``, ``SDV_LOG_DEBUG(...)``, ``SDV_LOG_INFO(...)``, ``SDV_LOG_WARNING(...)``, ``SDV_LOG_ERROR(...)`` or ``SDV_LOG(...)``.
+In the log itself, additional information such as file, line and timestamp are recorded.
+Before usage, the sdv::app::CAppControl must be initialized.
+
+**Output File:**
+
+**Windows:** In Windows, the log file is available in the project's build output folder. The file name is started with the program tag, includes timestamp and file extension is *.log*.
+
+For example: *VAPI_LOG_2023.07.10_09-59-05.log*.
+
+**Linux:** In Linux *syslogd* is used for logging. If *syslog* is not available in system it needs to installed by using following commands:
+
+* Get the update first: ``sudo apt-get update``
+* Install syslogd: ``sudo apt-get install inetutils-syslogd``
+* Restart the syslogd: ``sudo service inetutils-syslogd restart``
+
+To see the log you need to navigate to */var/* folder in the root. There *syslog* file might be directly available, otherwise it's located in */var/log/* directory.
+

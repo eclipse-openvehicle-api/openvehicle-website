@@ -1,0 +1,183 @@
+.. _vapi-step_by_step_console_simulation:
+
+Step-by-Step: Console & Simulation Data for Wiper Example
+=========================================================
+
+Overview
+--------
+
+This page guides you through building a console-based simulation for the Wiper example using the SDV framework.
+The goal is to visualize signal behavior and simulate interactions such as switching between Auto and Manual modes,
+activating wipers manually, and responding to rain detection, all within a terminal interface.
+
+Console
+-------
+To simulate the functionality and understand how it works, it's helpful to visualize the signal flow. For that, you can create a Console class that prints the output of the signals.
+
+First, think about what you want to display in the Console output. 
+In my case, for the Wiper example, I want to visualize the Data Dispatch service and the Basic Service. I also want to be able to switch between Auto and Manual modes for the wipers. In Manual mode, I should be able to activate or deactivate the wipers manually. In Auto mode, if it's raining, the wipers should activate automatically.
+
+So I will have a PrintHeader() function like this:
+
+.. code-block:: cpp
+
+	void CConsole::PrintHeader()
+	{
+		// Clear the screen...
+		std::cout << "\x1b[2J";
+
+		// Print the titles
+		PrintText(g_sTitle, "Wiper Example Functionality");
+		PrintText(g_sSeparator1, "============================================================================");
+		PrintText(g_sDispatchService, "Data dispatch service:");
+		PrintText(g_sSeparator2, "----------------------------------------------------------------------------");
+		PrintText(g_sBasicService, "Basic services:");
+		PrintText(g_sSeparator3, "----------------------------------------------------------------------------");
+		PrintText(g_sUsageMode, "Usage mode:");
+		PrintText(g_sControlDescription1, "Press 'A' to set Wiper Auto Mode.");
+		PrintText(g_sControlDescription2, "Press 'M' to set Wiper Manual Mode.");
+		PrintText(g_sControlDescription3, "Press 'R' to make it a ranny day/ clear day.");
+		PrintText(g_sControlDescription4, "Press 'W' to activate/deactivate wipers in case of Manual Mode");
+		PrintText(g_sControlDescription5, "Press 'X' to quit.");
+	}
+	
+
+Preparing the Data
+------------------
+
+Alright, so now that we have the console set up to display things, we need to make sure the data we want to show is actually available. That's where PrepareDataConsumers() comes in.
+
+Think of it like this: before we can print anything meaningful to the screen, we need to connect to the services and devices that provide the data. This function does exactly that, it grabs the interfaces for the rain sensor, wiper mode, and front/rear wipers, both from the Basic Services and the Vehicle Devices.
+
+Let's walk through it step by step.
+
+Step 1: Get the Wiper Mode from the Basic Service
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. code-block:: cpp
+
+	auto pBSWiperMode = sdv::core::GetObject("Vehicle.Body.Windshield.Wiper.Mode_Service")
+		.GetInterface<vss::Vehicle::Body::Windshield::Wiper::ModeService::IVSS_GetMode>();
+
+This line tries to get the interface for reading the current wiper mode. If it fails, we log an error. If it works, we print the mode in the console.
+
+Step 2: Get the Rain Detection from the Basic Service
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. code-block:: cpp
+
+	auto pBSWeatherRain = sdv::core::GetObject("Vehicle.Body.Weather.Rain_Service")
+		.GetInterface<vss::Vehicle::Body::Weather::RainService::IVSS_GetDetected>();
+
+Same idea here, we want to know if it's raining. If the service is available, we read the value and print it.
+
+Step 3: Set the Front and Rear Wipers to Inactive
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. code-block:: cpp
+	
+	SetIsFrontActive(false);
+	SetIsRearActive(false);
+	
+We do this to make sure the system starts in a clean state.
+
+Step 4: Register Events from the Vehicle Devices
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+.. code-block:: cpp
+
+	auto pVDWiperMode = sdv::core::GetObject("Vehicle.Body.Windshield.Wiper.Mode_Device")
+		.GetInterface<vss::Vehicle::Body::Windshield::Wiper::ModeDevice::IVSS_Mode>();
+
+	pVDWiperMode->RegisterModeEvent(dynamic_cast<vss::Vehicle::Body::Windshield::Wiper::ModeDevice::IVSS_WriteMode_Event*>(this));
+	
+This part is important. It tells the system: "Hey, if the mode changes, notify me!"
+
+We do the same for rain detection.
+
+.. code-block:: cpp
+	
+	auto pVDWeatherRain = sdv::core::GetObject("Vehicle.Body.Weather.Rain_Device")
+		.GetInterface<vss::Vehicle::Body::Weather::RainDevice::IVSS_Detected>();
+
+	pVDWeatherRain->RegisterDetectedEvent(dynamic_cast<vss::Vehicle::Body::Weather::RainDevice::IVSS_WriteDetected_Event*>(this));
+
+Step 5: Register Signals
+""""""""""""""""""""""""
+
+Finally, we call 
+
+.. code-block:: cpp
+	
+	RegisterSignals();
+	
+
+Register Signals
+----------------
+
+Once the services and devices are loaded, we need to **connect our application to the signal bus**. That's exactly what **RegisterSignals()** does.
+
+Let's break it down.
+
+Step 1: Create a Dispatch Service
+"""""""""""""""""""""""""""""""""
+
+.. code-block:: cpp
+	
+	sdv::core::CDispatchService dispatch;
+
+This object lets you subscribe to signals and register them for transmission or reception. It's your gateway to the SDV signal bus.
+
+Step 2: Subscribe to RX Signals
+"""""""""""""""""""""""""""""""
+
+These are signals your app wants to **listen to**.
+
+.. code-block:: cpp
+	
+	m_signalRainDetected = dispatch.Subscribe(wiper::dsRainDetected, [&{
+		CallbackRainDetected(value);
+	});
+
+	m_signalWiperMode = dispatch.Subscribe(wiper::dsWiperMode, & {
+		CallbackWiperMode(value);
+	});
+
+Here, we're saying: "Whenever the rain or wiper mode changes, call my callback function."
+
+These callbacks update internal state and later help us decide what to print in the console.
+
+Step 3: Register TX Signals
+"""""""""""""""""""""""""""
+
+These are signals your app wants to **send out**.
+
+.. code-block:: cpp
+	
+	m_signalFrontWiperActive = dispatch.RegisterTxSignal(wiper::dsFrontWiperActive, 0);
+	m_signalRearWiperActive = dispatch.RegisterTxSignal(wiper::dsRearWiperActive, 0);
+
+The 0 here is the default value. You can update these signals later when the user presses a key or when rain is detected.
+
+Step 4: Print Initial Values
+""""""""""""""""""""""""""""
+
+After registration, we can show the current state in the console:
+
+.. code-block:: cpp
+	
+	PrintText(g_dsWiperModeEvent, "Wiper mode: ............. " + m_WiperMode);
+	PrintValue(g_dsWeatherRain, "Weather: ", m_IsRainDetected, (m_IsRainDetected ? "Raining" : "Clear/dry"));
+	PrintValue(g_dsWiperFrontActive, "Front Wiper: ", m_WiperFrontIsActive, (m_WiperFrontIsActive ? "Active" : "Inactive"));
+	PrintValue(g_dsWiperRearActive, "Rear Wiper: ", m_WiperRearIsActive, (m_WiperRearIsActive ? "Active" : "Inactive"));
+	
+This gives the user a snapshot of the system state right after startup.
+
+Step 5: Log for Debugging
+"""""""""""""""""""""""""
+
+.. code-block:: cpp
+	
+	SDV_LOG_INFO("RegisterSignals called");
+
+Always good to log this for troubleshooting. If something goes wrong, you'll know whether signal registration was reached.

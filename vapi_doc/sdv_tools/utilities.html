@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Auto Code Generation &#8212; VAPI 0.1.0 documentation</title>
+    <title>SDV Utilities (Auto Code Generation) &#8212; VAPI 0.1.0 documentation</title>
   
   
   
@@ -73,11 +73,11 @@
     <script src="../../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
     <script src="../../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
     <script src="../../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'vapi_doc/sdv_tools/auto_code_generation';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'vapi_doc/sdv_tools/utilities';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Packaging &amp; Installation" href="packaging_and_installation.html" />
-    <link rel="prev" title="Core Tools" href="core_tools.html" />
+    <link rel="prev" title="SDV Executables" href="sdv_executables.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -296,30 +296,9 @@
                     </li>
                 
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="core_tools.html">
-                        SDV Tools
-                      </a>
-                    </li>
-                
-
                     <li class="nav-item current active">
-                      <a class="nav-link dropdown-item nav-internal" href="#">
-                        Auto code generation
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="packaging_and_installation.html">
-                        Packaging & installation
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="system_control.html">
-                        System Control
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_executables.html">
+                        SDV Executables
                       </a>
                     </li>
                 
@@ -531,30 +510,9 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="core_tools.html">
-                        SDV Tools
-                      </a>
-                    </li>
-                
-
                     <li class="nav-item current active">
-                      <a class="nav-link dropdown-item nav-internal" href="#">
-                        Auto code generation
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="packaging_and_installation.html">
-                        Packaging & installation
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="system_control.html">
-                        System Control
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_executables.html">
+                        SDV Executables
                       </a>
                     </li>
                 
@@ -625,7 +583,10 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Auto Code Generation</li>
+    
+    <li class="breadcrumb-item"><a href="sdv_executables.html" class="nav-link">SDV Executables</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">SDV...</li>
   </ul>
 </nav>
 </div>
@@ -642,43 +603,45 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="auto-code-generation">
-<span id="vapi-auto-code-generation"></span><h1>Auto Code Generation<a class="headerlink" href="#auto-code-generation" title="Permalink to this heading">#</a></h1>
-<p>This section describes the tools and process used to automatically generate code artifacts for Software Defined Vehicle (SDV) systems. These artifacts include CAN datalink components, vehicle devices, and basic services, based on standardized signal definitions and vehicle-specific configurations.</p>
+  <section id="sdv-utilities-auto-code-generation">
+<span id="vapi-utilities-auto-code-generation"></span><h1>SDV Utilities (Auto Code Generation)<a class="headerlink" href="#sdv-utilities-auto-code-generation" title="Permalink to this heading">#</a></h1>
+<p>This section describes the tools and processes used to automatically generate code artifacts for Software Defined Vehicle (SDV) systems. These artifacts include CAN datalink components (for the extraction and composition of signals from and to CAN messages), vehicle devices, and basic services, based on standardized signal definitions and vehicle-specific configurations.</p>
 <section id="quick-summary">
 <h2>Quick Summary<a class="headerlink" href="#quick-summary" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>sdv_vss_util</strong>: Generates IDL interfaces and component code from VSS CSV.</p></li>
+<li><p><strong>sdv_vss_util</strong>: Generates IDL interfaces and component code from a VSS definition file (.csv).</p></li>
 <li><p><strong>sdv_idl_compiler</strong>: Compiles IDL files into proxy/stub code.</p></li>
-<li><p><strong>sdv_dbc_util</strong>: Generates CAN datalink and FMU code from DBC files.</p></li>
+<li><p><strong>sdv_dbc_util</strong>: Generates CAN datalink for the extraction and composition of signals from and to CAN messages and FMU code from DBC file.</p></li>
 </ul>
 </section>
-<section id="tools-overview">
-<h2>Tools Overview<a class="headerlink" href="#tools-overview" title="Permalink to this heading">#</a></h2>
+<section id="utilities-overview">
+<h2>Utilities Overview<a class="headerlink" href="#utilities-overview" title="Permalink to this heading">#</a></h2>
 <section id="sdv-vss-util">
 <span id="id1"></span><h3>sdv_vss_util<a class="headerlink" href="#sdv-vss-util" title="Permalink to this heading">#</a></h3>
 <section id="used-for">
-<h4>Used for:<a class="headerlink" href="#used-for" title="Permalink to this heading">#</a></h4>
+<h4>Used for<a class="headerlink" href="#used-for" title="Permalink to this heading">#</a></h4>
 <ul class="simple">
 <li><p>Creating IDL interfaces from VSS signal definitions.</p></li>
-<li><p>Optionally generating <a class="reference internal" href="../glossary.html#term-Vehicle-Device"><span class="xref std std-term">Vehicle Device</span></a> and <a class="reference internal" href="../glossary.html#term-Basic-Service"><span class="xref std std-term">Basic Service</span></a> components.</p></li>
+<li><p>Optionally code generation of <a class="reference internal" href="../glossary.html#term-Vehicle-Device"><span class="xref std std-term">Vehicle Device</span></a> and <a class="reference internal" href="../glossary.html#term-Basic-Service"><span class="xref std std-term">Basic Service</span></a> components.</p></li>
 </ul>
 </section>
-<section id="why-is-your-csv-file-csv-needed">
-<h4>Why is <cite>your_csv_file.csv</cite> needed?<a class="headerlink" href="#why-is-your-csv-file-csv-needed" title="Permalink to this heading">#</a></h4>
-<p>This CSV file is the <strong>core input</strong> for <cite>sdv_vss_util</cite>. It defines the structure and behavior of signals in the system, including:</p>
+<section id="input-interface-definitions-in-file-your-csv-file-csv">
+<h4>Input: interface definitions in file <cite>your_csv_file.csv</cite><a class="headerlink" href="#input-interface-definitions-in-file-your-csv-file-csv" title="Permalink to this heading">#</a></h4>
+<p>This CSV file is the <strong>core input</strong> for <code class="docutils literal notranslate"><span class="pre">sdv_vss_util</span></code>. It defines the structure and behavior of signals in the system, including:</p>
 <ul class="simple">
 <li><p>Which components are generated (<cite>VD</cite> or <cite>BS</cite>)</p></li>
-<li><p>What signals they handle</p></li>
+<li><p>Signal type and direction (RX or TX)</p></li>
 <li><p>How those signals are mapped to VSS paths and CAN messages</p></li>
 </ul>
 <p>Each row in the CSV represents a signal and its metadata. The tool uses this to generate:</p>
 <ul class="simple">
 <li><p><cite>.idl</cite> files for interface definitions</p></li>
 <li><p><cite>.cpp/.h</cite> files for VD and BS components</p></li>
-<li><p><cite>SignalIdentifier.h</cite> and <cite>Summary.txt</cite> for reference</p></li>
+<li><p><cite>signal_identifier.h</cite> and <cite>summary.txt</cite> for reference</p></li>
 </ul>
-<p><strong>Required columns in the CSV:</strong></p>
+</section>
+<section id="csv-column-definitions">
+<h4>CSV column definitions<a class="headerlink" href="#csv-column-definitions" title="Permalink to this heading">#</a></h4>
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Column Name</p></th>
@@ -712,17 +675,18 @@ document.write(`
 </tr>
 </tbody>
 </table>
-<section id="example-row">
-<h5>Example row:<a class="headerlink" href="#example-row" title="Permalink to this heading">#</a></h5>
+<p>Example of a single row:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">VD;FrontWiper;IsActive;frontWiperActive;Vehicle.Body.Windshield.Wiper.Front;TX;boolean;CAN_Output.FrontWiperActive</span>
 </pre></div>
 </div>
-<p>This row will generate:</p>
-<ul class="simple">
-<li><p>A <cite>VD_FrontWiper</cite> class with a signal <cite>m_frontWiperActive</cite></p></li>
-<li><p>Methods like <cite>WriteFrontWiperActive(bool)</cite> to publish the signal</p></li>
-<li><p>An interface <cite>IVSS_WriteFrontWiperActive</cite> in the corresponding <cite>.idl</cite> file</p></li>
-</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">This row will generate:</span>
+
+<span class="go">- VD = Vehicle Device</span>
+<span class="go">- A `VD_FrontWiper` class with a signal `m_frontWiperActive`.</span>
+<span class="go">- Methods like `WriteFrontWiperActive(bool)` to publish the signal.</span>
+<span class="go">- An interface `IVSS_WriteFrontWiperActive` in the corresponding `.idl` file.</span>
+</pre></div>
+</div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <ul class="simple">
@@ -730,109 +694,132 @@ document.write(`
 <li><p>Use <cite>VD</cite> for low-level signal handling and <cite>BS</cite> for high-level service logic.</p></li>
 </ul>
 </div>
-</section>
-<section id="example-usage">
-<h5>Example usage:<a class="headerlink" href="#example-usage" title="Permalink to this heading">#</a></h5>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sdv_vss_util.exe your_csv_file.csv -Ogenerated/ --prefix your_prefix --version 1.0.0.1 --enable_components</span>
+<p>Example usage:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sdv_vss_util your_csv_file.csv -O&lt;generated/&gt; --prefix&lt;your_prefix&gt; --version&lt;1.0.0.1&gt; --enable_components</span>
+
+<span class="go">     -O&lt;string&gt;          = *output folder*</span>
+<span class="go">     --prefix&lt;string&gt;    = *prefix, namespace for the signal names*</span>
+<span class="go">     --version&lt;string&gt;   = *optional version information*</span>
+<span class="go">     --enable_components = *optional to generate vehicle devices and basic services*</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Output:</span>
+
+<span class="go">- `generated/vss_files/bs_classname/...`</span>
+<span class="go">- `generated/vss_files/vd_classname/...`</span>
+<span class="go">- `generated/signal_identifier.h`</span>
+<span class="go">- `generated/summary.txt`</span>
+<span class="go">- `generated/vss_*.idl`</span>
 </pre></div>
 </div>
 </section>
-<section id="output">
-<h5>Output:<a class="headerlink" href="#output" title="Permalink to this heading">#</a></h5>
+<section id="vd-files-vehicle-devices">
+<h4>VD_Files - <cite>Vehicle Devices</cite><a class="headerlink" href="#vd-files-vehicle-devices" title="Permalink to this heading">#</a></h4>
 <ul class="simple">
-<li><p><cite>generated/vss_files/BS_ClassName/…</cite></p></li>
-<li><p><cite>generated/vss_files/VD_ClassName/…</cite></p></li>
-<li><p><cite>generated/SignalIdentifier.h</cite></p></li>
-<li><p><cite>generated/Summary.txt</cite></p></li>
-<li><p><cite>generated/VSS_*.idl</cite></p></li>
-</ul>
-</section>
-<section id="vd-files-vehicle-device">
-<h5><strong>VD_ Files -</strong> <cite>Vehicle Device</cite><a class="headerlink" href="#vd-files-vehicle-device" title="Permalink to this heading">#</a></h5>
-<p>These files define <strong>device-level components</strong> that interact directly with VSS signals.
-They are responsible for <strong>publishing or subscribing to raw signal data</strong>, typically mapped to CAN messages.</p>
-<ul class="simple">
+<li><p>Represent low-level components that interact directly with VSS signals.</p></li>
+<li><p>Handle publishing or subscribing to raw signal data.</p></li>
 <li><p>Example: <code class="docutils literal notranslate"><span class="pre">VD_FrontWiper.cpp/.h</span></code></p></li>
-<li><dl class="simple">
-<dt>Contains:</dt><dd><ul>
-<li><p>A class like <code class="docutils literal notranslate"><span class="pre">CVehicleDeviceFrontWiper</span></code></p></li>
-<li><p>Signal objects (e.g. <code class="docutils literal notranslate"><span class="pre">m_wiperSpeed</span></code>)</p></li>
-<li><p>Methods like <code class="docutils literal notranslate"><span class="pre">WriteWiperSpeed(int)</span></code> to publish values</p></li>
-<li><p>Initialization and lifecycle management (Initialize, Shutdown, etc.)</p></li>
+<li><p>Inherit interfaces like <code class="docutils literal notranslate"><span class="pre">IVSS_WriteWiperSpeed</span></code></p></li>
+<li><p>Contain signal objects and methods like <code class="docutils literal notranslate"><span class="pre">WriteWiperSpeed(int)</span></code> to publish values.</p></li>
 </ul>
-</dd>
-</dl>
+<p>These files define <a class="reference internal" href="../glossary.html#term-Vehicle-Device"><span class="xref std std-term">Vehicle Device</span></a> s that interact directly with VSS signals from the <a class="reference internal" href="../glossary.html#term-Data-Dispatch-Service"><span class="xref std std-term">Data Dispatch Service</span></a>.
+They are responsible for <strong>publishing or subscribing to raw signal data</strong>, typically mapped to CAN messages.</p>
+<ul>
+<li><p>Example: <code class="docutils literal notranslate"><span class="pre">VD_FrontWiper.cpp/.h</span></code></p></li>
+<li><p>Contains:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A class like <code class="docutils literal notranslate"><span class="pre">CVehicleDeviceFrontWiper</span></code>.</p></li>
+<li><p>Signal objects (e.g. <code class="docutils literal notranslate"><span class="pre">m_wiperSpeed</span></code>).</p></li>
+<li><p>Methods like <code class="docutils literal notranslate"><span class="pre">WriteWiperSpeed(int)</span></code> to publish values.</p></li>
+<li><p>Initialization and lifecycle management (Initialize, Shutdown, etc.).</p></li>
+</ul>
+</div></blockquote>
 </li>
-<li><p>Inherits from interfaces like <code class="docutils literal notranslate"><span class="pre">IVSS_WriteWiperSpeed</span></code></p></li>
+<li><p>Inherits from interfaces like <code class="docutils literal notranslate"><span class="pre">IVSS_WriteWiperSpeed</span></code>.</p></li>
 </ul>
 </section>
-<section id="bs-files-basic-service">
-<h5><strong>BS_ Files -</strong> <cite>Basic Service</cite><a class="headerlink" href="#bs-files-basic-service" title="Permalink to this heading">#</a></h5>
-<p>These files define <strong>service-level components</strong> that expose <strong>application-level functionality</strong> to other modules or external systems.</p>
+<section id="bs-files-basic-services">
+<h4>BS_Files - <cite>Basic Services</cite><a class="headerlink" href="#bs-files-basic-services" title="Permalink to this heading">#</a></h4>
 <ul class="simple">
+<li><p>Represent high-level service components that expose application-level functionality.</p></li>
+<li><p>Act as wrappers around VD components.</p></li>
 <li><p>Example: <code class="docutils literal notranslate"><span class="pre">BS_FrontWiper.cpp/.h</span></code></p></li>
-<li><dl class="simple">
-<dt>Contains:</dt><dd><ul>
+<li><p>Inherit interfaces like <code class="docutils literal notranslate"><span class="pre">IVSS_SetWiperSpeed</span></code></p></li>
+<li><p>Contain methods like <code class="docutils literal notranslate"><span class="pre">SetWiperSpeed(int)</span></code> that delegate to the corresponding VD device.</p></li>
+</ul>
+<p>These files define <a class="reference internal" href="../glossary.html#term-Basic-Service"><span class="xref std std-term">Basic Service</span></a> s that expose <strong>application-level functionality</strong> to other modules or external systems.</p>
+<ul>
+<li><p>Example: <code class="docutils literal notranslate"><span class="pre">BS_FrontWiper.cpp/.h</span></code></p></li>
+<li><p>Contains:</p>
+<blockquote>
+<div><ul class="simple">
 <li><p>A class like <code class="docutils literal notranslate"><span class="pre">CBasicServiceFrontWiper</span></code></p></li>
-<li><p>Methods like <code class="docutils literal notranslate"><span class="pre">SetWiperSpeed(int)</span></code> that call into the corresponding <code class="docutils literal notranslate"><span class="pre">VD_</span></code> device</p></li>
-<li><p>Interface exposure for service APIs (e.g. <code class="docutils literal notranslate"><span class="pre">IVSS_SetWiperSpeed</span></code>)</p></li>
+<li><p>Methods like <code class="docutils literal notranslate"><span class="pre">SetWiperSpeed(int)</span></code> that call into the corresponding <code class="docutils literal notranslate"><span class="pre">VD_</span></code> device.</p></li>
+<li><p>Interface exposure for service APIs (e.g. <code class="docutils literal notranslate"><span class="pre">IVSS_SetWiperSpeed</span></code>).</p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </li>
-<li><p>Acts as a wrapper or bridge to the underlying <code class="docutils literal notranslate"><span class="pre">VD_</span></code> logic</p></li>
+<li><p>Acts as a wrapper or bridge to the underlying <code class="docutils literal notranslate"><span class="pre">VD_</span></code> logic.</p></li>
 </ul>
-<p><strong>Key Differences</strong></p>
-<ul class="simple">
-<li><dl class="simple">
-<dt>Purpose:</dt><dd><ul>
+</section>
+<section id="key-differences">
+<h4>Key Differences<a class="headerlink" href="#key-differences" title="Permalink to this heading">#</a></h4>
+<ul>
+<li><p>Purpose:</p>
+<blockquote>
+<div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">VD_</span> <span class="pre">Files</span></code>: Low-level signal handling</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">BS_</span> <span class="pre">Files</span></code>: High-level signal handling</p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>Signal Access:</dt><dd><ul>
+<li><p>Signal Access:</p>
+<blockquote>
+<div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">VD_</span> <span class="pre">Files</span></code>: Direct (via <code class="docutils literal notranslate"><span class="pre">CSignal</span></code>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">BS_</span> <span class="pre">Files</span></code>: Indirect (via device interface)</p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </li>
-<li><dl class="simple">
-<dt>Role in System:</dt><dd><ul>
+<li><p>Role in System:</p>
+<blockquote>
+<div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">VD_</span> <span class="pre">Files</span></code>: Data source/sink</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">BS_</span> <span class="pre">Files</span></code>: Functional API for control modules</p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </li>
 </ul>
-</section>
 </section>
 </section>
 <section id="sdv-idl-compiler">
 <span id="id2"></span><h3>sdv_idl_compiler<a class="headerlink" href="#sdv-idl-compiler" title="Permalink to this heading">#</a></h3>
-<p><strong>Used for:</strong></p>
+<section id="id3">
+<h4>Used for:<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
 <ul class="simple">
-<li><p>Generating communication interfaces for Complex Services and Applications.</p></li>
+<li><p>Generating proxy &amp; stub code for marshalling.</p></li>
 <li><p>Enables isolated components to interact across process boundaries.</p></li>
-<li><p><strong>Required step</strong> after running <cite>sdv_vss_util</cite>: all IDL files generated by <cite>sdv_vss_util</cite> must be compiled using <cite>sdv_idl_compiler</cite>.</p></li>
-<li><p>The compilation process produces <cite>.h</cite> header files for each <cite>.idl</cite> file, which are essential for building proxy/stub communication layers.</p></li>
+<li><p><strong>Required step</strong> after running <code class="docutils literal notranslate"><span class="pre">sdv_vss_util</span></code>: all IDL files generated by <code class="docutils literal notranslate"><span class="pre">sdv_vss_util</span></code> must be compiled using <code class="docutils literal notranslate"><span class="pre">sdv_idl_compiler</span></code>.</p></li>
+<li><p>The compilation process produces <code class="docutils literal notranslate"><span class="pre">*.h</span></code> header files for each <code class="docutils literal notranslate"><span class="pre">*.idl</span></code> file, which are essential for creating the proxy/stub code for marshalling.</p></li>
 </ul>
-<p><strong>Example usage:</strong></p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sdv_idl_compiler.exe generated/vss_files/VSS_VehicleBodyWeatherRain_bs_rx.idl -Ogenerated/vss_files/ -ID:\Repo_VAPI\vapi-cpp-vehicle-api-platform\export -Igenerated/vss_files/ --no_ps</span>
+<p>Example usage:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sdv_idl_compiler generated/vss_files/VSS_VehicleBodyWeatherRain_bs_rx.idl -O&lt;generated/vss_files/&gt; -I&lt;D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\export&gt; -I&lt;generated/vss_files/&gt; --no_ps</span>
+
+<span class="go">-O&lt;string&gt;            = *output folder*</span>
+<span class="go">-I&lt;string&gt;            = *path to required header files*</span>
+<span class="go">--no_ps               = *optional, if set no proxy &amp; stub code will be created*</span>
+<span class="go">--ps_lib_name&lt;string&gt; = *optional, name of the proxy &amp; stub library to be created*</span>
 </pre></div>
 </div>
-<p><strong>What a Generated `.h` File Contains</strong></p>
-<p>Each <cite>.h</cite> file generated by <cite>sdv_idl_compiler</cite> from an <cite>.idl</cite> file contains:</p>
-<ul class="simple">
-<li><p><strong>Interface definitions</strong> for service and event communication.</p></li>
-<li><p><strong>Unique interface IDs</strong> used for runtime identification and binding.</p></li>
-<li><p><strong>Pure virtual methods</strong> that define the contract for signal access and event handling.</p></li>
-<li><p><strong>Callback registration methods</strong> for subscribing to signal changes.</p></li>
-</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Output: each `.h` file generated by `sdv_idl_compiler` from an `.idl` file contains:</span>
+
+<span class="go">- `Interface definitions` for service and event communication.</span>
+<span class="go">- `Unique interface IDs` used for runtime identification and binding.</span>
+<span class="go">- `Pure virtual methods` that define the contract for signal access and event handling.</span>
+<span class="go">- `Callback registration methods` for subscribing to signal changes.</span>
+</pre></div>
+</div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <ul class="simple">
@@ -841,93 +828,48 @@ They are responsible for <strong>publishing or subscribing to raw signal data</s
 </ul>
 </div>
 </section>
+</section>
 <section id="sdv-dbc-util">
-<span id="id3"></span><h3>sdv_dbc_util<a class="headerlink" href="#sdv-dbc-util" title="Permalink to this heading">#</a></h3>
-<p><strong>Used for:</strong></p>
+<span id="id4"></span><h3>sdv_dbc_util<a class="headerlink" href="#sdv-dbc-util" title="Permalink to this heading">#</a></h3>
+<section id="id5">
+<h4>Used for:<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
 <ul class="simple">
-<li><p>Generating <cite>can_dl</cite> (CAN datalink) code.</p></li>
-<li><p>Creating components to read/write CAN signals.</p></li>
-<li><p>(Optional) Creating FMU-compatible modules for simulation .</p></li>
+<li><p>Generating <code class="docutils literal notranslate"><span class="pre">can_dl.sdv</span></code> (<a class="reference internal" href="../glossary.html#term-Data-Link"><span class="xref std std-term">Data Link</span></a>) for the extraction and composition of signals from and to CAN messages.</p></li>
+<li><p>(Optional) Creating FMU-compatible modules for simulation.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>FMU generation is <strong>optional</strong> and only required if the system is intended to be used in a <strong>simulation environment</strong> (e.g., OpenXil). If simulation is not needed, you can skip the <cite>–module</cite> option in <cite>sdv_dbc_util</cite>, and the <cite>fmu_/</cite> folder will not be generated.</p>
+<p>FMU generation is <strong>optional</strong> and only required if the system is intended to be used in a <strong>simulation environment</strong> (e.g., OpenXilEnv). If simulation is not needed, you can skip the <cite>–module</cite> option in <cite>sdv_dbc_util</cite>, and the <cite>fmu_/</cite> folder will not be generated.</p>
 </div>
-<code>
-sdv_dbc_util.exe
-<span style="color: blue; font-weight: bold;">your_dbc_file.dbc</span>
--O<span style="color: blue; font-weight: bold;">generated\</span>
---nodes<span style="color: blue; font-weight: bold;">your_nodes_name</span>
---version1.0.0.1
---module<span style="color: blue; font-weight: bold;">your_FMU_name</span>
---dl_lib_name<span style="color: blue; font-weight: bold;">your_can_dl_lib_name</span>
-</code><div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Blue text must be your input.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sdv_dbc_util your_dbc_file.dbc -Ogenerated/ --nodes&lt;your_nodes_name&gt; --version&lt;1.0.0.1&gt; --module&lt;your_FMU_name&gt; --dl_lib_name&lt;your_can_dl_lib_name&gt;</span>
+
+<span class="go">     -O&lt;string&gt;            = *output folder*</span>
+<span class="go">     --nodes&lt;string&gt;       = *nodes inside the dbc fileto be used*</span>
+<span class="go">     --version&lt;string&gt;     = *optional version information*</span>
+<span class="go">     --module              = *optional, if set code for a FMU will be create*</span>
+<span class="go">     --dl_lib_name&lt;string&gt; = *data link library nameto be created*</span>
+</pre></div>
 </div>
-<p><strong>Output:</strong></p>
-<ul class="simple">
-<li><p><cite>generated/can_dl/</cite></p></li>
-<li><p><cite>generated/fmu_&lt;your_FMU_name&gt;/</cite></p></li>
-</ul>
-<p><strong>can_dl -</strong>  <code class="docutils literal notranslate"><span class="pre">datalink.cpp</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">datalink.h</span></code>
-These files define and implement the <code class="docutils literal notranslate"><span class="pre">CDataLink</span></code> class, which serves as the interface between the CAN communication layer and the V-API application.
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Output:</span>
+
+<span class="go">- `generated/can_dl/`</span>
+<span class="go">- `generated/fmu_&lt;your_FMU_name&gt;/`</span>
+</pre></div>
+</div>
+<p><strong>can_dl.sdv</strong>:  <code class="docutils literal notranslate"><span class="pre">datalink.cpp</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">datalink.h</span></code></p>
+<p>These files define and implement the <code class="docutils literal notranslate"><span class="pre">CDataLink</span></code> class, which serves as the input of CAN messages to the <a class="reference internal" href="../glossary.html#term-Data-Dispatch-Service"><span class="xref std std-term">Data Dispatch Service</span></a>
 Includes logic for initializing CAN interfaces, registering message receivers, handling incoming CAN messages, and managing signal dispatching.
 The header file declares the structure and interfaces, while the source file provides the operational logic for initialization, shutdown, and message handling.</p>
-<dl class="simple">
-<dt><strong>fmu_</strong></dt><dd><p><em>to-do</em></p>
-</dd>
-</dl>
+<p><strong>fmu_&lt;your_FMU_name&gt;</strong></p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../simulation.html#vapi-simulation"><span class="std std-ref">Simulation / Testing / FMU</span></a>.</p>
+</div>
 </section>
 </section>
-<section id="input-files">
-<span id="id4"></span><h2>Input Files<a class="headerlink" href="#input-files" title="Permalink to this heading">#</a></h2>
-<p>To initiate auto code generation, the following input files must be created:</p>
-<p><strong>your_csv_file.csv</strong></p>
-<p>Describes signals and services for Vehicle Devices (VD) and Basic Services (BS). Must include columns such as:</p>
-<ul class="simple">
-<li><p>Device Type (<code class="docutils literal notranslate"><span class="pre">VD</span></code> or <code class="docutils literal notranslate"><span class="pre">BS</span></code>)</p></li>
-<li><p>Class name</p></li>
-<li><p>Function name</p></li>
-<li><p>Signal name</p></li>
-<li><p>VSS path</p></li>
-<li><p>Direction (<code class="docutils literal notranslate"><span class="pre">RX</span></code> or <code class="docutils literal notranslate"><span class="pre">TX</span></code>)</p></li>
-<li><p>Signal value type</p></li>
-<li><p>CAN name or Interface</p></li>
-</ul>
-<p>Formatting rules:</p>
-<ul class="simple">
-<li><p>No spaces in cells</p></li>
-<li><p>Consistent naming conventions</p></li>
-</ul>
-<p><strong>your_dbc_file.dbc</strong></p>
-<p>Defines the CAN bus layout and message structure. Must include:</p>
-<ul class="simple">
-<li><p>All signals available on the CAN bus and FMU</p></li>
-<li><p>Consistent naming, units, and scaling</p></li>
-</ul>
 </section>
-<section id="generated-components">
-<h2>Generated Components<a class="headerlink" href="#generated-components" title="Permalink to this heading">#</a></h2>
-<p><strong>VD_ (Vehicle Device) Files</strong></p>
-<ul class="simple">
-<li><p>Represent low-level components that interact directly with VSS signals.</p></li>
-<li><p>Handle publishing or subscribing to raw signal data.</p></li>
-<li><p>Example: <cite>VD_FrontWiper.cpp/.h</cite></p></li>
-<li><p>Inherit interfaces like <cite>IVSS_WriteWiperSpeed</cite></p></li>
-<li><p>Contain signal objects and methods like <cite>WriteWiperSpeed(int)</cite> to publish values.</p></li>
-</ul>
-<p><strong>BS_ (Basic Service) Files</strong></p>
-<ul class="simple">
-<li><p>Represent high-level service components that expose application-level functionality.</p></li>
-<li><p>Act as wrappers around VD components.</p></li>
-<li><p>Example: <cite>BS_FrontWiper.cpp/.h</cite></p></li>
-<li><p>Inherit interfaces like <cite>IVSS_SetWiperSpeed</cite></p></li>
-<li><p>Contain methods like <cite>SetWiperSpeed(int)</cite> that delegate to the corresponding VD device.</p></li>
-</ul>
-</section>
-<section id="tool-options">
-<h2>Tool Options<a class="headerlink" href="#tool-options" title="Permalink to this heading">#</a></h2>
+<section id="summarize-tool-options">
+<h2>Summarize Tool Options<a class="headerlink" href="#summarize-tool-options" title="Permalink to this heading">#</a></h2>
 <p><strong>sdv_vss_util</strong> options:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">--prefix&lt;string&gt;           Adds a prefix to signal identifiers.</span>
 <span class="go">--enable_components        Generates component code in addition to IDL.</span>
@@ -972,12 +914,12 @@ The header file declares the structure and interfaces, while the source file pro
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="core_tools.html"
+       href="sdv_executables.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Core Tools</p>
+        <p class="prev-next-title">SDV Executables</p>
       </div>
     </a>
     <a class="right-next"

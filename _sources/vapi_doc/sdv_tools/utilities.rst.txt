@@ -1,0 +1,284 @@
+
+.. _vapi-utilities_auto_code_generation:
+
+SDV Utilities (Auto Code Generation)
+====================================
+
+This section describes the tools and processes used to automatically generate code artifacts for Software Defined Vehicle (SDV) systems. These artifacts include CAN datalink components (for the extraction and composition of signals from and to CAN messages), vehicle devices, and basic services, based on standardized signal definitions and vehicle-specific configurations.
+
+Quick Summary
+-------------
+
+- **sdv_vss_util**: Generates IDL interfaces and component code from a VSS definition file (.csv).
+- **sdv_idl_compiler**: Compiles IDL files into proxy/stub code.
+- **sdv_dbc_util**: Generates CAN datalink for the extraction and composition of signals from and to CAN messages and FMU code from DBC file.
+
+
+Utilities Overview
+------------------
+
+.. _sdv_vss_util:
+
+sdv_vss_util
+~~~~~~~~~~~~
+
+Used for
+""""""""
+
+- Creating IDL interfaces from VSS signal definitions.
+- Optionally code generation of :term:`Vehicle Device` and :term:`Basic Service` components.
+
+Input: interface definitions in file `your_csv_file.csv`
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+This CSV file is the **core input** for ``sdv_vss_util``. It defines the structure and behavior of signals in the system, including:
+
+- Which components are generated (`VD` or `BS`)
+- Signal type and direction (RX or TX)
+- How those signals are mapped to VSS paths and CAN messages
+
+Each row in the CSV represents a signal and its metadata. The tool uses this to generate:
+
+- `.idl` files for interface definitions
+- `.cpp/.h` files for VD and BS components
+- `signal_identifier.h` and `summary.txt` for reference
+
+CSV column definitions
+""""""""""""""""""""""
+
++----------------------+-------------------------------------------------------------+
+| Column Name          | Description                                                 |
++======================+=============================================================+
+| `Device Type`        | Specifies whether the row defines a VD or BS component      |
++----------------------+-------------------------------------------------------------+
+| `Class name`         | The name of the generated class (e.g., `FrontWiper`)        |
++----------------------+-------------------------------------------------------------+
+| `Function name`      | Logical function name (e.g., `IsActive`, `Mode`)            |
++----------------------+-------------------------------------------------------------+
+| `Signal name`        | Internal signal identifier (e.g., `frontWiperActive`)       |
++----------------------+-------------------------------------------------------------+
+| `vss`                | Full VSS path (e.g., `Vehicle.Body.Windshield.Wiper.Front`) |
++----------------------+-------------------------------------------------------------+
+| `Signal direction`   | `TX` for transmit, `RX` for receive                         |
++----------------------+-------------------------------------------------------------+
+| `type`               | Data type of the signal (`boolean`, `string`, etc.)         |
++----------------------+-------------------------------------------------------------+
+| `DBC CAN name`       | CAN mapping (e.g., `CAN_Output.FrontWiperActive`)           |
++----------------------+-------------------------------------------------------------+
+
+Example of a single row:
+
+.. code-block:: console
+
+	VD;FrontWiper;IsActive;frontWiperActive;Vehicle.Body.Windshield.Wiper.Front;TX;boolean;CAN_Output.FrontWiperActive
+
+.. code-block:: console
+
+    This row will generate:
+
+    - VD = Vehicle Device
+    - A `VD_FrontWiper` class with a signal `m_frontWiperActive`.
+    - Methods like `WriteFrontWiperActive(bool)` to publish the signal.
+    - An interface `IVSS_WriteFrontWiperActive` in the corresponding `.idl` file.
+
+.. tip::
+
+	- Ensure consistent naming and no spaces in CSV cells.
+	- Use `VD` for low-level signal handling and `BS` for high-level service logic.
+
+Example usage:
+
+.. code-block:: console
+
+   sdv_vss_util your_csv_file.csv -O<generated/> --prefix<your_prefix> --version<1.0.0.1> --enable_components
+
+        -O<string>          = *output folder*
+        --prefix<string>    = *prefix, namespace for the signal names*
+        --version<string>   = *optional version information*
+        --enable_components = *optional to generate vehicle devices and basic services*
+
+.. code-block:: console
+
+    Output:
+
+    - `generated/vss_files/bs_classname/...`
+    - `generated/vss_files/vd_classname/...`
+    - `generated/signal_identifier.h`
+    - `generated/summary.txt`
+    - `generated/vss_*.idl`
+
+VD_Files - `Vehicle Devices`
+""""""""""""""""""""""""""""
+
+- Represent low-level components that interact directly with VSS signals.
+- Handle publishing or subscribing to raw signal data.
+- Example: ``VD_FrontWiper.cpp/.h``
+- Inherit interfaces like ``IVSS_WriteWiperSpeed``
+- Contain signal objects and methods like ``WriteWiperSpeed(int)`` to publish values.
+
+These files define :term:`Vehicle Device` s that interact directly with VSS signals from the :term:`Data Dispatch Service`.
+They are responsible for **publishing or subscribing to raw signal data**, typically mapped to CAN messages.
+
+- Example: ``VD_FrontWiper.cpp/.h``
+- Contains:
+
+	- A class like ``CVehicleDeviceFrontWiper``.
+	- Signal objects (e.g. ``m_wiperSpeed``).
+	- Methods like ``WriteWiperSpeed(int)`` to publish values.
+	- Initialization and lifecycle management (Initialize, Shutdown, etc.).
+
+- Inherits from interfaces like ``IVSS_WriteWiperSpeed``.
+
+
+BS_Files - `Basic Services`
+"""""""""""""""""""""""""""
+
+- Represent high-level service components that expose application-level functionality.
+- Act as wrappers around VD components.
+- Example: ``BS_FrontWiper.cpp/.h``
+- Inherit interfaces like ``IVSS_SetWiperSpeed``
+- Contain methods like ``SetWiperSpeed(int)`` that delegate to the corresponding VD device.
+
+These files define :term:`Basic Service` s that expose **application-level functionality** to other modules or external systems.
+
+- Example: ``BS_FrontWiper.cpp/.h``
+- Contains:
+  
+	- A class like ``CBasicServiceFrontWiper``
+	- Methods like ``SetWiperSpeed(int)`` that call into the corresponding ``VD_`` device.
+	- Interface exposure for service APIs (e.g. ``IVSS_SetWiperSpeed``).
+  
+- Acts as a wrapper or bridge to the underlying ``VD_`` logic.
+
+Key Differences
+"""""""""""""""
+
+- Purpose:
+  
+	- ``VD_ Files``: Low-level signal handling
+	- ``BS_ Files``: High-level signal handling
+
+- Signal Access:
+  
+	- ``VD_ Files``: Direct (via ``CSignal``)
+	- ``BS_ Files``: Indirect (via device interface)
+
+- Role in System:
+  
+	- ``VD_ Files``: Data source/sink
+	- ``BS_ Files``: Functional API for control modules
+
+.. _sdv_idl_compiler:
+
+sdv_idl_compiler
+~~~~~~~~~~~~~~~~
+
+Used for:
+"""""""""
+
+- Generating proxy & stub code for marshalling.
+- Enables isolated components to interact across process boundaries.
+- **Required step** after running ``sdv_vss_util``: all IDL files generated by ``sdv_vss_util`` must be compiled using ``sdv_idl_compiler``.
+- The compilation process produces ``*.h`` header files for each ``*.idl`` file, which are essential for creating the proxy/stub code for marshalling.
+
+Example usage:
+
+.. code-block:: console
+
+	sdv_idl_compiler generated/vss_files/VSS_VehicleBodyWeatherRain_bs_rx.idl -O<generated/vss_files/> -I<D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\export> -I<generated/vss_files/> --no_ps
+
+        -O<string>            = *output folder*
+        -I<string>            = *path to required header files*
+        --no_ps               = *optional, if set no proxy & stub code will be created*
+        --ps_lib_name<string> = *optional, name of the proxy & stub library to be created*
+
+.. code-block:: console
+
+    Output: each `.h` file generated by `sdv_idl_compiler` from an `.idl` file contains:
+
+    - `Interface definitions` for service and event communication.
+    - `Unique interface IDs` used for runtime identification and binding.
+    - `Pure virtual methods` that define the contract for signal access and event handling.
+    - `Callback registration methods` for subscribing to signal changes.
+
+.. tip::
+	- Always compile all `.idl` files generated by `sdv_vss_util` before building the application.
+	- These headers are required for both VD and BS components to link against the correct interfaces.
+
+.. _sdv_dbc_util:
+
+sdv_dbc_util
+~~~~~~~~~~~~
+
+Used for:
+"""""""""
+
+- Generating ``can_dl.sdv`` (:term:`Data Link`) for the extraction and composition of signals from and to CAN messages.
+- (Optional) Creating FMU-compatible modules for simulation.
+
+.. note:: FMU generation is **optional** and only required if the system is intended to be used in a **simulation environment** (e.g., OpenXilEnv). If simulation is not needed, you can skip the `--module` option in `sdv_dbc_util`, and the `fmu_/` folder will not be generated.
+
+.. code-block:: console
+
+   sdv_dbc_util your_dbc_file.dbc -Ogenerated/ --nodes<your_nodes_name> --version<1.0.0.1> --module<your_FMU_name> --dl_lib_name<your_can_dl_lib_name>
+
+        -O<string>            = *output folder*
+        --nodes<string>       = *nodes inside the dbc fileto be used*
+        --version<string>     = *optional version information*        
+        --module              = *optional, if set code for a FMU will be create*
+        --dl_lib_name<string> = *data link library nameto be created*
+
+.. code-block:: console
+
+   Output:
+
+   - `generated/can_dl/`
+   - `generated/fmu_<your_FMU_name>/`
+
+**can_dl.sdv**:  ``datalink.cpp`` & ``datalink.h``  
+
+These files define and implement the ``CDataLink`` class, which serves as the input of CAN messages to the :term:`Data Dispatch Service`
+Includes logic for initializing CAN interfaces, registering message receivers, handling incoming CAN messages, and managing signal dispatching.  
+The header file declares the structure and interfaces, while the source file provides the operational logic for initialization, shutdown, and message handling.
+
+**fmu_<your_FMU_name>**  
+
+.. seealso:: :ref:`Simulation / Testing / FMU <vapi-simulation>`.
+
+Summarize Tool Options
+----------------------
+
+**sdv_vss_util** options:
+
+.. code-block:: console
+
+    --prefix<string>           Adds a prefix to signal identifiers.
+    --enable_components        Generates component code in addition to IDL.
+    --version<string>          Optional version tag.
+    -O<path>                   Required output directory.
+
+**sdv_dbc_util** options:
+
+.. code-block:: console
+
+    --dl_lib_name<string>      Name of the generated datalink library.
+    --nodes<string>[,<string>] Specifies which nodes to implement.
+    --module<string>           FMU module identifier.
+    -O<path>                   Output directory.
+
+**sdv_idl_compiler** options:
+
+.. code-block:: console
+
+    -I<path>                   Include directories.
+    -O<path>                   Output directory.
+    --no_ps                    Skip proxy/stub generation.
+    --ps_lib_name<string>      Name of proxy/stub library.
+    --strict                   Enforce OMG-IDL conformance.
+
+Tips
+----
+
+- Run tools manually first before automating in CMake.
+- Avoid spaces in signal names and file paths.
+- Use consistent naming conventions for signals and classes.
