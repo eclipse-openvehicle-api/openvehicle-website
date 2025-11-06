@@ -3,12 +3,21 @@
 Step-by-Step: Console & Simulation Data for Wiper Example
 =========================================================
 
+.. note::
+
+   **Step Goal**
+   
+   In this guide, you will learn how to build a console-based simulation for the Wiper example using the SDV framework.  
+   The goal is to visualize signal behavior in real time and simulate user interactions like switching between Auto and Manual modes, detecting rain, and activating wipers - all from the terminal.  
+   By the end, you'll be able to run a fully interactive simulation that reflects signal changes and service responses.
+
 Overview
 --------
 
 This page guides you through building a console-based simulation for the Wiper example using the SDV framework.
 The goal is to visualize signal behavior and simulate interactions such as switching between Auto and Manual modes,
 activating wipers manually, and responding to rain detection, all within a terminal interface.
+
 
 Console
 -------
@@ -113,14 +122,13 @@ Finally, we call
 	
 
 Register Signals
-----------------
+""""""""""""""""
 
 Once the services and devices are loaded, we need to **connect our application to the signal bus**. That's exactly what **RegisterSignals()** does.
 
 Let's break it down.
 
-Step 1: Create a Dispatch Service
-"""""""""""""""""""""""""""""""""
+**Step 5.1: Create a Dispatch Service**
 
 .. code-block:: cpp
 	
@@ -128,8 +136,7 @@ Step 1: Create a Dispatch Service
 
 This object lets you subscribe to signals and register them for transmission or reception. It's your gateway to the SDV signal bus.
 
-Step 2: Subscribe to RX Signals
-"""""""""""""""""""""""""""""""
+**Step 5.2: Subscribe to RX Signals**
 
 These are signals your app wants to **listen to**.
 
@@ -147,8 +154,7 @@ Here, we're saying: "Whenever the rain or wiper mode changes, call my callback f
 
 These callbacks update internal state and later help us decide what to print in the console.
 
-Step 3: Register TX Signals
-"""""""""""""""""""""""""""
+**Step 5.3: Register TX Signals**
 
 These are signals your app wants to **send out**.
 
@@ -159,25 +165,204 @@ These are signals your app wants to **send out**.
 
 The 0 here is the default value. You can update these signals later when the user presses a key or when rain is detected.
 
-Step 4: Print Initial Values
-""""""""""""""""""""""""""""
-
-After registration, we can show the current state in the console:
-
-.. code-block:: cpp
-	
-	PrintText(g_dsWiperModeEvent, "Wiper mode: ............. " + m_WiperMode);
-	PrintValue(g_dsWeatherRain, "Weather: ", m_IsRainDetected, (m_IsRainDetected ? "Raining" : "Clear/dry"));
-	PrintValue(g_dsWiperFrontActive, "Front Wiper: ", m_WiperFrontIsActive, (m_WiperFrontIsActive ? "Active" : "Inactive"));
-	PrintValue(g_dsWiperRearActive, "Rear Wiper: ", m_WiperRearIsActive, (m_WiperRearIsActive ? "Active" : "Inactive"));
-	
-This gives the user a snapshot of the system state right after startup.
-
-Step 5: Log for Debugging
-"""""""""""""""""""""""""
+**Step 5.4: Log for Debugging**
 
 .. code-block:: cpp
 	
 	SDV_LOG_INFO("RegisterSignals called");
 
 Always good to log this for troubleshooting. If something goes wrong, you'll know whether signal registration was reached.
+
+**Step 5.5: Callback functions**
+
+When subscribing to signals using the DispatchService, we provide callback functions that get triggered when the signal value changes. These callbacks are essential for updating the internal state and refreshing the console display.
+
+**CallbackRainDetected**
+
+This function is called whenever the `dsRainDetected` signal changes.
+
+.. code-block:: cpp
+
+    void CConsole::CallbackRainDetected(sdv::any_t value)
+    {
+        m_IsRainDetected = value.get<bool>();
+        UpdateData();
+    }
+
+It extracts the boolean value from the signal and updates the `m_IsRainDetected` flag. Then it calls `UpdateData()` to refresh the console.
+
+**CallbackWiperMode**
+
+This function is triggered when the `dsWiperMode` signal changes.
+
+.. code-block:: cpp
+
+    void CConsole::CallbackWiperMode(sdv::any_t value)
+    {
+        m_WiperMode = value.get<std::string>();
+        UpdateData();
+    }
+
+It updates the internal `m_WiperMode` string and refreshes the console display.
+
+These callbacks ensure that the console always reflects the latest signal values in real time.
+
+Step 6: Print Initial Values
+""""""""""""""""""""""""""""
+
+After registration, we can show the current state in the console:
+
+.. code-block:: cpp
+
+    //Data link
+    PrintText(g_dsWiperModeEvent, "Wiper mode: .............   " + m_WiperMode + "      ");
+    PrintValue(g_dsWeatherRain, "Weather: ", m_IsRainDetected, (m_IsRainDetected ? "Raining" : "Clear/dry"));
+    PrintValue(g_dsWiperFrontActive, "Front Wiper: ",  m_WiperFrontIsActive, (m_WiperFrontIsActive ? "Active" : "Inactive"));
+    PrintValue(g_dsWiperRearActive, "Rear Wiper: ",  m_WiperRearIsActive, (m_WiperRearIsActive ? "Active" : "Inactive"));
+
+    //Basic service signals
+    PrintText(g_bsWiperModeEvent, "Wiper mode: .............   " + m_WiperMode + "      ");
+    PrintValue(g_bsWeatherRain, "Weather: ", m_IsRainDetected, (m_IsRainDetected ? "Raining" : "Clear/dry"));
+    PrintValue(g_bsWiperFrontActive, "Front Wiper: ", m_WiperFrontIsActive, (m_WiperFrontIsActive ? "Active" : "Inactive"));
+    PrintValue(g_bsWiperRearActive, "Rear Wiper: ", m_WiperRearIsActive, (m_WiperRearIsActive ? "Active" : "Inactive"));
+
+This gives the user a snapshot of the system state right after startup.
+
+Step 7: Runtime loop for simulation
+"""""""""""""""""""""""""""""""""""
+
+The `RunUntilBreak()` function is the heart of the runtime loop. It listens for keyboard input and updates the signal states accordingly.
+This allows you to simulate your implementation by sending inputs directly from the keyboard to the dispatch signals.
+
+.. code-block:: cpp
+
+	char c = GetChar();
+	switch (c)
+	{
+		case 'a': case 'A':
+			m_signalWiperMode.Write<std::string>("auto");
+			autoMode = true;
+			break;
+		case 'm': case 'M':
+			m_signalWiperMode.Write<std::string>("manual");
+			autoMode = false;
+			break;
+		case 'r': case 'R':
+			rainDetected = !rainDetected;
+			m_signalRainDetected.Write<bool>(rainDetected);
+			if (autoMode) {
+				wiperActive = rainDetected;
+			}
+			break;
+		case 'w': case 'W':
+			wiperActive = !wiperActive;
+			cManual.SetManualFrontActive(wiperActive);
+			cManual.SetManualRearActive(wiperActive);
+			break;
+		case 'x': case 'X':
+			bRunning = False;
+			break;
+		default:
+			break;
+	}
+	
+Step 8: Update data in Console
+""""""""""""""""""""""""""""""
+
+After each signal change, you should update the console display to reflect the current state of the system.
+
+You can choose what to display.
+
+**Dispatch (Data Link) signal values** - read directly from the signal objects
+
+.. code-block:: cpp
+
+    PrintText(g_dsWiperModeEvent, "Wiper mode: .............   " + m_signalWiperMode.Read().get<std::string>());
+
+
+**Basic Service values** - stored in internal variables updated via callbacks.
+
+.. code-block:: cpp
+
+    PrintText(g_bsWiperModeEvent, "Wiper mode: .............   " + m_WiperMode);
+
+
+Step 9: Reset Signals
+"""""""""""""""""""""
+
+This function is called at the end of the application to clean up all signal subscriptions and transmissions.
+
+.. code-block:: cpp
+
+    void CConsole::ResetSignals()
+    {
+        m_signalRainDetected.Reset();
+        m_signalWiperMode.Reset();
+        m_signalFrontWiperActive.Reset();
+        m_signalRearWiperActive.Reset();
+    }
+
+This ensures that no lingering signal connections remain after the application exits, which is important for clean shutdown and avoiding memory leaks.
+
+Step 10: Main function
+""""""""""""""""""""""
+
+Now that we have built all the pieces: signal registration, data consumers, console display, and the runtime loop. We need a `main()` function to bring everything together.
+
+Think of `main()` as the conductor of your SDV simulation. It calls each part in the right order so the system starts correctly, runs smoothly, and shuts down cleanly.
+
+Here is how it works:
+
+.. code-block:: cpp
+
+    int main()
+    {
+        std::cout << "Main call" << std::endl;
+        CWiperControl appobj;
+
+        if (!appobj.Initialize())
+        {
+            std::cout << "ERROR: Failed to initialize application control." << std::endl;
+            return 1;
+        }
+        else
+        {
+            std::cout << "Initialize application control with success." << std::endl;
+        }
+
+        CConsole visual_obj;
+
+        visual_obj.PrintHeader(); 
+        visual_obj.PrepareDataConsumers();
+        visual_obj.InitData();
+
+        appobj.SetRunningMode();
+        appobj.RunUntilBreak();
+
+        visual_obj.ResetSignals();
+        appobj.Shutdown();
+        return 0;
+    }
+
+Why this order?
+
+- We initialize the app first to load configs and register signals.
+- Then we set up the console so the user can interact.
+- We switch to running mode and start listening for input.
+- Finally, we clean up everything before exiting.
+
+This structure ensures your simulation behaves predictably and cleanly from start to finish.
+
+.. note::
+
+   **Step Reach**
+   
+   After completing this guide, you now know how to:
+
+   - Create a console interface to display signal states and user instructions.
+   - Connect to SDV services and devices to retrieve and update signal data.
+   - Register RX and TX signals and handle them with callback functions.
+   - Simulate user input to control wiper behavior in Auto and Manual modes.
+   - Cleanly reset signals and shut down the application.
+
+   You've successfully built a simulation that helps visualize and test your SDV application logic in a user-friendly way. Awesome job!

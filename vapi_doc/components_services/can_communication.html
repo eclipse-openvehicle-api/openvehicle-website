@@ -678,14 +678,184 @@ document.write(`
 <li><p>Data Analysis: Feeding into tools/scripts for performance or fault analysis.</p></li>
 <li><p>Interoperability: Sharing logs between different tools and teams.</p></li>
 </ul>
+<section id="how-to-load-and-configure-vapi-can-simulation-component">
+<h3>How to load and configure VAPI can simulation component<a class="headerlink" href="#how-to-load-and-configure-vapi-can-simulation-component" title="Permalink to this heading">#</a></h3>
+<p>When we need to use the can simulation component from VAPI, the already defined can messages in .asc file can be given in a .toml file.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[Configuration]
+Version = 100
+
+[[Component]]
+Path = &quot;task_timer.sdv&quot;
+Class = &quot;TaskTimerService&quot;
+
+[[Component]]
+Path = &quot;data_dispatch_service.sdv&quot;
+Class = &quot;DataDispatchService&quot;
+
+[[Component]]
+Path = &quot;can_com_sim.sdv&quot;
+Class = &quot;CAN_Com_Sim&quot;
+Source=&quot;asc_reader_test.asc&quot;
+Target=&quot;asc_writer_test.asc&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>an example toml file through which we should include the reader and writer .asc files.</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Path = &quot;task_timer.sdv&quot;
+Class = &quot;TaskTimerService&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>include the vapi timer library and relevant declared class name for using timer related services.</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Path = &quot;data_dispatch_service.sdv&quot;
+Class = &quot;DataDispatchService&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>include the vapi data dispatch service for dispatching can data between vapi and application.</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Path = &quot;can_com_sim.sdv&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>we need to include the required library of vapi can simulator</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Class = &quot;CAN_Com_Sim&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>we should mention the declared class name of relevant library which we are going to use.</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Source=&quot;asc_reader_test.asc&quot;
+Target=&quot;asc_writer_test.asc&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>mention the reader and writer .asc files through which we will be reading and writing can messages.</p></li>
+</ul>
 <figure class="align-default">
 <img alt="../../_images/can_simulation.png" src="../../_images/can_simulation.png" />
 </figure>
 <ul class="simple">
-<li><p>The diagram shows that the vapi can simulation component reads the can messages from .asc file, send messages to application via data link and vapi services.</p></li>
+<li><p>The diagram shows that the vapi can simulation component reads the can messages from .asc file, send messages via data link to data dispatch service.</p></li>
 <li><p>In order to write messages in to .asc file, the can messages are send via vapi can simulation component from data link to writer .asc file.</p></li>
 </ul>
-<p><strong>Working with CAN hardware:</strong></p>
+</section>
+</section>
+<section id="can-implementation-based-on-socket-can">
+<h2>CAN implementation based on socket can<a class="headerlink" href="#can-implementation-based-on-socket-can" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>It is a software based CAN bus, through which developers can develop and test the CAN nodes without the actual CAN hardware.</p></li>
+<li><p>It is a set of open-source CAN drivers and a networking stack that is part of the Linux kernel.</p></li>
+<li><p>It allows CAN devices to be treated like network interfaces, making it easier to develop and debug CAN-based applications.</p></li>
+<li><p>Allow developers to use familiar socket programming techniques for CAN communication.</p></li>
+<li><p>Support both Classical CAN and CAN FD (Flexible Data-rate).</p></li>
+</ul>
+<section id="how-to-configure-vapi-socket-can-component">
+<h3>How to configure VAPI socket can component<a class="headerlink" href="#how-to-configure-vapi-socket-can-component" title="Permalink to this heading">#</a></h3>
+<p>When we need to use the socket can from VAPI, we can define them in a .toml file.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[Configuration]
+Version = 100
+
+[[Component]]
+Path = &quot;can_com_sockets.sdv&quot;
+Class = &quot;CAN_Com_Sockets&quot;
+canSockets=[&quot;vcan3&quot;]
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>an example toml file</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Path = &quot;can_com_sockets.sdv&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>we need to include the required library</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Class = &quot;CAN_Com_Sockets&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>we should mention the declared class name of relevant library which we are going to use.</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>canSockets=[&lt;&quot;name_of_can_hardware&quot;&gt;]
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>give the name of the socket can which we will be using.</p></li>
+</ul>
+<p><strong>CAN data communication via socket can:</strong></p>
+<figure class="align-default">
+<img alt="../../_images/socket_can_comm.png" src="../../_images/socket_can_comm.png" />
+</figure>
+<ul class="simple">
+<li><p>The above image shows that the socket can reads the can messages from can bus, send messages to application via data link and vapi services.</p></li>
+<li><p>In order to write messages in to can bus, the can messages are send via socket can from data link to can bus.</p></li>
+</ul>
+</section>
+<section id="tools-for-socketcan">
+<h3>Tools for SocketCAN<a class="headerlink" href="#tools-for-socketcan" title="Permalink to this heading">#</a></h3>
+<p>The can-utils package provides user-space tools for working with SocketCAN. Some commonly used tools include:</p>
+<ul class="simple">
+<li><p>candump: Displays and logs CAN traffic.</p></li>
+<li><p>cansend: Sends a single CAN frame.</p></li>
+<li><p>cangen: Generates random CAN traffic.</p></li>
+<li><p>cansniffer: Monitors and highlights changes in CAN data.</p></li>
+</ul>
+<p><strong>Real CAN Interface (e.g., USB-CAN adapters):</strong></p>
+<ul class="simple">
+<li><p>If you have a physical CAN device (like a USB-CAN adapter), you can use SocketCAN</p></li>
+<li><p>Linux has built-in support for CAN via SocketCAN, which treats CAN interfaces like network interfaces.</p></li>
+</ul>
+<p>Steps:
+- Connect your CAN device (e.g., Peak, Kvaser, or MCP2515).
+- Load the appropriate kernel module (e.g., can, can_raw, vcan, usbcan, etc.).
+- Bring up the CAN interface:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sudo ip link set can0 up type can bitrate 500000
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Use tools like:</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>candump (to read CAN frames)
+cansend (to send CAN frames)
+can-utils package (install via sudo apt install can-utils)
+</pre></div>
+</div>
+<p><strong>Simulated CAN Interface (Virtual CAN):</strong></p>
+<p>If you don’t have hardware, you can simulate CAN communication using virtual CAN (vcan).
+Steps to simulate:
+1. Load vcan module</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sudo modprobe vcan
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Create a virtual CAN interface</p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sudo ip link add dev vcan0 type vcan
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Bring it up</p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sudo ip link set up vcan0
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Send and receive messages</p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>cansend vcan0 123#DEADBEEF
+candump vcan0
+</pre></div>
+</div>
+<p>This is great for testing CAN applications without needing physical devices.</p>
+<p><strong>Working with CAN hardware on linux:</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since in windows, working with socket can is not possible, we have explained about working in linux. we can use vcan interface of SocketCAN when we don’t have the actual CAN hardware.</p>
+</div>
 <p>To work with actual Controller Area Network (CAN) hardware, we need:</p>
 <ul class="simple">
 <li><p>A CAN interface device (e.g., USB-to-CAN adapters like Peak, Kvaser, or SocketCAN-compatible devices).</p></li>
@@ -699,51 +869,23 @@ sudo modprobe mttcan  # or your specific driver
 sudo ip link set can0 up type can bitrate 50000
 </pre></div>
 </div>
-<p>we can use SocketCAN when we don’t have the actual CAN hardware.</p>
-</section>
-<section id="can-implementation-based-on-socket-can">
-<h2>CAN implementation based on socket can<a class="headerlink" href="#can-implementation-based-on-socket-can" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p>It is a software based CAN bus, through which developers can develop and test the CAN nodes without the actual CAN hardware.</p></li>
-<li><p>It is a set of open-source CAN drivers and a networking stack that is part of the Linux kernel.</p></li>
-<li><p>It allows CAN devices to be treated like network interfaces, making it easier to develop and debug CAN-based applications.</p></li>
-<li><p>Allow developers to use familiar socket programming techniques for CAN communication.</p></li>
-<li><p>Support both Classical CAN and CAN FD (Flexible Data-rate).</p></li>
-</ul>
-<p><strong>Components of SocketCAN:</strong></p>
-<ul class="simple">
-<li><p>CAN Drivers: Kernel modules for CAN hardware (e.g., can, can_raw, can_dev).</p></li>
-<li><p>CAN Utilities: Tools like candump, cansend, part of the can-utils package.</p></li>
-<li><p>CAN Interfaces: Devices like can0, can1 appear as network interfaces.</p></li>
-</ul>
-<p><strong>Tools for SocketCAN:</strong></p>
-<p>The can-utils package provides user-space tools for working with SocketCAN. Some commonly used tools include:</p>
-<ul class="simple">
-<li><p>candump: Displays and logs CAN traffic.</p></li>
-<li><p>cansend: Sends a single CAN frame.</p></li>
-<li><p>cangen: Generates random CAN traffic.</p></li>
-<li><p>cansniffer: Monitors and highlights changes in CAN data.</p></li>
-</ul>
 <p><strong>Installation of SocketCAN on linux system:</strong></p>
-<p>Step 1: Install CAN Utilities:</p>
+<p>Step 1: Load the vcan Kernel Module:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sudo apt update
 sudo apt install can-utils
+sudo modprobe vcan
 </pre></div>
 </div>
 <p>It install the can-utils package, which provides tools like candump, cansend, etc.</p>
-<p>Step 2: Load the vcan Kernel Module:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sudo modprobe vcan
-</pre></div>
-</div>
-<p>Step 3: Create a Virtual CAN Interface:</p>
+<p>Step 2: Create a Virtual CAN Interface:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sudo ip link add dev vcan0 type vcan
 </pre></div>
 </div>
-<p>Step 4: Bring the Interface Up:</p>
+<p>Step 3: Bring the Interface Up:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sudo ip link set up vcan0
 </pre></div>
 </div>
-<p>Step 5: verify the interface:</p>
+<p>Step 4: verify the interface:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ip link show vcan0
 </pre></div>
 </div>
@@ -764,14 +906,6 @@ sudo apt install can-utils
 <figure class="align-default">
 <img alt="../../_images/vcan_send_rec.png" src="../../_images/vcan_send_rec.png" />
 </figure>
-<p><strong>CAN data communication via socket can:</strong></p>
-<figure class="align-default">
-<img alt="../../_images/socket_can_comm.png" src="../../_images/socket_can_comm.png" />
-</figure>
-<ul class="simple">
-<li><p>The above image shows that the socket can reads the can messages from can bus, send messages to application via data link and vapi services.</p></li>
-<li><p>In order to write messages in to can bus, the can messages are send via socket can from data link to can bus.</p></li>
-</ul>
 <p><strong>Explanation of test code using socket can:</strong></p>
 <figure class="align-default">
 <img alt="../../_images/socket_can_test_code.png" src="../../_images/socket_can_test_code.png" />
@@ -785,16 +919,17 @@ sudo apt install can-utils
 <li><p>After sending and receiving all data, the receiver should be unregistered and socket can will be closed, through which we cannot start the communication.</p></li>
 </ul>
 </section>
+</section>
 <section id="can-implementation-based-on-vector-sil-kit">
 <h2>CAN implementation based on Vector SIL-Kit<a class="headerlink" href="#can-implementation-based-on-vector-sil-kit" title="Permalink to this heading">#</a></h2>
-<p><strong>Vector SilKit</strong></p>
+<p><strong>Vector Sil-Kit</strong></p>
 <ul class="simple">
 <li><p>Vector SIL Kit, is an open-source software library developed by Vector Informatik for connecting Software-in-the-Loop environments.</p></li>
 <li><p>It’s designed to facilitate communication between various simulation tools, virtual ECUs, emulators, and test systems—especially useful in automotive and embedded systems development.</p></li>
 <li><p>It supports various vehicle network controllers like CAN, Ethernet, FlexRay and LIN.</p></li>
 <li><p>provides publish/subscribe mechanism for data communication.</p></li>
 </ul>
-<p><strong>Start with Vector SilKit</strong></p>
+<p><strong>Start with Vector Sil-Kit</strong></p>
 <ol class="arabic simple">
 <li><p>How to install:</p></li>
 </ol>
@@ -816,12 +951,12 @@ cmake ..
 make
 </pre></div>
 </div>
-<p><strong>Vector SilKit Utilities</strong></p>
+<p><strong>Vector Sil-Kit Utilities</strong></p>
 <ol class="arabic simple">
 <li><p>sil-kit-registry:</p></li>
 </ol>
 <ul class="simple">
-<li><p>It is the mandatory part of the vector silkit which provides connection between simulation participants.</p></li>
+<li><p>It is the mandatory part of the vector Sil-Kit which provides connection between simulation participants.</p></li>
 <li><p>provides SIL Kit participants with information of available participants and how to connect to them</p></li>
 <li><p>The SIL Kit Registry must be started before other SIL Kit participants.</p></li>
 <li><p>Usage: Open a separate terminal</p></li>
@@ -849,8 +984,132 @@ make
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>./sil-kit-monitor
 </pre></div>
 </div>
-<p>Participants can be configured to coordinate their simulation start and stop behavior with other participants through use of the <strong>Lifecycle Service</strong>.
-To synchronize their virtual time with others, a participant can use the <strong>Time Synchronization Service</strong>.</p>
+<ul class="simple">
+<li><p>Participants can be configured to coordinate their simulation start and stop behavior with other participants through use of the <strong>Lifecycle Service</strong>.</p></li>
+<li><p>To synchronize their virtual time with others, a participant can use the <strong>Time Synchronization Service</strong>.</p></li>
+</ul>
+<section id="how-to-configure-vapi-sil-kit-can-component">
+<h3>How to configure VAPI Sil-Kit Can component:<a class="headerlink" href="#how-to-configure-vapi-sil-kit-can-component" title="Permalink to this heading">#</a></h3>
+<p>When we need to use the VAPI Sil-Kit CAN, we can define them in a .toml file.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[Configuration]
+Version = 100
+
+[[Component]]
+Path = &quot;task_timer.sdv&quot;
+Class = &quot;TaskTimerService&quot;
+
+[[Component]]
+Path = &quot;data_dispatch_service.sdv&quot;
+Class = &quot;DataDispatchService&quot;
+
+[[Component]]
+Path = &quot;can_com_silkit.sdv&quot;
+Class = &quot;CAN_Com_SilKit&quot;
+DebugInfo = true
+SyncMode = true
+SilKitParticipantName = &quot;CAN1&quot;
+CanSilKitNetwork = &quot;PrivateCAN&quot;
+RegistryURI = &quot;silkit://localhost:8500&quot;
+SilKitConfig = &quot;&quot;&quot;{
+         &quot;Logging&quot;: {
+               &quot;Sinks&quot;: [ { &quot;Type&quot;: &quot;Stdout&quot;, &quot;Level&quot;: &quot;Info&quot; } ]
+              },
+              }&quot;&quot;&quot;
+
+[[Component]]
+Path = &quot;can_datalink.sdv&quot;
+Class = &quot;CAN_data_link&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>an example toml file through which we can include the dependent libraries and the required configuration for Sil-Kit.</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Path = &quot;task_timer.sdv&quot;
+Class = &quot;TaskTimerService&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>include the vapi timer component and relevant declared class name for using timer related services.</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Path = &quot;data_dispatch_service.sdv&quot;
+Class = &quot;DataDispatchService&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>include the vapi data dispatch component for dispatching can data between vapi and application.</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Path = &quot;can_com_silkit.sdv&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>we need to include the required library of vapi Sil-Kit CAN.</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Class = &quot;CAN_Com_SilKit&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>we should mention the declared class name of relevant library which we are going to use.</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>DebugInfo = true
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>It will enable or disable debug information</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>SyncMode = true
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>This is to inform that we will be using which configuration mode, either synchronous or asynchronous.</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>SilKitParticipantName = &quot;CAN1&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Unique identifier for the participant in the Sil-Kit simulation</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CanSilKitNetwork = &quot;PrivateCAN&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>name of the CAN network in Sil-Kit</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>RegistryURI = &quot;silkit://localhost:8500&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>URI for connecting to the Sil-Kit registry</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>SilKitConfig = &quot;&quot;&quot;{
+         &quot;Logging&quot;: {
+               &quot;Sinks&quot;: [ { &quot;Type&quot;: &quot;Stdout&quot;, &quot;Level&quot;: &quot;Info&quot; } ]
+              },
+              }&quot;&quot;&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>required Sil-Kit configuration</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Path = &quot;can_datalink.sdv&quot;
+Class = &quot;CAN_data_link&quot;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>include the vapi datalink component for data communication between Sil-Kit and data dispatch component.</p></li>
+</ul>
+<p><strong>Explanation of test code using VAPI Sil-Kit CAN:</strong></p>
+<figure class="align-default">
+<img alt="../../_images/Sil-Kit_can_comm.png" src="../../_images/Sil-Kit_can_comm.png" />
+</figure>
+<ul class="simple">
+<li><p>The above image shows that the application which has to send or receive can data will be started by loading vapi core services.</p></li>
+<li><p>The VAPI Sil-Kit should be initialized with the required configuration.</p></li>
+<li><p>After setting it to configuration mode, the receivers who are going to receive messages should be registered.</p></li>
+<li><p>The data will be send via the configured participant in the running mode.</p></li>
+<li><p>Once the data was send, the registered receiver receives data immediately.</p></li>
+<li><p>After sending and receiving all data, the receiver should be unregistered and VAPI Sil-Kit will be shutdown.</p></li>
+</ul>
+</section>
 </section>
 </section>
 

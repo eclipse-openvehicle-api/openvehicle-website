@@ -605,6 +605,13 @@ document.write(`
                   
   <section id="step-by-step-console-simulation-data-for-wiper-example">
 <span id="vapi-step-by-step-console-simulation"></span><h1>Step-by-Step: Console &amp; Simulation Data for Wiper Example<a class="headerlink" href="#step-by-step-console-simulation-data-for-wiper-example" title="Permalink to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Step Goal</strong></p>
+<p>In this guide, you will learn how to build a console-based simulation for the Wiper example using the SDV framework.
+The goal is to visualize signal behavior in real time and simulate user interactions like switching between Auto and Manual modes, detecting rain, and activating wipers - all from the terminal.
+By the end, you’ll be able to run a fully interactive simulation that reflects signal changes and service responses.</p>
+</div>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This page guides you through building a console-based simulation for the Wiper example using the SDV framework.
@@ -692,20 +699,16 @@ In my case, for the Wiper example, I want to visualize the Data Dispatch service
 </pre></div>
 </div>
 </section>
-</section>
 <section id="register-signals">
-<h2>Register Signals<a class="headerlink" href="#register-signals" title="Permalink to this heading">#</a></h2>
+<h3>Register Signals<a class="headerlink" href="#register-signals" title="Permalink to this heading">#</a></h3>
 <p>Once the services and devices are loaded, we need to <strong>connect our application to the signal bus</strong>. That’s exactly what <strong>RegisterSignals()</strong> does.</p>
 <p>Let’s break it down.</p>
-<section id="step-1-create-a-dispatch-service">
-<h3>Step 1: Create a Dispatch Service<a class="headerlink" href="#step-1-create-a-dispatch-service" title="Permalink to this heading">#</a></h3>
+<p><strong>Step 5.1: Create a Dispatch Service</strong></p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">CDispatchService</span><span class="w"> </span><span class="n">dispatch</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>This object lets you subscribe to signals and register them for transmission or reception. It’s your gateway to the SDV signal bus.</p>
-</section>
-<section id="step-2-subscribe-to-rx-signals">
-<h3>Step 2: Subscribe to RX Signals<a class="headerlink" href="#step-2-subscribe-to-rx-signals" title="Permalink to this heading">#</a></h3>
+<p><strong>Step 5.2: Subscribe to RX Signals</strong></p>
 <p>These are signals your app wants to <strong>listen to</strong>.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">m_signalRainDetected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dispatch</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">wiper</span><span class="o">::</span><span class="n">dsRainDetected</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">{</span>
 <span class="w">        </span><span class="n">CallbackRainDetected</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
@@ -718,33 +721,179 @@ In my case, for the Wiper example, I want to visualize the Data Dispatch service
 </div>
 <p>Here, we’re saying: “Whenever the rain or wiper mode changes, call my callback function.”</p>
 <p>These callbacks update internal state and later help us decide what to print in the console.</p>
-</section>
-<section id="step-3-register-tx-signals">
-<h3>Step 3: Register TX Signals<a class="headerlink" href="#step-3-register-tx-signals" title="Permalink to this heading">#</a></h3>
+<p><strong>Step 5.3: Register TX Signals</strong></p>
 <p>These are signals your app wants to <strong>send out</strong>.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">m_signalFrontWiperActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dispatch</span><span class="p">.</span><span class="n">RegisterTxSignal</span><span class="p">(</span><span class="n">wiper</span><span class="o">::</span><span class="n">dsFrontWiperActive</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 <span class="n">m_signalRearWiperActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dispatch</span><span class="p">.</span><span class="n">RegisterTxSignal</span><span class="p">(</span><span class="n">wiper</span><span class="o">::</span><span class="n">dsRearWiperActive</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>The 0 here is the default value. You can update these signals later when the user presses a key or when rain is detected.</p>
-</section>
-<section id="step-4-print-initial-values">
-<h3>Step 4: Print Initial Values<a class="headerlink" href="#step-4-print-initial-values" title="Permalink to this heading">#</a></h3>
-<p>After registration, we can show the current state in the console:</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">PrintText</span><span class="p">(</span><span class="n">g_dsWiperModeEvent</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Wiper mode: ............. &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m_WiperMode</span><span class="p">);</span>
-<span class="n">PrintValue</span><span class="p">(</span><span class="n">g_dsWeatherRain</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Weather: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_IsRainDetected</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">m_IsRainDetected</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Raining&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Clear/dry&quot;</span><span class="p">));</span>
-<span class="n">PrintValue</span><span class="p">(</span><span class="n">g_dsWiperFrontActive</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Front Wiper: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_WiperFrontIsActive</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">m_WiperFrontIsActive</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Active&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Inactive&quot;</span><span class="p">));</span>
-<span class="n">PrintValue</span><span class="p">(</span><span class="n">g_dsWiperRearActive</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Rear Wiper: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_WiperRearIsActive</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">m_WiperRearIsActive</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Active&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Inactive&quot;</span><span class="p">));</span>
-</pre></div>
-</div>
-<p>This gives the user a snapshot of the system state right after startup.</p>
-</section>
-<section id="step-5-log-for-debugging">
-<h3>Step 5: Log for Debugging<a class="headerlink" href="#step-5-log-for-debugging" title="Permalink to this heading">#</a></h3>
+<p><strong>Step 5.4: Log for Debugging</strong></p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">SDV_LOG_INFO</span><span class="p">(</span><span class="s">&quot;RegisterSignals called&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Always good to log this for troubleshooting. If something goes wrong, you’ll know whether signal registration was reached.</p>
+<p><strong>Step 5.5: Callback functions</strong></p>
+<p>When subscribing to signals using the DispatchService, we provide callback functions that get triggered when the signal value changes. These callbacks are essential for updating the internal state and refreshing the console display.</p>
+<p><strong>CallbackRainDetected</strong></p>
+<p>This function is called whenever the <cite>dsRainDetected</cite> signal changes.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">CConsole::CallbackRainDetected</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">any_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">m_IsRainDetected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="n">UpdateData</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>It extracts the boolean value from the signal and updates the <cite>m_IsRainDetected</cite> flag. Then it calls <cite>UpdateData()</cite> to refresh the console.</p>
+<p><strong>CallbackWiperMode</strong></p>
+<p>This function is triggered when the <cite>dsWiperMode</cite> signal changes.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">CConsole::CallbackWiperMode</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">any_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">m_WiperMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="n">UpdateData</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>It updates the internal <cite>m_WiperMode</cite> string and refreshes the console display.</p>
+<p>These callbacks ensure that the console always reflects the latest signal values in real time.</p>
+</section>
+<section id="step-6-print-initial-values">
+<h3>Step 6: Print Initial Values<a class="headerlink" href="#step-6-print-initial-values" title="Permalink to this heading">#</a></h3>
+<p>After registration, we can show the current state in the console:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">//Data link</span>
+<span class="n">PrintText</span><span class="p">(</span><span class="n">g_dsWiperModeEvent</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Wiper mode: .............   &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m_WiperMode</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;      &quot;</span><span class="p">);</span>
+<span class="n">PrintValue</span><span class="p">(</span><span class="n">g_dsWeatherRain</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Weather: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_IsRainDetected</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">m_IsRainDetected</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Raining&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Clear/dry&quot;</span><span class="p">));</span>
+<span class="n">PrintValue</span><span class="p">(</span><span class="n">g_dsWiperFrontActive</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Front Wiper: &quot;</span><span class="p">,</span><span class="w">  </span><span class="n">m_WiperFrontIsActive</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">m_WiperFrontIsActive</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Active&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Inactive&quot;</span><span class="p">));</span>
+<span class="n">PrintValue</span><span class="p">(</span><span class="n">g_dsWiperRearActive</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Rear Wiper: &quot;</span><span class="p">,</span><span class="w">  </span><span class="n">m_WiperRearIsActive</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">m_WiperRearIsActive</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Active&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Inactive&quot;</span><span class="p">));</span>
+
+<span class="c1">//Basic service signals</span>
+<span class="n">PrintText</span><span class="p">(</span><span class="n">g_bsWiperModeEvent</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Wiper mode: .............   &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m_WiperMode</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;      &quot;</span><span class="p">);</span>
+<span class="n">PrintValue</span><span class="p">(</span><span class="n">g_bsWeatherRain</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Weather: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_IsRainDetected</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">m_IsRainDetected</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Raining&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Clear/dry&quot;</span><span class="p">));</span>
+<span class="n">PrintValue</span><span class="p">(</span><span class="n">g_bsWiperFrontActive</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Front Wiper: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_WiperFrontIsActive</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">m_WiperFrontIsActive</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Active&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Inactive&quot;</span><span class="p">));</span>
+<span class="n">PrintValue</span><span class="p">(</span><span class="n">g_bsWiperRearActive</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Rear Wiper: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_WiperRearIsActive</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">m_WiperRearIsActive</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Active&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Inactive&quot;</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>This gives the user a snapshot of the system state right after startup.</p>
+</section>
+<section id="step-7-runtime-loop-for-simulation">
+<h3>Step 7: Runtime loop for simulation<a class="headerlink" href="#step-7-runtime-loop-for-simulation" title="Permalink to this heading">#</a></h3>
+<p>The <cite>RunUntilBreak()</cite> function is the heart of the runtime loop. It listens for keyboard input and updates the signal states accordingly.
+This allows you to simulate your implementation by sending inputs directly from the keyboard to the dispatch signals.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetChar</span><span class="p">();</span>
+<span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="p">:</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">:</span>
+<span class="w">                </span><span class="n">m_signalWiperMode</span><span class="p">.</span><span class="n">Write</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;auto&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="n">autoMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;m&#39;</span><span class="p">:</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;M&#39;</span><span class="p">:</span>
+<span class="w">                </span><span class="n">m_signalWiperMode</span><span class="p">.</span><span class="n">Write</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;manual&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="n">autoMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;r&#39;</span><span class="p">:</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;R&#39;</span><span class="p">:</span>
+<span class="w">                </span><span class="n">rainDetected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">rainDetected</span><span class="p">;</span>
+<span class="w">                </span><span class="n">m_signalRainDetected</span><span class="p">.</span><span class="n">Write</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rainDetected</span><span class="p">);</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">autoMode</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">wiperActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rainDetected</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;w&#39;</span><span class="p">:</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;W&#39;</span><span class="p">:</span>
+<span class="w">                </span><span class="n">wiperActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">wiperActive</span><span class="p">;</span>
+<span class="w">                </span><span class="n">cManual</span><span class="p">.</span><span class="n">SetManualFrontActive</span><span class="p">(</span><span class="n">wiperActive</span><span class="p">);</span>
+<span class="w">                </span><span class="n">cManual</span><span class="p">.</span><span class="n">SetManualRearActive</span><span class="p">(</span><span class="n">wiperActive</span><span class="p">);</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;x&#39;</span><span class="p">:</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;X&#39;</span><span class="p">:</span>
+<span class="w">                </span><span class="n">bRunning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">False</span><span class="p">;</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">default</span><span class="o">:</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="step-8-update-data-in-console">
+<h3>Step 8: Update data in Console<a class="headerlink" href="#step-8-update-data-in-console" title="Permalink to this heading">#</a></h3>
+<p>After each signal change, you should update the console display to reflect the current state of the system.</p>
+<p>You can choose what to display.</p>
+<p><strong>Dispatch (Data Link) signal values</strong> - read directly from the signal objects</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">PrintText</span><span class="p">(</span><span class="n">g_dsWiperModeEvent</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Wiper mode: .............   &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m_signalWiperMode</span><span class="p">.</span><span class="n">Read</span><span class="p">().</span><span class="n">get</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">());</span>
+</pre></div>
+</div>
+<p><strong>Basic Service values</strong> - stored in internal variables updated via callbacks.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">PrintText</span><span class="p">(</span><span class="n">g_bsWiperModeEvent</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Wiper mode: .............   &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m_WiperMode</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="step-9-reset-signals">
+<h3>Step 9: Reset Signals<a class="headerlink" href="#step-9-reset-signals" title="Permalink to this heading">#</a></h3>
+<p>This function is called at the end of the application to clean up all signal subscriptions and transmissions.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">CConsole::ResetSignals</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">m_signalRainDetected</span><span class="p">.</span><span class="n">Reset</span><span class="p">();</span>
+<span class="w">    </span><span class="n">m_signalWiperMode</span><span class="p">.</span><span class="n">Reset</span><span class="p">();</span>
+<span class="w">    </span><span class="n">m_signalFrontWiperActive</span><span class="p">.</span><span class="n">Reset</span><span class="p">();</span>
+<span class="w">    </span><span class="n">m_signalRearWiperActive</span><span class="p">.</span><span class="n">Reset</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This ensures that no lingering signal connections remain after the application exits, which is important for clean shutdown and avoiding memory leaks.</p>
+</section>
+<section id="step-10-main-function">
+<h3>Step 10: Main function<a class="headerlink" href="#step-10-main-function" title="Permalink to this heading">#</a></h3>
+<p>Now that we have built all the pieces: signal registration, data consumers, console display, and the runtime loop. We need a <cite>main()</cite> function to bring everything together.</p>
+<p>Think of <cite>main()</cite> as the conductor of your SDV simulation. It calls each part in the right order so the system starts correctly, runs smoothly, and shuts down cleanly.</p>
+<p>Here is how it works:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Main call&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CWiperControl</span><span class="w"> </span><span class="n">appobj</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">appobj</span><span class="p">.</span><span class="n">Initialize</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;ERROR: Failed to initialize application control.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialize application control with success.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">CConsole</span><span class="w"> </span><span class="n">visual_obj</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">visual_obj</span><span class="p">.</span><span class="n">PrintHeader</span><span class="p">();</span>
+<span class="w">    </span><span class="n">visual_obj</span><span class="p">.</span><span class="n">PrepareDataConsumers</span><span class="p">();</span>
+<span class="w">    </span><span class="n">visual_obj</span><span class="p">.</span><span class="n">InitData</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">appobj</span><span class="p">.</span><span class="n">SetRunningMode</span><span class="p">();</span>
+<span class="w">    </span><span class="n">appobj</span><span class="p">.</span><span class="n">RunUntilBreak</span><span class="p">();</span>
+
+<span class="w">    </span><span class="n">visual_obj</span><span class="p">.</span><span class="n">ResetSignals</span><span class="p">();</span>
+<span class="w">    </span><span class="n">appobj</span><span class="p">.</span><span class="n">Shutdown</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Why this order?</p>
+<ul class="simple">
+<li><p>We initialize the app first to load configs and register signals.</p></li>
+<li><p>Then we set up the console so the user can interact.</p></li>
+<li><p>We switch to running mode and start listening for input.</p></li>
+<li><p>Finally, we clean up everything before exiting.</p></li>
+</ul>
+<p>This structure ensures your simulation behaves predictably and cleanly from start to finish.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Step Reach</strong></p>
+<p>After completing this guide, you now know how to:</p>
+<ul class="simple">
+<li><p>Create a console interface to display signal states and user instructions.</p></li>
+<li><p>Connect to SDV services and devices to retrieve and update signal data.</p></li>
+<li><p>Register RX and TX signals and handle them with callback functions.</p></li>
+<li><p>Simulate user input to control wiper behavior in Auto and Manual modes.</p></li>
+<li><p>Cleanly reset signals and shut down the application.</p></li>
+</ul>
+<p>You’ve successfully built a simulation that helps visualize and test your SDV application logic in a user-friendly way. Awesome job!</p>
+</div>
 </section>
 </section>
 </section>
