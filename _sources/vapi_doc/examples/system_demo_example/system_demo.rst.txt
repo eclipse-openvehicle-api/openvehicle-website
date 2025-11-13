@@ -24,14 +24,14 @@ System Demonstration Example
    The example contains 2 signals from bottom to top and 2 signals from top to down:
 
    - Bottom to top: Vehicle speed and Steering Wheel.
-   - (Test loop) Send Steering Wheel Angle from -16 to 16 radians and vice versa
-   - (Test loop) Send speed from 0 to 12 m/s (43.2 km/h) and vice versa  
+   - (Test loop) Send Steering Wheel Angle from -16 to 16 ``radians`` and vice versa
+   - (Test loop) Send speed from 0 to 12 ``m/s`` (43.2 ``km/h``) and vice versa  
+   - Convert in the vehicle devices the input signals from ``radians`` & ``m/s`` to ``deg`` & ``km/h``. This represents the vehicle abstraction when the input signal units do not match the standardized interface definitions.
    - Top to bottom: Rear Axle depending from Steering Wheel and Speed. Additionally,  a simple counter.  
    - Function (implemented as :term:`Complex Service`): set rear axle with opposite sign of the steering wheel depending on the speed and steering wheel angle.
    - Calculate the counter steering percentage (counter proportional to the vehicle speed - the quicker, the less counter steering).
    - Complex service offers additional the Interface ``ICounterSteeringService`` to activate or to deactivate the service.
-   - class CConsole: this class shows the signal values in ``rd`` respectively ``m/s``
-   - Additional it shows the values from the :term:`Basic Service` in ``deg`` respectively ``m/s``. Typically such conversions  will be done within a :term:`Vehicle Device` or :term:`Basic Service` depending on the standardization of the :term:`Interface` s. In this example we do not touch the auto generated code for vehicle devices and basic services. So it's done in the class CConsole to demonstrate the signals from the bottom may be converted to something else. The signal from the bottom must be converted to a general signal (unit & range) to abstract the signals from the vehicle underneath.
+   - class CConsole: this class shows from the dispatch service the signal values units ``rd`` respectively ``m/s``. From the basic services in ``deg`` & ``km/h`` as the vehicle devices converted the units.
 
 .. hint:: In case the data link component is included, the speed and steering wheel is read from the the CAN bus, the 2 other signals are written to the CAN bus. There is no real CAN bus, instead the can simulation component 'can_com_sim' is used. This component reads the CAN messages from the file 'system_demo_receiver.asc' and sends the CAN messages to the 'can_dl_example.sdv' component.
 

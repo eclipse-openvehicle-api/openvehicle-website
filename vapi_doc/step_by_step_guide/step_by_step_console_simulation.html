@@ -896,6 +896,67 @@ This allows you to simulate your implementation by sending inputs directly from 
 </div>
 </section>
 </section>
+<section id="common-issues-how-to-avoid-them">
+<h2>Common issues &amp; How to Avoid Them<a class="headerlink" href="#common-issues-how-to-avoid-them" title="Permalink to this heading">#</a></h2>
+<p>Here are some common issues you might encounter while building your project using VAPI:</p>
+<section id="missing-vehicle-device-event-registration">
+<h3>1. Missing Vehicle Device Event Registration<a class="headerlink" href="#missing-vehicle-device-event-registration" title="Permalink to this heading">#</a></h3>
+<p>If you forget to register the mode event from the vehicle device:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">pVDWiperMode</span><span class="o">-&gt;</span><span class="n">RegisterModeEvent</span><span class="p">(...);</span>
+</pre></div>
+</div>
+<p>Then the callback <cite>WriteMode triggered by vehicle device</cite> will not be called, and your application won’t react to mode changes.</p>
+</section>
+<section id="missing-rx-signal-subscription-with-callback">
+<h3>2. Missing RX Signal Subscription with Callback<a class="headerlink" href="#missing-rx-signal-subscription-with-callback" title="Permalink to this heading">#</a></h3>
+<p>If you don’t subscribe to RX signals using a callback:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">m_signalRainDetected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dispatch</span><span class="p">.</span><span class="n">Subscribe</span><span class="p">(</span><span class="n">wiper</span><span class="o">::</span><span class="n">dsRainDetected</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">sdv</span><span class="o">::</span><span class="n">any_t</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">CallbackRainDetected</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Then the callback functions won’t trigger, and the signal won’t be updated. This means your application won’t respond to changes like rain detection or wiper mode.</p>
+</section>
+<section id="signal-registration-and-subscription">
+<h3>3. Signal Registration and Subscription<a class="headerlink" href="#signal-registration-and-subscription" title="Permalink to this heading">#</a></h3>
+<p><strong>Issue: Overwriting a registered signal with a subscription handle</strong></p>
+<p>When we register a signal using <cite>RegisterRxSignal()</cite>, the returned <cite>CSignal</cite> object has both read and write capabilities (<cite>m_pSignalRead</cite> and <cite>m_pSignalWrite</cite>).</p>
+<p>However, if we then assign the result of <cite>Subscribe()</cite> to the same variable, we overwrite that <cite>CSignal</cite> with a subscription handle that lacks <cite>m_pSignalWrite</cite>. That’s why <cite>Write()</cite> fails, <cite>m_pSignalWrite</cite> becomes <cite>nullptr</cite>.</p>
+<p>As a result, calling something like:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">m_VisualCurrentLongitude</span><span class="p">.</span><span class="n">Write</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>will not work if <cite>m_VisualCurrentLongitude</cite> was overwritten by a subscription.</p>
+<p>This issue doesn’t occur in examples where registration and subscription are handled in separate files, so the original signal object is preserved.</p>
+<p><strong>Best Practice:</strong>
+- Keep signal registration and subscription in separate variables.
+- Clearly distinguish between signal creators and signal users.</p>
+<p>Example:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">CSignal</span><span class="w"> </span><span class="n">m_dataLinkSignalRx</span><span class="p">;</span><span class="w">          </span><span class="c1">// signals created and used by data link</span>
+<span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">CSignal</span><span class="w"> </span><span class="n">m_dataLinkSignalTx01</span><span class="p">;</span>
+<span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">CSignal</span><span class="w"> </span><span class="n">m_dataLinkSignalTx02</span><span class="p">;</span>
+<span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">CSignal</span><span class="w"> </span><span class="n">m_dataLinkSignalTx03</span><span class="p">;</span>
+
+<span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">CSignal</span><span class="w"> </span><span class="n">m_abstractDeviceSubscriber</span><span class="p">;</span><span class="w">  </span><span class="c1">// signals used by an abstract device</span>
+<span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">CSignal</span><span class="w"> </span><span class="n">m_abstractDevicePublisher01</span><span class="p">;</span>
+<span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">CSignal</span><span class="w"> </span><span class="n">m_abstractDevicePublisher02</span><span class="p">;</span>
+<span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">CSignal</span><span class="w"> </span><span class="n">m_abstractDevicePublisher03</span><span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Also important:</strong> the signal creator must exist for the entire lifetime of the signal.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><strong>What’s next?</strong></p>
+<p>Now that you’ve built and run a console simulation for your example, you can:</p>
+<ul class="simple">
+<li><p>Try adding more signals or services to simulate additional vehicle features.</p></li>
+<li><p>Customize the console output to show more detailed behavior or logs.</p></li>
+<li><p>Try to implement a complex service for your example.</p></li>
+</ul>
+<p>Keep experimenting - the more you play with it, the better you’ll understand it!</p>
+</div>
+</section>
+</section>
 </section>
 
 

@@ -48,25 +48,29 @@ Each row in the CSV represents a signal and its metadata. The tool uses this to 
 CSV column definitions
 """"""""""""""""""""""
 
-+----------------------+-------------------------------------------------------------+
-| Column Name          | Description                                                 |
-+======================+=============================================================+
-| `Device Type`        | Specifies whether the row defines a VD or BS component      |
-+----------------------+-------------------------------------------------------------+
-| `Class name`         | The name of the generated class (e.g., `FrontWiper`)        |
-+----------------------+-------------------------------------------------------------+
-| `Function name`      | Logical function name (e.g., `IsActive`, `Mode`)            |
-+----------------------+-------------------------------------------------------------+
-| `Signal name`        | Internal signal identifier (e.g., `frontWiperActive`)       |
-+----------------------+-------------------------------------------------------------+
-| `vss`                | Full VSS path (e.g., `Vehicle.Body.Windshield.Wiper.Front`) |
-+----------------------+-------------------------------------------------------------+
-| `Signal direction`   | `TX` for transmit, `RX` for receive                         |
-+----------------------+-------------------------------------------------------------+
-| `type`               | Data type of the signal (`boolean`, `string`, etc.)         |
-+----------------------+-------------------------------------------------------------+
-| `DBC CAN name`       | CAN mapping (e.g., `CAN_Output.FrontWiperActive`)           |
-+----------------------+-------------------------------------------------------------+
++----------------------+-------------------------------------------------------------------------------------+
+| Column Name          | Description                                                                         |
++======================+=====================================================================================+
+| `Device Type`        | Specifies whether the row defines a VD or BS component                              |
++----------------------+-------------------------------------------------------------------------------------+
+| `Class name`         | The name of the generated class (e.g., `FrontWiper`)                                |
++----------------------+-------------------------------------------------------------------------------------+
+| `Function name`      | Logical function name (e.g., `IsActive`, `Mode`)                                    |
++----------------------+-------------------------------------------------------------------------------------+
+| `Signal name`        | Internal signal identifier (e.g., `frontWiperActive`)                               |
++----------------------+-------------------------------------------------------------------------------------+
+| `vss`                | Full VSS path (e.g., `Vehicle.Body.Windshield.Wiper.Front`)                         |
++----------------------+-------------------------------------------------------------------------------------+
+| `Signal direction`   | `TX` for transmit, `RX` for receive                                                 |
++----------------------+-------------------------------------------------------------------------------------+
+| `type`               | Data type of the signal (`boolean`, `string`, etc.)                                 |
++----------------------+-------------------------------------------------------------------------------------+
+| `DBC CAN name`       | CAN mapping (e.g., `CAN_Output.FrontWiperActive`)                                   |
++----------------------+-------------------------------------------------------------------------------------+
+| `C++ code`           | Optional column, a string starting and ending with character ".                     |
+|                      | The string must not contain any new line.                                           |
+|                      | The c++ code will be included into vehicle device code to convert the signal value. |
++----------------------+-------------------------------------------------------------------------------------+
 
 Example of a single row:
 
@@ -94,10 +98,10 @@ Example usage:
 
    sdv_vss_util your_csv_file.csv -O<generated/> --prefix<your_prefix> --version<1.0.0.1> --enable_components
 
-        -O<string>          = *output folder*
-        --prefix<string>    = *prefix, namespace for the signal names*
-        --version<string>   = *optional version information*
-        --enable_components = *optional to generate vehicle devices and basic services*
+        -O<string>          = output folder
+        --prefix<string>    = prefix, namespace for the signal names
+        --version<string>   = optional version information
+        --enable_components = optional to generate vehicle devices and basic services
 
 .. code-block:: console
 
@@ -108,6 +112,12 @@ Example usage:
     - `generated/signal_identifier.h`
     - `generated/summary.txt`
     - `generated/vss_*.idl`
+
+Optional column `C++ code`:
+	
+	This column is not required but can contain a single string. In this string it is possible to add c++ code to convert a signal value. 
+	This conversion code is then used in the RX vehicle device component to convert the signal. It represents the vehicle abstraction e.g. when signal units do not match.
+	The examples ``Open Trunk`` and ``System Demo`` are using this feature to convert the vehicle speed from `m/s` to `km/h`. Also the ``Step by Step example`` is using it.
 
 VD_Files - `Vehicle Devices`
 """"""""""""""""""""""""""""
@@ -189,10 +199,10 @@ Example usage:
 
 	sdv_idl_compiler generated/vss_files/VSS_VehicleBodyWeatherRain_bs_rx.idl -O<generated/vss_files/> -I<D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\export> -I<generated/vss_files/> --no_ps
 
-        -O<string>            = *output folder*
-        -I<string>            = *path to required header files*
-        --no_ps               = *optional, if set no proxy & stub code will be created*
-        --ps_lib_name<string> = *optional, name of the proxy & stub library to be created*
+        -O<string>            = output folder
+        -I<string>            = path to required header files
+        --no_ps               = optional, if set no proxy & stub code will be created
+        --ps_lib_name<string> = optional, name of the proxy & stub library to be created
 
 .. code-block:: console
 
@@ -224,11 +234,11 @@ Used for:
 
    sdv_dbc_util your_dbc_file.dbc -Ogenerated/ --nodes<your_nodes_name> --version<1.0.0.1> --module<your_FMU_name> --dl_lib_name<your_can_dl_lib_name>
 
-        -O<string>            = *output folder*
-        --nodes<string>       = *nodes inside the dbc fileto be used*
-        --version<string>     = *optional version information*        
-        --module              = *optional, if set code for a FMU will be create*
-        --dl_lib_name<string> = *data link library nameto be created*
+        -O<string>            = output folder
+        --nodes<string>       = nodes inside the dbc fileto be used
+        --version<string>     = optional version information        
+        --module              = optional, if set code for a FMU will be create
+        --dl_lib_name<string> = data link library nameto be created
 
 .. code-block:: console
 
@@ -254,29 +264,29 @@ Summarize Tool Options
 
 .. code-block:: console
 
-    --prefix<string>           Adds a prefix to signal identifiers.
-    --enable_components        Generates component code in addition to IDL.
-    --version<string>          Optional version tag.
-    -O<path>                   Required output directory.
+    --prefix<string>    = Adds a prefix to signal identifiers.
+    --enable_components = Generates component code in addition to IDL.
+    --version<string>   = Optional version tag.
+    -O<path>            = Required output directory.
 
 **sdv_dbc_util** options:
 
 .. code-block:: console
 
-    --dl_lib_name<string>      Name of the generated datalink library.
-    --nodes<string>[,<string>] Specifies which nodes to implement.
-    --module<string>           FMU module identifier.
-    -O<path>                   Output directory.
+    --dl_lib_name<string>      = Name of the generated datalink library.
+    --nodes<string>[,<string>] = Specifies which nodes to implement.
+    --module<string>           = FMU module identifier.
+    -O<path>                   = Output directory.
 
 **sdv_idl_compiler** options:
 
 .. code-block:: console
 
-    -I<path>                   Include directories.
-    -O<path>                   Output directory.
-    --no_ps                    Skip proxy/stub generation.
-    --ps_lib_name<string>      Name of proxy/stub library.
-    --strict                   Enforce OMG-IDL conformance.
+    -I<path>              = Include directories.
+    -O<path>              = Output directory.
+    --no_ps               = Skip proxy/stub generation.
+    --ps_lib_name<string> = Name of proxy/stub library.
+    --strict              = Enforce OMG-IDL conformance.
 
 Tips
 ----
