@@ -14,6 +14,7 @@ Program Listing for File csv_file_reader.h
    #define CSV_FILE_READER_H
    
    #include <fstream>
+   #include <regex>
    #include "vss_helper.h"
    
    
@@ -46,6 +47,7 @@ Program Listing for File csv_file_reader.h
            column_signalCType,
            column_canSignalName,
            column_vdDefinition = column_canSignalName,
+           column_vdFormula,
            column_end
        } vssVDColumns;
    
@@ -64,8 +66,8 @@ Program Listing for File csv_file_reader.h
    
        void ParseColumns(const std::vector<std::string>& parts, const uint32_t index);
    
-       bool AddFunctionVDDefinition(SSignalVDDefinition& signal, const std::string& functionName,
-           const std::string& signalName, const std::string& canSignalName, const std::string& idlType, const uint32_t index);
+       bool AddFunctionVDDefinition(SSignalVDDefinition& signal, const std::string& functionName, const std::string& signalName, 
+           const std::string& canSignalName, const std::string& idlType, const std::string& formula, const uint32_t index);
    
        bool AddFunctionBSDefinition(SSignalBSDefinition& signal, const std::string& functionName,
            const std::string& signalName, const std::string& canSignalName, const std::string& idlType, const uint32_t index);

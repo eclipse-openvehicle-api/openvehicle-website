@@ -366,3 +366,83 @@ This structure ensures your simulation behaves predictably and cleanly from star
    - Cleanly reset signals and shut down the application.
 
    You've successfully built a simulation that helps visualize and test your SDV application logic in a user-friendly way. Awesome job!
+
+Common issues & How to Avoid Them
+---------------------------------
+
+Here are some common issues you might encounter while building your project using VAPI:
+
+1. Missing Vehicle Device Event Registration
+""""""""""""""""""""""""""""""""""""""""""""
+
+If you forget to register the mode event from the vehicle device:
+
+.. code-block:: cpp
+
+    pVDWiperMode->RegisterModeEvent(...);
+
+Then the callback `WriteMode triggered by vehicle device` will not be called, and your application won't react to mode changes.
+
+2. Missing RX Signal Subscription with Callback
+"""""""""""""""""""""""""""""""""""""""""""""""
+
+If you don't subscribe to RX signals using a callback:
+
+.. code-block:: cpp
+
+    m_signalRainDetected = dispatch.Subscribe(wiper::dsRainDetected, [&](sdv::any_t value) {
+        CallbackRainDetected(value);
+    });
+
+Then the callback functions won't trigger, and the signal won't be updated. This means your application won't respond to changes like rain detection or wiper mode.
+
+3. Signal Registration and Subscription
+"""""""""""""""""""""""""""""""""""""""
+
+**Issue: Overwriting a registered signal with a subscription handle**
+
+When we register a signal using `RegisterRxSignal()`, the returned `CSignal` object has both read and write capabilities (`m_pSignalRead` and `m_pSignalWrite`).
+
+However, if we then assign the result of `Subscribe()` to the same variable, we overwrite that `CSignal` with a subscription handle that lacks `m_pSignalWrite`. That’s why `Write()` fails, `m_pSignalWrite` becomes `nullptr`.
+
+As a result, calling something like:
+
+.. code-block:: cpp
+
+    m_VisualCurrentLongitude.Write<float>(value);
+
+will not work if `m_VisualCurrentLongitude` was overwritten by a subscription.
+
+This issue doesn’t occur in examples where registration and subscription are handled in separate files, so the original signal object is preserved.
+
+**Best Practice:**
+- Keep signal registration and subscription in separate variables.
+- Clearly distinguish between signal creators and signal users.
+
+Example:
+
+.. code-block:: cpp
+
+    sdv::core::CSignal m_dataLinkSignalRx;          // signals created and used by data link
+    sdv::core::CSignal m_dataLinkSignalTx01;
+    sdv::core::CSignal m_dataLinkSignalTx02;
+    sdv::core::CSignal m_dataLinkSignalTx03;
+
+    sdv::core::CSignal m_abstractDeviceSubscriber;  // signals used by an abstract device
+    sdv::core::CSignal m_abstractDevicePublisher01;
+    sdv::core::CSignal m_abstractDevicePublisher02;
+    sdv::core::CSignal m_abstractDevicePublisher03;
+
+**Also important:** the signal creator must exist for the entire lifetime of the signal.
+
+.. tip::
+
+   **What's next?**
+   
+   Now that you've built and run a console simulation for your example, you can:
+   
+   - Try adding more signals or services to simulate additional vehicle features.
+   - Customize the console output to show more detailed behavior or logs.
+   - Try to implement a complex service for your example.
+
+   Keep experimenting - the more you play with it, the better you'll understand it!

@@ -504,6 +504,121 @@ When we need to use the VAPI Sil-Kit CAN, we can define them in a .toml file.
 
 - include the vapi datalink component for data communication between Sil-Kit and data dispatch component. 
 
+How to run the SilKit CAN Communication Tests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This guide provides instructions on how to execute the manual tests for the SilKit CAN communication system, including the `can_reader` and `can_writer` components.
+
+**Prerequisites:**
+
+Before running the tests, ensure the following:
+
+- Operating System: Ubuntu (or a Linux distribution with gnome-terminal installed) or Windows.
+- Dependencies:
+  - `sil-kit-registry` and `sil-kit-system-controller` binaries are available in the directory: `<output_build_folder>/_deps/silkit-src/SilKit/bin/`
+  - gnome-terminal is installed on your system (Linux only).
+- Build: The project has been built successfully, and the binaries for can_reader and can_writer are available in the directory: `<output_build_folder>/<compiler_version>/tests/bin/`
+
+**Test Components**
+
+The tests involve the following components:
+
+- `sil-kit-registry`: Manages the SilKit network.
+- `sil-kit-system-controller`: Controls the lifecycle of SilKit participants.
+- `can_writer`: Sends CAN messages to the network.
+- `can_reader`: Receives CAN messages from the network.
+  
+**Instructions for Linux**
+
+Step 1: Start the SilKit Utilities:
+
+- Open a new terminal, navigate to the directory containing the sil-kit-registry and executes it 
+  
+  .. code-block:: text
+
+       sil-kit-registry.exe
+
+- Open another terminal, navigate to the directory containing the sil-kit-system-controller and run the below command 
+  
+  .. code-block:: text
+
+       sil-kit-system-controller.exe can_writer.exe can_reader.exe 
+
+Step 2: Run the CAN Writer
+
+- In a new terminal, navigate to the directory containing the can_writer executable:
+  
+  .. code-block:: text
+
+       can_writer.exe
+
+- The `can_writer` will send different CAN messages to the network. Each message will be logged in the terminal.
+
+Step 3: Run the CAN Reader
+
+- In another terminal, navigate to the directory containing the can_reader executable:
+  
+  .. code-block:: text
+
+       can_reader.exe
+
+- The `can_reader` will receive and log the CAN messages sent by the `can_writer`. Each message will be logged in the terminal.
+
+**Instructions for Windows:**
+
+Step 1: Start the SilKit Utilities
+
+- Before running the executables, copy the `SilKit.dll` and `SilKitd.dll` DLLs from the SilKit source directory `<..>\_deps\silkit-src\SilKit\bin` to the `<..>\test\bin` directory.
+- Open two Command Prompt or PowerShell windows
+- In the first window, navigate to the SilKit bin directory and run:
+
+.. code-block:: text
+
+      sil-kit-registry.exe
+      
+- In the second window, run:
+    
+.. code-block:: text
+
+      sil-kit-system-controller.exe can_reader can_writer
+
+Step 2: Run the CAN Writer
+
+- Open a new Command Prompt or PowerShell window and navigate to the directory containing the can_writer binary:
+
+.. code-block:: text
+
+       can_writer.exe
+
+- The `can_writer` will send different CAN messages to the network. Each message will be logged in the terminal.
+
+Step 3: Run the CAN Reader
+
+- Open another Command Prompt or PowerShell window and navigate to the directory containing the can_reader binary:
+
+.. code-block:: text
+
+       can_reader.exe
+
+- The `can_reader` will receive and log the CAN messages sent by the `can_writer`. Each message will be logged in the terminal.
+
+**Expected Output:**
+
+- **CAN Writer:** Logs the messages being sent, including the CAN ID, data length, and data content in the terminal.
+
+- **CAN Reader:** Logs the messages being received, including the CAN ID, data length, and data content in the terminal.
+
+**Troubleshooting:**
+
+- Binaries Not Found: Ensure the `sil-kit-registry`, `sil-kit-system-controller`, `can_writer`, and `can_reader` binaries are built and located in the correct directories.
+
+- Network Issues: Ensure the RegistryURI in the configuration matches the address of the sil-kit-registry.
+
+**Additional Notes:**
+
+- The `can_writer` and `can_reader` configurations are hardcoded in their respective source files. If you need to modify the configurations (e.g., participant names, network names, or registry URI), update the source code and rebuild the binaries.
+- The tests are designed to run in synchronous mode (SyncMode = true). Ensure this setting is consistent across all components.
+
 **Explanation of test code using VAPI Sil-Kit CAN:**
 
 .. figure:: ../../vapi_media/can_communication/Sil-Kit_can_comm.png 
