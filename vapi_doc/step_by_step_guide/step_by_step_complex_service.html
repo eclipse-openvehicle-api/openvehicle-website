@@ -1,0 +1,983 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Step-by-Step: Complex Service implementation &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/stylesheet.css?v=1697948e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=323e3408"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'vapi_doc/step_by_step_guide/step_by_step_complex_service';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Step-by-Step: Data Link &amp; CAN Simulation for Wiper Example" href="step_by_step_datalink_simulation.html" />
+    <link rel="prev" title="Step-by-Step: Console &amp; Simulation Data for Wiper Example" href="step_by_step_console_simulation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link dropdown-item nav-internal" href="step_by_step_index.html">
+                        Step by Step Example
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../sdv_tools/sdv_executables.html">
+                        SDV Executables
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link dropdown-item nav-internal" href="step_by_step_index.html">
+                        Step by Step Example
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../sdv_tools/sdv_executables.html">
+                        SDV Executables
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="step_by_step_index.html" class="nav-link">Guide: Create Example Step By Step</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Step-by-Step...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="step-by-step-complex-service-implementation">
+<span id="vapi-step-by-step-complex-service"></span><h1>Step-by-Step: Complex Service implementation<a class="headerlink" href="#step-by-step-complex-service-implementation" title="Permalink to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Step Goal</strong></p>
+<p>Build and package a <strong>Complex Service</strong> called <code class="docutils literal notranslate"><span class="pre">wiper_complex_service</span></code> that:</p>
+<ul class="simple">
+<li><p>listens to <em>rain detection</em> signal,</p></li>
+<li><p>activates/deactivates <strong>Front</strong> and <strong>Rear</strong> wipers only when rain persists for a configurable threshold,</p></li>
+<li><p>avoids accidental single-drop activation and stops wipers only after rain truly ends,</p></li>
+<li><p>is delivered as an <code class="docutils literal notranslate"><span class="pre">.sdv</span></code> module installed together with the Wiper service proxy/stub.</p></li>
+</ul>
+</div>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>Unlike a Basic Service, a <strong>Complex Service</strong> orchestrates behavior by consuming interfaces offered by Basic Services
+(and possibly other Complex Services) and <strong>must not</strong> access Vehicle Devices or the Data Dispatch Service directly. This
+keeps the vehicle-abstraction boundaries clean and supports process isolation. The official example emphasizes these
+constraints and shows how Complex Services subscribe to events and call service interfaces without touching devices.</p>
+</section>
+<section id="step-1-define-the-complex-service-interface-idl">
+<h2>Step 1: Define the Complex Service Interface (IDL)<a class="headerlink" href="#step-1-define-the-complex-service-interface-idl" title="Permalink to this heading">#</a></h2>
+<p>Create the interface that declares the service’s external contract. For the persistence control, one simple method is
+sufficient:</p>
+<div class="highlight-idl notranslate"><div class="highlight"><pre><span></span><span class="o">/**</span>
+<span class="w"> </span><span class="o">*</span><span class="w"> </span>@file<span class="w"> </span>wipercomplexservice.idl
+<span class="w"> </span><span class="o">*</span><span class="w"> </span>@details<span class="w"> </span>Service<span class="w"> </span>interface<span class="w"> </span>definition<span class="w"> </span>to<span class="w"> </span>control<span class="w"> </span>wipers<span class="w"> </span>with<span class="w"> </span>rain<span class="w"> </span>persistence<span class="w"> </span>logic.
+<span class="w"> </span><span class="o">*/</span>
+<span class="o">/**</span>
+<span class="w"> </span><span class="o">*</span><span class="w"> </span>@brief<span class="w"> </span>Service<span class="w"> </span>to<span class="w"> </span>manage<span class="w"> </span>wipers<span class="w"> </span>based<span class="w"> </span>on<span class="w"> </span>rain<span class="w"> </span>sensor<span class="w"> </span>with<span class="w"> </span>a<span class="w"> </span>persistence<span class="w"> </span>timer.
+<span class="w"> </span><span class="o">*/</span>
+interface<span class="w"> </span>IWiperComplexService
+{
+<span class="w">    </span><span class="o">/**</span>
+<span class="w">     </span><span class="o">*</span><span class="w"> </span>@brief<span class="w"> </span>Activating<span class="w"> </span><span class="k">or</span><span class="w"> </span>deactivating<span class="w"> </span>wipers.
+<span class="w">     </span><span class="o">*</span><span class="w"> </span>This<span class="w"> </span>prevents<span class="w"> </span>wipers<span class="w"> </span>from<span class="w"> </span>starting<span class="w"> </span>on<span class="w"> </span>a<span class="w"> </span>single<span class="w"> </span>random<span class="w"> </span>drop<span class="w"> </span><span class="k">and</span><span class="w"> </span>stops<span class="w"> </span>them<span class="w"> </span>only<span class="w"> </span>after<span class="w"> </span>rain<span class="w"> </span>truly<span class="w"> </span>ends.
+<span class="w">     </span><span class="o">*/</span>
+<span class="w">    </span>boolean<span class="w"> </span>TriggerWipersAfterThreshold();
+};
+</pre></div>
+</div>
+<p>Place the IDL alongside your component sources (e.g., ‘wiper_example/wiper_service’);</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Keep the interface minimal; only expose what is needed for orchestration logic.</p>
+</div>
+</section>
+<section id="step-2-generate-proxy-stub-and-integrate-with-cmake">
+<h2>Step 2: Generate proxy/stub and integrate with CMake<a class="headerlink" href="#step-2-generate-proxy-stub-and-integrate-with-cmake" title="Permalink to this heading">#</a></h2>
+<p>After creating the .idl file, we need to use it to generate the proxy/stub files.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Proxy/stub is required for inter-process communication and service discovery.</p>
+</div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Execute the IDL compiler for the complex service to digest interface code.</span>
+<span class="nb">message</span><span class="p">(</span><span class="s2">&quot;Compiling wipercomplexservice.idl&quot;</span><span class="p">)</span>
+<span class="nb">execute_process</span><span class="p">(</span><span class="s">COMMAND</span><span class="w"> </span><span class="s2">&quot;${SDV_IDL_COMPILER}&quot;</span><span class="w"> </span><span class="s2">&quot;${PROJECT_SOURCE_DIR}/wiper_service/wipercomplexservice.idl&quot;</span><span class="w"> </span><span class="s2">&quot;-O${PROJECT_SOURCE_DIR}/generated/wiper_service/&quot;</span><span class="w"> </span><span class="s2">&quot;-I${SDV_FRAMEWORK_DEV_INCLUDE}&quot;</span><span class="w"> </span><span class="s">-Iwiper_service/</span><span class="w"> </span><span class="s">--ps_lib_namewiper_service_proxystub</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If everything worked correctly, you should see these files generated:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>generated/
+└── wiper_service/
+    ├── wipercomplexservice.h
+    ├── serdes/
+    │   └── wipercomplexservice_serdes.h
+    └── ps/
+        ├── CMakeLists.txt
+        ├── proxystub.cpp
+        ├── wipercomplexservice_proxy.cpp
+        ├── wipercomplexservice_proxy.h
+        ├── wipercomplexservice_stub.cpp
+        └── wipercomplexservice_stub.h
+</pre></div>
+</div>
+<p>And we need to integrate these files into the build</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">message</span><span class="p">(</span><span class="s2">&quot;Include: proxy/stub for complex wiper service&quot;</span><span class="p">)</span>
+<span class="nb">include_directories</span><span class="p">(</span><span class="o">${</span><span class="nv">CMAKE_CURRENT_LIST_DIR</span><span class="o">}</span><span class="s">/generated/wiper_service</span><span class="p">)</span>
+<span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">generated/wiper_service/ps</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-3-create-and-load-the-toml-file-for-complex-service">
+<h2>Step 3: Create and load the .toml file for Complex Service<a class="headerlink" href="#step-3-create-and-load-the-toml-file-for-complex-service" title="Permalink to this heading">#</a></h2>
+<p>Create a .toml file for the Complex Service in the ‘wiper_example/config’ folder and add it in the CMakeLists</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Configuration]</span>
+<span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
+
+<span class="k">[[Component]]</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wiper_complex_service.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Wiper Service&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">file</span><span class="w"> </span><span class="p">(</span><span class="s">COPY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/config/complex_service_wiper.toml</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/bin/config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In ‘Initialize()’ function from ‘wiper_application.cpp’ we need to load the config file ‘complex_service_wiper.toml’</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Important: Load it only after the basic services are initialized!</p>
+</div>
+</section>
+<section id="step-4-written-code-for-complex-service">
+<h2>Step 4: Written code for Complex Service<a class="headerlink" href="#step-4-written-code-for-complex-service" title="Permalink to this heading">#</a></h2>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For more details check the <span class="xref std std-ref">Example Complex Service</span>.</p>
+</div>
+<p>We create two source files: ‘wiper_complex_service.h’ and ‘wiper_complex_service.cpp’.</p>
+<p>Include the generated header and inherit the required interfaces:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../generated/wiper_service/wipercomplexservice.h&quot;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CWiperExampleService</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
+<span class="w">                          </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span>
+<span class="w">                          </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Weather</span><span class="o">::</span><span class="n">RainService</span><span class="o">::</span><span class="n">IVSS_SetDetected_Event</span>
+<span class="w">                          </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Windshield</span><span class="o">::</span><span class="n">Wiper</span><span class="o">::</span><span class="n">ModeService</span><span class="o">::</span><span class="n">IVSS_SetMode_Event</span>
+<span class="w">                          </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Windshield</span><span class="o">::</span><span class="n">Wiper</span><span class="o">::</span><span class="n">RearService</span><span class="o">::</span><span class="n">IVSS_SetIsRearActive</span>
+<span class="w">                          </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Windshield</span><span class="o">::</span><span class="n">Wiper</span><span class="o">::</span><span class="n">FrontService</span><span class="o">::</span><span class="n">IVSS_SetIsFrontActive</span>
+<span class="w">                          </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IWiperComplexService</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Interface mapping and object declarations are critical for runtime discovery:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">    </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span><span class="p">)</span>
+<span class="w">    </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Weather</span><span class="o">::</span><span class="n">RainService</span><span class="o">::</span><span class="n">IVSS_SetDetected_Event</span><span class="p">)</span>
+<span class="w">    </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Windshield</span><span class="o">::</span><span class="n">Wiper</span><span class="o">::</span><span class="n">ModeService</span><span class="o">::</span><span class="n">IVSS_SetMode_Event</span><span class="p">)</span>
+<span class="w">    </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Windshield</span><span class="o">::</span><span class="n">Wiper</span><span class="o">::</span><span class="n">RearService</span><span class="o">::</span><span class="n">IVSS_SetIsRearActive</span><span class="p">)</span>
+<span class="w">    </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Windshield</span><span class="o">::</span><span class="n">Wiper</span><span class="o">::</span><span class="n">FrontService</span><span class="o">::</span><span class="n">IVSS_SetIsFrontActive</span><span class="p">)</span>
+<span class="w">    </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">IWiperComplexService</span><span class="p">)</span>
+<span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+
+<span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">ComplexService</span><span class="p">)</span>
+<span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Wiper Service&quot;</span><span class="p">)</span>
+<span class="n">DECLARE_OBJECT_SINGLETON</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If the <cite>Class</cite> name in TOML does not match <cite>DECLARE_OBJECT_CLASS_NAME</cite> in code, the runtime will fail to load the service.</p>
+</div>
+<p>Declare the object as a SDV object:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CWiperExampleService</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The ‘wiper_complex_service.cpp’ file ‘Initialize()’ function to subscribe to Rain and Wiper Mode events and cache interfaces for Front/Rear wipers. Implement <code class="docutils literal notranslate"><span class="pre">TriggerWipersAfterThreshold</span></code> to start/stop wipers based on rain persistence.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Implement <cite>Shutdown()</cite> to unregister event handlers and avoid dangling callbacks.</p>
+</div>
+</section>
+<section id="step-5-build-and-package">
+<h2>Step 5: Build and package<a class="headerlink" href="#step-5-build-and-package" title="Permalink to this heading">#</a></h2>
+<p>Add the following to your <code class="docutils literal notranslate"><span class="pre">CMakeLists.txt</span></code>:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">add_library</span><span class="p">(</span><span class="s">console</span>
+<span class="w">    </span><span class="s">wiper_app/console.cpp</span>
+<span class="w">    </span><span class="s">wiper_app/console.h</span>
+<span class="p">)</span>
+
+<span class="nb">add_library</span><span class="p">(</span><span class="s">wiper_complex_service</span><span class="w"> </span><span class="s">SHARED</span>
+<span class="w">    </span><span class="s">wiper_service/wiper_complex_service.h</span>
+<span class="w">    </span><span class="s">wiper_service/wiper_complex_service.cpp</span>
+<span class="p">)</span>
+
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">wiper_complex_service</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">console</span><span class="p">)</span>
+
+<span class="nb">set_target_properties</span><span class="p">(</span><span class="s">wiper_complex_service</span><span class="w"> </span><span class="s">PROPERTIES</span><span class="w"> </span><span class="s">OUTPUT_NAME</span><span class="w"> </span><span class="s2">&quot;wiper_complex_service&quot;</span><span class="p">)</span>
+<span class="nb">set_target_properties</span><span class="p">(</span><span class="s">wiper_complex_service</span><span class="w"> </span><span class="s">PROPERTIES</span><span class="w"> </span><span class="s">PREFIX</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="nb">set_target_properties</span><span class="p">(</span><span class="s">wiper_complex_service</span><span class="w"> </span><span class="s">PROPERTIES</span><span class="w"> </span><span class="s">SUFFIX</span><span class="w"> </span><span class="s2">&quot;.sdv&quot;</span><span class="p">)</span>
+
+<span class="nb">add_custom_target</span><span class="p">(</span><span class="s">wiper_complex_service_config</span>
+<span class="w">    </span><span class="s">ALL</span>
+<span class="w">    </span><span class="s">DEPENDS</span>
+<span class="w">        </span><span class="s">wiper_complex_service</span>
+<span class="w">        </span><span class="s">wiper_service_proxystub</span>
+<span class="w">    </span><span class="s">COMMAND</span><span class="w"> </span><span class="s2">&quot;${SDV_PACKAGER}&quot;</span><span class="w"> </span><span class="s">DIRECT_INSTALL</span><span class="w"> </span><span class="s">wiper_complex_service</span><span class="w"> </span><span class="s">wiper_complex_service.sdv</span><span class="w"> </span><span class="s">wiper_service_proxystub.sdv</span><span class="w"> </span><span class="s2">&quot;-I${CMAKE_RUNTIME_OUTPUT_DIRECTORY}&quot;</span><span class="w"> </span><span class="s">--interface_config</span><span class="w"> </span><span class="s">--overwrite</span>
+<span class="w">    </span><span class="s">VERBATIM</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Step Reach</strong></p>
+<p>You now have a Complex Service that:</p>
+<ul class="simple">
+<li><p>Consumes service interfaces without accessing Vehicle Devices directly.</p></li>
+<li><p>Subscribes to rain/mode changes and actuates wipers with persistence logic.</p></li>
+<li><p>Builds to a distributable <code class="docutils literal notranslate"><span class="pre">.sdv</span></code> and installs with its proxy/stub.</p></li>
+</ul>
+</div>
+</section>
+<section id="tips-best-practices">
+<h2>Tips &amp; Best Practices<a class="headerlink" href="#tips-best-practices" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Consistency between .toml and code</strong>: Ensure <cite>DECLARE_OBJECT_CLASS_NAME(“Wiper Service”)</cite> matches <cite>Class = “Wiper Service”</cite> in the TOML file.</p></li>
+<li><p><strong>Avoid direct device access</strong>: Complex Services should only consume interfaces from Basic Services, never access Vehicle Devices or Data Dispatch directly.</p></li>
+<li><p><strong>Validate subscriptions</strong>: In <cite>Initialize()</cite>, check that all critical interfaces (Rain, Mode, Front/Rear wipers) are successfully retrieved before setting status to <cite>initialized</cite>.</p></li>
+<li><p><strong>Graceful shutdown</strong>: Unregister all event handlers in <cite>Shutdown()</cite> to prevent dangling callbacks.</p></li>
+<li><p><strong>Logging</strong>: Use <cite>SDV_LOG_ERROR</cite> or similar macros for troubleshooting when interfaces cannot be resolved.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="step_by_step_console_simulation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Step-by-Step: Console &amp; Simulation Data for Wiper Example</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="step_by_step_datalink_simulation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Step-by-Step: Data Link &amp; CAN Simulation for Wiper Example</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
+        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
+    </ul>
+    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
+</ul>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
+
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
+
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
+        } 
+    });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
+        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
+    </ul>
+    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
+</ul>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
+
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
+
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
+        } 
+    });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,225 @@
+.. _vapi-step_by_step_complex_service:
+
+Step-by-Step: Complex Service implementation
+=============================================
+
+.. note::
+
+   **Step Goal**
+   
+   Build and package a **Complex Service** called ``wiper_complex_service`` that:
+
+   * listens to *rain detection* signal,
+   * activates/deactivates **Front** and **Rear** wipers only when rain persists for a configurable threshold,
+   * avoids accidental single-drop activation and stops wipers only after rain truly ends,
+   * is delivered as an ``.sdv`` module installed together with the Wiper service proxy/stub.   
+   
+   
+Overview
+--------
+
+Unlike a Basic Service, a **Complex Service** orchestrates behavior by consuming interfaces offered by Basic Services
+(and possibly other Complex Services) and **must not** access Vehicle Devices or the Data Dispatch Service directly. This
+keeps the vehicle-abstraction boundaries clean and supports process isolation. The official example emphasizes these
+constraints and shows how Complex Services subscribe to events and call service interfaces without touching devices. 
+
+
+Step 1: Define the Complex Service Interface (IDL)
+--------------------------------------------------
+Create the interface that declares the service's external contract. For the persistence control, one simple method is
+sufficient:
+
+.. code-block:: idl
+
+   /**
+    * @file wipercomplexservice.idl
+    * @details Service interface definition to control wipers with rain persistence logic.
+    */
+   /**
+    * @brief Service to manage wipers based on rain sensor with a persistence timer.
+    */
+   interface IWiperComplexService
+   {
+       /**
+        * @brief Activating or deactivating wipers.
+        * This prevents wipers from starting on a single random drop and stops them only after rain truly ends.
+        */
+       boolean TriggerWipersAfterThreshold();
+   };
+
+Place the IDL alongside your component sources (e.g., 'wiper_example/wiper_service');
+
+.. tip::
+
+	Keep the interface minimal; only expose what is needed for orchestration logic.
+
+
+Step 2: Generate proxy/stub and integrate with CMake
+-----------------------------------------------------
+After creating the .idl file, we need to use it to generate the proxy/stub files.
+
+.. note::
+
+	Proxy/stub is required for inter-process communication and service discovery.
+
+.. code-block:: cmake
+
+   # Execute the IDL compiler for the complex service to digest interface code.
+   message("Compiling wipercomplexservice.idl")
+   execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/wiper_service/wipercomplexservice.idl" "-O${PROJECT_SOURCE_DIR}/generated/wiper_service/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Iwiper_service/ --ps_lib_namewiper_service_proxystub)
+
+If everything worked correctly, you should see these files generated:
+
+.. code-block:: text
+
+   generated/
+   └── wiper_service/
+       ├── wipercomplexservice.h
+       ├── serdes/
+       │   └── wipercomplexservice_serdes.h
+       └── ps/
+           ├── CMakeLists.txt
+           ├── proxystub.cpp
+           ├── wipercomplexservice_proxy.cpp
+           ├── wipercomplexservice_proxy.h
+           ├── wipercomplexservice_stub.cpp
+           └── wipercomplexservice_stub.h
+
+And we need to integrate these files into the build
+
+.. code-block:: cmake
+
+   message("Include: proxy/stub for complex wiper service")
+   include_directories(${CMAKE_CURRENT_LIST_DIR}/generated/wiper_service)
+   add_subdirectory(generated/wiper_service/ps)
+   
+Step 3: Create and load the .toml file for Complex Service
+----------------------------------------------------------
+
+Create a .toml file for the Complex Service in the 'wiper_example/config' folder and add it in the CMakeLists
+
+.. code-block:: toml
+
+	[Configuration]
+	Version = 100
+
+	[[Component]]
+	Path = "wiper_complex_service.sdv"
+	Class = "Wiper Service"
+
+.. code-block:: cmake
+
+	file (COPY ${PROJECT_SOURCE_DIR}/config/complex_service_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+
+In 'Initialize()' function from 'wiper_application.cpp' we need to load the config file 'complex_service_wiper.toml'
+
+.. warning::
+
+	Important: Load it only after the basic services are initialized!
+
+Step 4: Written code for Complex Service
+----------------------------------------
+.. seealso:: For more details check the :ref:`Example Complex Service<vapi-example-complex-service>`.
+
+We create two source files: 'wiper_complex_service.h' and 'wiper_complex_service.cpp'.
+
+Include the generated header and inherit the required interfaces:
+
+.. code-block:: cpp
+
+   #include "../generated/wiper_service/wipercomplexservice.h"
+
+   class CWiperExampleService : public sdv::CSdvObject
+                             , public sdv::IObjectControl
+                             , public vss::Vehicle::Body::Weather::RainService::IVSS_SetDetected_Event
+                             , public vss::Vehicle::Body::Windshield::Wiper::ModeService::IVSS_SetMode_Event
+                             , public vss::Vehicle::Body::Windshield::Wiper::RearService::IVSS_SetIsRearActive
+                             , public vss::Vehicle::Body::Windshield::Wiper::FrontService::IVSS_SetIsFrontActive
+                             , public IWiperComplexService
+   {
+       // ...
+   };
+
+Interface mapping and object declarations are critical for runtime discovery:
+
+.. code-block:: cpp
+
+   BEGIN_SDV_INTERFACE_MAP()
+       SDV_INTERFACE_ENTRY(sdv::IObjectControl)
+       SDV_INTERFACE_ENTRY(vss::Vehicle::Body::Weather::RainService::IVSS_SetDetected_Event)
+       SDV_INTERFACE_ENTRY(vss::Vehicle::Body::Windshield::Wiper::ModeService::IVSS_SetMode_Event)
+       SDV_INTERFACE_ENTRY(vss::Vehicle::Body::Windshield::Wiper::RearService::IVSS_SetIsRearActive)
+       SDV_INTERFACE_ENTRY(vss::Vehicle::Body::Windshield::Wiper::FrontService::IVSS_SetIsFrontActive)
+       SDV_INTERFACE_ENTRY(IWiperComplexService)
+   END_SDV_INTERFACE_MAP()
+
+   DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::ComplexService)
+   DECLARE_OBJECT_CLASS_NAME("Wiper Service")
+   DECLARE_OBJECT_SINGLETON()
+
+.. warning::
+
+	If the `Class` name in TOML does not match `DECLARE_OBJECT_CLASS_NAME` in code, the runtime will fail to load the service.
+
+
+Declare the object as a SDV object:
+
+.. code-block:: cpp
+
+   DEFINE_SDV_OBJECT(CWiperExampleService)
+
+The 'wiper_complex_service.cpp' file 'Initialize()' function to subscribe to Rain and Wiper Mode events and cache interfaces for Front/Rear wipers. Implement ``TriggerWipersAfterThreshold`` to start/stop wipers based on rain persistence.
+
+.. tip::
+
+	Implement `Shutdown()` to unregister event handlers and avoid dangling callbacks.
+	
+Step 5: Build and package
+-------------------------
+
+Add the following to your ``CMakeLists.txt``:
+
+.. code-block:: cmake
+
+   add_library(console
+       wiper_app/console.cpp
+       wiper_app/console.h
+   )
+
+   add_library(wiper_complex_service SHARED
+       wiper_service/wiper_complex_service.h
+       wiper_service/wiper_complex_service.cpp
+   )
+
+   target_link_libraries(wiper_complex_service PRIVATE console)
+
+   set_target_properties(wiper_complex_service PROPERTIES OUTPUT_NAME "wiper_complex_service")
+   set_target_properties(wiper_complex_service PROPERTIES PREFIX "")
+   set_target_properties(wiper_complex_service PROPERTIES SUFFIX ".sdv")
+
+   add_custom_target(wiper_complex_service_config
+       ALL
+       DEPENDS
+           wiper_complex_service
+           wiper_service_proxystub
+       COMMAND "${SDV_PACKAGER}" DIRECT_INSTALL wiper_complex_service wiper_complex_service.sdv wiper_service_proxystub.sdv "-I${CMAKE_RUNTIME_OUTPUT_DIRECTORY}" --interface_config --overwrite
+       VERBATIM
+   )
+   
+.. note::
+
+	**Step Reach**
+	
+	You now have a Complex Service that:
+
+	* Consumes service interfaces without accessing Vehicle Devices directly.
+	* Subscribes to rain/mode changes and actuates wipers with persistence logic.
+	* Builds to a distributable ``.sdv`` and installs with its proxy/stub.
+
+Tips & Best Practices
+----------------------
+* **Consistency between .toml and code**: Ensure `DECLARE_OBJECT_CLASS_NAME("Wiper Service")` matches `Class = "Wiper Service"` in the TOML file.
+* **Avoid direct device access**: Complex Services should only consume interfaces from Basic Services, never access Vehicle Devices or Data Dispatch directly.
+* **Validate subscriptions**: In `Initialize()`, check that all critical interfaces (Rain, Mode, Front/Rear wipers) are successfully retrieved before setting status to `initialized`.
+* **Graceful shutdown**: Unregister all event handlers in `Shutdown()` to prevent dangling callbacks.
+* **Logging**: Use `SDV_LOG_ERROR` or similar macros for troubleshooting when interfaces cannot be resolved.

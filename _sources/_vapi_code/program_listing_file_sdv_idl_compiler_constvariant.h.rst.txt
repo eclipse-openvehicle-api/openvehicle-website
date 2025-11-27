@@ -22,6 +22,7 @@ Program Listing for File constvariant.h
    struct fixed
    {
        double dValue;      
+   
        template <typename TType>
        constexpr fixed(TType tValue) : dValue(static_cast<double>(tValue)) {}
        template <typename TType>
@@ -58,6 +59,7 @@ Program Listing for File constvariant.h
    namespace std
    {
    #ifndef DOXYGEN_IGNORE
+   
        template <>
        inline constexpr bool is_floating_point_v<::fixed> = true;
    
@@ -118,6 +120,7 @@ Program Listing for File constvariant.h
        CConstVariant(uint16_t uiValue);
    
    #ifdef _WIN32
+   
        CConstVariant(long int iValue);
    
        CConstVariant(unsigned long int uiValue);
@@ -130,6 +133,7 @@ Program Listing for File constvariant.h
        CConstVariant(int64_t iValue);
    
    #if defined(__GNUC__) && !defined(_WIN32)
+   
         CConstVariant(long long int iValue);
    
         CConstVariant(unsigned long long int uiValue);

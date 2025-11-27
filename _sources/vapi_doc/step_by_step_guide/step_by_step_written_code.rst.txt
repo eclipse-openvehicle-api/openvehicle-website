@@ -24,9 +24,15 @@ and sensor data. This document explains the structure and logic of the applicati
 
 
 Implementation Steps
---------------------------------------------------
+--------------------
 
-This section walks through the key steps required to initialize and run the Wiper application in the SDV framework.
+This section explains the essential steps to initialize and run the Wiper application within the SDV framework.
+
+To complete these steps, you need to create three source files:
+
+	wiper_app/wiper_application.cpp
+	wiper_app/wiper_application.h
+	wiper_app/wiper_example.cpp
 
 Application Initialization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -73,7 +79,9 @@ First, we need the `Initialize()` method, which sets up the runtime environment,
 Setting the Framework Runtime Directory
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-It is recommended to call `IsSDVFrameworkEnvironmentSet()` to verify that the SDV runtime path is available via system environment variables. If not, the path should be set manually using `SetFrameworkRuntimeDirectory()`.
+The VAPI core binaries path must be set using environment variables.
+Although the examples can run without these variables, the first step they perform is to check if the environment is configured. If not, you must explicitly provide the directory containing the core binaries before proceeding.
+Example:
 
 .. code-block:: cpp
 
@@ -84,7 +92,7 @@ It is recommended to call `IsSDVFrameworkEnvironmentSet()` to verify that the SD
 
 Starting the SDV Application
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-		
+
 You also need to call the `Startup()` function to start the application control.
 
 The `Startup()` function is a critical step in initializing the SDV application control. It performs several essential tasks:
@@ -155,7 +163,6 @@ And it is called in the `Initialize()` function for each .toml file.
 	<pre>
 	
 	#include "wiper_application.h"
-	#include "signal_names.h"
 
 	#ifdef _WIN32
 	#include <conio.h>
@@ -366,7 +373,6 @@ Define the executable with CMake
 		wiper_app/wiper_example.cpp
 		wiper_app/wiper_application.cpp
 		wiper_app/wiper_application.h
-		wiper_app/signal_names.h
 		)
 
 	if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -616,7 +622,7 @@ You will see errors for each signals because the signals were not defined and re
 Signal Name Definitions
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-To Register the signals first you need to create the `signal_names.h` file.
+To Register the signals first you need to include the generated file `vss_files\signal_identifier.h`.
 
 This file defines the signal names used in the application. It uses conditional inclusion to either import external definitions or define them locally.
 
@@ -624,41 +630,6 @@ Why it's important:
 
 - Centralizes signal naming for consistency.
 - Supports both standalone and integrated builds.
-
-.. note::
-	The signal names defined here correspond to the values in the column **`DBC CAN name includes CAN message name`** from the input `.csv` file.
-
-Code:
-
-.. code-block:: cpp
-
-	/**
-	 * namespace for the signal names
-	 * in case /interfaces/signal_identifier.h
-	 * exists, use the file, otherwise define the namespace
-	 */
-	#ifndef SIGNAL_NAMES_H
-	#define SIGNAL_NAMES_H
-
-	#ifdef __has_include
-	#if __has_include("../interfaces/signal_identifier.h")
-	#include "../interfaces/signal_identifier.h"
-	#else
-
-	namespace wiper
-	{
-		// Data Dispatch Service  signal names          to  dbc variable names                   C-type  RX/TX    vss name space
-		static std::string        dsRainDetected        = "CAN_Input.RainDetected";   
-		static std::string        dsWiperMode           = "CAN_Input.WiperMode";      
-		static std::string        dsFrontWiperActive    = "CAN_Output.FrontWiperActive"; 
-		static std::string        dsRearWiperActive     = "CAN_Output.RearWiperActive";
-	} // wiper
-
-	#endif
-	#endif
-
-	#endif // SIGNAL_NAMES_H
-
 
 Register Signals
 ^^^^^^^^^^^^^^^^^
@@ -687,7 +658,7 @@ Why it's important:
 	}
 	
 .. note::
-	`dsRainDetected` is the signal name from signal_names.h
+	`dsRainDetected` is the signal name from signal_identifier.h
 	
 **What is CDispatchService class and what RegisterRxSignal and RegisterTxSignal do?**
 

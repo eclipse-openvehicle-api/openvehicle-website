@@ -1,0 +1,1039 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Step-by-Step: Data Link &amp; CAN Simulation for Wiper Example &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/stylesheet.css?v=1697948e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=323e3408"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'vapi_doc/step_by_step_guide/step_by_step_datalink_simulation';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Simulation / Testing / FMU" href="../simulation.html" />
+    <link rel="prev" title="Step-by-Step: Complex Service implementation" href="step_by_step_complex_service.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link dropdown-item nav-internal" href="step_by_step_index.html">
+                        Step by Step Example
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../sdv_tools/sdv_executables.html">
+                        SDV Executables
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link dropdown-item nav-internal" href="step_by_step_index.html">
+                        Step by Step Example
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../sdv_tools/sdv_executables.html">
+                        SDV Executables
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="step_by_step_index.html" class="nav-link">Guide: Create Example Step By Step</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Step-by-Step...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="step-by-step-data-link-can-simulation-for-wiper-example">
+<span id="vapi-step-by-step-datalink-simulation"></span><h1>Step-by-Step: Data Link &amp; CAN Simulation for Wiper Example<a class="headerlink" href="#step-by-step-data-link-can-simulation-for-wiper-example" title="Permalink to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Step Goal</strong></p>
+<p>In this guide, you will learn how to integrate <strong>CAN Data Link simulation</strong> into the Wiper example using the SDV framework.
+We will use:</p>
+<ul class="simple">
+<li><p>A <strong>DBC file</strong> to define CAN messages and signals.</p></li>
+<li><p>An <strong>ASC log file</strong> to simulate CAN traffic.</p></li>
+<li><p>TOML configuration files to load the CAN simulation and Data Link components.</p></li>
+<li><p>Updated application logic to handle <cite>exampleMode == CAN_SIMULATION</cite>.</p></li>
+</ul>
+</div>
+<p>By the end, you will have a working example that runs in <strong>CAN simulation mode</strong> using real ASC logs.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>The flow for CAN simulation looks like this:</p>
+<p><code class="docutils literal notranslate"><span class="pre">CSV</span> <span class="pre">→</span> <span class="pre">DBC</span> <span class="pre">→</span> <span class="pre">sdv_dbc_util</span> <span class="pre">→</span> <span class="pre">Data</span> <span class="pre">Link</span> <span class="pre">code</span> <span class="pre">→</span> <span class="pre">ASC</span> <span class="pre">file</span> <span class="pre">→</span> <span class="pre">TOML</span> <span class="pre">→</span> <span class="pre">Application</span></code></p>
+<ul class="simple">
+<li><p><strong>CSV</strong> defines signals and formulas (e.g., WiperMode mapping).</p></li>
+<li><p><strong>DBC</strong> maps signals to CAN messages and IDs.</p></li>
+<li><p><strong>ASC</strong> provides recorded CAN frames for simulation.</p></li>
+<li><p><strong>TOML</strong> loads CAN simulation and Data Link components.</p></li>
+<li><p><strong>C++ code</strong> switches between normal mode and CAN simulation mode.</p></li>
+</ul>
+</section>
+<section id="step-1-prepare-the-dbc-file">
+<h2>Step 1: Prepare the DBC File<a class="headerlink" href="#step-1-prepare-the-dbc-file" title="Permalink to this heading">#</a></h2>
+<p>We need a DBC file that includes all signals defined in the CSV:</p>
+<p>Example snippet from <cite>datalink_wiper_example.dbc</cite>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>BO_ 100 CAN_Input_M: 1 Vector__XXX
+ SG_ WiperMode : 3|1@0+ (1,0) [0|1] &quot;&quot; wipers
+BO_ 101 CAN_Input_R: 1 Vector__XXX
+ SG_ RainDetected : 1|1@0+ (1,0) [0|1] &quot;&quot; wipers
+BO_ 102 CAN_Output_W: 1 wipers
+ SG_ FrontWiperActive : 7|1@0+ (1,0) [0|1] &quot;&quot; Vector__XXX
+ SG_ RearWiperActive : 6|1@0+ (1,0) [0|1] &quot;&quot; Vector__XXX
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Signal names in the DBC file <strong>must match</strong> those in the CSV and <cite>signal_names.h</cite>.</p>
+</div>
+<p><strong>Important:</strong></p>
+<p><cite>WiperMode</cite> uses values <cite>0</cite> and <cite>1</cite>. In the application, these map to <cite>“manual”</cite> and <cite>“auto”</cite> using the formula from CSV:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_WiperMode</span><span class="p">.</span><span class="n">compare</span><span class="p">(</span><span class="s">&quot;0&quot;</span><span class="p">))</span><span class="w"> </span><span class="n">m_WiperMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;manual&quot;</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_WiperMode</span><span class="p">.</span><span class="n">compare</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">))</span><span class="w"> </span><span class="n">m_WiperMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;auto&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-prepare-the-asc-file">
+<h2>Step 2: Prepare the ASC File<a class="headerlink" href="#step-2-prepare-the-asc-file" title="Permalink to this heading">#</a></h2>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Refer to the <a class="reference internal" href="../components_services/can_communication.html#vapi-can-implementation"><span class="std std-ref">CAN Implementations</span></a>.</p>
+</div>
+<p>The ASC file contains CAN frames for simulation. Example snippet from <cite>wiper_receiver.asc</cite>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>0.020000 1 64 Rx d 1 00
+0.030000 1 65 Rx d 1 00
+0.320000 1 64 Rx d 1 08
+0.330000 1 65 Rx d 1 02
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Values in ASC files are in <strong>HEX format</strong>, not decimal.</p>
+</div>
+<p>This file will be referenced in <cite>can_com_simulation_wiper.toml</cite>:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Configuration]</span>
+<span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
+<span class="k">[[Component]]</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;can_com_sim.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CAN_Com_Sim&quot;</span>
+<span class="n">Source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wiper_receiver.asc&quot;</span>
+<span class="n">Target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wiper_writer.asc&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="step-3-generate-data-link-code">
+<h2>Step 3: Generate Data Link Code<a class="headerlink" href="#step-3-generate-data-link-code" title="Permalink to this heading">#</a></h2>
+<p>Use <cite>sdv_dbc_util</cite> to generate the CAN Data Link component and include the generated files:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="c"># Execute sdv_dbc_util to create data link code &amp; FMU code.</span>
+<span class="nb">message</span><span class="p">(</span><span class="s2">&quot;Create data link for wiper example&quot;</span><span class="p">)</span>
+<span class="nb">execute_process</span><span class="p">(</span><span class="s">COMMAND</span><span class="w"> </span><span class="o">${</span><span class="nv">SDV_DBC_UTIL</span><span class="o">}</span><span class="w"> </span><span class="s2">&quot;${PROJECT_SOURCE_DIR}/datalink_wiper_example.dbc&quot;</span>
+<span class="w">                </span><span class="s2">&quot;-O${PROJECT_SOURCE_DIR}/generated/&quot;</span>
+<span class="w">                </span><span class="s">--nodeswipers</span><span class="w"> </span><span class="s">--version1.0.0.1</span><span class="w"> </span><span class="s">--moduleWiperExampleFMU</span><span class="w"> </span><span class="s">--dl_lib_namecan_dl_wiper</span><span class="p">)</span>
+
+<span class="nb">message</span><span class="p">(</span><span class="s2">&quot;Include: example component can_dl_wiper&quot;</span><span class="p">)</span>
+<span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">generated/can_dl</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The argument <cite>–nodeswipers</cite> must match the node name defined in your DBC file (<a href="#id1"><span class="problematic" id="id2">BU_</span></a> section). In this example, the node name is <strong>wipers</strong>.</p></li>
+<li><p>The argument <cite>–dl_lib_namecan_dl_wiper</cite> corresponds to the library name used in <cite>data_link_wiper.toml</cite> under <cite>Path = “can_dl_wiper.sdv”</cite>.</p></li>
+</ul>
+</div>
+</section>
+<section id="step-4-update-cmakelists-txt">
+<h2>Step 4: Update CMakeLists.txt<a class="headerlink" href="#step-4-update-cmakelists-txt" title="Permalink to this heading">#</a></h2>
+<p>Add the TOML files for CAN simulation and Data Link:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">file</span><span class="p">(</span><span class="s">COPY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/config/can_com_simulation_wiper.toml</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/bin/config</span><span class="p">)</span>
+<span class="nb">file</span><span class="p">(</span><span class="s">COPY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/config/data_link_wiper.toml</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/bin/config</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-5-update-application-code">
+<h2>Step 5: Update Application Code<a class="headerlink" href="#step-5-update-application-code" title="Permalink to this heading">#</a></h2>
+<p>When running in <strong>CAN simulation mode</strong>, the application must load two additional configuration files:</p>
+<ul class="simple">
+<li><p><strong>`can_com_simulation_wiper.toml`</strong>
+Loads the CAN simulation component (<cite>CAN_Com_Sim</cite>) that replays ASC logs.</p></li>
+<li><p><strong>`data_link_wiper.toml`</strong>
+Loads the Data Link component generated from the DBC file. This maps CAN messages to SDV signals.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Without these files, the application cannot interpret CAN frames or publish signals to the SDV framework.</p>
+</div>
+<p><strong>What changed compared to the previous implementation?</strong></p>
+<p>Before, the code only supported <cite>NO_CAN_SIMULATION</cite> mode and did not use <cite>exampleMode</cite> as an argument. Now:</p>
+<ul class="simple">
+<li><p><cite>Initialize()</cite> checks <cite>exampleMode</cite> and loads CAN simulation and Data Link configs when needed.</p></li>
+<li><p><cite>main()</cite> accepts an argument to select the mode (0 = normal, 1 = CAN simulation).</p></li>
+<li><p>Functions like <cite>PrintHeader()</cite>, <cite>PrepareDataConsumers()</cite>, and <cite>RunUntilBreak()</cite> adapt behavior based on the mode.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In Basic Service, conversion from numeric values to strings happens automatically using the generated callback based on the CSV definition. However, for Dispatch Service, this conversion must be handled manually in our code. For this reason, we updated <strong>CallbackWiperMode</strong> (our custom callback used when subscribing to the WiperMode signal) to perform the conversion from <cite>0</cite>/<cite>1</cite> to <cite>manual</cite>/<cite>auto</cite>.</p>
+</div>
+<p>The <cite>Initialize()</cite> will look something like this:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">CWiperControl::Initialize</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">exampleMode</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialize call started&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_appcontrol</span><span class="p">.</span><span class="n">Startup</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">m_appcontrol</span><span class="p">.</span><span class="n">SetConfigMode</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">bResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load dispatch example: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;data_dispatch_wiper.toml&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load task timer: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;task_timer_wiper.toml&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">exampleMode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">NO_CAN_SIMULATION</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Register signals&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">RegisterSignals</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">exampleMode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CAN_SIMULATION</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load can com simulation: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;can_com_simulation_wiper.toml&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load data link: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;data_link_wiper.toml&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load vehicle devices and basic services for wiper: &quot;</span><span class="p">,</span>
+<span class="w">                              </span><span class="s">&quot;wiper_vehicle_device_and_basic_service.toml&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">exampleMode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CAN_SIMULATION</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load can com simulation: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;can_com_simulation_wiper.toml&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load data link: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;data_link_wiper.toml&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load wiper service (complex service): &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;complex_service_wiper.toml&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">bResult</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">SDV_LOG_ERROR</span><span class="p">(</span><span class="s">&quot;One or more configurations could not be loaded. Cannot continue.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">bResult</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In CAN simulation mode, we <strong>do NOT manually register signals</strong> because the Data Link (auto-generated from the DBC file) registers and creates the signals automatically.</p>
+</div>
+<p>Update <cite>main()</cite> to accept the mode argument:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+<span class="w">     </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">exampleMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">     </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">argc</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="w">     </span><span class="p">{</span>
+<span class="w">         </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Missing example mode usage. Example will start running without Data link simulation.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">     </span><span class="p">}</span>
+<span class="w">     </span><span class="k">try</span>
+<span class="w">     </span><span class="p">{</span>
+<span class="w">         </span><span class="n">exampleMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">stoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="w">         </span><span class="k">if</span><span class="p">(</span><span class="n">exampleMode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">         </span><span class="p">{</span>
+<span class="w">             </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; Example will start running with Data link simulation&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">         </span><span class="p">}</span>
+<span class="w">         </span><span class="k">else</span>
+<span class="w">         </span><span class="p">{</span>
+<span class="w">             </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; Invalid argument&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">             </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">         </span><span class="p">}</span>
+<span class="w">     </span><span class="p">}</span>
+<span class="w">     </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span><span class="w"> </span><span class="p">)</span>
+<span class="w">     </span><span class="p">{</span>
+<span class="w">         </span><span class="n">exampleMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">     </span><span class="p">}</span>
+
+<span class="w"> </span><span class="n">CWiperControl</span><span class="w"> </span><span class="n">appobj</span><span class="p">;</span>
+<span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">appobj</span><span class="p">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">exampleMode</span><span class="p">))</span>
+<span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;ERROR: Failed to initialize application control.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">     </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w"> </span><span class="p">}</span>
+<span class="w"> </span><span class="k">else</span>
+<span class="w"> </span><span class="p">{</span>
+<span class="w">     </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialize application control with success.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w"> </span><span class="p">}</span>
+
+<span class="w"> </span><span class="n">CConsole</span><span class="w"> </span><span class="n">visual_obj</span><span class="p">;</span>
+
+<span class="w"> </span><span class="n">visual_obj</span><span class="p">.</span><span class="n">PrintHeader</span><span class="p">(</span><span class="n">exampleMode</span><span class="p">);</span>
+<span class="w"> </span><span class="n">visual_obj</span><span class="p">.</span><span class="n">PrepareDataConsumers</span><span class="p">(</span><span class="n">exampleMode</span><span class="p">);</span>
+<span class="w"> </span><span class="n">visual_obj</span><span class="p">.</span><span class="n">InitData</span><span class="p">();</span>
+
+<span class="w"> </span><span class="n">appobj</span><span class="p">.</span><span class="n">SetRunningMode</span><span class="p">();</span>
+
+<span class="w"> </span><span class="n">visual_obj</span><span class="p">.</span><span class="n">RunUntilBreak</span><span class="p">(</span><span class="n">exampleMode</span><span class="p">);</span>
+<span class="w"> </span><span class="n">visual_obj</span><span class="p">.</span><span class="n">ResetSignals</span><span class="p">();</span>
+
+<span class="w"> </span><span class="n">appobj</span><span class="p">.</span><span class="n">Shutdown</span><span class="p">();</span>
+<span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="step-6-console-behavior">
+<h2>Step 6: Console Behavior<a class="headerlink" href="#step-6-console-behavior" title="Permalink to this heading">#</a></h2>
+<p>In CAN simulation mode:</p>
+<ul class="simple">
+<li><p>The console subscribes to signals from the Data Link.</p></li>
+<li><p>Manual control keys (<cite>A</cite>, <cite>M</cite>, <cite>R</cite>, <cite>D</cite>, <cite>W</cite>) are disabled.</p></li>
+<li><p>Only <cite>X</cite> (exit) works.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Step Reach</strong></p>
+<p>After completing this guide, you now understand:</p>
+<ul class="simple">
+<li><p>How to use a <strong>DBC file</strong> to define CAN messages and signals.</p></li>
+<li><p>How to use an <strong>ASC file</strong> to simulate CAN traffic.</p></li>
+<li><p>How to generate Data Link code with <cite>sdv_dbc_util</cite>.</p></li>
+<li><p>How to configure TOML files for CAN simulation.</p></li>
+<li><p>How to update C++ code to support <cite>CAN_SIMULATION</cite> mode.</p></li>
+</ul>
+</div>
+<p>Awesome job! You can now run:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">wiper_example.exe 1</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="step_by_step_complex_service.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Step-by-Step: Complex Service implementation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../simulation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Simulation / Testing / FMU</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
+        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
+    </ul>
+    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
+</ul>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
+
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
+
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
+        } 
+    });
+</script>
+</div>
+
+<div class="toggle-sidebar">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
+        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
+    </ul>
+    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
+</ul>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
+
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
+
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
+        } 
+    });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

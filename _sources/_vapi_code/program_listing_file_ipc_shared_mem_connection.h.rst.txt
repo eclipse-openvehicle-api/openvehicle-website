@@ -59,6 +59,7 @@ Program Listing for File connection.h
            SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
        END_SDV_INTERFACE_MAP()
    
+       
        std::string GetConnectionString();
    
        virtual bool SendData(/*inout*/ sdv::sequence<sdv::pointer<uint8_t>>& seqData) override;
@@ -86,6 +87,7 @@ Program Listing for File connection.h
        bool IsServer() const;
    
    #ifdef TIME_TRACKING
+   
        std::chrono::high_resolution_clock::time_point GetLastSentTime() const { return m_tpLastSent; }
    
        std::chrono::high_resolution_clock::time_point GetLastReceiveTime() const { return m_tpLastReceived; }
@@ -216,6 +218,7 @@ Program Listing for File connection.h
        bool ReadDataChunk(CMessage& rMessage, uint32_t uiOffset, SDataContext& rsDataCtxt);
    
    #if ENABLE_DECOUPLING > 0
+   
        void DecoupleReceive();
    #endif
    

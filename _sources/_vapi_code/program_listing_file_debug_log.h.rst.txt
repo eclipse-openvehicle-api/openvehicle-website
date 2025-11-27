@@ -125,8 +125,10 @@ Program Listing for File debug_log.h
    #if ENABLE_DEBUG_LOG == 1
    
    #ifdef _MSC_VER
+   
    #define FUNC_LOGGER() debug::CFuncLogger logger(__FUNCSIG__, __FILE__, __LINE__)
    #else
+   
    #define FUNC_LOGGER() debug::CFuncLogger logger(__PRETTY_FUNCTION__, __FILE__, __LINE__)
    #endif
    
@@ -135,6 +137,7 @@ Program Listing for File debug_log.h
    #define FUNC_LOG(msg) logger.Log(msg)
    
    #else
+   
    #define FUNC_LOGGER()
    
    #define CHECKPOINT()
