@@ -6,7 +6,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Step-by-Step: Written Code for Wiper Example &#8212; VAPI 0.1.0 documentation</title>
   
@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../../_static/fonts/font.css?v=e743f546" />
     <link rel="stylesheet" type="text/css" href="../../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
@@ -59,7 +59,7 @@
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../_static/copybutton.js?v=c23bb7f6"></script>
+    <script src="../../_static/copybutton.js?v=323e3408"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -620,7 +620,13 @@ and sensor data. This document explains the structure and logic of the applicati
 </section>
 <section id="implementation-steps">
 <h2>Implementation Steps<a class="headerlink" href="#implementation-steps" title="Permalink to this heading">#</a></h2>
-<p>This section walks through the key steps required to initialize and run the Wiper application in the SDV framework.</p>
+<p>This section explains the essential steps to initialize and run the Wiper application within the SDV framework.</p>
+<p>To complete these steps, you need to create three source files:</p>
+<blockquote>
+<div><p>wiper_app/wiper_application.cpp
+wiper_app/wiper_application.h
+wiper_app/wiper_example.cpp</p>
+</div></blockquote>
 <section id="application-initialization">
 <h3>Application Initialization<a class="headerlink" href="#application-initialization" title="Permalink to this heading">#</a></h3>
 <p>First, we need the <cite>Initialize()</cite> method, which sets up the runtime environment, loads configuration files, and registers signals.</p>
@@ -662,7 +668,9 @@ and sensor data. This document explains the structure and logic of the applicati
 </div>
 <section id="setting-the-framework-runtime-directory">
 <h4>Setting the Framework Runtime Directory<a class="headerlink" href="#setting-the-framework-runtime-directory" title="Permalink to this heading">#</a></h4>
-<p>It is recommended to call <cite>IsSDVFrameworkEnvironmentSet()</cite> to verify that the SDV runtime path is available via system environment variables. If not, the path should be set manually using <cite>SetFrameworkRuntimeDirectory()</cite>.</p>
+<p>The VAPI core binaries path must be set using environment variables.
+Although the examples can run without these variables, the first step they perform is to check if the environment is configured. If not, you must explicitly provide the directory containing the core binaries before proceeding.
+Example:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsSDVFrameworkEnvironmentSet</span><span class="p">())</span>
 <span class="p">{</span>
 <span class="w">        </span><span class="n">m_appcontrol</span><span class="p">.</span><span class="n">SetFrameworkRuntimeDirectory</span><span class="p">(</span><span class="s">&quot;../../bin&quot;</span><span class="p">);</span>
@@ -732,7 +740,6 @@ and sensor data. This document explains the structure and logic of the applicati
 <pre>
 
 #include "wiper_application.h"
-#include "signal_names.h"
 
 #ifdef _WIN32
 #include <conio.h>
@@ -924,7 +931,6 @@ int main()
 <span class="w">        </span><span class="s">wiper_app/wiper_example.cpp</span>
 <span class="w">        </span><span class="s">wiper_app/wiper_application.cpp</span>
 <span class="w">        </span><span class="s">wiper_app/wiper_application.h</span>
-<span class="w">        </span><span class="s">wiper_app/signal_names.h</span>
 <span class="w">        </span><span class="p">)</span>
 
 <span class="nb">if</span><span class="w"> </span><span class="p">(</span><span class="s">CMAKE_CXX_COMPILER_ID</span><span class="w"> </span><span class="s">STREQUAL</span><span class="w"> </span><span class="s2">&quot;GNU&quot;</span><span class="p">)</span>
@@ -1147,46 +1153,13 @@ bin/
 </div>
 <section id="signal-name-definitions">
 <h4>Signal Name Definitions<a class="headerlink" href="#signal-name-definitions" title="Permalink to this heading">#</a></h4>
-<p>To Register the signals first you need to create the <cite>signal_names.h</cite> file.</p>
+<p>To Register the signals first you need to include the generated file <cite>vss_filessignal_identifier.h</cite>.</p>
 <p>This file defines the signal names used in the application. It uses conditional inclusion to either import external definitions or define them locally.</p>
 <p>Why it’s important:</p>
 <ul class="simple">
 <li><p>Centralizes signal naming for consistency.</p></li>
 <li><p>Supports both standalone and integrated builds.</p></li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The signal names defined here correspond to the values in the column <strong>`DBC CAN name includes CAN message name`</strong> from the input <cite>.csv</cite> file.</p>
-</div>
-<p>Code:</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
-<span class="cm"> * namespace for the signal names</span>
-<span class="cm"> * in case /interfaces/signal_identifier.h</span>
-<span class="cm"> * exists, use the file, otherwise define the namespace</span>
-<span class="cm"> */</span>
-<span class="cp">#ifndef SIGNAL_NAMES_H</span>
-<span class="cp">#define SIGNAL_NAMES_H</span>
-
-<span class="cp">#ifdef __has_include</span>
-<span class="cp">#if __has_include(&quot;../interfaces/signal_identifier.h&quot;)</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../interfaces/signal_identifier.h&quot;</span>
-<span class="cp">#else</span>
-
-<span class="k">namespace</span><span class="w"> </span><span class="nn">wiper</span>
-<span class="p">{</span>
-<span class="w">        </span><span class="c1">// Data Dispatch Service  signal names          to  dbc variable names                   C-type  RX/TX    vss name space</span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">        </span><span class="n">dsRainDetected</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CAN_Input.RainDetected&quot;</span><span class="p">;</span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">        </span><span class="n">dsWiperMode</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CAN_Input.WiperMode&quot;</span><span class="p">;</span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">        </span><span class="n">dsFrontWiperActive</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CAN_Output.FrontWiperActive&quot;</span><span class="p">;</span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">        </span><span class="n">dsRearWiperActive</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CAN_Output.RearWiperActive&quot;</span><span class="p">;</span>
-<span class="p">}</span><span class="w"> </span><span class="c1">// wiper</span>
-
-<span class="cp">#endif</span>
-<span class="cp">#endif</span>
-
-<span class="cp">#endif </span><span class="c1">// SIGNAL_NAMES_H</span>
-</pre></div>
-</div>
 </section>
 <section id="register-signals">
 <h4>Register Signals<a class="headerlink" href="#register-signals" title="Permalink to this heading">#</a></h4>
@@ -1213,7 +1186,7 @@ This function should registers the signals used by the application to communicat
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><cite>dsRainDetected</cite> is the signal name from signal_names.h</p>
+<p><cite>dsRainDetected</cite> is the signal name from signal_identifier.h</p>
 </div>
 <p><strong>What is CDispatchService class and what RegisterRxSignal and RegisterTxSignal do?</strong></p>
 <p>CDispatchService Class Overview:</p>

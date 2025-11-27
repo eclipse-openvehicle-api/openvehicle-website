@@ -1,0 +1,273 @@
+.. _vapi-step_by_step_datalink_simulation:
+
+Step-by-Step: Data Link & CAN Simulation for Wiper Example
+==========================================================
+
+.. note::
+
+   **Step Goal**
+   
+   In this guide, you will learn how to integrate **CAN Data Link simulation** into the Wiper example using the SDV framework.
+   We will use:
+   
+   - A **DBC file** to define CAN messages and signals.
+   - An **ASC log file** to simulate CAN traffic.
+   - TOML configuration files to load the CAN simulation and Data Link components.
+   - Updated application logic to handle `exampleMode == CAN_SIMULATION`.
+
+By the end, you will have a working example that runs in **CAN simulation mode** using real ASC logs.
+
+Overview
+--------
+The flow for CAN simulation looks like this:
+
+``CSV → DBC → sdv_dbc_util → Data Link code → ASC file → TOML → Application``
+
+- **CSV** defines signals and formulas (e.g., WiperMode mapping).
+- **DBC** maps signals to CAN messages and IDs.
+- **ASC** provides recorded CAN frames for simulation.
+- **TOML** loads CAN simulation and Data Link components.
+- **C++ code** switches between normal mode and CAN simulation mode.
+
+Step 1: Prepare the DBC File
+----------------------------
+We need a DBC file that includes all signals defined in the CSV:
+
+Example snippet from `datalink_wiper_example.dbc`:
+
+.. code-block:: text
+
+   BO_ 100 CAN_Input_M: 1 Vector__XXX
+    SG_ WiperMode : 3|1@0+ (1,0) [0|1] "" wipers
+   BO_ 101 CAN_Input_R: 1 Vector__XXX
+    SG_ RainDetected : 1|1@0+ (1,0) [0|1] "" wipers
+   BO_ 102 CAN_Output_W: 1 wipers
+    SG_ FrontWiperActive : 7|1@0+ (1,0) [0|1] "" Vector__XXX
+    SG_ RearWiperActive : 6|1@0+ (1,0) [0|1] "" Vector__XXX
+
+.. note::
+   Signal names in the DBC file **must match** those in the CSV and `signal_names.h`.
+
+**Important:**  
+
+`WiperMode` uses values `0` and `1`. In the application, these map to `"manual"` and `"auto"` using the formula from CSV:
+
+.. code-block:: cpp
+
+   if (!m_WiperMode.compare("0")) m_WiperMode = "manual";
+   if (!m_WiperMode.compare("1")) m_WiperMode = "auto";
+
+Step 2: Prepare the ASC File
+----------------------------
+
+.. seealso:: Refer to the :ref:`CAN Implementations <vapi-can-implementation>`.
+
+The ASC file contains CAN frames for simulation. Example snippet from `wiper_receiver.asc`:
+
+.. code-block:: text
+
+   0.020000 1 64 Rx d 1 00
+   0.030000 1 65 Rx d 1 00
+   0.320000 1 64 Rx d 1 08
+   0.330000 1 65 Rx d 1 02
+
+.. note::
+   Values in ASC files are in **HEX format**, not decimal.
+
+This file will be referenced in `can_com_simulation_wiper.toml`:
+
+.. code-block:: toml
+
+   [Configuration]
+   Version = 100
+   [[Component]]
+   Path = "can_com_sim.sdv"
+   Class = "CAN_Com_Sim"
+   Source = "wiper_receiver.asc"
+   Target = "wiper_writer.asc"
+
+Step 3: Generate Data Link Code
+-------------------------------
+
+Use `sdv_dbc_util` to generate the CAN Data Link component and include the generated files:
+
+.. code-block:: cmake
+
+   # Execute sdv_dbc_util to create data link code & FMU code.
+   message("Create data link for wiper example")
+   execute_process(COMMAND ${SDV_DBC_UTIL} "${PROJECT_SOURCE_DIR}/datalink_wiper_example.dbc"
+                   "-O${PROJECT_SOURCE_DIR}/generated/"
+                   --nodeswipers --version1.0.0.1 --moduleWiperExampleFMU --dl_lib_namecan_dl_wiper)
+
+   message("Include: example component can_dl_wiper")
+   add_subdirectory(generated/can_dl)
+
+.. note::
+
+   - The argument `--nodeswipers` must match the node name defined in your DBC file (BU_ section). In this example, the node name is **wipers**.
+   - The argument `--dl_lib_namecan_dl_wiper` corresponds to the library name used in `data_link_wiper.toml` under `Path = "can_dl_wiper.sdv"`.
+
+Step 4: Update CMakeLists.txt
+-----------------------------
+
+Add the TOML files for CAN simulation and Data Link:
+
+.. code-block:: cmake
+
+   file(COPY ${PROJECT_SOURCE_DIR}/config/can_com_simulation_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+   file(COPY ${PROJECT_SOURCE_DIR}/config/data_link_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+
+Step 5: Update Application Code
+-------------------------------
+
+When running in **CAN simulation mode**, the application must load two additional configuration files:
+
+- **`can_com_simulation_wiper.toml`**  
+  Loads the CAN simulation component (`CAN_Com_Sim`) that replays ASC logs.
+
+- **`data_link_wiper.toml`**  
+  Loads the Data Link component generated from the DBC file. This maps CAN messages to SDV signals.
+
+.. note::
+
+   Without these files, the application cannot interpret CAN frames or publish signals to the SDV framework.
+
+**What changed compared to the previous implementation?** 
+ 
+Before, the code only supported `NO_CAN_SIMULATION` mode and did not use `exampleMode` as an argument. Now:
+
+- `Initialize()` checks `exampleMode` and loads CAN simulation and Data Link configs when needed.
+- `main()` accepts an argument to select the mode (0 = normal, 1 = CAN simulation).
+- Functions like `PrintHeader()`, `PrepareDataConsumers()`, and `RunUntilBreak()` adapt behavior based on the mode.
+
+.. note::
+
+   In Basic Service, conversion from numeric values to strings happens automatically using the generated callback based on the CSV definition. However, for Dispatch Service, this conversion must be handled manually in our code. For this reason, we updated **CallbackWiperMode** (our custom callback used when subscribing to the WiperMode signal) to perform the conversion from `0`/`1` to `manual`/`auto`.
+
+The `Initialize()` will look something like this:
+
+.. code-block:: cpp
+
+   bool CWiperControl::Initialize(uint32_t exampleMode)
+   {
+       std::cout << "Initialize call started" << std::endl;
+       if (!m_appcontrol.Startup("")) return false;
+
+       m_appcontrol.SetConfigMode();
+       bool bResult = LoadConfigFile("Load dispatch example: ", "data_dispatch_wiper.toml");
+       bResult &= LoadConfigFile("Load task timer: ", "task_timer_wiper.toml");
+
+       if (exampleMode == NO_CAN_SIMULATION)
+       {
+           std::cout << "Register signals" << std::endl;
+           bResult &= RegisterSignals();
+       }
+       else if (exampleMode == CAN_SIMULATION)
+       {
+           bResult &= LoadConfigFile("Load can com simulation: ", "can_com_simulation_wiper.toml");
+           bResult &= LoadConfigFile("Load data link: ", "data_link_wiper.toml");
+       }
+
+       bResult &= LoadConfigFile("Load vehicle devices and basic services for wiper: ",
+                                 "wiper_vehicle_device_and_basic_service.toml");
+       }
+       else if (exampleMode == CAN_SIMULATION)
+       {
+           bResult &= LoadConfigFile("Load can com simulation: ", "can_com_simulation_wiper.toml");
+           bResult &= LoadConfigFile("Load data link: ", "data_link_wiper.toml");
+       }
+
+       bResult &= LoadConfigFile("Load wiper service (complex service): ", "complex_service_wiper.toml");
+
+       if (!bResult)
+       {
+           SDV_LOG_ERROR("One or more configurations could not be loaded. Cannot continue.");
+           return false;
+       }
+       return bResult;
+   }
+
+.. note::
+
+   In CAN simulation mode, we **do NOT manually register signals** because the Data Link (auto-generated from the DBC file) registers and creates the signals automatically.
+
+Update `main()` to accept the mode argument:
+
+.. code-block:: cpp
+
+   int main(int argc, char* argv[])
+   {
+        uint32_t exampleMode = 0;
+        if (argc < 2) 
+        {
+            std::cout << "Missing example mode usage. Example will start running without Data link simulation." << std::endl;
+        }
+        try 
+        {
+            exampleMode = std::stoi(argv[1]);
+            if(exampleMode == 1)
+            {
+                std::cout << " Example will start running with Data link simulation" << std::endl;
+            }
+            else
+            {
+                std::cout << " Invalid argument" << std::endl;
+                return 1;
+            }
+        }
+        catch (const std::exception& ) 
+        {
+            exampleMode = 0;
+        }
+
+    CWiperControl appobj;
+    if (!appobj.Initialize(exampleMode))
+    {
+        std::cout << "ERROR: Failed to initialize application control." << std::endl;
+        return 1;
+    }
+    else
+    {
+        std::cout << "Initialize application control with success." << std::endl;
+    }
+
+    CConsole visual_obj;
+
+    visual_obj.PrintHeader(exampleMode); 
+    visual_obj.PrepareDataConsumers(exampleMode);
+    visual_obj.InitData();
+
+    appobj.SetRunningMode();
+
+    visual_obj.RunUntilBreak(exampleMode);
+    visual_obj.ResetSignals();
+
+    appobj.Shutdown();
+    return 0;
+   }
+
+Step 6: Console Behavior
+------------------------
+In CAN simulation mode:
+
+- The console subscribes to signals from the Data Link.
+- Manual control keys (`A`, `M`, `R`, `D`, `W`) are disabled.
+- Only `X` (exit) works.
+
+.. note::
+
+	**Step Reach**
+
+	After completing this guide, you now understand:
+	
+	- How to use a **DBC file** to define CAN messages and signals.
+	- How to use an **ASC file** to simulate CAN traffic.
+	- How to generate Data Link code with `sdv_dbc_util`.
+	- How to configure TOML files for CAN simulation.
+	- How to update C++ code to support `CAN_SIMULATION` mode.
+
+Awesome job! You can now run:
+
+	.. code-block:: console
+
+	   wiper_example.exe 1

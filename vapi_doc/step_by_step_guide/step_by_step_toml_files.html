@@ -6,7 +6,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Step-by-Step: TOML Configuration Files &#8212; VAPI 0.1.0 documentation</title>
   
@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../../_static/fonts/font.css?v=e743f546" />
     <link rel="stylesheet" type="text/css" href="../../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
@@ -59,7 +59,7 @@
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../_static/copybutton.js?v=c23bb7f6"></script>
+    <script src="../../_static/copybutton.js?v=323e3408"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -609,14 +609,10 @@ document.write(`
 <p class="admonition-title">Note</p>
 <p><strong>Step Goal</strong></p>
 <p>In this guide, you will learn how to use <cite>.toml</cite> configuration files to set up and run a wiper application in the VAPI framework.</p>
-<p>You’ll explore both standalone and runtime configurations, understand how each file works, and see how to integrate them using CMake.</p>
+<p>You’ll explore standalone configurations, understand how each file works, and see how to integrate them using CMake.</p>
+<p><strong>Standalone Configuration</strong> – required for running the application locally. These TOML files are manually integrated and simulate runtime behavior.</p>
 </div>
 <p>This guide explains how <cite>.toml</cite> configuration files are used in the VAPI framework for the wiper example.</p>
-<p>There are two configuration approaches:</p>
-<ul class="simple">
-<li><p><strong>Standalone Configuration</strong> – required for running the application locally. These TOML files are manually integrated and simulate runtime behavior.</p></li>
-<li><p><strong>Runtime Configuration</strong> – used in isolated or production-like setups. These files are loaded after installing components with <cite>SDV_PACKAGER</cite>.</p></li>
-</ul>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>TOML files are modular configuration files that allow you to define services, devices, timers, and simulation components. Not all files are mandatory, their inclusion depends on the functionality you want to implement.</p>
@@ -625,8 +621,8 @@ document.write(`
 <span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
 
 <span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;component_file.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ComponentClass&quot;</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;component_file.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ComponentClass&quot;</span>
 </pre></div>
 </div>
 </section>
@@ -638,8 +634,8 @@ document.write(`
 <span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
 
 <span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;data_dispatch_service.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;DataDispatchService&quot;</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;data_dispatch_service.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;DataDispatchService&quot;</span>
 </pre></div>
 </div>
 <p><strong>2. data_link_wiper.toml</strong></p>
@@ -648,8 +644,8 @@ document.write(`
 <span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
 
 <span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;can_dl_wiper.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CAN_data_link&quot;</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;can_dl_wiper.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CAN_data_link&quot;</span>
 </pre></div>
 </div>
 <p><strong>3. task_timer_wiper.toml</strong></p>
@@ -658,8 +654,8 @@ document.write(`
 <span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
 
 <span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;task_timer.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;TaskTimerService&quot;</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;task_timer.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;TaskTimerService&quot;</span>
 </pre></div>
 </div>
 <p><strong>4. wiper_vehicle_device_and_basic_service.toml</strong></p>
@@ -671,36 +667,36 @@ To find the correct class name, search for <cite>DECLARE_OBJECT_CLASS_NAME</cite
 For the correct path name, check the <cite>TARGET_NAME</cite> defined in each generated <cite>CMakeLists.txt</cite>.</p>
 </div>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_vd_frontwiper_tx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Windshield.Wiper.Front_Device&quot;</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wiper_vd_frontwiper_tx.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Vehicle.Body.Windshield.Wiper.Front_Device&quot;</span>
 
 <span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_vd_rainsensor_rx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Weather.Rain_Device&quot;</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wiper_vd_rainsensor_rx.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Vehicle.Body.Weather.Rain_Device&quot;</span>
 
 <span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_vd_rearwiper_tx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Windshield.Wiper.Rear_Device&quot;</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wiper_vd_rearwiper_tx.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Vehicle.Body.Windshield.Wiper.Rear_Device&quot;</span>
 
 <span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_vd_wipermode_rx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Windshield.Wiper.Mode_Device&quot;</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wiper_vd_wipermode_rx.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Vehicle.Body.Windshield.Wiper.Mode_Device&quot;</span>
 
 <span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_bs_frontwiper_tx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Windshield.Wiper.Front_Service&quot;</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wiper_bs_frontwiper_tx.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Vehicle.Body.Windshield.Wiper.Front_Service&quot;</span>
 
 <span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_bs_rainsensor_rx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Weather.Rain_Service&quot;</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wiper_bs_rainsensor_rx.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Vehicle.Body.Weather.Rain_Service&quot;</span>
 
 <span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_bs_rearwiper_tx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Windshield.Wiper.Rear_Service&quot;</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wiper_bs_rearwiper_tx.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Vehicle.Body.Windshield.Wiper.Rear_Service&quot;</span>
 
 <span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_bs_wipermode_rx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Windshield.Wiper.Mode_Service&quot;</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wiper_bs_wipermode_rx.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Vehicle.Body.Windshield.Wiper.Mode_Service&quot;</span>
 </pre></div>
 </div>
 <p><strong>5. can_com_simulation_wiper.toml</strong></p>
@@ -709,10 +705,10 @@ For the correct path name, check the <cite>TARGET_NAME</cite> defined in each ge
 <span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
 
 <span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;can_com_sim.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CAN_Com_Sim&quot;</span>
-<span class="n">Source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_receiver.asc&quot;</span>
-<span class="n">Target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_writer.asc&quot;</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;can_com_sim.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;CAN_Com_Sim&quot;</span>
+<span class="n">Source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wiper_receiver.asc&quot;</span>
+<span class="n">Target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wiper_writer.asc&quot;</span>
 </pre></div>
 </div>
 <p><strong>6. complex_service_wiper.toml</strong> - needed only if you implement the Complex Service</p>
@@ -721,8 +717,8 @@ For the correct path name, check the <cite>TARGET_NAME</cite> defined in each ge
 <span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
 
 <span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_complex_service.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Wiper Service&quot;</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;wiper_complex_service.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Wiper Service&quot;</span>
 </pre></div>
 </div>
 <section id="cmake-integration">
@@ -741,114 +737,11 @@ This is because the copy operation happens during <strong>CMake configuration</s
 <span class="nb">file</span><span class="p">(</span><span class="s">COPY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/config/wiper_vehicle_device_and_basic_service.toml</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/bin/config</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="runtime-configuration-toml-files">
-<h2>Runtime Configuration TOML Files<a class="headerlink" href="#runtime-configuration-toml-files" title="Permalink to this heading">#</a></h2>
-<p>These TOML files are used to configure the runtime environment and application logic after components have been generated and installed using SDV_PACKAGER.</p>
-<p><strong>7. settings.toml</strong></p>
-<p>Defines which system and application configuration files should be loaded at runtime.</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Settings]</span>
-<span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
-
-<span class="n">SystemConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s">&quot;platform.toml&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;vehicle_ifc.toml&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;vehicle_abstract.toml&quot;</span><span class="w"> </span><span class="p">]</span>
-<span class="n">AppConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper.toml&quot;</span>
-</pre></div>
-</div>
-<p><strong>8. platform.toml</strong></p>
-<p>Defines platform-level components such as CAN simulation.</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Configuration]</span>
-<span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
-
-<span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;can_com_sim.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CAN_Com_Sim&quot;</span>
-<span class="n">Source</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_receiver.asc&quot;</span>
-<span class="n">Target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_writer.asc&quot;</span>
-</pre></div>
-</div>
-<p><strong>9. vehicle_abstract.toml</strong></p>
-<p>Loads abstract services (BS) and proxy/stub modules.</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Configuration]</span>
-<span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
-
-<span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_bs_frontwiper_tx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Windshield.Wiper.Front_Service&quot;</span>
-
-<span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_bs_rainsensor_rx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Weather.Rain_Service&quot;</span>
-
-<span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_bs_rearwiper_tx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Windshield.Wiper.Rear_Service&quot;</span>
-
-<span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_bs_wipermode_rx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Windshield.Wiper.Mode_Service&quot;</span>
-
-<span class="k">[[Module]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_proxystub.sdv&quot;</span>
-</pre></div>
-</div>
-<p><strong>10. vehicle_ifc.toml</strong></p>
-<p>Defines the vehicle interface components including datalink and VD.</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Configuration]</span>
-<span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
-
-<span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;can_dl_wiper.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CAN_data_link&quot;</span>
-<span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;DataLink&quot;</span>
-
-<span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_vd_frontwiper_tx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Windshield.Wiper.Front_Device&quot;</span>
-
-<span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_vd_rainsensor_rx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Weather.Rain_Device&quot;</span>
-
-<span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_vd_rearwiper_tx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Windshield.Wiper.Rear_Device&quot;</span>
-
-<span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_vd_wipermode_rx.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Vehicle.Body.Windshield.Wiper.Mode_Device&quot;</span>
-</pre></div>
-</div>
-<p><strong>11. wiper.toml</strong></p>
-<p>Loads the complex service and proxy/stub for the wiper application.</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[Configuration]</span>
-<span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
-
-<span class="k">[[Component]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_complex_service.sdv&quot;</span>
-<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Wiper Service&quot;</span>
-<span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Wiper Service&quot;</span>
-
-<span class="k">[[Module]]</span>
-<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;wiper_service_proxystub.sdv&quot;</span>
-</pre></div>
-</div>
-<section id="id1">
-<h3>CMake Integration<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
-<p>These files must be manually copied to the runtime directory because SDV_PACKAGER does not generate them automatically.</p>
-<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">file</span><span class="p">(</span><span class="s">COPY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/coreconfig/settings.toml</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">SDV_FRAMEWORK_RUNTIME</span><span class="o">}</span><span class="p">)</span>
-<span class="nb">file</span><span class="p">(</span><span class="s">COPY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/coreconfig/platform.toml</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">SDV_FRAMEWORK_RUNTIME</span><span class="o">}</span><span class="p">)</span>
-<span class="nb">file</span><span class="p">(</span><span class="s">COPY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/coreconfig/vehicle_abstract.toml</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">SDV_FRAMEWORK_RUNTIME</span><span class="o">}</span><span class="p">)</span>
-<span class="nb">file</span><span class="p">(</span><span class="s">COPY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/coreconfig/vehicle_ifc.toml</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">SDV_FRAMEWORK_RUNTIME</span><span class="o">}</span><span class="p">)</span>
-<span class="nb">file</span><span class="p">(</span><span class="s">COPY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/coreconfig/wiper.toml</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">SDV_FRAMEWORK_RUNTIME</span><span class="o">}</span><span class="p">)</span>
-</pre></div>
-</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><strong>Step Reach</strong></p>
 <p>After completing this guide, you now understand:</p>
 <ul class="simple">
-<li><p>The difference between standalone and runtime TOML configurations.</p></li>
 <li><p>How to define components like services, devices, and timers using TOML files.</p></li>
 <li><p>How to simulate CAN communication and load generated components.</p></li>
 <li><p>How to integrate TOML files into your project using CMake.</p></li>

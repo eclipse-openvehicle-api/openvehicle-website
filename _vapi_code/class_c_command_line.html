@@ -6,7 +6,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Class CCommandLine &#8212; VAPI 0.1.0 documentation</title>
   
@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
     <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
@@ -59,7 +59,7 @@
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../_static/copybutton.js?v=c23bb7f6"></script>
+    <script src="../_static/copybutton.js?v=323e3408"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -612,16 +612,9 @@ document.write(`
 <p>This class allows the generic implementation of a command line parser by defining the arguments and the variables connected to the arguments. The parsing of the command line is done by calling the function <a class="reference internal" href="#class_c_command_line_1acec45305e9cace460659967952927cab"><span class="std std-ref">CCommandLine::Parse</span></a>, which automatically fills the corresponding variables when an argument is supplied on the command line.</p>
 <p><p>The following command line argument types are supported:</p>
 <p>+——————–</p>
-&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | Variable | Description | Source code example | Argument Example | +=======================+==================+=================================================================+===================+ | bool | Boolean variable | bool bHelp = false; | -help | | | | commandline.DefineOption(“help”, bHelp, “Show help.”); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | int8_t | Integer variable | int iTest = 0; | -test_int=10 | | uint8_t | | commandline.DefineOption(“test_int”, iTest, “Example.”); | | | int16_t | | double dTest = 0.0; | | | uint16_t | | commandline.DefineOption(“test_d”, dTest, “Example.”); | -test_d=1.1 | | int32_t | | | | | uint32_t | | | | | int64_t | | | | | uint64_t | | | | | float | | | | | double | | | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | std::vector | Vector container | std::vector&lt;int&gt; vec; sdv::sequence&lt;int&gt; seq; | -vec_int=10,20 | | std::list | List container | commandline.DefineOption(“vec_int”, vec, “Example”); | | | <a class="reference internal" href="classsdv_1_1sequence.html#classsdv_1_1sequence"><span class="std std-ref">sdv::sequence</span></a> | Sequence | commandline.DefineOption(“vec_int”, seq, “Example”); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | bool | Flag variable | bool bExample = false; | -flag+ | | | | commandline.DefineFlagOption(“flag”, bExample, “Example.”); | -flag- | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | enum | Enum variable | enum ETest { test1, test2, test3 }; | -e_tst=tst2 | | | | SEnumArgumentAssoc&lt;ETest&gt; rgsAssociations[] = | | | | | { { test1, “tst1”, “Test the #1” }, | | | | | { test2, “tst2”, “Test the #2” }, | | | | | { test3, “tst3”, “Test the #3” } }; | | | | | ETest eTest = test3; | | | | | CArgumentDefT&lt;ETest&gt;&amp; rEnumTest = | | | | | commandline.DefineOption(“e_tst”, eTest, “Test.”); | | | | | rEnumTest.AddAssociations(rgsAssociations); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | std::vector | Enum vector | enum ETest { test1, test2, test3 }; | -e_tst=tst2,tst3 | | std::list | Enum list | SEnumArgumentAssoc&lt;ETest&gt; rgsAssociations[] = | | | <a class="reference internal" href="classsdv_1_1sequence.html#classsdv_1_1sequence"><span class="std std-ref">sdv::sequence</span></a> | Enum sequence | { { test1, “tst1”, “Test the #1” }, | | | | | { test2, “tst2”, “Test the #2” }, | | | | | { test3, “tst3”, “Test the #3” } }; | | | | | std::vector&lt;ETest&gt; vecEnumArg; | | | | | CArgumentDefT&lt;std::vector&lt;ETest&gt;&gt;&amp; rEnumTest = | | | | | commandline.DefineOption(“e_tst”, vecEnumArg, “Test.”); | | | | | rEnumTest.AddAssociations(rgsAssociations); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | std::string | String variable | std::string ssTest; | -str=abc | | | | commandline.DefineOption(“str”, ssTest, “Example.”); | -str=”abc def” | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | std::vector | String vector | std::list&lt;std::string&gt; lst; sdv::sequence&lt;sdv::u8string&gt; seq | -str=abc,”def” | | std::list | String list | commandline.DefineOption(“lst_str”, lst, “Example.”); | | | <a class="reference internal" href="classsdv_1_1sequence.html#classsdv_1_1sequence"><span class="std std-ref">sdv::sequence</span></a> | String sequence | commandline.DefineOption(“lst_str”, seq, “Example.”); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;<p>+ | std::filesystem::path | Path variable | std::filesystem::path pathTest; | -path=”test/file  |</p>
-<p>|                       |                  | commandline.DefineOption(“path”, pathTest, “Example.”);         |                   |</p>
-<p>+——————–&amp;mdash;+—————&amp;mdash;+————————————————————–&amp;mdash;+—————-&amp;mdash;+</p>
-<p>| std::vector           | Path vector      | std::list&lt;std::filesystem::path&gt; lstPathTest;                   | -pth=”f1.tx”,”f2” |</p>
-<p>| std::list             | Path list        | commandline.DefineOption(“pth”, lstPathTest, “Example.”);       |                   |</p>
-<p>| sdv::sequence         | Path sequence    |                                                                 |                   |</p>
-<p>+——————–&amp;mdash;+—————&amp;mdash;+————————————————————–&amp;mdash;+—————-&amp;mdash;+</p>
-<p>| any assignment        | Default argument | std::vector&lt;std::string&gt; args;                                  | abc def           |</p>
-<p>|                       |                  | commandline.DefineDefaultArgument(vec, “text chunks”); | | +——————–</p>
-&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+</p>
+&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | Variable | Description | Source code example | Argument Example | +=======================+==================+=================================================================+===================+ | bool | Boolean variable | bool bHelp = false; | -help | | | | commandline.DefineOption(“help”, bHelp, “Show help.”); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | int8_t | Integer variable | int iTest = 0; | -test_int=10 | | uint8_t | | commandline.DefineOption(“test_int”, iTest, “Example.”); | | | int16_t | | double dTest = 0.0; | | | uint16_t | | commandline.DefineOption(“test_d”, dTest, “Example.”); | -test_d=1.1 | | int32_t | | | | | uint32_t | | | | | int64_t | | | | | uint64_t | | | | | float | | | | | double | | | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | std::vector | Vector container | std::vector&lt;int&gt; vec; sdv::sequence&lt;int&gt; seq; | -vec_int=10,20 | | std::list | List container | commandline.DefineOption(“vec_int”, vec, “Example”); | | | <a class="reference internal" href="classsdv_1_1sequence.html#classsdv_1_1sequence"><span class="std std-ref">sdv::sequence</span></a> | Sequence | commandline.DefineOption(“vec_int”, seq, “Example”); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | bool | Flag variable | bool bExample = false; | -flag+ | | | | commandline.DefineFlagOption(“flag”, bExample, “Example.”); | -flag- | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | enum | Enum variable | enum ETest { test1, test2, test3 }; | -e_tst=tst2 | | | | SEnumArgumentAssoc&lt;ETest&gt; rgsAssociations[] = | | | | | { { test1, “tst1”, “Test the #1” }, | | | | | { test2, “tst2”, “Test the #2” }, | | | | | { test3, “tst3”, “Test the #3” } }; | | | | | ETest eTest = test3; | | | | | CArgumentDefT&lt;ETest&gt;&amp; rEnumTest = | | | | | commandline.DefineOption(“e_tst”, eTest, “Test.”); | | | | | rEnumTest.AddAssociations(rgsAssociations); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | std::vector | Enum vector | enum ETest { test1, test2, test3 }; | -e_tst=tst2,tst3 | | std::list | Enum list | SEnumArgumentAssoc&lt;ETest&gt; rgsAssociations[] = | | | <a class="reference internal" href="classsdv_1_1sequence.html#classsdv_1_1sequence"><span class="std std-ref">sdv::sequence</span></a> | Enum sequence | { { test1, “tst1”, “Test the #1” }, | | | | | { test2, “tst2”, “Test the #2” }, | | | | | { test3, “tst3”, “Test the #3” } }; | | | | | std::vector&lt;ETest&gt; vecEnumArg; | | | | | <a class="reference internal" href="class_c_argument_def_t.html#class_c_argument_def_t"><span class="std std-ref">CArgumentDefT</span></a>&lt;std::vector&lt;ETest&gt;&gt;&amp; rEnumTest = | | | | | commandline.DefineOption(“e_tst”, vecEnumArg, “Test.”); | | | | | rEnumTest.AddAssociations(rgsAssociations); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | std::string | String variable | std::string ssTest; | -str=abc | | | | commandline.DefineOption(“str”, ssTest, “Example.”); | -str=”abc def” | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | std::vector | String vector | std::list&lt;std::string&gt; lst; sdv::sequence&lt;sdv::u8string&gt; seq | -str=abc,”def” | | std::list | String list | commandline.DefineOption(“lst_str”, lst, “Example.”); | | | <a class="reference internal" href="classsdv_1_1sequence.html#classsdv_1_1sequence"><span class="std std-ref">sdv::sequence</span></a> | String sequence | commandline.DefineOption(“lst_str”, seq, “Example.”); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;<p>+ | std::filesystem::path | Path variable | std::filesystem::path pathTest; | -path=”test/file  |</p>
+<p>|                       |                  | commandline.DefineOption(“path”, pathTest, “Example.”); | | +——————–</p>
+&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | std::vector | Path vector | std::list&lt;std::filesystem::path&gt; lstPathTest; | -pth=”f1.tx”,”f2” | | std::list | Path list | commandline.DefineOption(“pth”, lstPathTest, “Example.”); | | | <a class="reference internal" href="classsdv_1_1sequence.html#classsdv_1_1sequence"><span class="std std-ref">sdv::sequence</span></a> | Path sequence | | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+ | any assignment | Default argument | std::vector&lt;std::string&gt; args; | abc def | | | | commandline.DefineDefaultArgument(vec, “text chunks”); | | +——————–&amp;#8212;+—————&amp;#8212;+————————————————————–&amp;#8212;+—————-&amp;#8212;+</p>
 <p>The command line class holds a list of argument definitions. Dependable on the provided arguments, the argument definitions receive the parsed values from the command line. Since so many different types of arguments are possible, the implementation uses a construct of class derivation implementing portions of the arguments (e.g. value assignment, containers, flags, etc.).</p>
 <p>Implementing a new argument type, it is necessary to provide a definition and a value class for the type. </p>
 <div class="breathe-sectiondef docutils container">
@@ -750,7 +743,7 @@ document.write(`
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>CArgumentDefT&lt;TVar&gt;&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
+<dd class="field-odd"><p><a class="reference internal" href="class_c_argument_def_t.html#class_c_argument_def_t"><span class="std std-ref">CArgumentDefT&lt;TVar&gt;</span></a>&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -777,7 +770,7 @@ document.write(`
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>CArgumentDefT&lt;TVar&gt;&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
+<dd class="field-odd"><p><a class="reference internal" href="class_c_argument_def_t.html#class_c_argument_def_t"><span class="std std-ref">CArgumentDefT&lt;TVar&gt;</span></a>&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -804,7 +797,7 @@ document.write(`
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>CArgumentDefT&lt;TVar&gt;&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
+<dd class="field-odd"><p><a class="reference internal" href="class_c_argument_def_t.html#class_c_argument_def_t"><span class="std std-ref">CArgumentDefT&lt;TVar&gt;</span></a>&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -828,7 +821,7 @@ document.write(`
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>CArgumentDefT&lt;TVar&gt;&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
+<dd class="field-odd"><p><a class="reference internal" href="class_c_argument_def_t.html#class_c_argument_def_t"><span class="std std-ref">CArgumentDefT&lt;TVar&gt;</span></a>&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -852,7 +845,7 @@ document.write(`
 </ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>CArgumentDefT&lt;TVar&gt;&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
+<dd class="field-odd"><p><a class="reference internal" href="class_c_argument_def_t.html#class_c_argument_def_t"><span class="std std-ref">CArgumentDefT&lt;TVar&gt;</span></a>&amp; Reference to the argument command class, which can be used to set additional attributes. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -957,7 +950,7 @@ document.write(`
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK12CCommandLine21IncompatibleArgumentsE6size_tb">
-<span id="_CPPv3NK12CCommandLine21IncompatibleArgumentsE6size_tb"></span><span id="_CPPv2NK12CCommandLine21IncompatibleArgumentsE6size_tb"></span><span id="CCommandLine::IncompatibleArguments__s.bC"></span><span class="target" id="class_c_command_line_1a7fbf080a3fa0c72cda6156d2359ad21b"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IncompatibleArguments</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nArgumentGroup</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bFull</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK12CCommandLine21IncompatibleArgumentsE6size_tb" title="Permalink to this definition">#</a><br /></dt>
+<span id="_CPPv3NK12CCommandLine21IncompatibleArgumentsE6size_tb"></span><span id="_CPPv2NK12CCommandLine21IncompatibleArgumentsE6size_tb"></span><span id="CCommandLine::IncompatibleArguments__s.bC"></span><span class="target" id="class_c_command_line_1aacecbdadb32f0c7b69d1bbc9c3fb820f"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IncompatibleArguments</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nArgumentGroup</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bFull</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK12CCommandLine21IncompatibleArgumentsE6size_tb" title="Permalink to this definition">#</a><br /></dt>
 <dd><p>Get a list of incompatible supplied arguments base don the supplied argument group. </p>
 <p>Options can be assigned one or more groups. This can be useful to selective enable/disable options based on the state on the command line (e.g. based on a command provided on the command line). Not all options are compatible to the currently active group and the compatibility can be checked using this function. Provided options belonging to group 0 are always compatible. For all other provided options, the compatibility is checked with the provided argument group number. </p>
 <dl class="field-list simple">

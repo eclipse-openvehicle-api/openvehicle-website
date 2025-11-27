@@ -6,7 +6,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Step-by-Step: Console &amp; Simulation Data for Wiper Example &#8212; VAPI 0.1.0 documentation</title>
   
@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../../_static/fonts/font.css?v=e743f546" />
     <link rel="stylesheet" type="text/css" href="../../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
@@ -59,7 +59,7 @@
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../_static/copybutton.js?v=c23bb7f6"></script>
+    <script src="../../_static/copybutton.js?v=323e3408"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -76,7 +76,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'vapi_doc/step_by_step_guide/step_by_step_console_simulation';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Simulation / Testing / FMU" href="../simulation.html" />
+    <link rel="next" title="Step-by-Step: Complex Service implementation" href="step_by_step_complex_service.html" />
     <link rel="prev" title="Step-by-Step: Written Code for Wiper Example" href="step_by_step_written_code.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -617,6 +617,11 @@ By the end, you’ll be able to run a fully interactive simulation that reflects
 <p>This page guides you through building a console-based simulation for the Wiper example using the SDV framework.
 The goal is to visualize signal behavior and simulate interactions such as switching between Auto and Manual modes,
 activating wipers manually, and responding to rain detection, all within a terminal interface.</p>
+<dl class="simple">
+<dt>To complete these steps, you need to create two source files:</dt><dd><p>wiper_app/console.cpp
+wiper_app/console.h</p>
+</dd>
+</dl>
 </section>
 <section id="console">
 <h2>Console<a class="headerlink" href="#console" title="Permalink to this heading">#</a></h2>
@@ -640,8 +645,9 @@ In my case, for the Wiper example, I want to visualize the Data Dispatch service
 <span class="w">        </span><span class="n">PrintText</span><span class="p">(</span><span class="n">g_sControlDescription1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Press &#39;A&#39; to set Wiper Auto Mode.&quot;</span><span class="p">);</span>
 <span class="w">        </span><span class="n">PrintText</span><span class="p">(</span><span class="n">g_sControlDescription2</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Press &#39;M&#39; to set Wiper Manual Mode.&quot;</span><span class="p">);</span>
 <span class="w">        </span><span class="n">PrintText</span><span class="p">(</span><span class="n">g_sControlDescription3</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Press &#39;R&#39; to make it a ranny day/ clear day.&quot;</span><span class="p">);</span>
-<span class="w">        </span><span class="n">PrintText</span><span class="p">(</span><span class="n">g_sControlDescription4</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Press &#39;W&#39; to activate/deactivate wipers in case of Manual Mode&quot;</span><span class="p">);</span>
-<span class="w">        </span><span class="n">PrintText</span><span class="p">(</span><span class="n">g_sControlDescription5</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Press &#39;X&#39; to quit.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">PrintText</span><span class="p">(</span><span class="n">g_sControlDescription4</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Press &#39;D&#39; to make it a clear day.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">PrintText</span><span class="p">(</span><span class="n">g_sControlDescription5</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Press &#39;W&#39; to activate/deactivate wipers in case of Manual Mode&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">PrintText</span><span class="p">(</span><span class="n">g_sControlDescription6</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Press &#39;X&#39; to quit.&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -779,34 +785,74 @@ In my case, for the Wiper example, I want to visualize the Data Dispatch service
 <h3>Step 7: Runtime loop for simulation<a class="headerlink" href="#step-7-runtime-loop-for-simulation" title="Permalink to this heading">#</a></h3>
 <p>The <cite>RunUntilBreak()</cite> function is the heart of the runtime loop. It listens for keyboard input and updates the signal states accordingly.
 This allows you to simulate your implementation by sending inputs directly from the keyboard to the dispatch signals.</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetChar</span><span class="p">();</span>
-<span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="n">bRunning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">rainDetected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">wiperActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">autoMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">bRunning</span><span class="p">)</span>
 <span class="p">{</span>
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="p">:</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">:</span>
-<span class="w">                </span><span class="n">m_signalWiperMode</span><span class="p">.</span><span class="n">Write</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;auto&quot;</span><span class="p">);</span>
-<span class="w">                </span><span class="n">autoMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">                </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;m&#39;</span><span class="p">:</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;M&#39;</span><span class="p">:</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">KeyHit</span><span class="p">())</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">100</span><span class="p">));</span>
+<span class="w">        </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetChar</span><span class="p">();</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">:</span>
+<span class="w">            </span><span class="n">m_signalWiperMode</span><span class="p">.</span><span class="n">Write</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;auto&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">bAutoMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;m&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;M&#39;</span><span class="p">:</span>
+<span class="w">            </span><span class="n">m_signalWiperMode</span><span class="p">.</span><span class="n">Write</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;manual&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">bAutoMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;r&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;R&#39;</span><span class="p">:</span>
+<span class="w">            </span><span class="n">bRainDetected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="n">m_signalRainDetected</span><span class="p">.</span><span class="n">Write</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">bRainDetected</span><span class="p">);</span>
+
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">bAutoMode</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">bwWiperActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bRainDetected</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;d&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;D&#39;</span><span class="p">:</span>
+<span class="w">            </span><span class="n">bRainDetected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">            </span><span class="n">m_signalRainDetected</span><span class="p">.</span><span class="n">Write</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">bRainDetected</span><span class="p">);</span>
+
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">bAutoMode</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">bwWiperActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bRainDetected</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;w&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;W&#39;</span><span class="p">:</span>
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">bAutoMode</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">//Changed manually -&gt; moved to manual mode</span>
 <span class="w">                </span><span class="n">m_signalWiperMode</span><span class="p">.</span><span class="n">Write</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;manual&quot;</span><span class="p">);</span>
-<span class="w">                </span><span class="n">autoMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="w">                </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;r&#39;</span><span class="p">:</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;R&#39;</span><span class="p">:</span>
-<span class="w">                </span><span class="n">rainDetected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">rainDetected</span><span class="p">;</span>
-<span class="w">                </span><span class="n">m_signalRainDetected</span><span class="p">.</span><span class="n">Write</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rainDetected</span><span class="p">);</span>
-<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">autoMode</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                        </span><span class="n">wiperActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rainDetected</span><span class="p">;</span>
-<span class="w">                </span><span class="p">}</span>
-<span class="w">                </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;w&#39;</span><span class="p">:</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;W&#39;</span><span class="p">:</span>
-<span class="w">                </span><span class="n">wiperActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">wiperActive</span><span class="p">;</span>
-<span class="w">                </span><span class="n">cManual</span><span class="p">.</span><span class="n">SetManualFrontActive</span><span class="p">(</span><span class="n">wiperActive</span><span class="p">);</span>
-<span class="w">                </span><span class="n">cManual</span><span class="p">.</span><span class="n">SetManualRearActive</span><span class="p">(</span><span class="n">wiperActive</span><span class="p">);</span>
-<span class="w">                </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;x&#39;</span><span class="p">:</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;X&#39;</span><span class="p">:</span>
-<span class="w">                </span><span class="n">bRunning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">False</span><span class="p">;</span>
-<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="n">bAutoMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="n">bwWiperActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">!</span><span class="n">bwWiperActive</span><span class="p">;</span>
+<span class="w">            </span><span class="n">SetManualFrontActive</span><span class="p">(</span><span class="n">bwWiperActive</span><span class="p">);</span>
+<span class="w">            </span><span class="n">SetManualRearActive</span><span class="p">(</span><span class="n">bwWiperActive</span><span class="p">);</span>
+
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;x&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;X&#39;</span><span class="p">:</span>
+<span class="w">            </span><span class="n">bRunning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
 <span class="w">        </span><span class="k">default</span><span class="o">:</span>
-<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -865,7 +911,7 @@ This allows you to simulate your implementation by sending inputs directly from 
 <span class="w">    </span><span class="n">visual_obj</span><span class="p">.</span><span class="n">InitData</span><span class="p">();</span>
 
 <span class="w">    </span><span class="n">appobj</span><span class="p">.</span><span class="n">SetRunningMode</span><span class="p">();</span>
-<span class="w">    </span><span class="n">appobj</span><span class="p">.</span><span class="n">RunUntilBreak</span><span class="p">();</span>
+<span class="w">    </span><span class="n">visual_obj</span><span class="p">.</span><span class="n">RunUntilBreak</span><span class="p">();</span>
 
 <span class="w">    </span><span class="n">visual_obj</span><span class="p">.</span><span class="n">ResetSignals</span><span class="p">();</span>
 <span class="w">    </span><span class="n">appobj</span><span class="p">.</span><span class="n">Shutdown</span><span class="p">();</span>
@@ -979,11 +1025,11 @@ This allows you to simulate your implementation by sending inputs directly from 
       </div>
     </a>
     <a class="right-next"
-       href="../simulation.html"
+       href="step_by_step_complex_service.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Simulation / Testing / FMU</p>
+        <p class="prev-next-title">Step-by-Step: Complex Service implementation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

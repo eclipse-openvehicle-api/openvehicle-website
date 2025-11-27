@@ -6,7 +6,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Step-by-Step: Create IDL Interfaces, Vehicle Devices and Basic Services &#8212; VAPI 0.1.0 documentation</title>
   
@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b849a4e9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../../_static/fonts/font.css?v=e743f546" />
     <link rel="stylesheet" type="text/css" href="../../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css?v=6ad1a40c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
@@ -59,7 +59,7 @@
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../_static/copybutton.js?v=c23bb7f6"></script>
+    <script src="../../_static/copybutton.js?v=323e3408"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -636,18 +636,41 @@ document.write(`
 </pre></div>
 </div>
 </section>
-<section id="create-a-subfolder-for-your-example-project">
-<h3>2. Create a subfolder for your example project<a class="headerlink" href="#create-a-subfolder-for-your-example-project" title="Permalink to this heading">#</a></h3>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Example: D:/VAPI_Project_Test/tmp_project/wiper_example
+<section id="create-subfolder-and-a-cmakelists-txt-file-for-your-example-project">
+<h3>2. Create subfolder and a CMakeLists.txt file for your example project<a class="headerlink" href="#create-subfolder-and-a-cmakelists-txt-file-for-your-example-project" title="Permalink to this heading">#</a></h3>
+<blockquote>
+<div><p>Example: D:/VAPI_Project_Test/tmp_project/wiper_example</p>
+</div></blockquote>
+<p>The content of the CMakeList.txt:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>project(WiperDemoExample)
+cmake_policy(SET CMP0048 NEW)
+cmake_policy(SET CMP0092 NEW)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+include_directories(${SDV_FRAMEWORK_DEV_INCLUDE})
 </pre></div>
 </div>
+<p>Add the subfolder to the CMakeLists.txt file in the root folder.</p>
 </section>
 <section id="prepare-your-input-files">
 <h3>3. Prepare your <a class="reference internal" href="../sdv_tools/utilities.html#input-files"><span class="std std-ref">Input: interface definitions in file your_csv_file.csv</span></a><a class="headerlink" href="#prepare-your-input-files" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">vss_wiper_example.csv</span></code></p></li>
 </ul>
-<p>Signal definition:</p>
+<details>
+<summary>Create file (vss_wiper_example.csv), view and copy content of CSV example</summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>;Class name;Function name;Signal name;vss;Signal direction;type;DBC CAN name includes CAN message name; Formula
+;;;;;;;
+VD;FrontWiper;IsFrontActive;frontWiperActive;Vehicle.Body.Windshield.Wiper.Front;TX;boolean;CAN_Output_W.FrontWiperActive
+VD;RearWiper;IsRearActive;rearWiperActive;Vehicle.Body.Windshield.Wiper.Rear;TX;boolean;CAN_Output_W.RearWiperActive
+VD;WiperMode;Mode;wiperMode;Vehicle.Body.Windshield.Wiper.Mode;RX;string;CAN_Input_M.WiperMode; sdv::string wiperMode = value.get&lt;sdv::string&gt;();    if (!wiperMode.compare(&quot;&quot;0&quot;&quot;)) wiperMode = &quot;&quot;manual&quot;&quot;;    if (!wiperMode.compare(&quot;&quot;1&quot;&quot;)) wiperMode = &quot;&quot;auto&quot;&quot;; ;
+VD;RainSensor;Detected;rainDetected;Vehicle.Body.Weather.Rain;RX;boolean;CAN_Input_R.RainDetected
+BS;FrontWiper;IsFrontActive;frontWiperActive;Vehicle.Body.Windshield.Wiper.Front;TX;boolean;Vehicle.Body.Windshield.Wiper.Front
+BS;RearWiper;IsRearActive;rearWiperActive;Vehicle.Body.Windshield.Wiper.Rear;TX;boolean;Vehicle.Body.Windshield.Wiper.Rear
+BS;WiperMode;Mode;wiperMode;Vehicle.Body.Windshield.Wiper.Mode;RX;string;Vehicle.Body.Windshield.Wiper.Mode
+BS;RainSensor;Detected;rainDetected;Vehicle.Body.Weather.Rain;RX;boolean;Vehicle.Body.Weather.Rain
+</pre></div>
+</div>
+</details><p>Signal definition:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Vehicle Device and Basic Services will use the same vss interface definition</p></li>
@@ -657,20 +680,16 @@ document.write(`
 <li><p>TX signal (output), rear wiper status: boolean, Vehicle.Body.Windshield.Wiper.Rear</p></li>
 </ul>
 </div></blockquote>
-<details>
-<summary>View CSV Example (vss_wiper_example.csv)</summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>;Class name;Function name;Signal name;vss;Signal direction;type;DBC CAN name includes CAN message name
-;;;;;;;
-VD;FrontWiper;IsActive;frontWiperActive;Vehicle.Body.Windshield.Wiper.Front;TX;boolean;CAN_Output.FrontWiperActive
-VD;RearWiper;IsActive;rearWiperActive;Vehicle.Body.Windshield.Wiper.Rear;TX;boolean;CAN_Output.RearWiperActive
-VD;WiperMode;Mode;wiperMode;Vehicle.Body.Windshield.Wiper.Mode;RX;string;CAN_Input.WiperMode
-VD;RainSensor;Detected;rainDetected;Vehicle.Body.Weather.Rain;RX;boolean;CAN_Input.RainDetected
-BS;FrontWiper;IsActive;frontWiperActive;Vehicle.Body.Windshield.Wiper.Front;TX;boolean;Vehicle.Body.Windshield.Wiper.Front
-BS;RearWiper;IsActive;rearWiperActive;Vehicle.Body.Windshield.Wiper.Rear;TX;boolean;Vehicle.Body.Windshield.Wiper.Rear
-BS;WiperMode;Mode;wiperMode;Vehicle.Body.Windshield.Wiper.Mode;RX;string;Vehicle.Body.Windshield.Wiper.Mode
-BS;RainSensor;Detected;rainDetected;Vehicle.Body.Weather.Rain;RX;boolean;Vehicle.Body.Weather.Rain
-</pre></div>
+</section>
+<section id="csv-file-and-formulas">
+<h3>CSV File and Formulas<a class="headerlink" href="#csv-file-and-formulas" title="Permalink to this heading">#</a></h3>
+<p>The CSV file defines signals, their types, and optional formulas. For example, WiperMode is defined as a string, but CAN cannot transmit strings.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Because WiperMode is defined as a <strong>string</strong> in the CSV, it cannot be transmitted as a string over CAN. For this reason, a formula was added in the CSV to map numeric values to strings: <cite>0</cite> represents <strong>manual</strong>, and <cite>1</cite> represents <strong>auto</strong>. On CAN, we send <cite>0</cite> or <cite>1</cite>, and the application converts these values back to the corresponding string using the formula.</p>
+<p>In the generated Vehicle Device code the function <cite>ExecuteAllCallBacksForWiperMode()</cite> was generated and applies this conversion automatically before invoking callbacks.</p>
 </div>
-</details></section>
+</section>
 <section id="generate-vss-components">
 <h3>4. Generate VSS components<a class="headerlink" href="#generate-vss-components" title="Permalink to this heading">#</a></h3>
 <div class="admonition seealso">
@@ -688,48 +707,48 @@ BS;RainSensor;Detected;rainDetected;Vehicle.Body.Weather.Rain;RX;boolean;Vehicle
 <pre>
 
 generated/vss_files/
-+-- BS_FrontWiper/
-|   +-- BS_FrontWiper.cpp
-|   +-- BS_FrontWiper.h
-|   +-- CMakeLists.txt
-+-- BS_RainSensor/
-|   +-- BS_RainSensor.cpp
-|   +-- BS_RainSensor.h
-|   +-- CMakeLists.txt
-+-- BS_RearWiper/
-|   +-- BS_RearWiper.cpp
-|   +-- BS_RearWiper.h
-|   +-- CMakeLists.txt
-+-- BS_WiperMode/
-|   +-- BS_WiperMode.cpp
-|   +-- BS_WiperMode.h
-|   +-- CMakeLists.txt
-+-- VD_FrontWiper/
-|   +-- VD_FrontWiper.cpp
-|   +-- VD_FrontWiper.h
-|   +-- CMakeLists.txt
-+-- VD_RainSensor/
-|   +-- VD_RainSensor.cpp
-|   +-- VD_RainSensor.h
-|   +-- CMakeLists.txt
-+-- VD_RearWiper/
-|   +-- VD_RearWiper.cpp
-|   +-- VD_RearWiper.h
-|   +-- CMakeLists.txt
-+-- VD_WiperMode/
-|   +-- VD_WiperMode.cpp
-|   +-- VD_WiperMode.h
-|   +-- CMakeLists.txt
-+-- SignalIdentifier.h
-+-- Summary.txt
-+-- VSS_VehicleBodyWeatherRain_bs_rx.idl
-+-- VSS_VehicleBodyWeatherRain_vd_rx.idl
-+-- VSS_VehicleBodyWindshieldWiperFront_bs_tx.idl
-+-- VSS_VehicleBodyWindshieldWiperFront_vd_tx.idl
-+-- VSS_VehicleBodyWindshieldWiperMode_bs_rx.idl
-+-- VSS_VehicleBodyWindshieldWiperMode_vd_rx.idl
-+-- VSS_VehicleBodyWindshieldWiperRear_bs_tx.idl
-+-- VSS_VehicleBodyWindshieldWiperRear_vd_tx.idl
++-- bs_frontwiper/
+|   +-- bs_frontwiper.cpp
+|   +-- bs_frontwiper.h
+|   +-- cmakelists.txt
++-- bs_rainsensor/
+|   +-- bs_rainsensor.cpp
+|   +-- bs_rainsensor.h
+|   +-- cmakelists.txt
++-- bs_rearwiper/
+|   +-- bs_rearwiper.cpp
+|   +-- bs_rearwiper.h
+|   +-- cmakelists.txt
++-- bs_wipermode/
+|   +-- bs_wipermode.cpp
+|   +-- bs_wipermode.h
+|   +-- cmakelists.txt
++-- vd_frontwiper/
+|   +-- vd_frontwiper.cpp
+|   +-- vd_frontwiper.h
+|   +-- cmakelists.txt
++-- vd_rainsensor/
+|   +-- vd_rainsensor.cpp
+|   +-- vd_rainsensor.h
+|   +-- cmakelists.txt
++-- vd_rearwiper/
+|   +-- vd_rearwiper.cpp
+|   +-- vd_rearwiper.h
+|   +-- cmakelists.txt
++-- vd_wipermode/
+|   +-- vd_wipermode.cpp
+|   +-- vd_wipermode.h
+|   +-- cmakelists.txt
++-- signalidentifier.h
++-- summary.txt
++-- vss_vehiclebodyweatherrain_bs_rx.idl
++-- vss_vehiclebodyweatherrain_vd_rx.idl
++-- vss_vehiclebodywindshieldwiperfront_bs_tx.idl
++-- vss_vehiclebodywindshieldwiperfront_vd_tx.idl
++-- vss_vehiclebodywindshieldwipermode_bs_rx.idl
++-- vss_vehiclebodywindshieldwipermode_vd_rx.idl
++-- vss_vehiclebodywindshieldwiperrear_bs_tx.idl
++-- vss_vehiclebodywindshieldwiperrear_vd_tx.idl
 
 </pre>
 </details><p>The single signal definition (single line) of the front wiper basic service in the <code class="docutils literal notranslate"><span class="pre">vss_wiper_example.csv</span></code> file will produce following files:</p>
@@ -737,35 +756,35 @@ generated/vss_files/
 </pre></div>
 </div>
 <details>
-<summary> View BS_FrontWiper.h </summary>
+<summary> View bs_frontwiper.h </summary>
 <pre>
 
      /**
       * @file BS_FrontWiper.h
-      * @date 2025-10-14 22:10:50
-      * File is auto generated from VSS utility.
+      * @date 2025-11-26 14:57:56
+      * File is auto generated from VSS utility
       * VSS Version:1.0.0.1
       */
-     #ifndef __VSS_GENERATED__BS_FRONTWIPER_H_20251014_221050_850__
-     #define __VSS_GENERATED__BS_FRONTWIPER_H_20251014_221050_850__
+     #ifndef __VSS_GENERATED__BS_FRONTWIPER_H_20251126_145756_462__
+     #define __VSS_GENERATED__BS_FRONTWIPER_H_20251126_145756_462__
 
      #include <iostream>
      #include <support/component_impl.h>
-     #include "../VSS_VehicleBodyWindshieldWiperFront_vd_tx.h"
-     #include "../VSS_VehicleBodyWindshieldWiperFront_bs_tx.h"
+     #include "../vss_vehiclebodywindshieldwiperfront_vd_tx.h"
+     #include "../vss_vehiclebodywindshieldwiperfront_bs_tx.h"
 
      /**
       * @brief basic service FrontWiper
       */
      class CBasicServiceFrontWiper
              : public sdv::CSdvObject
-             , public vss::Vehicle::Body::Windshield::Wiper::FrontService::IVSS_SetIsActive
+             , public vss::Vehicle::Body::Windshield::Wiper::FrontService::IVSS_SetIsFrontActive
      {
      public:
 
              BEGIN_SDV_INTERFACE_MAP()
                      SDV_INTERFACE_ENTRY(sdv::CSdvObject)
-                     SDV_INTERFACE_ENTRY(vss::Vehicle::Body::Windshield::Wiper::FrontService::IVSS_SetIsActive)
+                     SDV_INTERFACE_ENTRY(vss::Vehicle::Body::Windshield::Wiper::FrontService::IVSS_SetIsFrontActive)
              END_SDV_INTERFACE_MAP()
 
              DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::BasicService)
@@ -781,56 +800,54 @@ generated/vss_files/
               * @param[in] value
               * @return true on success otherwise false
               */
-             bool SetIsActive(bool value) override;
+             bool SetIsFrontActive(bool value) override;
 
      private:
 
-             vss::Vehicle::Body::Windshield::Wiper::FrontDevice::IVSS_WriteIsActive* m_ptrIsActive = nullptr;
+             vss::Vehicle::Body::Windshield::Wiper::FrontDevice::IVSS_WriteIsFrontActive* m_ptrIsFrontActive = nullptr;
      };
 
      DEFINE_SDV_OBJECT(CBasicServiceFrontWiper)
 
-     #endif // !define __VSS_GENERATED__BS_FRONTWIPER_H_20251014_221050_850__
-</pre>
-</details><details>
-<summary> View BS_FrontWiper.cpp </summary>
+     #endif // !define __VSS_GENERATED__BS_FRONTWIPER_H_20251126_145756_462__<details>
+<summary> View bs_frontwiper.cpp </summary>
 <pre>
      /**
       * @file BS_FrontWiper.cpp
-      * @date 2025-10-14 22:10:50
-      * File is auto generated from VSS utility.
+      * @date 2025-11-26 14:57:56
+      * File is auto generated from VSS utility
       * VSS Version:1.0.0.1
       */
      #include <iostream>
-     #include "BS_FrontWiper.h"
+     #include "bs_frontwiper.h"
 
      /**
       * @brief Constructor
       */
      CBasicServiceFrontWiper::CBasicServiceFrontWiper()
      {
-             m_ptrIsActive = sdv::core::GetObject("Vehicle.Body.Windshield.Wiper.Front_Device").GetInterface<vss::Vehicle::Body::Windshield::Wiper::FrontDevice::IVSS_WriteIsActive>();
-             if (!m_ptrIsActive)
+             m_ptrIsFrontActive = sdv::core::GetObject("Vehicle.Body.Windshield.Wiper.Front_Device").GetInterface<vss::Vehicle::Body::Windshield::Wiper::FrontDevice::IVSS_WriteIsFrontActive>();
+             if (!m_ptrIsFrontActive)
              {
-                     SDV_LOG_ERROR("Could not get interface 'IVSS_WriteIsActive': [CBasicServiceFrontWiper]");
-                     throw std::runtime_error("IsActive device not found");
+                     SDV_LOG_ERROR("Could not get interface 'IVSS_WriteIsFrontActive': [CBasicServiceFrontWiper]");
+                     throw std::runtime_error("IsFrontActive device not found");
              }
 
              SDV_LOG_TRACE("CBasicServiceFrontWiper created.");
      }
 
      /**
-      * @brief IsActive
+      * @brief IsFrontActive
       * @param[in] value
       * @return true on success otherwise false
       */
-     bool CBasicServiceFrontWiper::SetIsActive(bool value)
+     bool CBasicServiceFrontWiper::SetIsFrontActive(bool value)
      {
-             return m_ptrIsActive->WriteIsActive(value);
+             return m_ptrIsFrontActive->WriteIsFrontActive(value);
      }
 </pre>
 </details><details>
-<summary> View VSS_VehicleBodyWeatherRain_bs_rx.idl </summary>
+<summary> View vss_vehiclebodyweatherrain_bs_rx.idl </summary>
 <pre>
 
      /**
@@ -910,10 +927,10 @@ generated/vss_files/
 namespace wiper
 {
         // Data Dispatch Service  signal names      to  dbc variable names                 C-type       RX/TX  vss name space
-        static std::string      dsFrontWiperActive  =  "CAN_Output.FrontWiperActive"; ///< bool         TX     Vehicle.Body.Windshield.Wiper.Front
-        static std::string      dsRearWiperActive   =  "CAN_Output.RearWiperActive" ; ///< bool         TX     Vehicle.Body.Windshield.Wiper.Rear
-        static std::string      dsWiperMode         =  "CAN_Input.WiperMode"        ; ///< sdv::string  RX     Vehicle.Body.Windshield.Wiper.Mode
-        static std::string      dsRainDetected      =  "CAN_Input.RainDetected"     ; ///< bool         RX     Vehicle.Body.Weather.Rain
+        static std::string      dsFrontWiperActive  =  "CAN_Output_W.FrontWiperActive"; ///< bool         TX     Vehicle.Body.Windshield.Wiper.Front
+        static std::string      dsRearWiperActive   =  "CAN_Output_W.RearWiperActive" ; ///< bool         TX     Vehicle.Body.Windshield.Wiper.Rear
+        static std::string      dsWiperMode         =  "CAN_Input_M.WiperMode"        ; ///< sdv::string  RX     Vehicle.Body.Windshield.Wiper.Mode
+        static std::string      dsRainDetected      =  "CAN_Input_R.RainDetected"     ; ///< bool         RX     Vehicle.Body.Weather.Rain
 } // wiper
 
 #endif // __VSS_GENERATED__SIGNALIDENTIFIER_H_20251014_221050_829__
@@ -928,7 +945,7 @@ namespace wiper
 <p>Tool reference: <a class="reference internal" href="../sdv_tools/utilities.html#sdv-idl-compiler"><span class="std std-ref">sdv_idl_compiler</span></a></p>
 </div>
 <p>Now the IDL files need to be compiled with the <code class="docutils literal notranslate"><span class="pre">sdv_idl_compiler</span></code></p>
-<p>The <a class="reference internal" href="../glossary.html#term-Vehicle-Device"><span class="xref std std-term">Vehicle Device</span></a> interfaces are not to meant to be used from another process, so it is recommended tocompile it with –no_ps option.</p>
+<p>The <a class="reference internal" href="../glossary.html#term-Vehicle-Device"><span class="xref std std-term">Vehicle Device</span></a> interfaces are not to meant to be used from another process, so it is recommended to compile it with –no_ps option.</p>
 <p>The interfaces of <a class="reference internal" href="../glossary.html#term-Basic-Service"><span class="xref std std-term">Basic Service</span></a> s instead need to be accessible from another processes. Therefore we cannot use the –no_ps option. Use –ps_lib_name&lt;some_name&gt; instead to give the binary a name.</p>
 <p>Repeat for all .idl files in <code class="docutils literal notranslate"><span class="pre">generated/vss_files/</span></code></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWeatherRain_vd_rx.idl -Ogenerated/vss_files/ -I&lt;export_path&gt; -Igenerated/vss_files/ --no_ps</span>
@@ -937,8 +954,8 @@ namespace wiper
 <span class="go">SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWindshieldWiperRear_vd_tx.idl -Ogenerated/vss_files/ -I&lt;export_path&gt; -Igenerated/vss_files/ --no_ps</span>
 <span class="go">SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWeatherRain_bs_rx.idl -Ogenerated/vss_files/ -I&lt;export_path&gt; -Igenerated/vss_files/ --ps_lib_namewiper_proxystub</span>
 <span class="go">SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWindshieldWiperMode_bs_rx.idl -Ogenerated/vss_files/ -I&lt;export_path&gt; -Igenerated/vss_files/ --ps_lib_namewiper_proxystub</span>
-<span class="go">    SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWindshieldWiperFront_bs_tx.idl -Ogenerated/vss_files/ -I&lt;export_path&gt; -Igenerated/vss_files/  --ps_lib_namewiper_proxystub</span>
-<span class="go">    SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWindshieldWiperRear_bs_tx.idl -Ogenerated/vss_files/ -I&lt;export_path&gt; -Igenerated/vss_files/  --ps_lib_namewiper_proxystub</span>
+<span class="go">SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWindshieldWiperFront_bs_tx.idl -Ogenerated/vss_files/ -I&lt;export_path&gt; -Igenerated/vss_files/  --ps_lib_namewiper_proxystub</span>
+<span class="go">SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWindshieldWiperRear_bs_tx.idl -Ogenerated/vss_files/ -I&lt;export_path&gt; -Igenerated/vss_files/  --ps_lib_namewiper_proxystub</span>
 </pre></div>
 </div>
 </section>
@@ -975,7 +992,6 @@ In case the files are blocked somehow, they may not be overwritten.</p>
 <span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">generated/vss_files/ps</span><span class="p">)</span>
 
 <span class="c"># Include generated components</span>
-<span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">generated/ps</span><span class="p">)</span>
 <span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">generated/vss_files/bs_wipermode</span><span class="p">)</span>
 <span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">generated/vss_files/vd_wipermode</span><span class="p">)</span>
 <span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">generated/vss_files/vd_rainsensor</span><span class="p">)</span>

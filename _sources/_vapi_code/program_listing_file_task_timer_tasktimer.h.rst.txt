@@ -63,12 +63,14 @@ Program Listing for File tasktimer.h
            SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
        END_SDV_INTERFACE_MAP()
    
+       
        virtual void DestroyObject() override;
    
        operator bool() const;
    
    private:
    #ifdef _WIN32
+   
        void ExecuteCallback();
    #endif
    
@@ -103,6 +105,7 @@ Program Listing for File tasktimer.h
        DECLARE_OBJECT_CLASS_NAME("TaskTimerService")
        DECLARE_OBJECT_SINGLETON()
    
+       
        virtual void Initialize(/*in*/ const sdv::u8string& ssObjectConfig) override;
    
        virtual sdv::EObjectStatus GetStatus() const override;

@@ -10,15 +10,11 @@ Step-by-Step: TOML Configuration Files
    
    In this guide, you will learn how to use `.toml` configuration files to set up and run a wiper application in the VAPI framework. 
    
-   You’ll explore both standalone and runtime configurations, understand how each file works, and see how to integrate them using CMake.
+   You’ll explore standalone configurations, understand how each file works, and see how to integrate them using CMake.
 
+   **Standalone Configuration** – required for running the application locally. These TOML files are manually integrated and simulate runtime behavior.
+   
 This guide explains how `.toml` configuration files are used in the VAPI framework for the wiper example.
-
-There are two configuration approaches:
-
-- **Standalone Configuration** – required for running the application locally. These TOML files are manually integrated and simulate runtime behavior.
-- **Runtime Configuration** – used in isolated or production-like setups. These files are loaded after installing components with `SDV_PACKAGER`.
-
 
 Overview
 --------
@@ -158,7 +154,6 @@ Each TOML file must be copied to the runtime configuration directory using CMake
    If you update the `.toml` files after your first build, you must either delete the build folder or manually copy the updated files into it.  
    This is because the copy operation happens during **CMake configuration**, not during the **CMake build** step.
 
-
 .. code-block:: cmake
 
     file(COPY ${PROJECT_SOURCE_DIR}/config/can_com_simulation_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
@@ -169,134 +164,12 @@ Each TOML file must be copied to the runtime configuration directory using CMake
     file(COPY ${PROJECT_SOURCE_DIR}/config/wiper_vehicle_device_and_basic_service.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
 
 
-
-Runtime Configuration TOML Files
---------------------------------
-
-These TOML files are used to configure the runtime environment and application logic after components have been generated and installed using SDV_PACKAGER.
-
-**7. settings.toml**
-
-Defines which system and application configuration files should be loaded at runtime.
-
-.. code-block:: toml
-
-    [Settings]
-    Version = 100
-
-    SystemConfig = [ "platform.toml", "vehicle_ifc.toml", "vehicle_abstract.toml" ]
-    AppConfig = "wiper.toml"
-
-**8. platform.toml**
-
-Defines platform-level components such as CAN simulation.
-
-.. code-block:: toml
-
-    [Configuration]
-    Version = 100
-
-    [[Component]]
-    Path = "can_com_sim.sdv"
-    Class = "CAN_Com_Sim"
-    Source = "wiper_receiver.asc"
-    Target = "wiper_writer.asc"
-
-**9. vehicle_abstract.toml**
-
-Loads abstract services (BS) and proxy/stub modules.
-
-.. code-block:: toml
-
-    [Configuration]
-    Version = 100
-
-    [[Component]]
-    Path = "wiper_bs_frontwiper_tx.sdv"
-    Class = "Vehicle.Body.Windshield.Wiper.Front_Service"
-
-    [[Component]]
-    Path = "wiper_bs_rainsensor_rx.sdv"
-    Class = "Vehicle.Body.Weather.Rain_Service"
-
-    [[Component]]
-    Path = "wiper_bs_rearwiper_tx.sdv"
-    Class = "Vehicle.Body.Windshield.Wiper.Rear_Service"
-
-    [[Component]]
-    Path = "wiper_bs_wipermode_rx.sdv"
-    Class = "Vehicle.Body.Windshield.Wiper.Mode_Service"
-
-    [[Module]]
-    Path = "wiper_proxystub.sdv"
-
-**10. vehicle_ifc.toml**
-
-Defines the vehicle interface components including datalink and VD.
-
-.. code-block:: toml
-
-    [Configuration]
-    Version = 100
-
-    [[Component]]
-    Path = "can_dl_wiper.sdv"
-    Class = "CAN_data_link"
-    Name = "DataLink"
-
-    [[Component]]
-    Path = "wiper_vd_frontwiper_tx.sdv"
-    Class = "Vehicle.Body.Windshield.Wiper.Front_Device"
-
-    [[Component]]
-    Path = "wiper_vd_rainsensor_rx.sdv"
-    Class = "Vehicle.Body.Weather.Rain_Device"
-
-    [[Component]]
-    Path = "wiper_vd_rearwiper_tx.sdv"
-    Class = "Vehicle.Body.Windshield.Wiper.Rear_Device"
-
-    [[Component]]
-    Path = "wiper_vd_wipermode_rx.sdv"
-    Class = "Vehicle.Body.Windshield.Wiper.Mode_Device"
-
-**11. wiper.toml**
-
-Loads the complex service and proxy/stub for the wiper application.
-
-.. code-block:: toml
-
-    [Configuration]
-    Version = 100
-
-    [[Component]]
-    Path = "wiper_complex_service.sdv"
-    Class = "Wiper Service"
-    Name = "Wiper Service"
-
-    [[Module]]
-    Path = "wiper_service_proxystub.sdv"
-
-CMake Integration
-~~~~~~~~~~~~~~~~~
-
-These files must be manually copied to the runtime directory because SDV_PACKAGER does not generate them automatically.
-
-.. code-block:: cmake
-
-    file(COPY ${PROJECT_SOURCE_DIR}/coreconfig/settings.toml DESTINATION ${SDV_FRAMEWORK_RUNTIME})
-    file(COPY ${PROJECT_SOURCE_DIR}/coreconfig/platform.toml DESTINATION ${SDV_FRAMEWORK_RUNTIME})
-    file(COPY ${PROJECT_SOURCE_DIR}/coreconfig/vehicle_abstract.toml DESTINATION ${SDV_FRAMEWORK_RUNTIME})
-    file(COPY ${PROJECT_SOURCE_DIR}/coreconfig/vehicle_ifc.toml DESTINATION ${SDV_FRAMEWORK_RUNTIME})
-    file(COPY ${PROJECT_SOURCE_DIR}/coreconfig/wiper.toml DESTINATION ${SDV_FRAMEWORK_RUNTIME})
-
 .. note::
 
    **Step Reach**
    
    After completing this guide, you now understand:
    
-   - The difference between standalone and runtime TOML configurations.
    - How to define components like services, devices, and timers using TOML files.
    - How to simulate CAN communication and load generated components.
    - How to integrate TOML files into your project using CMake.
