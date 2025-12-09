@@ -20,3 +20,35 @@ Example Interface Set
 
       Used by the example vehicle device and basic service.
 
+.. uml::
+   :caption: Interface of Example reception signal
+
+   @startuml
+      set separator ::
+      Interface vss::Device::IReceptionSignalSpeed_Event
+      {
+         virtual void SetSpeedValue(int32_t value)
+      }
+      Interface vss::Device::IReceptionSignalSpeed
+      {
+         virtual void RegisterSpeedEvent(IReceptionSignalSpeed_Event* event)
+         virtual void UnRegisterSpeedEvent(IReceptionSignalSpeed_Event* event)
+      }
+
+      Interface vss::Service::IReceptionSignalSpeed
+      {
+         virtual int32_t GetSpeedValue()
+         virtual void RegisterCallBack(vss::Device::IReceptionSignalSpeed_Event* callback) 
+         virtual void UnregisterCallBack(vss::Device::IReceptionSignalSpeed_Event* callback) 
+      }
+   @enduml
+
+.. uml::
+   :caption: Interface of Example transfer signal
+
+   @startuml
+   Interface ISayHello
+   {
+      {abstract} void SayHello() const
+   }
+   @enduml

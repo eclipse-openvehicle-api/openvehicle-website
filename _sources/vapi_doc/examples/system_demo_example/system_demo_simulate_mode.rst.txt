@@ -18,7 +18,47 @@ The example in simulation mode does not load the Data Link, therefore there are 
 
 .. image:: ../../../vapi_media/examples/system_demo_example/system_demo_simulation_mode.png
 
-After testrun we have to unregister the signals for a graeefull shutdown.
+After test-run we have to unregister the signals for a graceful shutdown.
 
-.. image:: ../../../vapi_media/examples/system_demo_example/System_demo_shutdown.png
+.. uml::
+   :caption: Shutdown sequence
+
+   @startuml
+   
+   skinparam BackgroundColor #A2D3D6
+   Participant "Example Application" as EA #00A7AB
+   Participant "CExample Control (Utility)" as EC #00A7AB
+   Participant "CAppControl" as AC #BFBFBF
+
+   EA->EC : CExampleControl::StartTestRun()
+   activate EC #00A7AB
+   EC->EC : Switch to simulation mode (Can't Load further services)
+   EC->EC : Test Run Starts
+   EC-->EA 
+   deactivate EC
+
+   EA->EC : CExampleControl::StopTestRun()
+   activate EC #00A7AB
+   EC->EC : Test Run Stops
+   EC-->EA 
+   deactivate EC
+   
+   EA->EC : CExampleControl::ResetSignalsSimDatalink()
+   activate EC #00A7AB
+   EC->EC : Reset simulated signals
+   EC-->EA 
+   deactivate EC
+
+   EA->EC : CExampleControl::Shutdown()
+   activate EC #00A7AB
+   EC->AC : CAppControl::Shutdown()
+   activate AC #BFBFBF
+   AC->AC : Shutdown the application
+   AC-->EC
+   deactivate AC #BFBFBF 
+   EC-->EA 
+   deactivate EC
+
+   @enduml
+
 

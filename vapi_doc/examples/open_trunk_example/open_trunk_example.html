@@ -638,6 +638,306 @@ document.write(`
 </ul>
 </div>
 <img alt="../../../_images/open_trunk_overview.png" src="../../../_images/open_trunk_overview.png" />
+<figure class="align-default" id="id1">
+<p class="plantuml">
+<img src="../../../_images/plantuml-e0cf5386661ca9d645927c2795028d7170b706b0.svg" alt="&#64;startuml
+ set separator ::
+ package &quot;Trunk Application executable&quot;
+ {
+   class CTrunkControl
+   {
+      +bool Initialize(uint32_t uiInstance)
+      +void SetRunningMode()
+      +void Shutdown()
+      -bool IsSDVFrameworkEnvironmentSet()
+      -bool LoadConfigFile(const std::string&amp; inputMsg, const std::string&amp; configFileName)
+      -sdv::app::CAppControl m_appcontrol
+      -bool m_bInitialized
+   }
+
+   class CConsole
+   {
+      +struct SConsolePos
+      {
+         uint32_t uiRow
+         uint32_t uiCol
+      };
+      +void PrintHeader(uint32_t uiInstance)
+      +bool PrepareDataConsumers()
+      +void RunUntilBreak()
+      +{abstract} void WriteSpeed(float value)
+      +{abstract} void SetSpeed(float value)
+      +void ResetSignals()
+      -void CallbackSpeed(sdv::any_t value)
+      -bool KeyHit()
+      -char GetChar()
+      -SConsolePos GetCursorPos() const
+      -void SetCursorPos(SConsolePos sPos)
+      -void PrintText(SConsolePos sPos, const std::string&amp; rssText)
+      -void PrintValue(SConsolePos sPos, const std::string&amp; rssName, TValue tValue, const std::string&amp; rssStatus)
+      -std::string AlignString(const std::string&amp; message, uint32_t desiredLength)
+      -mutable std::mutex m_mtxPrintToConsole
+      -bool m_bRunning
+      -mutable std::mutex m_mPrintToConsole
+      -sdv::core::CSignal m_SignalSpeed
+      -float m_SpeedDL
+      -float m_SpeedVD
+      -float m_SpeedBS
+      -vss::Vehicle::Body::TrunkService::IVSS_SetOpen* m_pTrunkSvc
+      -ITrunkKitService* m_pITrunkComplexService
+      -DWORD m_dwConsoleOutMode
+      -DWORD m_dwConsoleInMode
+      -struct termios m_sTermAttr{}
+      -int m_iFileStatus
+      -&lt;&lt;inline&gt;&gt; void PrintValue(SConsolePos sPos, const std::string&amp; rssName, TValue tValue, const std::string&amp; rssUnits)
+      -&lt;&lt;inline&gt;&gt; void PrintValue&lt;bool&gt;(SConsolePos sPos, const std::string&amp; rssName, bool bValue, const std::string&amp; rssStatus)
+   }
+  }
+
+   Interface vss::Vehicle::SpeedDevice::IVSS_WriteSpeed_Event
+   {
+      {abstract} void WriteSpeed(float value)
+   }
+
+   Interface vss::Vehicle::SpeedService::IVSS_SetSpeed_Event
+   {
+      {abstract} void SetSpeed(float value)
+   }
+
+   CConsole ..|&gt; vss::Vehicle::SpeedDevice::IVSS_WriteSpeed_Event : Implements
+   CConsole ..|&gt; vss::Vehicle::SpeedService::IVSS_SetSpeed_Event : Implements
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Trunk example application class diagram</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id2">
+<p class="plantuml">
+<img src="../../../_images/plantuml-cbd2bc7e450374be9bdf13b5f656a81a34d26c26.svg" alt="&#64;startuml
+ set separator ::
+   class CTrunkExampleService
+   {
+      +{abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
+      +{abstract} sdv::EObjectStatus GetStatus() const
+      +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
+      +{abstract} void Shutdown()
+      +{abstract} void SetSpeed(float value)
+      +{abstract} bool PopTrunk()
+      -sdv::EObjectStatus  m_eStatus
+      -float m_Speed
+      -vss::Vehicle::Body::TrunkService::IVSS_SetOpen* m_pTrunkSvc
+   }
+
+
+   class sdv::CSdvObject
+   {
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+      {static} +sdv::u8string GetDefaultObjectNameStatic()
+      {static} +bool IsSingletonStatic()
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+   }
+
+   Interface sdv::IObjectControl
+   {
+      {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
+      {abstract} EObjectStatus GetStatus() const
+      {abstract} void SetOperationMode(EOperationMode eMode)
+      {abstract} void Shutdown()
+   }
+
+   Interface vss::Vehicle::SpeedService::IVSS_SetSpeed_Event
+   {
+      {abstract} void SetSpeed(float value)
+   }
+
+   Interface ITrunkKitService
+   {
+      {abstract} bool PopTrunk()
+   }
+
+   CTrunkExampleService --|&gt; sdv::CSdvObject : Inherits
+   CTrunkExampleService ..|&gt; sdv::IObjectControl : Implements
+   CTrunkExampleService ..|&gt; vss::Vehicle::SpeedService::IVSS_SetSpeed_Event : Implements
+   CTrunkExampleService ..|&gt; ITrunkKitService : Implements
+
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Trunk Complex service class diagram</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id3">
+<p class="plantuml">
+<img src="../../../_images/plantuml-244a9791aec557814a26bd386d21053403b165bf.svg" alt="&#64;startuml
+ set separator ::
+   class CBasicServiceVehicleTrunk
+   {
+      {abstract} bool SetOpen(bool value)
+      -vss::Vehicle::Body::TrunkDevice::IVSS_WriteOpen* m_ptrOpen
+   }
+
+   class sdv::CSdvObject
+   {
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+      {static} +sdv::u8string GetDefaultObjectNameStatic()
+      {static} +bool IsSingletonStatic()
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+   }
+
+   Interface vss::Vehicle::Body::TrunkService::IVSS_SetOpen
+   {
+      {abstract} bool SetOpen(bool value)
+   }
+
+   CBasicServiceVehicleTrunk --|&gt; sdv::CSdvObject : Inherits
+   CBasicServiceVehicleTrunk ..|&gt; vss::Vehicle::Body::TrunkService::IVSS_SetOpen : Implements
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Vehicle Trunk basic service class diagram</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id4">
+<p class="plantuml">
+<img src="../../../_images/plantuml-2c2851eeb6d8057941e322187c331b30873f68bc.svg" alt="&#64;startuml
+ set separator ::
+   class CBasicServiceVehicleSpeed
+   {
+      +{abstract} void SetSpeed(float value)
+      +{abstract} float GetSpeed() const
+      +{abstract} void WriteSpeed(float value)
+      +{abstract} RegisterOnSignalChangeOfVehicleSpeed(vss::Vehicle::SpeedService::IVSS_SetSpeed_Event* callback)
+      +{abstract} void UnregisterOnSignalChangeOfVehicleSpeed(vss::Vehicle::SpeedService::IVSS_SetSpeed_Event* callback)
+      -float m_vehicleSpeed
+      -mutable std::mutex m_vehicleSpeedMutexCallbacks
+      -std::set&lt;vss::Vehicle::SpeedService::IVSS_SetSpeed_Event*&gt; m_vehicleSpeedCallbacks
+   }
+
+   Interface vss::Vehicle::SpeedService::IVSS_GetSpeed
+   {
+      {abstract} float GetSpeed() const
+      {abstract} void RegisterOnSignalChangeOfVehicleSpeed(IVSS_SetSpeed_Event* callback)
+      {abstract} void UnregisterOnSignalChangeOfVehicleSpeed(IVSS_SetSpeed_Event* callback)
+   }
+
+   Interface vss::Vehicle::SpeedService::IVSS_SetSpeed_Event
+   {
+      {abstract} void SetSpeed(float value)
+   }
+
+   Interface vss::Vehicle::SpeedDevice::IVSS_WriteSpeed_Event
+   {
+      {abstract} void WriteSpeed(float value)
+   }
+
+   class sdv::CSdvObject
+   {
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+      {static} +sdv::u8string GetDefaultObjectNameStatic()
+      {static} +bool IsSingletonStatic()
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+   }
+
+   CBasicServiceVehicleSpeed --|&gt; sdv::CSdvObject : Inherits
+   CBasicServiceVehicleSpeed ..|&gt; vss::Vehicle::SpeedService::IVSS_GetSpeed : Implements
+   CBasicServiceVehicleSpeed ..|&gt; vss::Vehicle::SpeedService::IVSS_SetSpeed_Event : Implements
+   CBasicServiceVehicleSpeed ..|&gt; vss::Vehicle::SpeedDevice::IVSS_WriteSpeed_Event : Implements
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Vehicle Speed basic service class diagram</span><a class="headerlink" href="#id4" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id5">
+<p class="plantuml">
+<img src="../../../_images/plantuml-9d035118e1682a6c50ec225b4de96771348450e7.svg" alt="&#64;startuml
+ set separator ::
+   class CVehicleDeviceVehicleSpeed
+   {
+      +{abstract} void Initialize(const sdv::u8string&amp; objectConfig)
+      +{abstract} sdv::EObjectStatus GetStatus() const
+      +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
+      +{abstract} void Shutdown()
+      +{abstract} void RegisterSpeedEvent(vss::Vehicle::SpeedDevice::IVSS_WriteSpeed_Event* event)
+      +{abstract} void UnregisterSpeedEvent(vss::Vehicle::SpeedDevice::IVSS_WriteSpeed_Event* event)
+      -void ExecuteAllCallBacksForVehicleSpeed(sdv::any_t value)
+      -sdv::core::CSignal m_vehicleSpeedSignal
+      -mutable std::mutex m_vehicleSpeedMutexCallbacks
+      -std::set&lt;vss::Vehicle::SpeedDevice::IVSS_WriteSpeed_Event*&gt; m_vehicleSpeedCallbacks
+      -std::atomic&lt;sdv::EObjectStatus&gt; m_status
+   }
+
+   class sdv::CSdvObject
+   {
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+      {static} +sdv::u8string GetDefaultObjectNameStatic()
+      {static} +bool IsSingletonStatic()
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+   }
+
+   Interface sdv::IObjectControl
+   {
+      {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
+      {abstract} EObjectStatus GetStatus() const
+      {abstract} void SetOperationMode(EOperationMode eMode)
+      {abstract} void Shutdown()
+   }
+
+   Interface vss::Vehicle::SpeedDevice::IVSS_Speed
+   {
+      {abstract} void RegisterSpeedEvent(IVSS_WriteSpeed_Event* event)
+      {abstract} void UnregisterSpeedEvent(IVSS_WriteSpeed_Event* event)
+   }
+
+   CVehicleDeviceVehicleSpeed --|&gt; sdv::CSdvObject : Inherits
+   CVehicleDeviceVehicleSpeed ..|&gt; sdv::IObjectControl : Implements
+   CVehicleDeviceVehicleSpeed ..|&gt; vss::Vehicle::SpeedDevice::IVSS_Speed : Implements
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Vehicle Speed Vehicle device class diagram</span><a class="headerlink" href="#id5" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id6">
+<p class="plantuml">
+<img src="../../../_images/plantuml-297af344482cf2a257da019491455b98d1c21e03.svg" alt="&#64;startuml
+ set separator ::
+   class CVehicleDeviceVehicleTrunk
+   {
+      +{abstract} void Initialize(const sdv::u8string&amp; objectConfig)
+      +{abstract} sdv::EObjectStatus GetStatus() const
+      +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
+      +{abstract} void Shutdown()
+      +{abstract} bool WriteOpen(bool value)
+      -sdv::core::CSignal m_trunk
+      -std::atomic&lt;sdv::EObjectStatus&gt; m_status
+   }
+
+   class sdv::CSdvObject
+   {
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+      {static} +sdv::u8string GetDefaultObjectNameStatic()
+      {static} +bool IsSingletonStatic()
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+   }
+
+   Interface sdv::IObjectControl
+   {
+      {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
+      {abstract} EObjectStatus GetStatus() const
+      {abstract} void SetOperationMode(EOperationMode eMode)
+      {abstract} void Shutdown()
+   }
+
+   Interface vss::Vehicle::Body::TrunkDevice::IVSS_WriteOpen
+   {
+      {abstract} bool WriteOpen(bool value)
+   }
+
+   CVehicleDeviceVehicleTrunk --|&gt; sdv::CSdvObject : Inherits
+   CVehicleDeviceVehicleTrunk ..|&gt; sdv::IObjectControl : Implements
+   CVehicleDeviceVehicleTrunk ..|&gt; vss::Vehicle::Body::TrunkDevice::IVSS_WriteOpen : Implements
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Vehicle Speed Vehicle device class diagram</span><a class="headerlink" href="#id6" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 </section>
 
 

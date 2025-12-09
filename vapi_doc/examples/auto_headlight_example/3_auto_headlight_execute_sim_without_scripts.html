@@ -696,6 +696,148 @@ document.write(`
 <li><p>This procedure makes sure all the external FMUs are shutdown and new examples can be loaded. This process has to be followed when switching between different examples.</p></li>
 </ul>
 </section>
+<section id="simulation-with-openxil-carla-and-vapi">
+<h2>Simulation with Openxil , Carla and VAPI<a class="headerlink" href="#simulation-with-openxil-carla-and-vapi" title="Permalink to this heading">#</a></h2>
+<figure class="align-default" id="id1">
+<p class="plantuml">
+<img src="../../../_images/plantuml-b6b4dd0b6f12ac3c471b3e2cc3b685d3961bf245.svg" alt="&#64;startuml
+
+skinparam defaultFontColor black
+
+ actor &quot;User&quot;
+ participant &quot;Carla Bridge&quot; as CAB
+ participant &quot;Openxil&quot; as OX
+
+
+ box &quot;Core Instance&quot; #82b8b8ff
+ Participant &quot;Headlight Application&quot; as HA #00A7AB
+ end box
+
+ rnote over User
+ Set Python env
+ end rnote
+
+ rnote over User
+ Start Carla Server
+ end rnote
+
+
+ User -&gt; OX : Start the Openxil
+
+ activate OX
+
+ rnote over OX
+ OpenXil started
+ end rnote
+
+ User -&gt; OX : Load Headlight FMU (VAPI)
+ OX -&gt; HA : Loads Headlight application
+
+ deactivate OX
+
+ activate HA
+
+ HA -&gt; HA : Loads Core services
+ rnote over HA
+ Headlight application
+ loads **Core services**
+ and registers
+ following signals:
+ 1. Current Latitude
+ 2. Current Longitude
+ 3. Headlight Lowbeam
+ end rnote
+
+
+ HA -&gt; HA : Loads vehicle devices
+ HA -&gt; HA : Loads basic services
+ HA -&gt; HA : Loads Complex service
+
+ HA -&gt; HA : Tunnel location is loaded
+
+
+
+ activate OX
+ HA--&gt;OX : Signals value information
+
+ deactivate HA
+
+ User -&gt; OX : Add and configure widgets
+
+ rnote over OX
+ widget is configured
+ with latitude,longitude
+ and headlight signals
+ (blackboard variables)
+ end rnote
+
+ rnote over OX
+ Widget value (blackboard
+ variables) is updated at
+ each step/cycle
+ end rnote
+
+ User -&gt; OX : Load Carla Bridge Coupe version
+
+ OX -&gt; CAB : Load Carla bridge FMU
+
+ activate CAB
+ rnote over CAB
+ Carla bridge starts
+ Loads Simulation
+ environment
+ end rnote
+
+ User -&gt; OX : Load and activate trigger file
+
+ rnote over OX
+ Trigger file activated :
+ Carla and VAPI i / o
+ configured to each other
+ end rnote
+
+
+ User -&gt; CAB : Move the vehicle inside the tunnel
+
+
+ CAB -&gt; OX : Current Latitude and Longitude information
+ deactivate CAB
+
+ rnote over OX
+ Blackboard variables
+ latitude , longitude
+ are updated.
+ end rnote
+
+
+
+ OX -&gt; HA : Current Latitude and Longitude information
+ activate HA
+ HA -&gt; HA : Updates the Current latitude and longitude
+
+ HA -&gt; HA : Toggle the headlight on/off based on tunnel
+
+ HA -&gt; OX : Updated headlight information
+ deactivate HA
+
+
+ OX -&gt; CAB : Updated Headlight information
+ activate CAB
+ CAB -&gt; CAB : Call carla Headlight API to switch on or off
+
+ rnote over CAB
+ Headlight on/off based
+ on provided value from
+ VAPI via Openxil
+ endrnote
+
+
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Carla Simulation sequence diagram</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
 </section>
 
 

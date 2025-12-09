@@ -732,6 +732,92 @@ ENDIF
 <img alt="../../../_images/widget1conf.png" src="../../../_images/widget1conf.png" />
 <img alt="../../../_images/widget2conf.png" src="../../../_images/widget2conf.png" />
 </section>
+<section id="simulation-with-openxil-and-vapi-only">
+<h2>Simulation with Openxil and VAPI only<a class="headerlink" href="#simulation-with-openxil-and-vapi-only" title="Permalink to this heading">#</a></h2>
+<p>VAPI can also be simulated without use of CarlaBridge. By only utilizing the widgets present in Openxil and configuring them to the respective signals of VAPI.
+Values can be modified by user and VAPI FMU reacts to the changes.</p>
+<figure class="align-default" id="id1">
+<p class="plantuml">
+<img src="../../../_images/plantuml-9823ba58342d5ae63e1c57cf188fcdf6ab7c5fdb.svg" alt=" &#64;startuml
+
+ skinparam defaultFontColor black
+
+ actor &quot;User&quot;
+ participant &quot;Openxil&quot; as OX
+
+ box &quot;Core Instance&quot; #82b8b8ff
+ Participant &quot;Headlight Application&quot; as HA #00A7AB
+ end box
+
+ rnote over User
+ Set Python env
+ end rnote
+
+ User -&gt; OX : Start the Openxil
+
+ activate OX
+
+ rnote over OX
+ OpenXil started
+ end rnote
+
+ User -&gt; OX : Load Headlight FMU (VAPI)
+ OX -&gt; HA : Loads Headlight application
+
+ deactivate OX
+
+ HA -&gt; HA : Loads Core services
+ rnote over HA
+ Headlight application
+ loads **Core services**
+ and registers
+ following signals:
+ 1. Current Latitude
+ 2. Current Longitude
+ 3. Headlight Lowbeam
+ end rnote
+
+
+ HA -&gt; HA : Loads vehicle devices
+ HA -&gt; HA : Loads basic services
+ HA -&gt; HA : Loads Complex service
+
+ activate OX
+ HA--&gt;OX : Signals value information
+ deactivate HA
+
+ User -&gt; OX : Add and configure widgets
+
+ rnote over OX
+ widget is configured
+ with latitude,longitude
+ and headlight signals
+ end rnote
+
+ rnote over OX
+ Widget value
+ is updated
+ end rnote
+
+ User -&gt; OX : Modify latitude and longitude to tunnel location
+
+ OX -&gt; HA : Current Latitude and Longitude information
+ activate HA
+ HA -&gt; HA : Toggles Headlight on
+
+ HA -&gt; OX : Headlight turned on
+ deactivate HA
+ rnote over OX
+ Widget value
+ is updated
+ end rnote
+
+ &#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Openxil and VAPI sequence diagram</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
 </section>
 
 
