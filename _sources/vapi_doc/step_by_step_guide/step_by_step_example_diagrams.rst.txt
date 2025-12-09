@@ -1,0 +1,528 @@
+.. _vapi_step_by_step_diagrams:
+
+
+Step-by-Step: Diagrams
+======================
+
+This page collects the **three class diagrams** (CWiperControl, CConsole, CWiperExampleService) and a **comprehensive sequence diagram** for the Wiper example.
+
+.. contents:: On this page
+   :local:
+   :depth: 1
+
+
+.. _diag-cwipercontrol-class:
+
+CWiperControl — Class Diagram
+-----------------------------
+
+.. uml::
+   :caption: Wiper Application - CWiperControl Class Diagram
+
+   @startuml
+   set separator ::
+
+   skinparam backgroundColor #F8FAFC
+   skinparam shadowing false
+   skinparam classFontSize 14
+   skinparam packageFontSize 14
+   skinparam titleFontSize 16
+
+   skinparam class {
+     BackgroundColor #EFF6FF
+     BorderColor #2563EB
+     FontColor #111827
+   }
+   skinparam interface {
+     BackgroundColor #DBEAFE
+     BorderColor #2563EB
+     FontColor #111827
+   }
+   skinparam package {
+     BackgroundColor #F0F9FF
+     BorderColor #2563EB
+     FontColor #111827
+   }
+   skinparam ArrowColor #2563EB
+   skinparam classAttributeIconSize 0
+   skinparam packageStyle rectangle
+
+   package wiper {
+     class SignalIdentifiers <<external>> {
+       +dsRainDetected : std::string
+       +dsWiperMode : std::string
+       +dsFrontWiperActive : std::string
+       +dsRearWiperActive : std::string
+     }
+   }
+
+   package sdv::app {
+     class CAppControl {
+       +bool Startup(const std::string& rssConfig)
+       +void SetConfigMode()
+       +void SetRunningMode()
+       +void Shutdown()
+       +core::EConfigProcessResult LoadConfig(const sdv::u8string& ssFilename)
+       +{static} void SetFrameworkRuntimeDirectory(const std::filesystem::path& rpathDir)
+     }
+   }
+
+   package sdv::core {
+     class CDispatchService {
+       +CSignal RegisterRxSignal(const u8string& rssSignalName)
+       +CSignal RegisterTxSignal(const u8string& rssSignalName, TType tDefVal)
+       +sequence<SSignalRegistration> GetRegisteredSignals() const
+     }
+
+     class CSignal {
+       +void Reset()
+     }
+   }
+
+   class CWiperControl {
+     +bool Initialize(uint32_t exampleMode)
+     +void SetRunningMode()
+     +void Shutdown()
+     +void RunUntilBreak(uint32_t exampleMode)
+     -bool IsSDVFrameworkEnvironmentSet()
+     -bool LoadConfigFile(const std::string& inputMsg, const std::string& configFileName)
+     -bool RegisterSignals()
+     -bool KeyHit()
+     -char GetChar()
+     -sdv::app::CAppControl m_appcontrol
+     -sdv::core::CDispatchService m_dispatch
+     -bool m_bInitialized
+     -sdv::core::CSignal m_signalRainDetected
+     -sdv::core::CSignal m_signalWiperMode
+     -sdv::core::CSignal m_signalFrontWiperActive
+     -sdv::core::CSignal m_signalRearWiperActive
+   }
+
+   CWiperControl *-- sdv::app::CAppControl : m_appcontrol
+   CWiperControl *-- sdv::core::CDispatchService : m_dispatch
+   CWiperControl o-- sdv::core::CSignal : m_signal*
+   CWiperControl ..> wiper::SignalIdentifiers : uses
+   sdv::core::CDispatchService *-- sdv::core::CSignal
+   @enduml
+
+
+.. _diag-cconsole-class:
+
+CConsole — Class Diagram
+------------------------
+
+.. uml::
+   :caption: Wiper Application - CConsole Focused Class Diagram
+
+   @startuml
+   set separator ::
+
+   skinparam backgroundColor #F8FAFC
+   skinparam shadowing false
+   skinparam classFontSize 14
+   skinparam packageFontSize 14
+   skinparam titleFontSize 16
+
+   skinparam class {
+     BackgroundColor #EFF6FF
+     BorderColor #2563EB
+     FontColor #111827
+   }
+   skinparam interface {
+     BackgroundColor #DBEAFE
+     BorderColor #2563EB
+     FontColor #111827
+   }
+   skinparam package {
+     BackgroundColor #F0F9FF
+     BorderColor #2563EB
+     FontColor #111827
+   }
+   skinparam ArrowColor #2563EB
+   skinparam classAttributeIconSize 0
+   skinparam packageStyle rectangle
+
+   package vss::Vehicle::Body::Weather::RainService {
+     interface IVSS_SetDetected_Event {
+       +void SetDetected(bool value)
+     }
+   }
+
+   package vss::Vehicle::Body::Windshield::Wiper::ModeService {
+     interface IVSS_SetMode_Event {
+       +void SetMode(const sdv::string& value)
+     }
+   }
+
+   package sdv::core {
+     class CDispatchService {
+       +CSignal RegisterRxSignal(const u8string& rssSignalName)
+       +CSignal RegisterTxSignal(const u8string& rssSignalName, TType tDefVal)
+       +CSignal Subscribe(const u8string& rssSignalName, std::function<void(any_t)> func)
+       +CSignal AddPublisher(const u8string& rssSignalName)
+     }
+
+     class CSignal {
+       +void Write(TType tVal, const CTransaction& rTransaction=CTransaction())
+       +void Reset()
+     }
+   }
+
+   package sdv::app {
+     class CAppControl
+   }
+
+   class CConsole {
+     +CConsole()
+     +~CConsole()
+     +void PrintHeader(uint32_t exampleMode)
+     +bool PrepareDataConsumers(uint32_t exampleMode)
+     +void ResetSignals()
+     +bool RegisterSubscribeSignals()
+     +bool SubscribeSignals()
+     +void CallbackRainDetected(sdv::any_t value)
+     +void CallbackWiperMode(sdv::any_t value)
+     +void InitData()
+     +void SetManualRearActive(bool value)
+     +void SetManualFrontActive(bool value)
+     +void UpdateTxData()
+     +void RunUntilBreak(uint32_t exampleMode)
+     -bool KeyHit()
+     -char GetChar()
+     +void SetDetected(bool value)
+     +void SetMode(const sdv::string& value)
+     -sdv::app::CAppControl m_appcontrol
+     -sdv::core::CDispatchService m_cdispatch
+     -sdv::core::CSignal m_signalRainDetected
+     -sdv::core::CSignal m_signalFrontWiperActive
+     -sdv::core::CSignal m_signalRearWiperActive
+     -sdv::core::CSignal m_signalWiperMode
+     -sdv::core::CSignal m_signalSubscribeWiperMode
+     -sdv::core::CSignal m_signalSubscribeRainDetected
+   }
+
+   CConsole ..|> vss::Vehicle::Body::Weather::RainService::IVSS_SetDetected_Event
+   CConsole ..|> vss::Vehicle::Body::Windshield::Wiper::ModeService::IVSS_SetMode_Event
+   CConsole *-- sdv::app::CAppControl : m_appcontrol
+   CConsole *-- sdv::core::CDispatchService : m_cdispatch
+   CConsole o-- sdv::core::CSignal : m_signal*
+   sdv::core::CDispatchService *-- sdv::core::CSignal
+   @enduml
+
+
+.. _diag-cwiperexample-class:
+
+CWiperExampleService — Class Diagram
+------------------------------------
+
+.. uml::
+   :caption: Wiper Application - CWiperExampleService Class Diagram
+
+   @startuml
+   set separator ::
+
+   skinparam backgroundColor #F8FAFC
+   skinparam shadowing false
+   skinparam classFontSize 14
+   skinparam packageFontSize 14
+   skinparam titleFontSize 16
+
+   skinparam class {
+     BackgroundColor #EFF6FF
+     BorderColor #2563EB
+     FontColor #111827
+   }
+   skinparam interface {
+     BackgroundColor #DBEAFE
+     BorderColor #2563EB
+     FontColor #111827
+   }
+   skinparam package {
+     BackgroundColor #F0F9FF
+     BorderColor #2563EB
+     FontColor #111827
+   }
+   skinparam ArrowColor #2563EB
+   skinparam classAttributeIconSize 0
+   skinparam packageStyle rectangle
+
+   package sdv {
+     interface IObjectControl {
+       +void Initialize(const sdv::u8string& ssObjectConfig)
+       +void Shutdown()
+       +sdv::EObjectStatus GetStatus() const
+       +void SetOperationMode(sdv::EOperationMode eMode)
+     }
+   }
+
+   package vss::Vehicle::Body::Weather::RainService {
+     interface IVSS_SetDetected_Event {
+       +void SetDetected(bool value)
+     }
+   }
+
+   package vss::Vehicle::Body::Windshield::Wiper::ModeService {
+     interface IVSS_SetMode_Event {
+       +void SetMode(const sdv::string& value)
+     }
+   }
+
+   package vss::Vehicle::Body::Windshield::Wiper::RearService {
+     interface IVSS_SetIsRearActive {
+       +bool SetIsRearActive(bool value)
+     }
+   }
+
+   package vss::Vehicle::Body::Windshield::Wiper::FrontService {
+     interface IVSS_SetIsFrontActive {
+       +bool SetIsFrontActive(bool value)
+     }
+   }
+
+   package WiperComplex {
+     interface IWiperComplexService {
+       +bool TriggerWipersAfterThreshold()
+     }
+   }
+
+   class CWiperExampleService {
+     +CWiperExampleService()
+     +~CWiperExampleService()
+     +void Initialize(const sdv::u8string& ssObjectConfig)
+     +void Shutdown()
+     +sdv::EObjectStatus GetStatus() const
+     +void SetOperationMode(sdv::EOperationMode eMode)
+     +void SetMode(const sdv::string& value)
+     +void SetDetected(bool value)
+     +bool SetIsRearActive(bool value)
+     +bool SetIsFrontActive(bool value)
+
+     -bool TriggerWipersAfterThreshold()
+     -void ActivateWipers(bool active)
+
+     -sdv::EObjectStatus m_eStatus
+     -bool m_IsRainDetected
+     -bool m_WiperFrontIsActive
+     -bool m_WiperRearIsActive
+     -sdv::string m_WiperMode
+     -CConsole mConsole
+     -int m_Interval
+     -bool m_AutoModeEnabled
+     -int32_t m_RainPersistenceThreshold
+     -std::chrono::steady_clock::time_point m_LastRainDetected
+     -std::chrono::steady_clock::time_point m_LastRainStopped
+   }
+
+   CWiperExampleService ..|> sdv::IObjectControl
+   CWiperExampleService ..|> vss::Vehicle::Body::Weather::RainService::IVSS_SetDetected_Event
+   CWiperExampleService ..|> vss::Vehicle::Body::Windshield::Wiper::ModeService::IVSS_SetMode_Event
+   CWiperExampleService ..|> vss::Vehicle::Body::Windshield::Wiper::RearService::IVSS_SetIsRearActive
+   CWiperExampleService ..|> vss::Vehicle::Body::Windshield::Wiper::FrontService::IVSS_SetIsFrontActive
+   CWiperExampleService ..|> WiperComplex::IWiperComplexService
+   CWiperExampleService *-- CConsole : mConsole
+   @enduml
+
+
+.. _diag-main-sequence:
+
+Main Flow — Sequence Diagram (Full Overflow)
+--------------------------------------------
+
+.. uml::
+   :caption: Wiper Application - Main Execution Flow (CWiperControl + CConsole + CWiperExampleService)
+
+   @startuml
+   ' ==== COLORS & NOTE STYLE ====
+   skinparam defaultFontColor black
+   skinparam BackgroundColor #A2D3D6
+
+   skinparam note {
+     BackgroundColor #FFF59D
+     BorderColor     #9c7b01ff
+     FontColor       #1F1F1F
+   }
+
+   ' Core & service groups
+   box "Core Instance" #82b8b8ff
+     participant "CWiperControl"        as WC  #00A7AB
+     participant "CDispatchService"     as DS  #BFBFBF
+   end box
+
+   boundary "Process Border"
+
+   box "Isolated Instance" #94ebebff
+     participant "CWiperExampleService" as CS  #3B97CD
+   end box
+
+   participant "CAppControl"            as AC
+   actor User
+   participant main
+
+   ' ========= FLOW =========
+   User -> main : Start application (argv -> exampleMode)
+   activate main
+   note right of main
+     Entry point:
+     - Parses exampleMode (0: No CAN, 1: CAN simulation)
+   end note
+
+   main -> WC : Initialize(exampleMode)
+   activate WC
+   note right of WC
+     Initialize():
+     - Prepares framework runtime
+     - Starts AppControl
+     - Loads configuration files
+     - Registers signals depending on mode
+   end note
+
+   WC -> WC : IsSDVFrameworkEnvironmentSet()
+   alt Environment setup
+     WC -> AC : {static} SetFrameworkRuntimeDirectory("../../bin")
+   end
+
+   WC -> AC : Startup("")
+
+   WC -> AC : SetConfigMode()
+   note right of WC
+     Config Mode ON:
+     - Only in this mode configs are processed
+     - Ensures modules & objects load safely
+   end note
+
+   WC -> WC : LoadConfigFile("data_dispatch_wiper.toml")
+   WC -> WC : LoadConfigFile("task_timer_wiper.toml")
+   note right of WC
+     Base configurations:
+     - Data dispatch routes & identifiers
+     - Timer tasks for periodic behavior
+   end note
+
+   alt Signal registration (No CAN)
+     WC -> WC : RegisterSignals()
+     WC -> DS : RegisterRxSignal(dsRainDetected)
+     WC -> DS : RegisterRxSignal(dsWiperMode)
+     WC -> DS : RegisterTxSignal(dsFrontWiperActive, false)
+     WC -> DS : RegisterTxSignal(dsRearWiperActive,  false)
+   else CAN simulation config
+     WC -> WC : LoadConfigFile("can_com_simulation_wiper.toml")
+     WC -> WC : LoadConfigFile("data_link_wiper.toml")
+     note right of WC
+       CAN Simulation:
+       - Enables simulated CAN communication
+       - Data Link config provides virtual signals
+     end note
+   end
+
+   WC --> main : Initialized
+   deactivate WC
+
+   ' Complex service init
+   main -> CS : Initialize(config)
+   activate CS
+   CS -> CS : Register VSS interfaces\n(rain detected / wiper mode\n+ rear/front active)
+   note right of CS
+     Complex Service:
+     - Listens to Rain/Mode changes
+     - Controls Front/Rear wipers via VSS TX
+     - Applies persistence threshold to avoid flicker
+   end note
+   CS --> main : Ready
+   deactivate CS
+
+   ' Console setup
+   participant "CConsole" as CC
+   main -> CC : PrintHeader(exampleMode)
+   main -> CC : PrepareDataConsumers(exampleMode)
+   CC -> DS : RegisterRxSignal/Subscribe (rain, wiper mode)
+   CC -> DS : RegisterTxSignal/AddPublisher (front/rear active)
+   note right of DS
+     Dispatch wiring:
+     - RX subscriptions invoke callbacks
+     - TX signals publish front/rear activity states
+   end note
+   main -> CC : InitData()
+
+   ' Running mode switch
+   main -> WC : SetRunningMode()
+   WC -> AC : SetRunningMode()
+   note right of AC
+     Running Mode:
+     - System exits configuration phase
+     - Ready for user input & live dispatch
+   end note
+
+   ' Interactive loop
+   main -> CC : RunUntilBreak(exampleMode)
+   activate CC
+   note right of CC
+     Loop keys:
+     - A/M: change mode (auto/manual)
+     - R/D: set rain ON/OFF
+     - W: manual toggle front/rear
+     - X: exit (shutdown sequence follows)
+   end note
+
+   loop User interaction (keys: A/M/R/D/W/X)
+       alt Wiper Mode Change (A or M)
+	       CC -> DS : m_signalWiperMode.Write("auto"/"manual")
+	       CC -> CS : SetMode("auto"/"manual")
+
+     else Rain on/off (R/D)
+       CC -> DS : m_signalRainDetected.Write(true/false)
+       CC -> CS : SetDetected(true/false)
+       note right of CS
+         Rain event:
+         - Updates persistence timers
+         - Schedules threshold evaluation
+       end note
+       activate CS
+       CS -> CS : TriggerWipersAfterThreshold()
+       alt Auto mode on and Activation threshold reached
+         CS -> CS : ActivateWipers(active=state)
+         note right of CS
+           Signal value
+           Updated and processed:
+           - Front/Rear active set via VSS
+           - Avoids instant toggling on short bursts
+         end note
+         CS -> CC : Update manual states (front/rear)
+
+       end
+       deactivate CS
+
+     else Manual toggle (W)
+       CC -> CC : SetManualFrontActive(toggle)
+       CC -> CC : SetManualRearActive(toggle)
+     else Exit (X)
+       CC --> main : exit loop
+       note right of main
+         Exit requested:
+         - Stops console loop
+         - Initiates cleanup & shutdown
+       end note
+     end
+   end
+   deactivate CC
+
+   ' Cleanup & shutdown
+   main -> CC : ResetSignals()
+   note right of CC
+     ResetSignals():
+     - Detaches subscriptions
+     - Clears TX/RX handles
+   end note
+
+   main -> CS : Shutdown()
+   note right of CS
+     Complex Service:
+     - Unregisters callbacks
+     - Releases VSS interfaces
+   end note
+
+   main -> WC : Shutdown()
+   WC -> AC : Shutdown()
+
+   main --> User : Application terminated
+   deactivate main
+   @enduml

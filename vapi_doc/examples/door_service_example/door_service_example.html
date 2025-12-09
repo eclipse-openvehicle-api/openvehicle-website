@@ -644,6 +644,685 @@ document.write(`
 <p>For safety reasons, the concept is as follows: First, the system is in configuration mode, and services like the timer service can be created. After all components are configured, the system must switch to running mode. In this mode, the timer service does not allow the creation of additional timers. That’s why we do not use the timer service in this example.</p>
 </div>
 <img alt="../../../_images/door_service_example.png" src="../../../_images/door_service_example.png" />
+<figure class="align-default" id="id1">
+<p class="plantuml">
+<img src="../../../_images/plantuml-6f4de49be3568dad7ba56828bc806d44a9e27421.svg" alt="&#64;startuml
+ set separator ::
+   class CDoorsExampleService
+   {
+      +void Initialize(const sdv::u8string&amp; ssObjectConfig) override;
+      +sdv::EObjectStatus GetStatus() const
+      +void SetOperationMode(sdv::EOperationMode eMode)
+      +void Shutdown()
+      +void SetIsOpenL1(bool value)
+      +void SetIsOpenR1(bool value)
+      +void SetIsOpenL2(bool value)
+      +void SetIsOpenR2(bool value)
+      +{abstract} bool GetDoorsStatus()
+      -void AreAllDoorsClosed()
+      -void LockDoorsIfAllDoorsAreClosed()
+      -void LockDoors(const bool lock) const
+      -sdv::EObjectStatus  m_eStatus = sdv::EObjectStatus::initialization_pending
+      -bool  m_bFrontLeftDoorIsOpen
+      -bool  m_bFrontRightDoorIsOpen
+      -bool  m_bRearLeftDoorIsOpen
+      -bool  m_bRearRightDoorIsOpen
+      -bool m_bAllDoorsAreLocked
+      -vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetLock* m_pFrontLeftDoorSvc
+      -vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetLock* m_pFrontRightDoorSvc
+      -vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetLock* m_pRearLeftDoorSvc
+      -vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetLock* m_pRearRightDoorSvc
+      -LockDoorsThread m_doorsThread
+      -uint32_t m_Interval
+   }
+
+   class sdv::CSdvObject
+   {
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+      {static} +sdv::u8string GetDefaultObjectNameStatic()
+      {static} +bool IsSingletonStatic()
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+   }
+
+   Interface sdv::IObjectControl
+   {
+      {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
+      {abstract} EObjectStatus GetStatus() const
+      {abstract} void SetOperationMode(EOperationMode eMode)
+      {abstract} void Shutdown()
+   }
+
+   Interface IDoorService
+   {
+      {abstract} bool GetDoorsStatus()
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetIsOpen_Event
+   {
+      {abstract} void SetIsOpenL1(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetIsOpen_Event
+   {
+      {abstract} void SetIsOpenL2(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetIsOpen_Event
+   {
+      {abstract} void SetIsOpenR1(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetIsOpen_Event
+   {
+      {abstract} void SetIsOpenR2(bool value)
+   }
+
+   CDoorsExampleService --|&gt; sdv::CSdvObject : Inherits
+   CDoorsExampleService --|&gt; sdv::IObjectControl
+   CDoorsExampleService ..|&gt; IDoorService
+   CDoorsExampleService ..|&gt; vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetIsOpen_Event : Implements
+   CDoorsExampleService ..|&gt; vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetIsOpen_Event : Implements
+   CDoorsExampleService ..|&gt; vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetIsOpen_Event : Implements
+   CDoorsExampleService ..|&gt; vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetIsOpen_Event : Implements
+
+ &#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Door complex service class diagram</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id2">
+<p class="plantuml">
+<img src="../../../_images/plantuml-741cc0f3ff92d0a56e26927cf72c9463f5e403f7.svg" alt="&#64;startuml
+ set separator ::
+ package &quot;Door Application executable&quot;
+ {
+   class CDoorControl
+   {
+      +bool Initialize(const uint32_t numberOfDoors)
+      +void SetRunningMode()
+      +uint32_t UserInputNumberOfDoors()
+      +void RunUntilBreak()
+      +void Shutdown()
+      +uint32_t GetNumberOfDoors() const
+      -bool IsSDVFrameworkEnvironmentSet()
+      -bool LoadConfigFile(const std::string&amp; inputMsg, const std::string&amp; configFileName)
+      -bool KeyHit()
+      -char GetChar()
+      -bool RegisterSignals()
+      -sdv::app::CAppControl m_appcontrol
+      -bool m_bInitialized
+      -uint32_t m_iNumberOfDoors
+      -sdv::core::CSignal m_SignalFrontLeftDoorIsOpen
+      -sdv::core::CSignal m_SignalFrontRightDoorIsOpen
+      -sdv::core::CSignal m_SignalRearLeftDoorIsOpen
+      -sdv::core::CSignal m_SignalRearRightDoorIsOpen
+      -sdv::core::CSignal m_SignalFrontLeftDoorIsLocked
+      -sdv::core::CSignal m_SignalFrontRightDoorIsLocked
+      -sdv::core::CSignal m_SignalRearLeftDoorIsLocked
+      -sdv::core::CSignal m_SignalRearRightDoorIsLocked
+   }
+
+   class CDoorExternControl
+   {
+      +bool Initialize()
+      +void RunUntilBreak()
+      +void Shutdown()
+      -bool IsSDVFrameworkEnvironmentSet()
+      -bool KeyHit()
+      -char GetChar()
+      -sdv::app::CAppControl m_appcontrol
+      -bool m_bInitialized
+      -uint32_t m_iNumberOfDoors
+   }
+   class CConsole
+   {
+      +struct SConsolePos
+      {
+            uint32_t uiRow;
+            uint32_t uiCol;
+      };
+      +void PrintHeader(const uint32_t numberOfDoors)
+      +bool PrepareDataConsumers()
+      +{abstract} void WriteIsOpen(bool value)
+      +{abstract} void SetIsOpenL1(bool value)
+      +{abstract} void SetIsOpenR1(bool value)
+      +{abstract} void SetIsOpenL2(bool value)
+      +{abstract} void SetIsOpenR2(bool value)
+      +void ResetSignals()
+      +void StartUpdateDataThread()
+      +void StopUpdateDataThread()
+      +void SetExternalApp()
+      -bool PrepareDataConsumersForStandAlone()
+      -void CallbackFrontLeftDoorIsOpen(sdv::any_t value)
+      -void CallbackFrontRightDoorIsOpen(sdv::any_t value)
+      -void CallbackRearLeftDoorIsOpen(sdv::any_t value)
+      -void CallbackRearRightDoorIsOpen(sdv::any_t value)
+      -void UpdateDataThreadFunc()
+      -void UpdateTXSignal(SConsolePos sPos, const std::string&amp; label, sdv::core::CSignal&amp; signal, bool&amp; value)
+      -SConsolePos GetCursorPos() const
+      -void SetCursorPos(SConsolePos sPos)
+      -void PrintText(SConsolePos sPos, const std::string&amp; rssText)
+      -void PrintValue(SConsolePos sPos, const std::string&amp; rssName, TValue tValue, const std::string&amp; rssStatus)
+      -std::string AlignString(const std::string&amp; message, uint32_t desiredLength)
+      -mutable std::mutex  m_mtxPrintToConsole
+      -bool                m_bThreadStarted
+      -bool                m_bRunning
+      -bool                m_isExternalApp
+      -mutable std::mutex  m_mPrintToConsole
+      -std::thread         m_threadReadTxSignals
+      -sdv::core::CSignal  m_SignalFrontLeftDoorIsOpen
+      -sdv::core::CSignal  m_SignalFrontRightDoorIsOpen
+      -sdv::core::CSignal  m_SignalRearLeftDoorIsOpen
+      -sdv::core::CSignal  m_SignalRearRightDoorIsOpen
+      -bool                m_FrontLeftDoorIsOpen
+      -bool                m_FrontRightDoorIsOpen
+      -bool                m_RearLeftDoorIsOpen
+      -bool                m_RearRightDoorIsOpen
+      -sdv::core::CSignal  m_SignalFrontLeftDoorIsLocked
+      -sdv::core::CSignal  m_SignalFrontRightDoorIsLocked
+      -sdv::core::CSignal  m_SignalRearLeftDoorIsLocked
+      -sdv::core::CSignal  m_SignalRearRightDoorIsLocked
+      -bool                m_FrontLeftDoorIsLocked
+      -bool                m_FrontRightDoorIsLocked
+      -bool                m_RearLeftDoorIsLocked
+      -bool                m_RearRightDoorIsLocked
+      -IDoorService*                 m_pDoorService
+      -DWORD               m_dwConsoleOutMode
+      -DWORD               m_dwConsoleInMode
+      -struct termios      m_sTermAttr{}
+      -int                 m_iFileStatus
+      -&lt;&lt;inline&gt;&gt; void PrintValue(SConsolePos sPos, const std::string&amp; rssName, TValue tValue, const std::string&amp; rssUnits)
+      -&lt;&lt;inline&gt;&gt; void PrintValue&lt;bool&gt;(SConsolePos sPos, const std::string&amp; rssName, bool bValue, const std::string&amp; rssStatus)
+   }
+  }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetIsOpen_Event
+   {
+      {abstract} void SetIsOpenL1(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetIsOpen_Event
+   {
+      {abstract} void SetIsOpenL2(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetIsOpen_Event
+   {
+      {abstract} void SetIsOpenR1(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetIsOpen_Event
+   {
+      {abstract} void SetIsOpenR2(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteIsOpen_Event
+   {
+      {abstract}  void WriteIsOpen(bool value)
+   }
+
+  CConsole ..|&gt; vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteIsOpen_Event : Implements
+  CConsole ..|&gt; vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetIsOpen_Event : Implements
+  CConsole ..|&gt; vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetIsOpen_Event : Implements
+  CConsole ..|&gt; vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetIsOpen_Event : Implements
+  CConsole ..|&gt; vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetIsOpen_Event : Implements
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Door example application class diagram</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id3">
+<p class="plantuml">
+<img src="../../../_images/plantuml-f1592804ce2fb59119710806c37e4a568db294f5.svg" alt="&#64;startuml
+ set separator ::
+   class CBasicServiceFrontDoorLeft
+   {
+      +{abstract} void SetIsOpenL1(bool value)
+      +{abstract} bool GetIsOpen() const
+      +{abstract} void WriteIsOpen(bool value)
+      +{abstract} bool SetLock(bool value)
+      +{abstract} void RegisterOnSignalChangeOfLeftDoorIsOpen01(vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetIsOpen_Event* callback) override;
+      +{abstract} void UnregisterOnSignalChangeOfLeftDoorIsOpen01(vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetIsOpen_Event* callback) override;
+      -bool m_leftDoorIsOpen01
+      -mutable std::mutex m_leftDoorIsOpen01MutexCallbacks
+      -std::set&lt;vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetIsOpen_Event*&gt; m_leftDoorIsOpen01Callbacks
+      -vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteLock* m_ptrLock
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetIsOpen_Event
+   {
+      {abstract} void SetIsOpenL1(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteIsOpen_Event
+   {
+      {abstract}  void WriteIsOpen(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_GetIsOpen
+   {
+      {abstract} bool GetIsOpen() const
+      {abstract} void RegisterOnSignalChangeOfLeftDoorIsOpen01(IVSS_SetIsOpen_Event* callback)
+      {abstract} void UnregisterOnSignalChangeOfLeftDoorIsOpen01(IVSS_SetIsOpen_Event* callback)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetLock
+   {
+      {abstract} bool SetLock(bool value)
+   }
+
+   CBasicServiceFrontDoorLeft --|&gt; sdv::CSdvObject : Inherits
+   CBasicServiceFrontDoorLeft ..|&gt; vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_GetIsOpen : Implements
+   CBasicServiceFrontDoorLeft ..|&gt; vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetIsOpen_Event : Implements
+   CBasicServiceFrontDoorLeft ..|&gt; vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteIsOpen_Event : Implements
+   CBasicServiceFrontDoorLeft ..|&gt; vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetLock : Implements
+ &#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">FrontDoorLeft Basic service class diagram</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id4">
+<p class="plantuml">
+<img src="../../../_images/plantuml-a81d521632a6bf5754b376ba4b9f97f735bd71f3.svg" alt="&#64;startuml
+ set separator ::
+   class CVehicleDeviceFrontDoorLeft
+   {
+      +{abstract} void Initialize(const sdv::u8string&amp; objectConfig)
+      +{abstract} sdv::EObjectStatus GetStatus() const
+      +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
+      +{abstract} void Shutdown()
+      +{abstract} bool WriteLock(bool value)
+      +{abstract} void RegisterIsOpenEvent(vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteIsOpen_Event* event)
+      +{abstract} void UnregisterIsOpenEvent(vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteIsOpen_Event* event)
+      -void ExecuteAllCallBacksForLeftDoorIsOpen01(sdv::any_t value)
+      -sdv::core::CSignal m_leftLatch01
+      -sdv::core::CSignal m_leftDoorIsOpen01Signal
+      -mutable std::mutex m_leftDoorIsOpen01MutexCallbacks
+      -std::set&lt;vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteIsOpen_Event*&gt; m_leftDoorIsOpen01Callbacks
+      -std::atomic&lt;sdv::EObjectStatus&gt; m_status
+   }
+
+   class sdv::CSdvObject
+   {
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+      {static} +sdv::u8string GetDefaultObjectNameStatic()
+      {static} +bool IsSingletonStatic()
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+   }
+
+   Interface sdv::IObjectControl
+   {
+      {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
+      {abstract} EObjectStatus GetStatus() const
+      {abstract} void SetOperationMode(EOperationMode eMode)
+      {abstract} void Shutdown()
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_IsOpen
+   {
+      {abstract} void RegisterIsOpenEvent(IVSS_WriteIsOpen_Event* event)
+      {abstract} void UnregisterIsOpenEvent(IVSS_WriteIsOpen_Event* event)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteLock
+   {
+      virtual bool WriteLock(bool value)
+   }
+
+   CVehicleDeviceFrontDoorLeft --|&gt; sdv::CSdvObject : Inherits
+   CVehicleDeviceFrontDoorLeft ..|&gt; sdv::IObjectControl : Implements
+   CVehicleDeviceFrontDoorLeft ..|&gt; vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_IsOpen : Implements
+   CVehicleDeviceFrontDoorLeft ..|&gt; vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteLock : Implements
+ &#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">FrontDoorLeft Vehicle device class diagram</span><a class="headerlink" href="#id4" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id5">
+<p class="plantuml">
+<img src="../../../_images/plantuml-40a46dfc2888a929c97414947735a6d87122ad8d.svg" alt="&#64;startuml
+ set separator ::
+   class CBasicServiceFrontDoorRight
+   {
+     +{abstract} void SetIsOpenR1(bool value)
+     +{abstract} bool SetLock(bool value)
+     +{abstract} bool GetIsOpen() const
+     +{abstract} void WriteIsOpen(bool value)
+     +{abstract} void RegisterOnSignalChangeOfRightDoorIsOpen01(vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetIsOpen_Event* callback)
+     +{abstract} void UnregisterOnSignalChangeOfRightDoorIsOpen01(vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetIsOpen_Event* callback)
+     -bool m_rightDoorIsOpen01
+     -mutable std::mutex m_rightDoorIsOpen01MutexCallbacks
+     -std::set&lt;vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetIsOpen_Event*&gt; m_rightDoorIsOpen01Callbacks
+     -vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_WriteLock* m_ptrLock
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetIsOpen_Event
+   {
+      {abstract} void SetIsOpenR1(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_WriteIsOpen_Event
+   {
+      {abstract} void WriteIsOpen(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_GetIsOpen
+   {
+      {abstract} bool GetIsOpen() const
+      {abstract} void RegisterOnSignalChangeOfRightDoorIsOpen01(IVSS_SetIsOpen_Event* callback)
+      {abstract} void UnregisterOnSignalChangeOfRightDoorIsOpen01(IVSS_SetIsOpen_Event* callback)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetLock
+   {
+      {abstract} bool SetLock(bool value)
+   }
+
+   class sdv::CSdvObject
+   {
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+      {static} +sdv::u8string GetDefaultObjectNameStatic()
+      {static} +bool IsSingletonStatic()
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+   }
+
+   CBasicServiceFrontDoorRight --|&gt; sdv::CSdvObject : Inherits
+   CBasicServiceFrontDoorRight ..|&gt; vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_GetIsOpen : Implements
+   CBasicServiceFrontDoorRight ..|&gt; vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetIsOpen_Event : Implements
+   CBasicServiceFrontDoorRight ..|&gt; vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_WriteIsOpen_Event : Implements
+   CBasicServiceFrontDoorRight ..|&gt; vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetLock : Implements
+ &#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">FrontDoorRight Basic service class diagram</span><a class="headerlink" href="#id5" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id6">
+<p class="plantuml">
+<img src="../../../_images/plantuml-fb3d0dd3bbad9935d5f7a6119460f7e38ca0722f.svg" alt="&#64;startuml
+ set separator ::
+   class CVehicleDeviceFrontDoorRight
+   {
+      +{abstract} void Initialize(const sdv::u8string&amp; objectConfig)
+      +{abstract} sdv::EObjectStatus GetStatus() const
+      +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
+      +{abstract} void Shutdown()
+      +{abstract} bool WriteLock(bool value)
+      +{abstract} void RegisterIsOpenEvent(vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_WriteIsOpen_Event* event)
+      +{abstract} void UnregisterIsOpenEvent(vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_WriteIsOpen_Event* event)
+      -void ExecuteAllCallBacksForRightDoorIsOpen01(sdv::any_t value)
+      -sdv::core::CSignal m_rightLatch01
+      -sdv::core::CSignal m_rightDoorIsOpen01Signal
+      -mutable std::mutex m_rightDoorIsOpen01MutexCallbacks
+      -std::set&lt;vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_WriteIsOpen_Event*&gt; m_rightDoorIsOpen01Callbacks
+      -std::atomic&lt;sdv::EObjectStatus&gt; m_status
+   }
+
+   class sdv::CSdvObject
+   {
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+      {static} +sdv::u8string GetDefaultObjectNameStatic()
+      {static} +bool IsSingletonStatic()
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+   }
+
+   Interface sdv::IObjectControl
+   {
+      {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
+      {abstract} EObjectStatus GetStatus() const
+      {abstract} void SetOperationMode(EOperationMode eMode)
+      {abstract} void Shutdown()
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_IsOpen
+   {
+      {abstract} void RegisterIsOpenEvent(IVSS_WriteIsOpen_Event* event)
+      {abstract} void UnregisterIsOpenEvent(IVSS_WriteIsOpen_Event* event)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_WriteLock
+   {
+      {abstract} bool WriteLock(bool value)
+   }
+
+   CVehicleDeviceFrontDoorRight --|&gt; sdv::CSdvObject : Inherits
+   CVehicleDeviceFrontDoorRight ..|&gt; sdv::IObjectControl : Implements
+   CVehicleDeviceFrontDoorRight ..|&gt; vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_IsOpen : Implements
+   CVehicleDeviceFrontDoorRight ..|&gt; vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_WriteLock : Implements
+ &#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">FrontDoorRight Vehicle device class diagram</span><a class="headerlink" href="#id6" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id7">
+<p class="plantuml">
+<img src="../../../_images/plantuml-94affeec5559ed68964cc1a0221f060f153858d0.svg" alt="&#64;startuml
+ set separator ::
+   class CBasicServiceRearDoorLeft
+   {
+      +{abstract} void SetIsOpenL2(bool value)
+      +{abstract} bool SetLock(bool value)
+      +{abstract} bool GetIsOpen() const
+      +{abstract} void WriteIsOpen(bool value)
+      +{abstract} void RegisterOnSignalChangeOfLeftDoorIsOpen02(vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetIsOpen_Event* callback)
+      +{abstract} void UnregisterOnSignalChangeOfLeftDoorIsOpen02(vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetIsOpen_Event* callback)
+      -bool m_leftDoorIsOpen02
+      -mutable std::mutex m_leftDoorIsOpen02MutexCallbacks
+      -std::set&lt;vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetIsOpen_Event*&gt; m_leftDoorIsOpen02Callbacks
+      -vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_WriteLock* m_ptrLock
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_GetIsOpen
+   {
+      {abstract} bool GetIsOpen() const
+      {abstract} void RegisterOnSignalChangeOfLeftDoorIsOpen02(IVSS_SetIsOpen_Event* callback)
+      {abstract} void UnregisterOnSignalChangeOfLeftDoorIsOpen02(IVSS_SetIsOpen_Event* callback)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetIsOpen_Event
+   {
+      {abstract} void SetIsOpenL2(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_WriteIsOpen_Event
+   {
+      {abstract} void WriteIsOpen(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetLock
+   {
+      {abstract} bool SetLock(bool value)
+   }
+
+   class sdv::CSdvObject
+   {
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+      {static} +sdv::u8string GetDefaultObjectNameStatic()
+      {static} +bool IsSingletonStatic()
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+   }
+
+   CBasicServiceRearDoorLeft --|&gt; sdv::CSdvObject : Inherits
+   CBasicServiceRearDoorLeft ..|&gt; vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_GetIsOpen : Implements
+   CBasicServiceRearDoorLeft ..|&gt; vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetIsOpen_Event : Implements
+   CBasicServiceRearDoorLeft ..|&gt; vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_WriteIsOpen_Event : Implements
+   CBasicServiceRearDoorLeft ..|&gt; vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetLock : Implements
+ &#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">RearDoorLeft Basic service class diagram</span><a class="headerlink" href="#id7" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id8">
+<p class="plantuml">
+<img src="../../../_images/plantuml-2e925dc7105e4c2c7fd95c839cca4a3a7b2b2361.svg" alt="&#64;startuml
+ set separator ::
+   class CVehicleDeviceRearDoorLeft
+   {
+      +{abstract} void Initialize(const sdv::u8string&amp; objectConfig)
+      +{abstract} sdv::EObjectStatus GetStatus() const
+      +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
+      +{abstract} void Shutdown()
+      +{abstract} bool WriteLock(bool value)
+      +{abstract} void RegisterIsOpenEvent(vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_WriteIsOpen_Event* event)
+      +{abstract} void UnregisterIsOpenEvent(vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_WriteIsOpen_Event* event)
+      -void ExecuteAllCallBacksForLeftDoorIsOpen02(sdv::any_t value)
+      -sdv::core::CSignal m_leftLatch02
+      -sdv::core::CSignal m_leftDoorIsOpen02Signal
+      -mutable std::mutex m_leftDoorIsOpen02MutexCallbacks
+      -std::set&lt;vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_WriteIsOpen_Event*&gt; m_leftDoorIsOpen02Callbacks
+      -std::atomic&lt;sdv::EObjectStatus&gt; m_status
+   }
+
+   class sdv::CSdvObject
+   {
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+      {static} +sdv::u8string GetDefaultObjectNameStatic()
+      {static} +bool IsSingletonStatic()
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+   }
+
+   Interface sdv::IObjectControl
+   {
+      {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
+      {abstract} EObjectStatus GetStatus() const
+      {abstract} void SetOperationMode(EOperationMode eMode)
+      {abstract} void Shutdown()
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_IsOpen
+   {
+      {abstract} void RegisterIsOpenEvent(IVSS_WriteIsOpen_Event* event)
+      {abstract} void UnregisterIsOpenEvent(IVSS_WriteIsOpen_Event* event)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_WriteLock
+   {
+      {abstract} bool WriteLock(bool value)
+   }
+
+   CVehicleDeviceRearDoorLeft --|&gt; sdv::CSdvObject : Inherits
+   CVehicleDeviceRearDoorLeft ..|&gt; sdv::IObjectControl : Implements
+   CVehicleDeviceRearDoorLeft ..|&gt; vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_IsOpen : Implements
+   CVehicleDeviceRearDoorLeft ..|&gt; vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_WriteLock   : Implements
+ &#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">RearDoorLeft Vehicle device class diagram</span><a class="headerlink" href="#id8" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id9">
+<p class="plantuml">
+<img src="../../../_images/plantuml-472ca02c0c7b7e6d93f8c558d1e7601c91872750.svg" alt="&#64;startuml
+ set separator ::
+   class CBasicServiceRearDoorRight
+   {
+      +{abstract} void SetIsOpenR2(bool value)
+      +{abstract} bool SetLock(bool value)
+      +{abstract} bool GetIsOpen() const
+      +{abstract} void WriteIsOpen(bool value)
+      +{abstract} void RegisterOnSignalChangeOfRightDoorIsOpen02(vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetIsOpen_Event* callback)
+      +{abstract} void UnregisterOnSignalChangeOfRightDoorIsOpen02(vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetIsOpen_Event* callback)
+      -bool m_rightDoorIsOpen02
+      -mutable std::mutex m_rightDoorIsOpen02MutexCallbacks
+      -std::set&lt;vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetIsOpen_Event*&gt; m_rightDoorIsOpen02Callbacks
+      -vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_WriteLock* m_ptrLock
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_GetIsOpen
+   {
+      {abstract} bool GetIsOpen() const
+      {abstract} void RegisterOnSignalChangeOfRightDoorIsOpen02(IVSS_SetIsOpen_Event* callback)
+      {abstract} void UnregisterOnSignalChangeOfRightDoorIsOpen02(IVSS_SetIsOpen_Event* callback)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetIsOpen_Event
+   {
+      {abstract} void SetIsOpenR2(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_WriteIsOpen_Event
+   {
+      {abstract} void WriteIsOpen(bool value)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetLock
+   {
+      {abstract} bool SetLock(bool value)
+   }
+
+   class sdv::CSdvObject
+   {
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+      {static} +sdv::u8string GetDefaultObjectNameStatic()
+      {static} +bool IsSingletonStatic()
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+   }
+
+   CBasicServiceRearDoorRight --|&gt; sdv::CSdvObject : Inherits
+   CBasicServiceRearDoorRight ..|&gt; vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_GetIsOpen : Implements
+   CBasicServiceRearDoorRight ..|&gt; vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetIsOpen_Event : Implements
+   CBasicServiceRearDoorRight ..|&gt; vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_WriteIsOpen_Event : Implements
+   CBasicServiceRearDoorRight ..|&gt; vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetLock   : Implements
+ &#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">RearDoorRight Basic service class diagram</span><a class="headerlink" href="#id9" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id10">
+<p class="plantuml">
+<img src="../../../_images/plantuml-2902ddd72b88b054b27bc8693fea8af92b8b45fe.svg" alt="&#64;startuml
+ set separator ::
+   class CVehicleDeviceRearDoorRight
+   {
+      +{abstract} void Initialize(const sdv::u8string&amp; objectConfig)
+      +{abstract} sdv::EObjectStatus GetStatus() const
+      +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
+      +{abstract} void Shutdown()
+      +{abstract} bool WriteLock(bool value)
+      +{abstract} void RegisterIsOpenEvent(vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_WriteIsOpen_Event* event)
+      +{abstract} void UnregisterIsOpenEvent(vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_WriteIsOpen_Event* event)
+      -void ExecuteAllCallBacksForRightDoorIsOpen02(sdv::any_t value)
+      -sdv::core::CSignal m_rightLatch02
+      -sdv::core::CSignal m_rightDoorIsOpen02Signal
+      -mutable std::mutex m_rightDoorIsOpen02MutexCallbacks
+      -std::set&lt;vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_WriteIsOpen_Event*&gt; m_rightDoorIsOpen02Callbacks
+      -std::atomic&lt;sdv::EObjectStatus&gt; m_status
+   }
+
+   class sdv::CSdvObject
+   {
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+      {static} +sdv::u8string GetDefaultObjectNameStatic()
+      {static} +bool IsSingletonStatic()
+      {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+   }
+
+   Interface sdv::IObjectControl
+   {
+      {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
+      {abstract} EObjectStatus GetStatus() const
+      {abstract} void SetOperationMode(EOperationMode eMode)
+      {abstract} void Shutdown()
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_IsOpen
+   {
+      {abstract} void RegisterIsOpenEvent(IVSS_WriteIsOpen_Event* event)
+      {abstract} void UnregisterIsOpenEvent(IVSS_WriteIsOpen_Event* event)
+   }
+
+   Interface vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_WriteLock
+   {
+      {abstract} bool WriteLock(bool value)
+   }
+
+   CVehicleDeviceRearDoorRight --|&gt; sdv::CSdvObject : Inherits
+   CVehicleDeviceRearDoorRight ..|&gt; sdv::IObjectControl : Implements
+   CVehicleDeviceRearDoorRight ..|&gt; vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_IsOpen : Implements
+   CVehicleDeviceRearDoorRight ..|&gt; vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_WriteLock : Implements
+ &#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">RearDoorRight  Vehicle device class diagram</span><a class="headerlink" href="#id10" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 </section>
 
 

@@ -139,3 +139,88 @@ Add and configure widgets to simulate or control signal values
 
 .. image:: ../../../vapi_media/examples/auto_headlight_example/widget2conf.png
 
+
+Simulation with Openxil and VAPI only
+---------------------------------------
+
+VAPI can also be simulated without use of CarlaBridge. By only utilizing the widgets present in Openxil and configuring them to the respective signals of VAPI.
+Values can be modified by user and VAPI FMU reacts to the changes.
+
+.. uml::
+   :caption: Openxil and VAPI sequence diagram 
+
+    @startuml
+
+    skinparam defaultFontColor black
+
+    actor "User" 
+    participant "Openxil" as OX 
+
+    box "Core Instance" #82b8b8ff
+    Participant "Headlight Application" as HA #00A7AB
+    end box
+
+    rnote over User
+    Set Python env
+    end rnote
+
+    User -> OX : Start the Openxil
+    
+    activate OX
+    
+    rnote over OX
+    OpenXil started 
+    end rnote
+    
+    User -> OX : Load Headlight FMU (VAPI)
+    OX -> HA : Loads Headlight application
+    
+    deactivate OX
+
+    HA -> HA : Loads Core services 
+    rnote over HA
+    Headlight application
+    loads **Core services**
+    and registers 
+    following signals:
+    1. Current Latitude
+    2. Current Longitude
+    3. Headlight Lowbeam 
+    end rnote
+
+
+    HA -> HA : Loads vehicle devices
+    HA -> HA : Loads basic services 
+    HA -> HA : Loads Complex service
+
+    activate OX
+    HA-->OX : Signals value information
+    deactivate HA
+
+    User -> OX : Add and configure widgets
+
+    rnote over OX
+    widget is configured 
+    with latitude,longitude 
+    and headlight signals
+    end rnote
+
+    rnote over OX
+    Widget value 
+    is updated 
+    end rnote
+
+    User -> OX : Modify latitude and longitude to tunnel location
+
+    OX -> HA : Current Latitude and Longitude information
+    activate HA
+    HA -> HA : Toggles Headlight on
+
+    HA -> OX : Headlight turned on
+    deactivate HA
+    rnote over OX
+    Widget value 
+    is updated 
+    end rnote
+
+    @enduml

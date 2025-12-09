@@ -710,6 +710,511 @@ If the position is <strong>outside</strong> → headlight is <strong>off</strong
 <li><p>Updates on vehicle position are received through callbacks from basic services.</p></li>
 <li><p>Headlight status is calculated and written using headlight interfaces, which call the respective basic service and vehicle device interfaces to update the status.</p></li>
 </ul>
+<figure class="align-default" id="id1">
+<p class="plantuml">
+<img src="../../../_images/plantuml-838eaba016b96a659eb297cf9fb81111e852ff2c.svg" alt="&#64;startuml
+
+skinparam defaultFontColor black
+
+box &quot;Core Instance&quot; #82b8b8ff
+Participant &quot;CAutoHeadlightAppSimulate&quot; as EC #00A7AB
+Participant &quot;Rx Signal (Dispatch Service)&quot; as RX #BFBFBF
+Participant &quot;Vehicle Device&quot; as VD #7FD5F3
+Participant &quot;Basic Service&quot; as BS #58D4FF
+Participant &quot;Complex Service&quot; as CS #3B97CD
+end box
+
+
+
+rnote over EC
+Rx Signals
+are created
+for Latitude and
+Longitude
+(GPS position)
+endrnote
+
+activate EC
+
+EC-&gt;RX
+
+activate RX
+
+RX-&gt;RX : signal value updated
+RX --&gt; EC
+
+deactivate EC
+
+
+RX -&gt; VD : Event Triggered
+deactivate RX
+activate VD
+
+rnote over VD
+Signal value
+Updated
+endrnote
+
+VD -&gt; BS : Event Triggered
+deactivate VD
+activate BS
+
+
+rnote over BS
+Signal value
+Updated
+endrnote
+
+BS -&gt; CS : Event Triggered
+deactivate BS
+
+activate CS
+rnote over CS
+Signal value
+Updated and
+processed
+endrnote
+
+deactivate CS
+
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Reception sequence</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id2">
+<p class="plantuml">
+<img src="../../../_images/plantuml-96d91522a44cbb6ae32c049cafc335a2bf146beb.svg" alt="&#64;startuml
+ set separator ::
+ class CAutoHeadlightService &lt;&lt;Singleton&gt;&gt;
+ {
+   +void Initialize(const sdv::u8string&amp; ssObjectConfig)
+   +sdv::EObjectStatus GetStatus() const
+   +void SetOperationMode(sdv::EOperationMode eMode)
+   +void Shutdown()
+   -void SetCurrentLatitude(float value)
+   -void SetCurrentLongitude(float value)
+   -bool IsinTunnel() const
+   -bool GetHeadlightStatus() const
+   -SGPSBoundBox GetGPSBoundBox() const
+   -void ProcessHeadlightBasedOnEgoPosition()
+   -bool LoadGPSBounds(const sdv::u8string&amp; rssObjectConfig)
+   -sdv::EObjectStatus m_eStatus
+   -volatile float m_fCurrentLatitude
+   -volatile float m_fCurrentLongitude
+   -volatile bool m_bHeadlight
+   -SGPSBoundBox m_SGPSBoundingBox
+   -vss::Vehicle::Body::Light::Front::LowBeamService::IVSS_SetHeadLightLowBeam* m_pHeadlightSvc
+ }
+
+ class sdv::CSdvObject
+ {
+   {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+   {static} +sdv::u8string GetDefaultObjectNameStatic()
+   {static} +bool IsSingletonStatic()
+   {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+
+ }
+ class CSdvObjectAccess
+ Interface sdv::IObjectControl
+ {
+   {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
+   {abstract} EObjectStatus GetStatus() const
+   {abstract} void SetOperationMode(EOperationMode eMode)
+   {abstract} void Shutdown()
+ }
+ Interface IAutoheadlightService
+ {
+   struct SGPSBoundBox
+   {abstract} bool IsinTunnel() const
+   {abstract} bool GetHeadlightStatus() const
+   {abstract} SGPSBoundBox GetGPSBoundBox() const
+ }
+ Interface vss::Vehicle::Position::CurrentLatitudeService::IVSS_SetCurrentLatitude_Event
+ {
+   {abstract} void SetCurrentLatitude(float value)
+ }
+ Interface vss::Vehicle::Position::CurrentLongitudeService::IVSS_SetCurrentLongitude_Event
+ {
+   virtual void SetCurrentLongitude(float value)
+ }
+
+ CAutoHeadlightService ..|&gt; IObjectControl : Implements
+ CAutoHeadlightService ..|&gt; IAutoheadlightService : Implements
+ CAutoHeadlightService ..|&gt; IVSS_SetCurrentLatitude_Event : Implements
+ CAutoHeadlightService ..|&gt; IVSS_SetCurrentLongitude_Event : Implements
+ CAutoHeadlightService --|&gt; CSdvObject
+ CSdvObject --|&gt; CSdvObjectAccess : inherits
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Headlight complex service class diagram</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id3">
+<p class="plantuml">
+<img src="../../../_images/plantuml-7446228721cc770825807b63c624a7864b9edc45.svg" alt="&#64;startuml
+ set separator ::
+ package &quot;Headlight Application executable&quot;
+ {
+   class CAutoHeadlightAppSimulate
+   {
+
+     +bool Initialize()
+     +void Shutdown()
+     +void ExecuteTestRun()
+     -bool KeyHit()
+     -char GetChar()
+     -bool GetAccessToServices()
+     -bool RegisterSignalsSimDatalink()
+     -void ResetSignalsSimDatalink()
+     -bool IsSDVFrameworkEnvironmentSet()
+     -virtual void SetCurrentLatitude(float value)
+     -virtual void SetCurrentLongitude(float value)
+     -void CallbackToSetCurrentLatitude(sdv::any_t value)
+     -void CallbackToSetCurrentLongitude(sdv::any_t value)
+
+   }
+
+   class CConsole
+   {
+     +void PrintHeader()
+     +bool PrepareDataConsumers()
+     +void ResetSignals()
+     +void StartUpdateDataThread()
+     +void StopUpdateDataThread()
+     -void WriteCurrentLatitude(float value)
+     -void WriteCurrentLongitude(float value)
+     -void SetCurrentLatitude(float value)
+     -void SetCurrentLongitude(float value)
+     -bool RegisterSignals()
+     -void CallbackCurrentLatitude(sdv::any_t value)
+     -void CallbackCurrentLongitude(sdv::any_t value)
+     -void CallbackToSetCurrentLatitude(sdv::any_t value)
+     -void CallbackToSetCurrentLongitude(sdv::any_t value)
+     -void UpdateDataThreadFunc()
+     -void UpdateTXSignal(SConsolePos sPos, const std::string&amp; label, sdv::core::CSignal&amp; signal, bool&amp; value)
+     -SConsolePos GetCursorPos() const
+     -void SetCursorPos(SConsolePos sPos);
+     -void PrintText(SConsolePos sPos, const std::string&amp; rssText);
+     -void PrintValue(SConsolePos sPos, const std::string&amp; rssName, TValue tValue, const std::string&amp; rssStatus);
+     -std::string AlignString(const std::string&amp; message, uint32_t desiredLength = 0);
+     -inline void PrintValue(SConsolePos sPos, const std::string&amp; rssName, TValue tValue, const std::string&amp; rssUnits)
+     -inline void PrintValue&lt;bool&gt;(SConsolePos sPos, const std::string&amp; rssName, bool bValue, const std::string&amp; rssUnits)
+   }
+
+ }
+ Interface vss::Vehicle::Position::CurrentLatitudeService::IVSS_SetCurrentLatitude_Event
+ {
+   {abstract} void SetCurrentLatitude(float value)
+ }
+ Interface vss::Vehicle::Position::CurrentLongitudeService::IVSS_SetCurrentLongitude_Event
+ {
+   {abstract} void SetCurrentLongitude(float value)
+ }
+
+
+
+ Interface vss::Vehicle::Position::CurrentLatitudeDevice::IVSS_WriteCurrentLatitude_Event
+ {
+   {abstract} void WriteCurrentLatitude(float value)
+ }
+ Interface vss::Vehicle::Position::CurrentLongitudeDevice::IVSS_WriteCurrentLongitude_Event
+ {
+   {abstract} void WriteCurrentLongitude(float value)
+ }
+
+ CAutoHeadlightAppSimulate ..|&gt;  IVSS_SetCurrentLatitude_Event : Implements
+ CAutoHeadlightAppSimulate ..|&gt;  IVSS_SetCurrentLongitude_Event : Implements
+ CAutoHeadlightAppSimulate ..|&gt;  IVSS_WriteCurrentLatitude_Event :Implements
+ CAutoHeadlightAppSimulate ..|&gt;  IVSS_WriteCurrentLongitude_Event :Implements
+ CConsole ..|&gt;  IVSS_SetCurrentLatitude_Event : Implements
+ CConsole ..|&gt;  IVSS_SetCurrentLongitude_Event : Implements
+
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Headlight application class diagram</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id4">
+<p class="plantuml">
+<img src="../../../_images/plantuml-7fd3c285b074eb1c2671afa43f800cbb83257567.svg" alt="&#64;startuml
+ set separator ::
+ class CBasicServiceCurrentLatitude
+ {
+   +void SetCurrentLatitude(float value)
+   +float GetCurrentLatitude() const
+   +void WriteCurrentLatitude(float value)
+   +void RegisterOnSignalChangeOfFCurrentLatitude(vss::Vehicle::Position::CurrentLatitudeService::IVSS_SetCurrentLatitude_Event* callback)
+   +void UnregisterOnSignalChangeOfFCurrentLatitude(vss::Vehicle::Position::CurrentLatitudeService::IVSS_SetCurrentLatitude_Event* callback)
+   -float m_fCurrentLatitude
+         -mutable std::mutex m_fCurrentLatitudeMutexCallbacks
+         -std::set&lt;vss::Vehicle::Position::CurrentLatitudeService::IVSS_SetCurrentLatitude_Event*&gt; m_fCurrentLatitudeCallbacks
+ }
+
+ class sdv::CSdvObject
+ {
+   {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+   {static} +sdv::u8string GetDefaultObjectNameStatic()
+   {static} +bool IsSingletonStatic()
+   {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+
+ }
+
+ Interface vss::Vehicle::Position::CurrentLatitudeDevice::IVSS_WriteCurrentLatitude_Event
+ {
+   {abstract} void WriteCurrentLatitude(float value)
+ }
+
+ Interface vss::Vehicle::Position::CurrentLatitudeService::IVSS_SetCurrentLatitude_Event
+ {
+   {abstract} void SetCurrentLatitude(float value)
+ }
+
+ Interface vss::Vehicle::Position::CurrentLatitudeService::IVSS_GetCurrentLatitude
+ {
+   {abstract} float GetCurrentLatitude() const
+   {abstract} void RegisterOnSignalChangeOfFCurrentLatitude(IVSS_SetCurrentLatitude_Event* callback)
+   {abstract} void UnregisterOnSignalChangeOfFCurrentLatitude(IVSS_SetCurrentLatitude_Event* callback)
+ }
+
+ CBasicServiceCurrentLatitude --|&gt; sdv::CSdvObject : Inherits
+ CBasicServiceCurrentLatitude ..|&gt; vss::Vehicle::Position::CurrentLatitudeService::IVSS_GetCurrentLatitude : Implements
+ CBasicServiceCurrentLatitude ..|&gt; vss::Vehicle::Position::CurrentLatitudeService::IVSS_SetCurrentLatitude_Event : Implements
+ CBasicServiceCurrentLatitude ..|&gt; vss::Vehicle::Position::CurrentLatitudeDevice::IVSS_WriteCurrentLatitude_Event : Implements
+
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Current Latitude basic services class diagram</span><a class="headerlink" href="#id4" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id5">
+<p class="plantuml">
+<img src="../../../_images/plantuml-e683e4ef2915d12afb0aab60f44d49b4b92e5cda.svg" alt="&#64;startuml
+ set separator ::
+ class CBasicServiceCurrentLongitude
+ {
+   +void SetCurrentLongitude(float value)
+   +float GetCurrentLongitude() const
+   +void WriteCurrentLongitude(float value)
+   +void RegisterOnSignalChangeOfFCurrentLongitude(vss::Vehicle::Position::CurrentLongitudeService::IVSS_SetCurrentLongitude_Event* callback)
+   +void UnregisterOnSignalChangeOfFCurrentLongitude(vss::Vehicle::Position::CurrentLongitudeService::IVSS_SetCurrentLongitude_Event* callback)
+   -float m_fCurrentLongitude
+   -mutable std::mutex m_fCurrentLongitudeMutexCallbacks
+   -std::set&lt;vss::Vehicle::Position::CurrentLongitudeService::IVSS_SetCurrentLongitude_Event*&gt; m_fCurrentLongitudeCallbacks
+ }
+
+ Interface vss::Vehicle::Position::CurrentLongitudeDevice::IVSS_WriteCurrentLongitude_Event
+ {
+   {abstract} void WriteCurrentLongitude(float value)
+ }
+
+ Interface vss::Vehicle::Position::CurrentLongitudeService::IVSS_SetCurrentLongitude_Event
+ {
+   {abstract} void SetCurrentLongitude(float value)
+ }
+
+ Interface vss::Vehicle::Position::CurrentLongitudeService::IVSS_GetCurrentLongitude
+ {
+   {abstract} float GetCurrentLongitude() const
+   {abstract} void RegisterOnSignalChangeOfFCurrentLongitude(IVSS_SetCurrentLongitude_Event* callback)
+   {abstract} void UnregisterOnSignalChangeOfFCurrentLongitude(IVSS_SetCurrentLongitude_Event* callback)
+ }
+
+ class sdv::CSdvObject
+ {
+   {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+   {static} +sdv::u8string GetDefaultObjectNameStatic()
+   {static} +bool IsSingletonStatic()
+   {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+
+ }
+
+ CBasicServiceCurrentLongitude --|&gt; sdv::CSdvObject : Inherits
+ CBasicServiceCurrentLongitude ..|&gt; vss::Vehicle::Position::CurrentLongitudeService::IVSS_GetCurrentLongitude : Implements
+ CBasicServiceCurrentLongitude ..|&gt; vss::Vehicle::Position::CurrentLongitudeService::IVSS_SetCurrentLongitude_Event : Implements
+ CBasicServiceCurrentLongitude ..|&gt; vss::Vehicle::Position::CurrentLongitudeDevice::IVSS_WriteCurrentLongitude_Event : Implements
+
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Current Longitude basic service class diagram</span><a class="headerlink" href="#id5" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id6">
+<p class="plantuml">
+<img src="../../../_images/plantuml-5ce1017dd6ee5d19ae7f0611f6d8b898e6f05a85.svg" alt="&#64;startuml
+ set separator ::
+ class CBasicServiceHeadLightLowBeam
+ {
+   +bool SetHeadLightLowBeam(bool value)
+         -vss::Vehicle::Body::Light::Front::LowBeamDevice::IVSS_WriteHeadLightLowBeam* m_ptrHeadLightLowBeam
+ }
+
+ class sdv::CSdvObject
+ {
+   {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+   {static} +sdv::u8string GetDefaultObjectNameStatic()
+   {static} +bool IsSingletonStatic()
+   {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+ }
+
+ Interface vss::Vehicle::Body::Light::Front::LowBeamService::IVSS_SetHeadLightLowBeam
+ {
+   {abstract} bool SetHeadLightLowBeam(bool value)
+ }
+
+ CBasicServiceHeadLightLowBeam --|&gt; sdv::CSdvObject : Inherits
+ CBasicServiceHeadLightLowBeam ..|&gt; vss::Vehicle::Body::Light::Front::LowBeamService::IVSS_SetHeadLightLowBeam : Implements
+
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">HeadlightLowBeam basic service class diagram</span><a class="headerlink" href="#id6" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id7">
+<p class="plantuml">
+<img src="../../../_images/plantuml-9264958db9fa4f0860d1a5813d97fc7f3927ee7f.svg" alt="&#64;startuml
+ set separator ::
+ class CVehicleDeviceHeadLightLowBeam
+ {
+   +void Initialize(const sdv::u8string&amp; objectConfig)
+   +sdv::EObjectStatus GetStatus() const
+   +void SetOperationMode(sdv::EOperationMode eMode)
+   +void Shutdown()
+   +bool WriteHeadLightLowBeam(bool value)
+   -sdv::core::CSignal m_bHeadLightLowBeam
+   -std::atomic&lt;sdv::EObjectStatus&gt; m_status
+ }
+
+ class sdv::CSdvObject
+ {
+   {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+   {static} +sdv::u8string GetDefaultObjectNameStatic()
+   {static} +bool IsSingletonStatic()
+   {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+ }
+
+ Interface sdv::IObjectControl
+ {
+   {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
+   {abstract} EObjectStatus GetStatus() const
+   {abstract} void SetOperationMode(EOperationMode eMode)
+   {abstract} void Shutdown()
+ }
+
+ Interface vss::Vehicle::Body::Light::Front::LowBeamDevice::IVSS_WriteHeadLightLowBeam
+ {
+   {abstract} bool WriteHeadLightLowBeam(bool value)
+ }
+
+ CVehicleDeviceHeadLightLowBeam --|&gt; sdv::CSdvObject : Inherits
+ CVehicleDeviceHeadLightLowBeam ..|&gt; sdv::IObjectControl : Implements
+ CVehicleDeviceHeadLightLowBeam ..|&gt; vss::Vehicle::Body::Light::Front::LowBeamDevice::IVSS_WriteHeadLightLowBeam : Implements
+
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">HeadlightLowBeam vehicle device class diagram</span><a class="headerlink" href="#id7" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id8">
+<p class="plantuml">
+<img src="../../../_images/plantuml-a5d6f19deaa24ecb48afe490467d6c1d982713bc.svg" alt="&#64;startuml
+ set separator ::
+ class CVehicleDeviceCurrentLatitude
+ {
+   +void Initialize(const sdv::u8string&amp; objectConfig)
+   +sdv::EObjectStatus GetStatus() const
+   +void SetOperationMode(sdv::EOperationMode eMode)
+   +void Shutdown()
+   +void RegisterCurrentLatitudeEvent(vss::Vehicle::Position::CurrentLatitudeDevice::IVSS_WriteCurrentLatitude_Event* event)
+   +void UnregisterCurrentLatitudeEvent(vss::Vehicle::Position::CurrentLatitudeDevice::IVSS_WriteCurrentLatitude_Event* event)
+   +void ExecuteAllCallBacksForFCurrentLatitude(sdv::any_t value);
+   -sdv::core::CSignal m_fCurrentLatitudeSignal
+   -mutable std::mutex m_fCurrentLatitudeMutexCallbacks
+   -std::set&lt;vss::Vehicle::Position::CurrentLatitudeDevice::IVSS_WriteCurrentLatitude_Event*&gt; m_fCurrentLatitudeCallbacks
+   -std::atomic&lt;sdv::EObjectStatus&gt; m_status
+ }
+
+ class sdv::CSdvObject
+ {
+   {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+   {static} +sdv::u8string GetDefaultObjectNameStatic()
+   {static} +bool IsSingletonStatic()
+   {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+ }
+
+ Interface sdv::IObjectControl
+ {
+   {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
+   {abstract} EObjectStatus GetStatus() const
+   {abstract} void SetOperationMode(EOperationMode eMode)
+   {abstract} void Shutdown()
+ }
+
+ Interface vss::Vehicle::Position::CurrentLatitudeDevice::IVSS_CurrentLatitude
+ {
+   {abstract} void RegisterCurrentLatitudeEvent(IVSS_WriteCurrentLatitude_Event* event)
+   {abstract} void UnregisterCurrentLatitudeEvent(IVSS_WriteCurrentLatitude_Event* event)
+ }
+
+ CVehicleDeviceCurrentLatitude --|&gt; sdv::CSdvObject : Inherits
+ CVehicleDeviceCurrentLatitude ..|&gt; sdv::IObjectControl : Implements
+ CVehicleDeviceCurrentLatitude ..|&gt; vss::Vehicle::Position::CurrentLatitudeDevice::IVSS_CurrentLatitude : Implements
+
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Current latitude vehicle device class diagram</span><a class="headerlink" href="#id8" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id9">
+<p class="plantuml">
+<img src="../../../_images/plantuml-88a89812e388f67536f5b9e98a09ef4fc02ad08b.svg" alt="&#64;startuml
+ set separator ::
+ class CVehicleDeviceCurrentLongitude
+ {
+   +void Initialize(const sdv::u8string&amp; objectConfig)
+   +sdv::EObjectStatus GetStatus() const
+   +void SetOperationMode(sdv::EOperationMode eMode)
+   +void Shutdown()
+   +void RegisterCurrentLongitudeEvent(vss::Vehicle::Position::CurrentLongitudeDevice::IVSS_WriteCurrentLongitude_Event* event)
+   +void UnregisterCurrentLongitudeEvent(vss::Vehicle::Position::CurrentLongitudeDevice::IVSS_WriteCurrentLongitude_Event* event)
+   -void ExecuteAllCallBacksForFCurrentLongitude(sdv::any_t value)
+   -sdv::core::CSignal m_fCurrentLongitudeSignal
+   -mutable std::mutex m_fCurrentLongitudeMutexCallbacks
+   -std::set&lt;vss::Vehicle::Position::CurrentLongitudeDevice::IVSS_WriteCurrentLongitude_Event*&gt; m_fCurrentLongitudeCallbacks
+   -std::atomic&lt;sdv::EObjectStatus&gt; m_status
+ }
+
+ class sdv::CSdvObject
+ {
+   {static} +sdv::sequence&lt;sdv::u8string&gt; GetClassAliasesStatic()
+   {static} +sdv::u8string GetDefaultObjectNameStatic()
+   {static} +bool IsSingletonStatic()
+   {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
+ }
+
+ Interface sdv::IObjectControl
+ {
+   {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
+   {abstract} EObjectStatus GetStatus() const
+   {abstract} void SetOperationMode(EOperationMode eMode)
+   {abstract} void Shutdown()
+ }
+
+ Interface vss::Vehicle::Position::CurrentLongitudeDevice::IVSS_CurrentLongitude
+ {
+   {abstract} void RegisterCurrentLongitudeEvent(IVSS_WriteCurrentLongitude_Event* event)
+   {abstract} void UnregisterCurrentLongitudeEvent(IVSS_WriteCurrentLongitude_Event* event)
+ }
+
+ CVehicleDeviceCurrentLongitude --|&gt; sdv::CSdvObject : Inherits
+ CVehicleDeviceCurrentLongitude ..|&gt; sdv::IObjectControl : Implements
+ CVehicleDeviceCurrentLongitude ..|&gt; vss::Vehicle::Position::CurrentLongitudeDevice::IVSS_CurrentLongitude : Implements
+
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Current latitude vehicle device class diagram</span><a class="headerlink" href="#id9" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 </section>
 </section>
 

@@ -619,8 +619,50 @@ document.write(`
 <p>First, we have the Initialization phase, where we have to load the required components. During loading of the components, the core system is in configuration mode. That means, the components are loaded and configured. After every component is loaded, we have to switch to running mode.</p>
 <p>The example in simulation mode does not load the Data Link, therefore there are no signals. In this case, we have to create them (registering) in the dispatch service and before shutdown to reset them.</p>
 <img alt="../../../_images/system_demo_simulation_mode.png" src="../../../_images/system_demo_simulation_mode.png" />
-<p>After testrun we have to unregister the signals for a graeefull shutdown.</p>
-<img alt="../../../_images/System_demo_shutdown.png" src="../../../_images/System_demo_shutdown.png" />
+<p>After test-run we have to unregister the signals for a graceful shutdown.</p>
+<figure class="align-default" id="id1">
+<p class="plantuml">
+<img src="../../../_images/plantuml-b942b57f1105e6a22a37e068443a8d6a67e700d5.svg" alt="&#64;startuml
+
+skinparam BackgroundColor #A2D3D6
+Participant &quot;Example Application&quot; as EA #00A7AB
+Participant &quot;CExample Control (Utility)&quot; as EC #00A7AB
+Participant &quot;CAppControl&quot; as AC #BFBFBF
+
+EA-&gt;EC : CExampleControl::StartTestRun()
+activate EC #00A7AB
+EC-&gt;EC : Switch to simulation mode (Can't Load further services)
+EC-&gt;EC : Test Run Starts
+EC--&gt;EA
+deactivate EC
+
+EA-&gt;EC : CExampleControl::StopTestRun()
+activate EC #00A7AB
+EC-&gt;EC : Test Run Stops
+EC--&gt;EA
+deactivate EC
+
+EA-&gt;EC : CExampleControl::ResetSignalsSimDatalink()
+activate EC #00A7AB
+EC-&gt;EC : Reset simulated signals
+EC--&gt;EA
+deactivate EC
+
+EA-&gt;EC : CExampleControl::Shutdown()
+activate EC #00A7AB
+EC-&gt;AC : CAppControl::Shutdown()
+activate AC #BFBFBF
+AC-&gt;AC : Shutdown the application
+AC--&gt;EC
+deactivate AC #BFBFBF
+EC--&gt;EA
+deactivate EC
+
+&#64;enduml"/></p>
+<figcaption>
+<p><span class="caption-text">Shutdown sequence</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 </section>
 
 
