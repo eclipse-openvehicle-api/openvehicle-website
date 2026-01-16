@@ -15,7 +15,11 @@ Program Listing for File process_watchdog.h
    
    #include <thread>
    #include <cstdint>
+   #include <string>
    #include <iostream>
+   #include <fstream>
+   #include <sstream>
+   #include <atomic>
    #ifdef _WIN32
    // Prevent reassignment of "interface"
    #pragma push_macro("interface")
@@ -66,7 +70,39 @@ Program Listing for File process_watchdog.h
        }
    
    private:
-       void WatchdogThreadFunc(int64_t iWatchdogTimeS  = 120ll)
+   #ifdef _WIN32
+   #elif defined __linux__
+   
+       bool IsDebuggerPresent()
+       {
+           std::string ssFilename = "/proc/self/status"; // For the current process
+           std::ifstream fstreamStatus(ssFilename);
+           if (!fstreamStatus.is_open()) return false; // Cannot open file, assume not debugged
+   
+           std::string ssLine;
+           while (std::getline(fstreamStatus, ssLine))
+           {
+               if (ssLine.substr(0, 9) == "TracerPid")
+               {
+                   std::stringstream sstreamLine(ssLine);
+                   std::string ssKey;
+                   int iTracerPid = 0;
+                   sstreamLine >> ssKey >> iTracerPid;
+                   return iTracerPid != 0;
+               }
+           }
+           return false; // TracerPid not found
+       }
+   #else
+   
+       bool IsDebuggerPresent()
+       {
+           // No implementation available to check for a debugger.
+           return false;
+       }
+   #endif
+   
+       void WatchdogThreadFunc(int64_t iWatchdogTimeS)
        {
            // Run for the most the set time; then terminate...
            auto tpStart = std::chrono::steady_clock::now();
@@ -76,6 +112,9 @@ Program Listing for File process_watchdog.h
                auto tpNow = std::chrono::steady_clock::now();
                if (std::chrono::duration_cast<std::chrono::seconds>(tpNow - tpStart).count() > iWatchdogTimeS)
                {
+                   // Do not end the process when a debugger is present.
+                   if (IsDebuggerPresent()) continue;
+   
                    std::cerr << "WATCHDOG TERMINATION ENFORCED!!!" << std::endl;
                    std::cerr.flush();
    #ifdef _WIN32
@@ -94,8 +133,8 @@ Program Listing for File process_watchdog.h
            }
        }
    
-       bool            m_bTerminateWatchdog = false;       
-       std::thread     m_threadWatchdog;                   
+       std::atomic_bool    m_bTerminateWatchdog = false;       
+       std::thread         m_threadWatchdog;                   
    };
    
    #endif // !defined PROCESS_WATCHDOG_H

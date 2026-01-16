@@ -611,9 +611,21 @@ document.write(`
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;filesystem&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sstream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thread&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;queue&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;chrono&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;atomic&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;exec_dir_helper.h&quot;</span>
 
+<span class="cp">#ifndef ENABLE_DEBUG_LOG</span>
+
 <span class="cp">#define ENABLE_DEBUG_LOG 1</span>
+<span class="cp">#endif</span>
+
+<span class="cp">#ifndef DECOUPLED_DEBUG_LOG</span>
+
+<span class="cp">#define DECOUPLED_DEBUG_LOG 1</span>
+<span class="cp">#endif</span>
 
 <span class="k">namespace</span><span class="w"> </span><span class="nn">debug</span>
 <span class="p">{</span>
@@ -623,56 +635,168 @@ document.write(`
 <span class="w">        </span><span class="n">CLogger</span><span class="p">()</span>
 <span class="w">        </span><span class="p">{</span>
 <span class="w">            </span><span class="n">m_pathLogFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetExecDirectory</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">GetExecFilename</span><span class="p">().</span><span class="n">replace_extension</span><span class="p">(</span><span class="s">&quot;.log&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="o">~</span><span class="n">CLogger</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="cp">#if DECOUPLED_DEBUG_LOG != 0</span>
+<span class="w">            </span><span class="c1">// Shut down the logger thread</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_threadLogger</span><span class="p">.</span><span class="n">joinable</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_bShutdown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">                </span><span class="n">m_threadLogger</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="c1">// Prevent the logger mutex to be still in use.</span>
 <span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lock</span><span class="p">(</span><span class="n">m_mtxLogger</span><span class="p">);</span>
-<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="nf">fstream</span><span class="p">(</span><span class="n">m_pathLogFile</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">out</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">trunc</span><span class="p">);</span>
+<span class="w">            </span><span class="n">lock</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>
+<span class="cp">#endif</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">Log</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rss</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Create the message structure</span>
+<span class="w">            </span><span class="n">SLogMsg</span><span class="w"> </span><span class="n">sMsg</span><span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">get_id</span><span class="p">(),</span><span class="w"> </span><span class="n">DepthPerThreadOperation</span><span class="p">(</span><span class="n">EDepthOperation</span><span class="o">::</span><span class="n">report_only</span><span class="p">),</span><span class="w"> </span><span class="n">rss</span><span class="p">};</span>
+
+<span class="cp">#if DECOUPLED_DEBUG_LOG != 0</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lock</span><span class="p">(</span><span class="n">m_mtxLogger</span><span class="p">);</span>
+
+<span class="w">            </span><span class="c1">// First log entry starts logging</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_threadLogger</span><span class="p">.</span><span class="n">joinable</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_threadLogger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">(</span><span class="o">&amp;</span><span class="n">CLogger</span><span class="o">::</span><span class="n">LogToFileThreadFunc</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">);</span>
+<span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_threadLogger</span><span class="p">.</span><span class="n">joinable</span><span class="p">())</span>
+<span class="w">                    </span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">rss</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">            </span><span class="c1">// Add message to the log queue</span>
+<span class="w">            </span><span class="n">m_queueLogger</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">sMsg</span><span class="p">);</span>
+<span class="cp">#else</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="n">fstream</span><span class="p">;</span>
+<span class="w">            </span><span class="n">fstream</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">m_pathLogFile</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">out</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">app</span><span class="p">);</span>
+<span class="w">            </span><span class="n">LogMsg</span><span class="p">(</span><span class="n">fstream</span><span class="p">,</span><span class="w"> </span><span class="n">sMsg</span><span class="p">);</span>
+<span class="cp">#endif</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">IncrDepth</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">DepthPerThreadOperation</span><span class="p">(</span><span class="n">EDepthOperation</span><span class="o">::</span><span class="n">increase</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">DecrDepth</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">DepthPerThreadOperation</span><span class="p">(</span><span class="n">EDepthOperation</span><span class="o">::</span><span class="n">decrease</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">StartLog</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="n">fstream</span><span class="p">;</span>
+<span class="w">            </span><span class="n">fstream</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">m_pathLogFile</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">out</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">trunc</span><span class="p">);</span>
 <span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fstream</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span>
 <span class="w">            </span><span class="p">{</span>
 <span class="w">                </span><span class="n">fstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Starting log of &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">GetExecFilename</span><span class="p">().</span><span class="n">generic_u8string</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="w">                </span><span class="n">fstream</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
 <span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">clog</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Starting log of &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">GetExecFilename</span><span class="p">().</span><span class="n">generic_u8string</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Starting log of &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">GetExecFilename</span><span class="p">().</span><span class="n">generic_u8string</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span>
 <span class="w">        </span><span class="p">}</span>
 
-<span class="w">        </span><span class="o">~</span><span class="n">CLogger</span><span class="p">()</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">FinishLog</span><span class="p">()</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lock</span><span class="p">(</span><span class="n">m_mtxLogger</span><span class="p">);</span>
-<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="nf">fstream</span><span class="p">(</span><span class="n">m_pathLogFile</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">out</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">app</span><span class="p">);</span>
+<span class="w">            </span><span class="c1">// Finish logging</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="n">fstream</span><span class="p">;</span>
+<span class="w">            </span><span class="n">fstream</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">m_pathLogFile</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">out</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">app</span><span class="p">);</span>
 <span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fstream</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span>
 <span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="n">fstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;End of log...&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                </span><span class="n">fstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;End log of &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">GetExecFilename</span><span class="p">().</span><span class="n">generic_u8string</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="w">                </span><span class="n">fstream</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
 <span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">clog</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;End of log...&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;End log of &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">GetExecFilename</span><span class="p">().</span><span class="n">generic_u8string</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span>
 <span class="w">        </span><span class="p">}</span>
 
-<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">Log</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rss</span><span class="p">)</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">SLogMsg</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lock</span><span class="p">(</span><span class="n">m_mtxLogger</span><span class="p">);</span>
-<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="nf">fstream</span><span class="p">(</span><span class="n">m_pathLogFile</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">out</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">app</span><span class="p">);</span>
-<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssIndent</span><span class="p">(</span><span class="n">m_nDepth</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;&gt;&#39;</span><span class="p">);</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ssIndent</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="n">ssIndent</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">;</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fstream</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="o">::</span><span class="n">id</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nDepth</span><span class="p">;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssMsg</span><span class="p">;</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">LogMsg</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rfstream</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SLogMsg</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rsMsg</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssIndent</span><span class="p">(</span><span class="n">rsMsg</span><span class="p">.</span><span class="n">nDepth</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;&gt;&#39;</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ssIndent</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">                </span><span class="n">ssIndent</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rfstream</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span>
 <span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="n">fstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ssIndent</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">rss</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">                </span><span class="n">fstream</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+<span class="w">                </span><span class="n">rfstream</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">rsMsg</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ssIndent</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">rsMsg</span><span class="p">.</span><span class="n">ssMsg</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">                </span><span class="n">rfstream</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
 <span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">clog</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ssIndent</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">rss</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">rsMsg</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ssIndent</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">rsMsg</span><span class="p">.</span><span class="n">ssMsg</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">flush</span><span class="p">;</span>
 <span class="w">        </span><span class="p">}</span>
 
-<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">IncrDepth</span><span class="p">()</span>
+<span class="cp">#if DECOUPLED_DEBUG_LOG != 0</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">LogToFileThreadFunc</span><span class="p">()</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">m_nDepth</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="c1">// Start logging</span>
+<span class="w">            </span><span class="n">StartLog</span><span class="p">();</span>
+
+<span class="w">            </span><span class="c1">// Log until shutdown</span>
+<span class="w">            </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_bShutdown</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lock</span><span class="p">(</span><span class="n">m_mtxLogger</span><span class="p">);</span>
+
+<span class="w">                </span><span class="c1">// Are there any message. If not, pause for 100 ms</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_queueLogger</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">lock</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>
+<span class="w">                    </span><span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">100</span><span class="p">));</span>
+<span class="w">                    </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">queue</span><span class="o">&lt;</span><span class="n">SLogMsg</span><span class="o">&gt;</span><span class="w"> </span><span class="n">queueLocal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">m_queueLogger</span><span class="p">);</span>
+<span class="w">                </span><span class="n">lock</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>
+
+<span class="w">                </span><span class="c1">// Open the file and log all messages that are in the queue</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">ofstream</span><span class="w"> </span><span class="n">fstream</span><span class="p">;</span>
+<span class="w">                </span><span class="n">fstream</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">m_pathLogFile</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">out</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ios_base</span><span class="o">::</span><span class="n">app</span><span class="p">);</span>
+<span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">queueLocal</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">auto</span><span class="w"> </span><span class="n">sMsg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">queueLocal</span><span class="p">.</span><span class="n">front</span><span class="p">());</span>
+<span class="w">                    </span><span class="n">queueLocal</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+<span class="w">                    </span><span class="n">LogMsg</span><span class="p">(</span><span class="n">fstream</span><span class="p">,</span><span class="w"> </span><span class="n">sMsg</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="c1">// Finish logging</span>
+<span class="w">            </span><span class="n">FinishLog</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="cp">#endif</span>
+
+<span class="w">        </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EDepthOperation</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">increase</span><span class="p">,</span>
+<span class="w">            </span><span class="n">decrease</span><span class="p">,</span>
+<span class="w">            </span><span class="n">report_only</span><span class="p">,</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="nf">DepthPerThreadOperation</span><span class="p">(</span><span class="n">EDepthOperation</span><span class="w"> </span><span class="n">eOperation</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">thread_local</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nDepth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">eOperation</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EDepthOperation</span><span class="o">::</span><span class="n">increase</span><span class="p">)</span>
+<span class="w">                </span><span class="n">nDepth</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">eOperation</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EDepthOperation</span><span class="o">::</span><span class="n">decrease</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">nDepth</span><span class="p">)</span>
+<span class="w">                </span><span class="n">nDepth</span><span class="o">--</span><span class="p">;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">nDepth</span><span class="p">;</span>
 <span class="w">        </span><span class="p">}</span>
 
-<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">DecrDepth</span><span class="p">()</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_nDepth</span><span class="p">)</span>
-<span class="w">                </span><span class="n">m_nDepth</span><span class="o">--</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="k">private</span><span class="o">:</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="w">   </span><span class="n">m_pathLogFile</span><span class="p">;</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w">              </span><span class="n">m_mtxLogger</span><span class="p">;</span>
-<span class="w">        </span><span class="kt">size_t</span><span class="w">                  </span><span class="n">m_nDepth</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="w"> </span><span class="n">m_pathLogFile</span><span class="p">;</span>
+<span class="cp">#if DECOUPLED_DEBUG_LOG != 0</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">m_mtxLogger</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="w">                 </span><span class="n">m_threadLogger</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="kt">atomic_bool</span><span class="w">            </span><span class="n">m_bShutdown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">queue</span><span class="o">&lt;</span><span class="n">SLogMsg</span><span class="o">&gt;</span><span class="w">         </span><span class="n">m_queueLogger</span><span class="p">;</span>
+<span class="cp">#endif</span>
 <span class="w">    </span><span class="p">};</span>
 
 <span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="n">CLogger</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">GetLogger</span><span class="p">()</span>

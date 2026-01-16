@@ -19,6 +19,7 @@ Program Listing for File process_control.h
    #include <map>
    #include <set>
    #include <condition_variable>
+   #include <atomic>
    
    class CProcessControl : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::process::IProcessInfo,
        public sdv::process::IProcessLifetime, public sdv::process::IProcessControl
@@ -72,38 +73,37 @@ Program Listing for File process_control.h
        void MonitorThread();
    
        sdv::EObjectStatus      m_eObjectStatus = sdv::EObjectStatus::initialization_pending;       
-   
-         std::mutex            m_mtxProcessThreadShutdown;                                         
+       std::mutex              m_mtxProcessThreadShutdown;                                         
    #ifdef _WIN32
        std::map<sdv::process::TProcessID, std::pair<HANDLE,HANDLE>>    m_mapProcessThreadShutdown; 
    #elif __unix__
-         std::set<sdv::process::TProcessID>    m_setProcessThreadShutdown;                         
+       std::set<sdv::process::TProcessID>    m_setProcessThreadShutdown;                           
    #else
    #error OS is not supported!
    #endif
    
-         struct SProcessHelper
-         {
-             sdv::process::TProcessID  tProcessID = 0;             
+       struct SProcessHelper
+       {
+           sdv::process::TProcessID  tProcessID = 0;             
    #ifdef _WIN32
-             HANDLE                    hProcess = 0;               
+           HANDLE                    hProcess = 0;               
    #elif defined __unix__
-             bool                      bNotAChild = false;         
+           bool                      bNotAChild = false;         
    #else
    #error OS is not supported!
    #endif
-             bool                      bRunning = true;            
-             int64_t                   iRetVal = 0;                
-             std::map<uint32_t, sdv::process::IProcessLifetimeCallback*> mapAssociatedMonitors;    
-             std::mutex                mtxProcess;                 
-             std::condition_variable   cvWaitForProcess;           
-         };
-         mutable std::mutex            m_mtxProcesses;             
-         std::map<sdv::process::TProcessID, std::shared_ptr<SProcessHelper>> m_mapProcesses;   
-         uint32_t                      m_uiNextMonCookie = 1;      
-         std::map<uint32_t, std::shared_ptr<SProcessHelper>> m_mapMonitors;    
-         bool                          m_bShutdown = false;        
-         std::thread                   m_threadMonitor;            
+           std::atomic_bool          bRunning = true;            
+           int64_t                   iRetVal = 0;                
+           std::map<uint32_t, sdv::process::IProcessLifetimeCallback*> mapAssociatedMonitors;    
+           std::mutex                mtxProcess;                 
+           std::condition_variable   cvWaitForProcess;           
+       };
+       mutable std::mutex            m_mtxProcesses;             
+       std::map<sdv::process::TProcessID, std::shared_ptr<SProcessHelper>> m_mapProcesses;   
+       uint32_t                      m_uiNextMonCookie = 1;      
+       std::map<uint32_t, std::shared_ptr<SProcessHelper>> m_mapMonitors;    
+       std::atomic_bool              m_bShutdown = false;        
+       std::thread                   m_threadMonitor;            
    };
    DEFINE_SDV_OBJECT(CProcessControl)
    

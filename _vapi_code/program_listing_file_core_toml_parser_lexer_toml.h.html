@@ -606,165 +606,134 @@ document.write(`
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;algorithm&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stack&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;list&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;functional&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;character_reader_utf_8.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;lexer_toml_token.h&quot;</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">CLexerTOML</span>
+<span class="k">namespace</span><span class="w"> </span><span class="nn">toml_parser</span>
 <span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ETokenCategory</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint8_t</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CNodeTokenRange</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">token_none</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_syntax_assignment</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_syntax_array_open</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_syntax_array_close</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_syntax_table_open</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_syntax_table_close</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_syntax_table_array_open</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_syntax_table_array_close</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_syntax_inline_table_open</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_syntax_inline_table_close</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_syntax_comma</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_syntax_dot</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_syntax_new_line</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_key</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_string</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_integer</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_float</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_boolean</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_time_local</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_date_time_offset</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_date_time_local</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_date_local</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_eof</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_error</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_empty</span><span class="p">,</span>
-<span class="w">        </span><span class="n">token_terminated</span><span class="p">,</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">CNodeTokenRange</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CToken</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rInitialToken</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CNodeTokenRange</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rrangeNodeMain</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">LinesBeforeNode</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CToken</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rTokenBegin</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CTokenRange</span><span class="w"> </span><span class="nf">LinesBeforeNode</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">ExtendedNode</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rRange</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CTokenRange</span><span class="w"> </span><span class="nf">ExtendedNode</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CTokenRange</span><span class="w"> </span><span class="nf">NodeCommentsBefore</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">NodeMain</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rRange</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CTokenRange</span><span class="w"> </span><span class="nf">NodeMain</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">NodeMainFinish</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rRange</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CTokenRange</span><span class="w"> </span><span class="nf">NodeMainFinish</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CTokenRange</span><span class="w"> </span><span class="nf">NodeCommentsBehind</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">LinesBehindNode</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CToken</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rTokenEnd</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CTokenRange</span><span class="w"> </span><span class="nf">LinesBehindNode</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">reference_wrapper</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="n">CToken</span><span class="o">&gt;</span><span class="w">    </span><span class="n">m_refBeforeNodeBegin</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CTokenRange</span><span class="w">                             </span><span class="n">m_rangeExtendedNode</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CTokenRange</span><span class="w">                             </span><span class="n">m_rangeNodeMain</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CTokenRange</span><span class="w">                             </span><span class="n">m_rangeNodeFinish</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">reference_wrapper</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="n">CToken</span><span class="o">&gt;</span><span class="w">    </span><span class="n">m_refBehindNodeEnd</span><span class="p">;</span>
 <span class="w">    </span><span class="p">};</span>
 
-<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">SToken</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CLexer</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">SToken</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">CLexer</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
 
-<span class="w">        </span><span class="k">explicit</span><span class="w"> </span><span class="n">SToken</span><span class="p">(</span><span class="n">ETokenCategory</span><span class="w"> </span><span class="n">category</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">eCategory</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{}</span>
+<span class="w">        </span><span class="n">CLexer</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssString</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bValueOnly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
 
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">    </span><span class="n">ssContentString</span><span class="p">;</span>
-<span class="w">        </span><span class="kt">int64_t</span><span class="w">        </span><span class="n">iContentInteger</span><span class="p">{};</span>
-<span class="w">        </span><span class="kt">double</span><span class="w">         </span><span class="n">dContentFloatingpoint</span><span class="p">{};</span>
-<span class="w">        </span><span class="kt">bool</span><span class="w">           </span><span class="n">bContentBoolean</span><span class="p">{};</span>
-<span class="w">        </span><span class="n">ETokenCategory</span><span class="w"> </span><span class="n">eCategory</span><span class="p">{</span><span class="n">ETokenCategory</span><span class="o">::</span><span class="n">token_none</span><span class="p">};</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">Feed</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssString</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bValueOnly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">Reset</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ENavigationMode</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">skip_comments_and_whitespace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">            </span><span class="n">do_not_skip_anything</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="n">ENavigationMode</span><span class="w"> </span><span class="nf">NavigationMode</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">NavigationMode</span><span class="p">(</span><span class="n">ENavigationMode</span><span class="w"> </span><span class="n">eMode</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">CToken</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Peek</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">nSkip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">CToken</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Consume</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">nSkip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsEnd</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">SmartExtendNodeRange</span><span class="p">(</span><span class="n">CNodeTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rTokenRange</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">GenerateTokens</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CToken</span><span class="w"> </span><span class="nf">ReadBasicQuotedKey</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CToken</span><span class="w"> </span><span class="nf">ReadLiteralQuotedKey</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CToken</span><span class="w"> </span><span class="nf">ReadBareKey</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CToken</span><span class="w"> </span><span class="nf">ReadBasicString</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CToken</span><span class="w"> </span><span class="nf">ReadBasicMultilineString</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CToken</span><span class="w"> </span><span class="nf">ReadLiteralString</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CToken</span><span class="w"> </span><span class="nf">ReadLiteralMultilineString</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CToken</span><span class="w"> </span><span class="nf">ReadInteger</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CToken</span><span class="w"> </span><span class="nf">ReadFloat</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CToken</span><span class="w"> </span><span class="nf">ReadBool</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CToken</span><span class="w"> </span><span class="nf">ReadWhitespace</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CToken</span><span class="w"> </span><span class="nf">ReadSyntaxElement</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">CToken</span><span class="w"> </span><span class="nf">ReadComment</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CToken</span><span class="w"> </span><span class="nf">ReadUnknownSequence</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">Unescape</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">EscapedUnicodeCharacterToUTF8</span><span class="p">(</span><span class="n">CCharacterReaderUTF8</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rReader</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nDigits</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">ENavigationMode</span><span class="w">     </span><span class="n">m_eNavMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENavigationMode</span><span class="o">::</span><span class="n">skip_comments_and_whitespace</span><span class="p">;</span>
+<span class="w">        </span><span class="n">TTokenList</span><span class="w">          </span><span class="n">m_lstTokens</span><span class="p">;</span>
+<span class="w">        </span><span class="n">TTokenListIterator</span><span class="w">  </span><span class="n">m_itCursor</span><span class="p">{</span><span class="n">m_lstTokens</span><span class="p">.</span><span class="n">end</span><span class="p">()};</span>
+
+<span class="w">        </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EExpectation</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">expect_key</span><span class="p">,</span>
+<span class="w">            </span><span class="n">expect_value</span><span class="p">,</span>
+<span class="w">            </span><span class="n">expect_value_once</span><span class="p">,</span>
+<span class="w">        </span><span class="p">};</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">stack</span><span class="o">&lt;</span><span class="n">EExpectation</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_stackExpectations</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="n">m_vecKeyDelimiters</span><span class="p">{</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\r</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;=&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;]&quot;</span><span class="p">};</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="n">m_vecValueDelimiters</span><span class="p">{</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\r</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;,&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;]&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;}&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;#&quot;</span><span class="p">};</span>
 <span class="w">    </span><span class="p">};</span>
-
-<span class="w">    </span><span class="n">CLexerTOML</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
-
-<span class="w">    </span><span class="n">CLexerTOML</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssString</span><span class="p">);</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Feed</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssString</span><span class="p">);</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Reset</span><span class="p">();</span>
-
-<span class="w">    </span><span class="n">SToken</span><span class="w"> </span><span class="nf">Peek</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
-
-<span class="w">    </span><span class="n">SToken</span><span class="w"> </span><span class="nf">Consume</span><span class="p">();</span>
-
-<span class="w">    </span><span class="n">SToken</span><span class="w"> </span><span class="nf">Peek</span><span class="p">(</span><span class="kt">int32_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
-
-<span class="w">    </span><span class="n">SToken</span><span class="w"> </span><span class="nf">Consume</span><span class="p">(</span><span class="kt">int32_t</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsEnd</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
-
-<span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">GenerateTokens</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsBasicQuotedKey</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReadBasicQuotedKey</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsLiteralQuotedKey</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReadLiteralQuotedKey</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsBareKey</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReadBareKey</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsBasicString</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReadBasicString</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsBasicMultilineString</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReadBasicMultilineString</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsLiteralString</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReadLiteralString</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsLiteralMultilineString</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReadLiteralMultilineString</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsInteger</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReadInteger</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsFloat</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReadFloat</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsBool</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReadBool</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsWhitespace</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReadWhitespace</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsSyntaxElement</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReadSyntaxElement</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsComment</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReadComment</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ReadUnknownSequence</span><span class="p">();</span>
-
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">Unescape</span><span class="p">();</span>
-
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">Unicode4DigitToUTF8</span><span class="p">();</span>
-
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">Unicode8DigitToUTF8</span><span class="p">();</span>
-
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">UnicodeToUTF8</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">numCharacters</span><span class="p">);</span>
-
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">HexToDecimal</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">character</span><span class="p">);</span>
-
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">DecimalToDecimal</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">character</span><span class="p">);</span>
-
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">OctalToDecimal</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">character</span><span class="p">);</span>
-
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">BinaryToDecimal</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">character</span><span class="p">);</span>
-
-<span class="w">    </span><span class="n">CCharacterReaderUTF8</span><span class="w"> </span><span class="n">m_reader</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">SToken</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_vecTokens</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w">         </span><span class="n">m_nCursor</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
-
-<span class="w">    </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EExpectation</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">expect_key</span><span class="p">,</span>
-<span class="w">        </span><span class="n">expect_value</span><span class="p">,</span>
-<span class="w">        </span><span class="n">expect_value_once</span><span class="p">,</span>
-<span class="w">    </span><span class="p">};</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">stack</span><span class="o">&lt;</span><span class="n">EExpectation</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_stackExpectations</span><span class="p">;</span>
-<span class="w">    </span><span class="c1">// int32_t m_LineCount{0};</span>
-
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_vecKeyDelimiters</span><span class="p">{</span>
-<span class="w">        </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\r</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;=&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;]&quot;</span><span class="p">};</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_vecValueDelimiters</span><span class="p">{</span>
-<span class="w">        </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\r</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;,&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;]&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;}&quot;</span><span class="p">};</span>
-<span class="p">};</span>
-
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace toml_parser</span>
 <span class="cp">#endif </span><span class="c1">// LEXER_TOML_H</span>
 </pre></div>
 </div>

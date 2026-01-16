@@ -19,8 +19,16 @@ The goal is to visualize signal behavior and simulate interactions such as switc
 activating wipers manually, and responding to rain detection, all within a terminal interface.
 
 To complete these steps, you need to create two source files:
-	wiper_app/console.cpp
-	wiper_app/console.h
+
+.. note::  
+   | wiper_app/console.cpp
+   | wiper_app/console.h
+
+
+In CMakeLists.txt file you need to add wiper_app/console.cpp.
+
+Follwowing file contain already some functionionality to print to console.
+
 
 Console
 -------
@@ -69,8 +77,14 @@ Step 1: Get the Wiper Mode from the Basic Service
 
 .. code-block:: cpp
 
-	auto pBSWiperMode = sdv::core::GetObject("Vehicle.Body.Windshield.Wiper.Mode_Service")
-		.GetInterface<vss::Vehicle::Body::Windshield::Wiper::ModeService::IVSS_GetMode>();
+
+	bool CConsole::PrepareDataConsumers()
+	{
+	    // Basic Service
+	    auto pBSWiperMode = sdv::core::GetObject("Vehicle.Body.Windshield.Wiper.Mode_Service")
+			GetInterface<vss::Vehicle::Body::Windshield::Wiper::ModeService::IVSS_GetMode>();
+
+        ...
 
 This line tries to get the interface for reading the current wiper mode. If it fails, we log an error. If it works, we print the mode in the console.
 
@@ -122,12 +136,11 @@ Finally, we call
 
 .. code-block:: cpp
 	
-	RegisterSignals();
+	bool CConsole::RegisterSignals()
+	{
+		sdv::core::CDispatchService dispatch;
 
-Register Signals
-""""""""""""""""
-
-Once the services and devices are loaded, we need to **connect our application to the signal bus**. That's exactly what **RegisterSignals()** does.
+Once the services and devices are loaded, we need to **connect our application to the signal bus**. That's exactly what **RegisterSignals()** does. Do not to forget to reset the signals on shutdown().
 
 Let's break it down.
 
@@ -239,75 +252,78 @@ This allows you to simulate your implementation by sending inputs directly from 
 
 .. code-block:: cpp
 
-    bool bRunning = true;
-    bool rainDetected = false;
-    bool wiperActive = false;
-    bool autoMode = false;
-
-    while (bRunning)
+    void CConsole::RunUntilBreak()
     {
-        if (!KeyHit())
+        bool bRunning = true;
+        bool rainDetected = false;
+        bool wiperActive = false;
+        bool autoMode = false;
+
+        while (bRunning)
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            continue;
-        }
+            if (!KeyHit())
+            {
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                continue;
+            }
 
-        char c = GetChar();
-        switch (c)
-        {
-            case 'a':
-            case 'A':
-                m_signalWiperMode.Write<std::string>("auto");
-                bAutoMode = true;
-                break;
-            case 'm':
-            case 'M':
-                m_signalWiperMode.Write<std::string>("manual");
-                bAutoMode = false;
-                break;
-            case 'r':
-            case 'R':
-                bRainDetected = true;
-                m_signalRainDetected.Write<bool>(bRainDetected);
-
-                if(bAutoMode) 
-                {
-                    bwWiperActive = bRainDetected;
-                }
-
-                break;
-            case 'd':
-            case 'D':
-                bRainDetected = false;
-                m_signalRainDetected.Write<bool>(bRainDetected);
-
-                if(bAutoMode) 
-                {
-                    bwWiperActive = bRainDetected;
-                }
-
-                break;
-            case 'w':
-            case 'W':
-                if(bAutoMode)
-                {
-                    //Changed manually -> moved to manual mode
+            char c = GetChar();
+            switch (c)
+            {
+                case 'a':
+                case 'A':
+                    m_signalWiperMode.Write<std::string>("auto");
+                    bAutoMode = true;
+                    break;
+                case 'm':
+                case 'M':
                     m_signalWiperMode.Write<std::string>("manual");
                     bAutoMode = false;
-                }
-                bwWiperActive = !bwWiperActive;
-                SetManualFrontActive(bwWiperActive);
-                SetManualRearActive(bwWiperActive);
+                    break;
+                case 'r':
+                case 'R':
+                    bRainDetected = true;
+                    m_signalRainDetected.Write<bool>(bRainDetected);
 
-                break;
-            case 'x':
-            case 'X':
-                bRunning = false;
-                break;
-            default:
-                break;
+                    if (bAutoMode) 
+                    {
+                        bwWiperActive = bRainDetected;
+                    }
+
+                    break;
+                case 'd':
+                case 'D':
+                    bRainDetected = false;
+                    m_signalRainDetected.Write<bool>(bRainDetected);
+
+                    if (bAutoMode) 
+                    {
+                        bwWiperActive = bRainDetected;
+                    }
+
+                    break;
+                case 'w':
+                case 'W':
+                    if (bAutoMode)
+                    {
+                        //Changed manually -> moved to manual mode
+                        m_signalWiperMode.Write<std::string>("manual");
+                        bAutoMode = false;
+                    }
+                    bwWiperActive = !bwWiperActive;
+                    SetManualFrontActive(bwWiperActive);
+                    SetManualRearActive(bwWiperActive);
+
+                    break;
+                case 'x':
+                case 'X':
+                    bRunning = false;
+                    break;
+                default:
+                    break;
+            } 
         } 
-    } 
+    }
 	
 Step 8: Update data in Console
 """"""""""""""""""""""""""""""
@@ -330,24 +346,7 @@ You can choose what to display.
     PrintText(g_bsWiperModeEvent, "Wiper mode: .............   " + m_WiperMode);
 
 
-Step 9: Reset Signals
-"""""""""""""""""""""
-
-This function is called at the end of the application to clean up all signal subscriptions and transmissions.
-
-.. code-block:: cpp
-
-    void CConsole::ResetSignals()
-    {
-        m_signalRainDetected.Reset();
-        m_signalWiperMode.Reset();
-        m_signalFrontWiperActive.Reset();
-        m_signalRearWiperActive.Reset();
-    }
-
-This ensures that no lingering signal connections remain after the application exits, which is important for clean shutdown and avoiding memory leaks.
-
-Step 10: Main function
+Step 9: Main function
 """"""""""""""""""""""
 
 Now that we have built all the pieces: signal registration, data consumers, console display, and the runtime loop. We need a `main()` function to bring everything together.
@@ -357,6 +356,11 @@ Think of `main()` as the conductor of your SDV simulation. It calls each part in
 Here is how it works:
 
 .. code-block:: cpp
+
+    #include <iostream>
+
+    #include "wiper_application.h"
+    #include "console.h"
 
     int main()
     {
@@ -459,8 +463,12 @@ will not work if `m_VisualCurrentLongitude` was overwritten by a subscription.
 This issue doesn’t occur in examples where registration and subscription are handled in separate files, so the original signal object is preserved.
 
 **Best Practice:**
+
 - Keep signal registration and subscription in separate variables.
 - Clearly distinguish between signal creators and signal users.
+
+.. note::
+	In our example you will notice that signals are registered before loading the vehicle devices and basic services. This is required because the framework must know each signal’s definition in advance to correctly initialize event handling. The same applies in console.cpp, where runtime signal manipulation also depends on these definitions already being available.
 
 Example:
 
@@ -477,6 +485,802 @@ Example:
     sdv::core::CSignal m_abstractDevicePublisher03;
 
 **Also important:** the signal creator must exist for the entire lifetime of the signal.
+
+4. Main() updates
+"""""""""""""""""
+After applying the console related modifications, we must ensure that the main application calls the functions in the following order. Each step prepares the environment for the next one:
+
+- Initialize() - Initializes the SDV framework, loads the configuration files, and registers the signals needed by both the application and the console.
+- PrepareDataConsumers() - Sets up the console-side data consumers so they can subscribe to the registered signals and receive updates.
+- InitData() - Initializes internal console state and prepares initial values before entering the simulation loop.
+- SetRunningMode() - Switches the application into active mode, allowing real-time event processing and signal updates.
+- RunUntilBreak() - Runs the console simulation loop, allowing the user to interact with and modify the signal values during runtime.
+- ResetSignals() - Restores signals to a clean state after the simulation loop ends.
+
+5. CMakeLists updates
+"""""""""""""""""""""
+After updating the console logic, remember to also update the CMakeLists.txt file to include the modified console.cpp. This ensures the new console functionality is correctly compiled and integrated into the application build.
+
+.. Tip::
+	.. raw:: html
+
+		<details>
+		<summary> Updated console.cpp</summary>
+
+	.. code-block:: text
+	
+		#include "console.h"
+		#include "../generated/vss_files/signal_identifier.h"
+
+		#ifdef _WIN32
+		#include <conio.h>      // Needed for _kbhit
+		#else
+		#include <fcntl.h>
+		#endif
+
+		const CConsole::SConsolePos g_sTitle{ 1, 1 };
+		const CConsole::SConsolePos g_sSeparator1{ 2, 1 };
+		const CConsole::SConsolePos g_sDispatchService{ 4, 1 };
+		const CConsole::SConsolePos g_dsWiperModeEvent{ 6, 1 };
+		const CConsole::SConsolePos g_dsWeatherRain{7, 1 };
+		const CConsole::SConsolePos g_dsWiperFrontActive{ 8, 1 };
+		const CConsole::SConsolePos g_dsWiperRearActive{9, 1 };
+		const CConsole::SConsolePos g_sSeparator2{ 11, 1 };
+		const CConsole::SConsolePos g_sBasicService{ 13, 1 };
+		const CConsole::SConsolePos g_bsWiperModeEvent{ 15, 1 };
+		const CConsole::SConsolePos g_bsWeatherRain{ 16, 1 };
+		const CConsole::SConsolePos g_bsWiperFrontActive{ 17, 1 };
+		const CConsole::SConsolePos g_bsWiperRearActive{ 18, 1 };
+		const CConsole::SConsolePos g_sSeparator3{ 20, 1 };
+		const CConsole::SConsolePos g_sUsageMode{ 24, 1 };
+		const CConsole::SConsolePos g_sControlDescription1{ 26, 1 };
+		const CConsole::SConsolePos g_sControlDescription2{ 27, 1 };
+		const CConsole::SConsolePos g_sControlDescription3{ 28, 1 };
+		const CConsole::SConsolePos g_sControlDescription4{ 29, 1 };
+		const CConsole::SConsolePos g_sControlDescription5{ 30, 1 };
+		const CConsole::SConsolePos g_sControlDescription6{ 31, 1 };
+		const CConsole::SConsolePos g_sCursor{ 32, 1 };
+
+		CConsole::CConsole()
+		{
+		#ifdef _WIN32
+			// Enable ANSI escape codes
+			HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+			if (hStdOut != INVALID_HANDLE_VALUE && GetConsoleMode(hStdOut, &m_dwConsoleOutMode))
+				SetConsoleMode(hStdOut, m_dwConsoleOutMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
+			HANDLE hStdIn = GetStdHandle(STD_INPUT_HANDLE);
+			if (hStdIn != INVALID_HANDLE_VALUE && GetConsoleMode(hStdIn, &m_dwConsoleInMode))
+				SetConsoleMode(hStdIn, m_dwConsoleInMode & ~(ENABLE_ECHO_INPUT | ENABLE_LINE_INPUT));
+		#elif defined __unix__
+			// Disable echo
+			tcgetattr(STDIN_FILENO, &m_sTermAttr);
+			struct termios sTermAttrTemp = m_sTermAttr;
+			sTermAttrTemp.c_lflag &= ~(ICANON | ECHO);
+			tcsetattr(STDIN_FILENO, TCSANOW, &sTermAttrTemp);
+			m_iFileStatus = fcntl(STDIN_FILENO, F_GETFL, 0);
+			fcntl(STDIN_FILENO, F_SETFL, m_iFileStatus | O_NONBLOCK);
+		#else
+		#error The OS is not supported!
+		#endif
+		}
+
+		CConsole::~CConsole()
+		{
+			SetCursorPos(g_sCursor);
+
+		#ifdef _WIN32
+			// Return to the stored console mode
+			HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+			if (hStdOut != INVALID_HANDLE_VALUE)
+				SetConsoleMode(hStdOut, m_dwConsoleOutMode);
+			HANDLE hStdIn = GetStdHandle(STD_INPUT_HANDLE);
+			if (hStdIn != INVALID_HANDLE_VALUE)
+				SetConsoleMode(hStdIn, m_dwConsoleInMode);
+		#elif defined __unix__
+			// Return the previous file status flags.
+			fcntl(STDIN_FILENO, F_SETFL, m_iFileStatus);
+
+			// Return to previous terminal state
+			tcsetattr(STDIN_FILENO, TCSANOW, &m_sTermAttr);
+		#endif
+		}
+
+		void CConsole::PrintHeader()
+		{
+			// Clear the screen...
+			std::cout << "\x1b[2J";
+
+			// Print the titles
+			PrintText(g_sTitle, "Wiper Example Functionality");
+			PrintText(g_sSeparator1, "============================================================================");
+			PrintText(g_sDispatchService, "Data dispatch service:");
+			PrintText(g_sSeparator2, "----------------------------------------------------------------------------");
+			PrintText(g_sBasicService, "Basic services:");
+			PrintText(g_sSeparator3, "----------------------------------------------------------------------------");
+			PrintText(g_sUsageMode, "Usage mode:");
+
+			PrintText(g_sControlDescription1, "Press 'A' to set Wiper Auto Mode.");
+			PrintText(g_sControlDescription2, "Press 'M' to set Wiper Manual Mode.");
+			PrintText(g_sControlDescription3, "Press 'R' to make it a ranny day/ clear day.");
+			PrintText(g_sControlDescription4, "Press 'D' to make it a clear day.");
+			PrintText(g_sControlDescription5, "Press 'W' to activate/deactivate wipers in case of Manual Mode");
+
+			PrintText(g_sControlDescription6, "Press 'X' to quit.");
+		}
+
+		bool CConsole::PrepareDataConsumers()
+		{
+			// Basic Service
+			auto pBSWiperMode = sdv::core::GetObject("Vehicle.Body.Windshield.Wiper.Mode_Service").GetInterface<vss::Vehicle::Body::Windshield::Wiper::ModeService::IVSS_GetMode>();
+			if (!pBSWiperMode)
+			{
+				SDV_LOG_ERROR("Could not get interface 'IVSS_Mode' for Mode_Service.");
+			}
+			else
+			{
+				pBSWiperMode->RegisterOnSignalChangeOfWiperMode(dynamic_cast<vss::Vehicle::Body::Windshield::Wiper::ModeService::IVSS_SetMode_Event*>(this));
+			}
+
+			auto pBSWeatherRain = sdv::core::GetObject("Vehicle.Body.Weather.Rain_Service").GetInterface<vss::Vehicle::Body::Weather::RainService::IVSS_GetDetected>();
+			if(!pBSWeatherRain)
+			{
+				SDV_LOG_ERROR("Could not get interface 'IVSS_Detected' for Rain_Service.");
+			}
+			else
+			{
+				pBSWeatherRain->RegisterOnSignalChangeOfRainDetected(dynamic_cast<vss::Vehicle::Body::Weather::RainService::IVSS_SetDetected_Event*>(this));
+			} 
+
+			return RegisterSubscribeSignals();
+
+		}
+
+		bool CConsole::RegisterSubscribeSignals()
+		{
+			// Set the cursor position at the end
+			SetCursorPos(g_sCursor);
+
+			sdv::core::CDispatchService     m_cdispatch;
+
+			m_signalRainDetected = m_cdispatch.RegisterRxSignal(wiper::dsRainDetected);
+			m_signalWiperMode = m_cdispatch.RegisterRxSignal(wiper::dsWiperMode);
+
+			m_signalSubscribeRainDetected = m_cdispatch.Subscribe(wiper::dsRainDetected, [&](sdv::any_t value) {  CallbackRainDetected(value); });
+			m_signalSubscribeWiperMode =  m_cdispatch.Subscribe(wiper::dsWiperMode, [&](sdv::any_t value) {  CallbackWiperMode(value); });
+
+			m_signalFrontWiperActive = m_cdispatch.RegisterTxSignal(wiper::dsFrontWiperActive, 0);
+			m_signalRearWiperActive = m_cdispatch.RegisterTxSignal(wiper::dsRearWiperActive, 0);
+
+			if (!m_signalRainDetected || !m_signalWiperMode || !m_signalFrontWiperActive || !m_signalRearWiperActive)
+			{
+				std::cerr << "Console ERROR: TX register and RX subscription failed" << std::endl;
+				return false;
+			}
+
+			SDV_LOG_INFO("RegisterSubscribeSignals call finished with success");
+
+			return true;
+			
+		}
+
+		void CConsole::CallbackRainDetected(sdv::any_t value)
+		{
+			m_IsRainDetected = value.get<bool>();
+
+			PrintValue(g_dsWeatherRain, "Weather: ", m_IsRainDetected, (m_IsRainDetected ? "Raining" : "Clear/dry"));
+			
+		}
+
+		void CConsole::CallbackWiperMode(sdv::any_t value)
+		{
+			m_WiperMode = value.get<std::string>();
+
+			if (!m_WiperMode.compare("0")) m_WiperMode = "manual";
+			if (!m_WiperMode.compare("1")) m_WiperMode = "auto";
+
+			PrintText(g_dsWiperModeEvent, "Wiper mode: .............   " + m_WiperMode + "      ");
+
+		}
+
+		void CConsole::SetDetected(bool value)
+		{
+			m_IsRainDetected = value;
+			PrintValue(g_bsWeatherRain, "Weather: ", m_IsRainDetected, (m_IsRainDetected ? "Raining" : "Clear/dry"));
+		}
+
+		void CConsole::SetMode(const sdv::string& value)
+		{
+			/* Reset wipers when mode is changed */
+			if(m_WiperMode != value)
+			{
+				m_WiperFrontIsActive = false;
+				m_WiperRearIsActive = false;
+			}
+
+			m_WiperMode = value;
+			PrintText(g_bsWiperModeEvent, "Wiper mode: .............   " + m_WiperMode + "      ");
+		}
+
+		void CConsole::SetIsFrontActive( bool value)
+		{
+			if(m_WiperFrontIsActive != value)
+			{
+				m_WiperFrontIsActive = value;
+			}
+
+			UpdateTxData();
+		}
+
+		void CConsole::SetIsRearActive( bool value)
+		{
+			if(m_WiperRearIsActive != value)
+			{
+				m_WiperRearIsActive = value;
+			}
+
+			UpdateTxData();
+		}
+
+		void CConsole::ResetSignals()
+		{
+			m_signalRainDetected.Reset();
+			m_signalWiperMode.Reset();
+			m_signalFrontWiperActive.Reset();
+			m_signalRearWiperActive.Reset();
+		}
+
+		void CConsole::UpdateTxData()
+		{
+			//Basic serivce signals
+			PrintValue(g_bsWiperFrontActive, "Front Wiper: ", m_WiperFrontIsActive, (m_WiperFrontIsActive ? "Active" : "Inactive"));
+			PrintValue(g_bsWiperRearActive, "Rear Wiper: ", m_WiperRearIsActive, (m_WiperRearIsActive ? "Active" : "Inactive"));
+		}
+
+		void CConsole::InitData()
+		{
+			//Data link
+			PrintText(g_dsWiperModeEvent, "Wiper mode: .............   " + m_WiperMode + "      ");
+			PrintValue(g_dsWeatherRain, "Weather: ", m_IsRainDetected, (m_IsRainDetected ? "Raining" : "Clear/dry"));
+
+			//Basic serivce signals
+			PrintText(g_bsWiperModeEvent, "Wiper mode: .............   " + m_WiperMode + "      ");
+			PrintValue(g_bsWeatherRain, "Weather: ", m_IsRainDetected, (m_IsRainDetected ? "Raining" : "Clear/dry"));
+			PrintValue(g_bsWiperFrontActive, "Front Wiper: ", m_WiperFrontIsActive, (m_WiperFrontIsActive ? "Active" : "Inactive"));
+			PrintValue(g_bsWiperRearActive, "Rear Wiper: ", m_WiperRearIsActive, (m_WiperRearIsActive ? "Active" : "Inactive"));
+		}
+
+		CConsole::SConsolePos CConsole::GetCursorPos() const
+		{
+			SConsolePos sPos{};
+			std::cout << "\033[6n";
+
+			char buff[128];
+			int indx = 0;
+			for (;;) {
+				int cc = std::cin.get();
+				buff[indx] = (char)cc;
+				indx++;
+				if (cc == 'R') {
+					buff[indx + 1] = '\0';
+					break;
+				}
+			}
+			int iRow = 0, iCol = 0;
+			sscanf(buff, "\x1b[%d;%dR", &iRow, &iCol);
+			sPos.uiRow = static_cast<uint32_t>(iRow);
+			sPos.uiCol = static_cast<uint32_t>(iCol);
+			fseek(stdin, 0, SEEK_END);
+
+			return sPos;
+		}
+
+		void CConsole::SetCursorPos(SConsolePos sPos)
+		{
+			std::cout << "\033[" << sPos.uiRow << ";" << sPos.uiCol << "H";
+		}
+
+		void CConsole::PrintText(SConsolePos sPos, const std::string& rssText)
+		{
+			std::lock_guard<std::mutex> lock(m_mtxPrintToConsole);
+			SetCursorPos(sPos);
+			std::cout << rssText;
+		}
+
+		void CConsole::RunUntilBreak()
+		{
+			bool bRunning = true;
+			bool bRainDetected = false;
+			bool bwWiperActive = false;
+			bool bAutoMode = false;
+			
+			while (bRunning)
+			{
+				if (!KeyHit())
+				{
+					std::this_thread::sleep_for(std::chrono::milliseconds(100));
+					continue;
+				}
+
+				char c = GetChar();
+				switch (c)
+				{
+				case 'a':
+				case 'A':
+					m_signalWiperMode.Write<std::string>("auto");
+					bAutoMode = true;
+					break;
+				case 'm':
+				case 'M':
+					m_signalWiperMode.Write<std::string>("manual");
+					bAutoMode = false;
+					break;
+				case 'r':
+				case 'R':
+					bRainDetected = true;
+					m_signalRainDetected.Write<bool>(bRainDetected);
+
+					if (bAutoMode) 
+					{
+						bwWiperActive = bRainDetected;
+						SetIsFrontActive(bwWiperActive);
+						SetIsRearActive(bwWiperActive);
+					}
+
+					break;
+				case 'd':
+				case 'D':
+					bRainDetected = false;
+					m_signalRainDetected.Write<bool>(bRainDetected);
+					if (bAutoMode) 
+					{
+						bwWiperActive = bRainDetected;
+						SetIsFrontActive(bwWiperActive);
+						SetIsRearActive(bwWiperActive);
+					}
+
+					break;
+				case 'w':
+				case 'W':
+					if (bAutoMode)
+					{
+						//Changed manually -> moved to manual mode
+						m_signalWiperMode.Write<std::string>("manual");
+						bAutoMode = false;
+					}
+					bwWiperActive = !bwWiperActive;
+																								  
+					SetIsFrontActive(bwWiperActive);
+					SetIsRearActive(bwWiperActive);
+
+					break;
+				case 'x':
+				case 'X':
+					bRunning = false;
+					break;
+				default:
+					break;
+				} 
+			}
+		}
+
+		bool CConsole::KeyHit()
+		{
+		#ifdef _WIN32
+			return _kbhit();
+		#elif __unix__
+			int ch = getchar();
+			if (ch != EOF) {
+				ungetc(ch, stdin);
+				return true;
+			}
+			return false;
+		#endif
+		}
+
+		char CConsole::GetChar()
+		{
+		#ifdef _WIN32
+			return static_cast<char>(_getch());
+		#else
+			return getchar();
+		#endif
+		}
+
+	
+.. Tip::
+	.. raw:: html
+
+		<details>
+		<summary> Updated console.h</summary>
+
+	.. code-block:: text
+
+		#ifndef CONSOLE_OUTPUT_H
+		#define CONSOLE_OUTPUT_H
+
+		#include <iostream>
+
+		#include <string>
+		#include <functional>
+		#include <support/signal_support.h>
+		#include <support/app_control.h>
+		#include <support/component_impl.h>
+		#include <support/timer.h>
+
+		#include <fcntl.h>
+
+		#include "../generated/vss_files/vss_vehiclebodyweatherrain_bs_rx.h"
+		#include "../generated/vss_files/vss_vehiclebodywindshieldwiperfront_bs_tx.h"
+		#include "../generated/vss_files/vss_vehiclebodywindshieldwipermode_bs_rx.h"
+		#include "../generated/vss_files/vss_vehiclebodywindshieldwiperrear_bs_tx.h"
+
+		#ifdef __unix__
+		#include <termios.h>        // Needed for tcgetattr and fcntl
+		#include <unistd.h>
+		#endif
+
+
+		/**
+		 * @brief Console operation class.
+		 * @details This class retrieves RX data from the data dispatch service, vehicle device & basic service of speed on event change.
+		 * Furthermore, it shows TX value by polling the RX signals.
+		 */
+		class CConsole : 
+			public vss::Vehicle::Body::Weather::RainService::IVSS_SetDetected_Event,
+			public vss::Vehicle::Body::Windshield::Wiper::ModeService::IVSS_SetMode_Event
+		{
+		public:
+			/**
+			 * @brief Screen position structure
+			 */
+			struct SConsolePos
+			{
+				uint32_t uiRow;     ///< Row position (starts at 1)
+				uint32_t uiCol;     ///< Column position (starts at 1)
+			};
+
+			/**
+			 * @brief Constructor
+			 */
+			CConsole();
+
+			/**
+			 * @brief Destructor
+			 */
+			~CConsole();
+
+			/**
+			 * @brief Print the header.
+			 */
+			void PrintHeader();
+
+			/**
+			 * @brief Prepare the data consumers..
+			 * @return Returns whether the preparation of the data consumers was successful or not.
+			 */
+			bool PrepareDataConsumers();
+
+			/**
+			 * @brief For gracefully shutdown all signals need to be reset.
+			 */
+			void ResetSignals();
+
+			/**
+			 * @brief Register signal subscriptions for rain detection and wiper mode.
+			 * @return True if signals were successfully registered.
+			 */
+			bool RegisterSubscribeSignals();
+
+			/**
+			 * @brief Callback triggered when rain detection signal is received.
+			 * @param[in] value The signal value indicating rain detection.
+			 */
+			void CallbackRainDetected(sdv::any_t value);
+
+			/**
+			 * @brief Callback triggered when wiper mode signal is received.
+			 * @param[in] value The signal value indicating wiper mode.
+			 */
+			void CallbackWiperMode(sdv::any_t value);
+
+			/**
+			 * @brief Write initial value to console
+			 */
+			void InitData();
+
+			/**
+			 * @brief Set front wiper active/inactive
+			 * @param[in] value active/inactive mode
+			 */
+			void SetIsFrontActive( bool value) ;
+
+			/**
+			 * @brief Set rear wiper active/inactive
+			 * @param[in] value active/inactive mode
+			 */
+			void SetIsRearActive(bool value);
+
+			/**
+			 * @brief Read the data link TX signals and the basic service event values print them into the
+			 * console.
+			 */
+			void UpdateTxData();
+
+			/**
+			* @brief Run loop as long as user input does not exit
+			*/
+			void RunUntilBreak();
+			
+		private:
+
+			/**
+			 * @brief Check if a key was pressed
+			 */
+			bool KeyHit();
+
+			/**
+			 * @brief Get character from keyboard
+			 */
+			char GetChar();
+			
+			/**
+			 * @brief Set rainDetected signal
+			 * @param[in] value rainDetected
+			 */
+			void SetDetected(bool value) override;
+
+			/**
+			 * @brief Set wiperMode signal
+			 * @param[in] value wiperMode
+			 */
+			void SetMode( const sdv::string& value)override;
+
+			/**
+			 * @brief Get the cursor position of the console.
+			 * @return The cursor position.
+			 */
+			SConsolePos GetCursorPos() const;
+
+			/**
+			 * @brief Set the current cursor position for the console.
+			 * @param[in] sPos Console position to place the current cursor at.
+			 */
+			void SetCursorPos(SConsolePos sPos);
+
+			/**
+			 * @brief Print text at a specific location.
+			 * @param[in] sPos The location to print text at.
+			 * @param[in] rssText Reference to the text to print.
+			*/
+			void PrintText(SConsolePos sPos, const std::string& rssText);
+
+			/**
+			 * @brief Print a value string at a specific location.
+			 * @tparam TValue Type of value.
+			 * @param[in] sPos The location to print the value at.
+			 * @param[in] rssName Reference to the value.
+			 * @param[in] tValue The value.
+			 * @param[in] rssStatus Status, becuse we have signals of type bool
+			 */
+			template <typename TValue>
+			void PrintValue(SConsolePos sPos, const std::string& rssName, TValue tValue, const std::string& rssStatus);
+
+			//sdv::core::CDispatchService m_dispatch;
+			sdv::app::CAppControl           m_appcontrol;  
+
+			mutable std::mutex   m_mtxPrintToConsole;                ///< Mutex to print complete message
+			bool                 m_bThreadStarted = false;           ///< Set when initialized.
+			bool                 m_bRunning = false;                 ///< When set, the application is running.
+
+
+			sdv::core::CSignal   m_signalRainDetected;               ///< Weather signal (RX input signal)
+			sdv::core::CSignal   m_signalFrontWiperActive;           ///< Windsheld wiper front is active (RX input signal)
+			sdv::core::CSignal   m_signalRearWiperActive;            ///< Windsheld wiper rear is active (RX input signal)
+			sdv::core::CSignal   m_signalWiperMode;                  ///< Windsheld wiper mode: manual or auto (RX input signal)
+
+			sdv::core::CSignal   m_signalSubscribeWiperMode;
+			sdv::core::CSignal   m_signalSubscribeRainDetected;
+
+			bool                 m_IsRainDetected = false;           ///< Weather signal
+			bool                 m_WiperFrontIsActive = false;       ///< Windsheld wiper front is active
+			bool                 m_WiperRearIsActive = false;        ///< Windsheld wiper rear is active
+			std::string          m_WiperMode = "manual";             ///< Windsheld wiper mode: manual or auto
+
+
+		#ifdef _WIN32
+			DWORD                m_dwConsoleOutMode = 0u;            ///< The console mode before switching on ANSI support.
+			DWORD                m_dwConsoleInMode = 0u;             ///< The console mode before switching on ANSI support.
+		#elif defined __unix__
+			struct termios       m_sTermAttr{};                      ///< The terminal attributes before disabling echo.
+			int                  m_iFileStatus = 0;                  ///< The file status flags for STDIN.
+		#else
+		#error The OS is not supported!
+		#endif
+
+		};
+
+		template <typename TValue>
+		inline void CConsole::PrintValue(SConsolePos sPos, const std::string& rssName, TValue tValue, const std::string& rssUnits)
+		{
+			std::string endName = " ";
+			const size_t nEndNameLen = 14 - rssUnits.size();
+			const size_t nValueNameLen = 26;
+			std::stringstream sstreamValueText;
+			sstreamValueText << rssName <<
+				std::string(nValueNameLen - std::min(rssName.size(), static_cast<size_t>(nValueNameLen - 1)) - 1, '.') <<
+				" " << std::fixed << std::setprecision(2) << tValue << " " << rssUnits <<
+				std::string(nEndNameLen - std::min(endName.size(), static_cast<size_t>(nEndNameLen - 1)) - 1, ' ');
+
+			std::lock_guard<std::mutex> lock(m_mtxPrintToConsole);
+			SetCursorPos(sPos);
+			std::cout << sstreamValueText.str();
+		}
+
+		template <>
+		inline void CConsole::PrintValue<bool>(SConsolePos sPos, const std::string& rssName, bool bValue, const std::string& rssStatus)
+		{;
+			PrintValue(sPos, rssName, bValue ? "" : "", rssStatus);
+		}
+		#endif // CONSOLE_OUTPUT_H
+
+.. Tip::
+	.. raw:: html
+
+		<details>
+		<summary> Updated wiper_example.cpp</summary>
+
+	.. code-block:: text
+
+		#include <iostream>
+		#include "wiper_application.h"
+		#include "console.h"		
+
+		int main()
+		{
+			std::cout << "Main call" << std::endl;
+			CWiperControl appobj;
+			if (!appobj.Initialize())
+			{
+				std::cout << "ERROR: Failed to initialize application control." << std::endl;
+				return 1;
+			}
+			else
+			{
+				std::cout << "Application control initialized successfully." << std::endl;
+			}
+
+			CConsole visual_obj;
+
+			visual_obj.PrintHeader(); 
+			visual_obj.PrepareDataConsumers();
+			visual_obj.InitData();
+
+			// Switch to running mode.
+			appobj.SetRunningMode();
+			visual_obj.RunUntilBreak();
+
+			visual_obj.ResetSignals();
+
+			appobj.Shutdown();
+			return 0;
+
+		}
+
+	
+.. Tip::
+	.. raw:: html
+
+		<details>
+		<summary> Updated CMakeLists.txt </summary>
+
+	.. code-block:: text
+	
+		project(WiperDemoExample)
+
+		# Use new policy for project version settings and default warning level
+		cmake_policy(SET CMP0048 NEW)   # requires CMake 3.14
+		cmake_policy(SET CMP0092 NEW)   # requires CMake 3.15
+
+		set(CMAKE_CXX_STANDARD 17)
+
+		# Libary symbols are hidden by default
+		set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+
+		# Include directory to the core framework
+		include_directories(${SDV_FRAMEWORK_DEV_INCLUDE})
+
+		######################################################################################################################################################################
+		#                                                                   preparation
+		######################################################################################################################################################################
+
+		# REMARK: The code generation for the proxy/stub, interface definitions and serialization, the vehicle devices and the basic
+		# services are generated during the configuration phase of CMake. This is necessary, since CMakeFiles.txt files are generated and
+		# they have to be available during the configuration phase of CMake to be taken into the build process. Requisite for the code
+		# generation during the configuration time of CMake is the availability of the tools to do the generation. Hence the tools cannot be
+		# created during the build process, which is executed after the configuraiton process.
+
+		# Execute sdv_vss_util to create IDL files for devices and basic services.
+		message("Create interface code for devices and basic services of wiper example.")
+		execute_process(COMMAND "${SDV_VSS_UTIL}" "${PROJECT_SOURCE_DIR}/vss_wiper_example.csv" "-O${PROJECT_SOURCE_DIR}/generated/" --prefixwiper --version1.0.0.1 --enable_components)
+
+		# Execute the IDL compiler for the VSS interfaces to digest interface code. Compile with --no_ps as we do not need proxies and stubs as we do not like to expose these interfaces for complex services or applications
+		message("Compiling vss_vehiclebodyweatherrain_vd_tx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --ps_lib_namewiper_proxystub)
+		message("Compiling vss_vehiclebodyweatherrain_vd_rx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+		message("Compiling vss_vehiclebodywindshieldwiperFront_bs_tx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --ps_lib_namewiper_proxystub)
+		message("Compiling vss_vehiclebodywindshieldwiperfront_vd_tx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+		message("Compiling vss_vehiclebodywindshieldwiperMode_bs_rx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --ps_lib_namewiper_proxystub)
+		message("Compiling vss_vehiclebodywindshieldwipermode_vd_rx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+		message("Compiling vss_vehiclebodywindshieldwiperrear_bs_tx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --ps_lib_namewiper_proxystub)
+		message("Compiling vss_vehiclebodywindshieldwiperrear_vd_tx.idl")
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+
+		#######################################################################################################################################################################
+		##                                                                   vehicle devices and basic services
+		#######################################################################################################################################################################
+
+		# REMARK: Proxy/stub and vehicle device and basic service code was generated during the configuration phase of CMake. Following
+		# below are the build steps to build the components that were generated.
+
+		message("Include: wiper proxy/stub for vehicle devices and basic services")
+		include_directories(${CMAKE_CURRENT_LIST_DIR}/generated/vss_files)
+		add_subdirectory(generated/vss_files/ps)
+
+		add_subdirectory(generated/vss_files/bs_frontwiper)
+		add_subdirectory(generated/vss_files/bs_rainsensor)
+		add_subdirectory(generated/vss_files/bs_rearwiper)
+		add_subdirectory(generated/vss_files/bs_wipermode)
+
+		add_subdirectory(generated/vss_files/vd_frontwiper)
+		add_subdirectory(generated/vss_files/vd_rainsensor)
+		add_subdirectory(generated/vss_files/vd_rearwiper)
+		add_subdirectory(generated/vss_files/vd_wipermode)
+
+		######################################################################################################################################################################
+		#                                                                   basic_system wiper application
+		######################################################################################################################################################################
+
+		# Copy the config files
+		file (COPY ${PROJECT_SOURCE_DIR}/config/data_dispatch_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+		file (COPY ${PROJECT_SOURCE_DIR}/config/task_timer_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+		file (COPY ${PROJECT_SOURCE_DIR}/config/can_com_simulation_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+		file (COPY ${PROJECT_SOURCE_DIR}/config/data_link_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+		file (COPY ${PROJECT_SOURCE_DIR}/config/wiper_vehicle_device_and_basic_service.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+		file (COPY ${PROJECT_SOURCE_DIR}/config/complex_service_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+
+		# Define the executable
+		add_executable(wiper_example
+			wiper_app/wiper_example.cpp
+			wiper_app/wiper_application.cpp
+			wiper_app/wiper_application.h
+			wiper_app/console.cpp
+			wiper_app/console.h
+			)
+
+		if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+			if (WIN32)
+				target_link_libraries(wiper_example Ws2_32 Winmm Rpcrt4.lib)
+			else()
+				target_link_libraries(wiper_example  ${CMAKE_DL_LIBS} rt ${CMAKE_THREAD_LIBS_INIT})
+			endif()
+		else()
+			target_link_libraries(wiper_example Rpcrt4.lib)
+		endif()
+	
+.. raw:: html
+
+   <br>
+
+.. raw:: html
+	
+	<br>
+
 
 Class and Sequence diagrams
 ---------------------------

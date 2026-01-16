@@ -606,7 +606,11 @@ document.write(`
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thread&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdint&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sstream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;atomic&gt;</span>
 <span class="cp">#ifdef _WIN32</span>
 <span class="c1">// Prevent reassignment of &quot;interface&quot;</span>
 <span class="cp">#pragma push_macro(&quot;interface&quot;)</span>
@@ -657,7 +661,39 @@ document.write(`
 <span class="w">    </span><span class="p">}</span>
 
 <span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">WatchdogThreadFunc</span><span class="p">(</span><span class="kt">int64_t</span><span class="w"> </span><span class="n">iWatchdogTimeS</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mf">120l</span><span class="n">l</span><span class="p">)</span>
+<span class="cp">#ifdef _WIN32</span>
+<span class="cp">#elif defined __linux__</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">IsDebuggerPresent</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssFilename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/proc/self/status&quot;</span><span class="p">;</span><span class="w"> </span><span class="c1">// For the current process</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">ifstream</span><span class="w"> </span><span class="nf">fstreamStatus</span><span class="p">(</span><span class="n">ssFilename</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">fstreamStatus</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"> </span><span class="c1">// Cannot open file, assume not debugged</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssLine</span><span class="p">;</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">getline</span><span class="p">(</span><span class="n">fstreamStatus</span><span class="p">,</span><span class="w"> </span><span class="n">ssLine</span><span class="p">))</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ssLine</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;TracerPid&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">stringstream</span><span class="w"> </span><span class="nf">sstreamLine</span><span class="p">(</span><span class="n">ssLine</span><span class="p">);</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssKey</span><span class="p">;</span>
+<span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">iTracerPid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">                </span><span class="n">sstreamLine</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">ssKey</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">iTracerPid</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">iTracerPid</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"> </span><span class="c1">// TracerPid not found</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="cp">#else</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">IsDebuggerPresent</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// No implementation available to check for a debugger.</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="cp">#endif</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">WatchdogThreadFunc</span><span class="p">(</span><span class="kt">int64_t</span><span class="w"> </span><span class="n">iWatchdogTimeS</span><span class="p">)</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// Run for the most the set time; then terminate...</span>
 <span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">tpStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
@@ -667,6 +703,9 @@ document.write(`
 <span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">tpNow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">steady_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
 <span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">duration_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="o">&gt;</span><span class="p">(</span><span class="n">tpNow</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">tpStart</span><span class="p">).</span><span class="n">count</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">iWatchdogTimeS</span><span class="p">)</span>
 <span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// Do not end the process when a debugger is present.</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">IsDebuggerPresent</span><span class="p">())</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
+
 <span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;WATCHDOG TERMINATION ENFORCED!!!&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="p">.</span><span class="n">flush</span><span class="p">();</span>
 <span class="cp">#ifdef _WIN32</span>
@@ -685,8 +724,8 @@ document.write(`
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="kt">bool</span><span class="w">            </span><span class="n">m_bTerminateWatchdog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="w">     </span><span class="n">m_threadWatchdog</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">atomic_bool</span><span class="w">    </span><span class="n">m_bTerminateWatchdog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="w">         </span><span class="n">m_threadWatchdog</span><span class="p">;</span>
 <span class="p">};</span>
 
 <span class="cp">#endif </span><span class="c1">// !defined PROCESS_WATCHDOG_H</span>

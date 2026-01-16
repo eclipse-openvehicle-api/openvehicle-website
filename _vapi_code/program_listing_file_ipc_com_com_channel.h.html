@@ -651,10 +651,16 @@ document.write(`
 
 <span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">SCallEntry</span>
 <span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">enum</span><span class="w"> </span><span class="nc">EState</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">initialized</span><span class="p">,</span>
+<span class="w">            </span><span class="n">processing</span><span class="p">,</span>
+<span class="w">            </span><span class="n">processed</span><span class="p">,</span>
+<span class="w">            </span><span class="n">canceled</span><span class="p">,</span>
+<span class="w">        </span><span class="p">}</span><span class="w">                                       </span><span class="n">eState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EState</span><span class="o">::</span><span class="n">initialized</span><span class="p">;</span>
 <span class="w">        </span><span class="n">sdv</span><span class="o">::</span><span class="n">sequence</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">pointer</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;&gt;</span><span class="w">    </span><span class="n">seqResult</span><span class="p">;</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w">                              </span><span class="n">mtxWaitForResult</span><span class="p">;</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">condition_variable</span><span class="w">                 </span><span class="n">cvWaitForResult</span><span class="p">;</span>
-<span class="w">        </span><span class="kt">bool</span><span class="w">                                    </span><span class="n">bCancel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
 <span class="w">    </span><span class="p">};</span>
 
 <span class="w">    </span><span class="n">CCommunicationControl</span><span class="o">&amp;</span><span class="w">              </span><span class="n">m_rcontrol</span><span class="p">;</span>

@@ -608,7 +608,7 @@ document.write(`
 <section id="derived-type">
 <h3>Derived Type<a class="headerlink" href="#derived-type" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">CNode</span></code> (<a class="reference internal" href="class_c_node.html#exhale-class-class-c-node"><span class="std std-ref">Class CNode</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">toml_parser::CNode</span></code> (<a class="reference internal" href="classtoml__parser_1_1_c_node.html#exhale-class-classtoml-parser-1-1-c-node"><span class="std std-ref">Class CNode</span></a>)</p></li>
 </ul>
 </section>
 </section>
@@ -618,13 +618,368 @@ document.write(`
 <dt class="sig sig-object cpp" id="_CPPv4N3sdv4toml9INodeInfoE">
 <span id="_CPPv3N3sdv4toml9INodeInfoE"></span><span id="_CPPv2N3sdv4toml9INodeInfoE"></span><span id="sdv::toml::INodeInfo"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INodeInfo</span></span></span><a class="headerlink" href="#_CPPv4N3sdv4toml9INodeInfoE" title="Permalink to this definition">#</a><br /></dt>
 <dd><p>Node information interface. </p>
-<p>Subclassed by <a class="reference internal" href="class_c_node.html#class_c_node"><span class="std std-ref">CNode</span></a></p>
+<p>Subclassed by <a class="reference internal" href="classtoml__parser_1_1_c_node.html#classtoml__parser_1_1_c_node"><span class="std std-ref">toml_parser::CNode</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv4toml9INodeInfo13ECommentFlagsE">
+<span id="_CPPv3N3sdv4toml9INodeInfo13ECommentFlagsE"></span><span id="_CPPv2N3sdv4toml9INodeInfo13ECommentFlagsE"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1ab62ad47421701348a73565e0c137d5a8"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ECommentFlags</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><a class="headerlink" href="#_CPPv4N3sdv4toml9INodeInfo13ECommentFlagsE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Comment access flags. </p>
+<p>The comment access flags contain the comment code snippet index (0..15) as well as flags to receive the comments in interpreted or raw form. For comment code snippets are defined for all nodes, the comments before and after the node not related to the node and the comments before and after the node related to the node. Comment or whitespace in between the node tokens are part of the other 11 indices (each node interprets this differently). </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv4toml9INodeInfo13ECommentFlags14comment_beforeE">
+<span id="_CPPv3N3sdv4toml9INodeInfo13ECommentFlags14comment_beforeE"></span><span id="_CPPv2N3sdv4toml9INodeInfo13ECommentFlags14comment_beforeE"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a6f4993cad07f0a0632069924caa57d56"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_before</span></span></span><a class="headerlink" href="#_CPPv4N3sdv4toml9INodeInfo13ECommentFlags14comment_beforeE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The comment before the node. This will insert a newline and the comment text preceded by the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv4toml9INodeInfo13ECommentFlags14comment_behindE">
+<span id="_CPPv3N3sdv4toml9INodeInfo13ECommentFlags14comment_behindE"></span><span id="_CPPv2N3sdv4toml9INodeInfo13ECommentFlags14comment_behindE"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a85e0119a6634dce1bff364e7ffb16ffe"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_behind</span></span></span><a class="headerlink" href="#_CPPv4N3sdv4toml9INodeInfo13ECommentFlags14comment_behindE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The comment behind the node. This will align the comment to te next tab stop and precedes the comment with the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv4toml9INodeInfo13ECommentFlags27out_of_scope_comment_beforeE">
+<span id="_CPPv3N3sdv4toml9INodeInfo13ECommentFlags27out_of_scope_comment_beforeE"></span><span id="_CPPv2N3sdv4toml9INodeInfo13ECommentFlags27out_of_scope_comment_beforeE"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ab2e34b573e30325f9fbd143d9a420d5f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_before</span></span></span><a class="headerlink" href="#_CPPv4N3sdv4toml9INodeInfo13ECommentFlags27out_of_scope_comment_beforeE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>An independent comment before the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv4toml9INodeInfo13ECommentFlags27out_of_scope_comment_behindE">
+<span id="_CPPv3N3sdv4toml9INodeInfo13ECommentFlags27out_of_scope_comment_behindE"></span><span id="_CPPv2N3sdv4toml9INodeInfo13ECommentFlags27out_of_scope_comment_behindE"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ac4450a241a89dabf1d5bf0d372ffc5e1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_behind</span></span></span><a class="headerlink" href="#_CPPv4N3sdv4toml9INodeInfo13ECommentFlags27out_of_scope_comment_behindE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>An independent comment behind the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv4toml9INodeInfo13ECommentFlags18comment_index_maskE">
+<span id="_CPPv3N3sdv4toml9INodeInfo13ECommentFlags18comment_index_maskE"></span><span id="_CPPv2N3sdv4toml9INodeInfo13ECommentFlags18comment_index_maskE"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a61b63f714ffaddacaf58b14cdb3acd49"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_index_mask</span></span></span><a class="headerlink" href="#_CPPv4N3sdv4toml9INodeInfo13ECommentFlags18comment_index_maskE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Comment type mask to be used ot filter the comment type. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv4toml9INodeInfo13ECommentFlags11raw_commentE">
+<span id="_CPPv3N3sdv4toml9INodeInfo13ECommentFlags11raw_commentE"></span><span id="_CPPv2N3sdv4toml9INodeInfo13ECommentFlags11raw_commentE"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a4dd686e569f4ea99811a346b5bd6e10a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">raw_comment</span></span></span><a class="headerlink" href="#_CPPv4N3sdv4toml9INodeInfo13ECommentFlags11raw_commentE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Store the comment exactly as provided (whitespace and comments). </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv4toml9INodeInfo13ECommentFlags18replace_whitespaceE">
+<span id="_CPPv3N3sdv4toml9INodeInfo13ECommentFlags18replace_whitespaceE"></span><span id="_CPPv2N3sdv4toml9INodeInfo13ECommentFlags18replace_whitespaceE"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9aa77f081eda4d0575221291e0ea770801"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">replace_whitespace</span></span></span><a class="headerlink" href="#_CPPv4N3sdv4toml9INodeInfo13ECommentFlags18replace_whitespaceE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>When set, the comment will replace the current whitespace as well. Used with SetComment function. Automatically enabled for raw comments. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ac5aa3eedd8d718af50d6ce013c0a8ffe"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_before</span></span></span><br /></dt>
+<dd><p>The comment before the node. This will insert a newline and the comment text preceded by the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a6f4993cad07f0a0632069924caa57d56"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_before</span></span></span><br /></dt>
+<dd><p>The comment before the node. This will insert a newline and the comment text preceded by the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a6f4993cad07f0a0632069924caa57d56"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_before</span></span></span><br /></dt>
+<dd><p>The comment before the node. This will insert a newline and the comment text preceded by the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a311d254e24287449153900ca651476df"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_behind</span></span></span><br /></dt>
+<dd><p>The comment behind the node. This will align the comment to te next tab stop and precedes the comment with the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a85e0119a6634dce1bff364e7ffb16ffe"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_behind</span></span></span><br /></dt>
+<dd><p>The comment behind the node. This will align the comment to te next tab stop and precedes the comment with the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a85e0119a6634dce1bff364e7ffb16ffe"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_behind</span></span></span><br /></dt>
+<dd><p>The comment behind the node. This will align the comment to te next tab stop and precedes the comment with the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a12f6847f9a4e56576654b5aec2513c1c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_before</span></span></span><br /></dt>
+<dd><p>An independent comment before the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ab2e34b573e30325f9fbd143d9a420d5f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_before</span></span></span><br /></dt>
+<dd><p>An independent comment before the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ab2e34b573e30325f9fbd143d9a420d5f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_before</span></span></span><br /></dt>
+<dd><p>An independent comment before the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a86172498c72ec3fe13dea1862fc0529c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_behind</span></span></span><br /></dt>
+<dd><p>An independent comment behind the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ac4450a241a89dabf1d5bf0d372ffc5e1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_behind</span></span></span><br /></dt>
+<dd><p>An independent comment behind the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ac4450a241a89dabf1d5bf0d372ffc5e1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_behind</span></span></span><br /></dt>
+<dd><p>An independent comment behind the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a55e2798603e0f96d57f6506ff34af32d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_index_mask</span></span></span><br /></dt>
+<dd><p>Comment type mask to be used ot filter the comment type. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a61b63f714ffaddacaf58b14cdb3acd49"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_index_mask</span></span></span><br /></dt>
+<dd><p>Comment type mask to be used ot filter the comment type. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a61b63f714ffaddacaf58b14cdb3acd49"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_index_mask</span></span></span><br /></dt>
+<dd><p>Comment type mask to be used ot filter the comment type. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ad5fc37c0857ff7d17a0df878ecf152d9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">raw_comment</span></span></span><br /></dt>
+<dd><p>Store the comment exactly as provided (whitespace and comments). </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a4dd686e569f4ea99811a346b5bd6e10a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">raw_comment</span></span></span><br /></dt>
+<dd><p>Store the comment exactly as provided (whitespace and comments). </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a4dd686e569f4ea99811a346b5bd6e10a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">raw_comment</span></span></span><br /></dt>
+<dd><p>Store the comment exactly as provided (whitespace and comments). </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ab115a61f3fde6d539c425148fbf9cdf6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">replace_whitespace</span></span></span><br /></dt>
+<dd><p>When set, the comment will replace the current whitespace as well. Used with SetComment function. Automatically enabled for raw comments. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9aa77f081eda4d0575221291e0ea770801"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">replace_whitespace</span></span></span><br /></dt>
+<dd><p>When set, the comment will replace the current whitespace as well. Used with SetComment function. Automatically enabled for raw comments. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9aa77f081eda4d0575221291e0ea770801"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">replace_whitespace</span></span></span><br /></dt>
+<dd><p>When set, the comment will replace the current whitespace as well. Used with SetComment function. Automatically enabled for raw comments. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ECommentFlags</span></span></span><br /></dt>
+<dd><p>Comment access flags. </p>
+<p>The comment access flags contain the comment code snippet index (0..15) as well as flags to receive the comments in interpreted or raw form. For comment code snippets are defined for all nodes, the comments before and after the node not related to the node and the comments before and after the node related to the node. Comment or whitespace in between the node tokens are part of the other 11 indices (each node interprets this differently). </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a6f4993cad07f0a0632069924caa57d56"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_before</span></span></span><br /></dt>
+<dd><p>The comment before the node. This will insert a newline and the comment text preceded by the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a85e0119a6634dce1bff364e7ffb16ffe"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_behind</span></span></span><br /></dt>
+<dd><p>The comment behind the node. This will align the comment to te next tab stop and precedes the comment with the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ab2e34b573e30325f9fbd143d9a420d5f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_before</span></span></span><br /></dt>
+<dd><p>An independent comment before the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ac4450a241a89dabf1d5bf0d372ffc5e1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_behind</span></span></span><br /></dt>
+<dd><p>An independent comment behind the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a61b63f714ffaddacaf58b14cdb3acd49"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_index_mask</span></span></span><br /></dt>
+<dd><p>Comment type mask to be used ot filter the comment type. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a4dd686e569f4ea99811a346b5bd6e10a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">raw_comment</span></span></span><br /></dt>
+<dd><p>Store the comment exactly as provided (whitespace and comments). </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9aa77f081eda4d0575221291e0ea770801"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">replace_whitespace</span></span></span><br /></dt>
+<dd><p>When set, the comment will replace the current whitespace as well. Used with SetComment function. Automatically enabled for raw comments. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ac5aa3eedd8d718af50d6ce013c0a8ffe"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_before</span></span></span><br /></dt>
+<dd><p>The comment before the node. This will insert a newline and the comment text preceded by the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a6f4993cad07f0a0632069924caa57d56"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_before</span></span></span><br /></dt>
+<dd><p>The comment before the node. This will insert a newline and the comment text preceded by the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a6f4993cad07f0a0632069924caa57d56"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_before</span></span></span><br /></dt>
+<dd><p>The comment before the node. This will insert a newline and the comment text preceded by the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a311d254e24287449153900ca651476df"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_behind</span></span></span><br /></dt>
+<dd><p>The comment behind the node. This will align the comment to te next tab stop and precedes the comment with the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a85e0119a6634dce1bff364e7ffb16ffe"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_behind</span></span></span><br /></dt>
+<dd><p>The comment behind the node. This will align the comment to te next tab stop and precedes the comment with the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a85e0119a6634dce1bff364e7ffb16ffe"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_behind</span></span></span><br /></dt>
+<dd><p>The comment behind the node. This will align the comment to te next tab stop and precedes the comment with the ‘#’ character. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a12f6847f9a4e56576654b5aec2513c1c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_before</span></span></span><br /></dt>
+<dd><p>An independent comment before the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ab2e34b573e30325f9fbd143d9a420d5f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_before</span></span></span><br /></dt>
+<dd><p>An independent comment before the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ab2e34b573e30325f9fbd143d9a420d5f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_before</span></span></span><br /></dt>
+<dd><p>An independent comment before the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a86172498c72ec3fe13dea1862fc0529c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_behind</span></span></span><br /></dt>
+<dd><p>An independent comment behind the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ac4450a241a89dabf1d5bf0d372ffc5e1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_behind</span></span></span><br /></dt>
+<dd><p>An independent comment behind the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ac4450a241a89dabf1d5bf0d372ffc5e1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_scope_comment_behind</span></span></span><br /></dt>
+<dd><p>An independent comment behind the node. This comment is not part of the node and is separated by an extra newline. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a55e2798603e0f96d57f6506ff34af32d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_index_mask</span></span></span><br /></dt>
+<dd><p>Comment type mask to be used ot filter the comment type. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a61b63f714ffaddacaf58b14cdb3acd49"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_index_mask</span></span></span><br /></dt>
+<dd><p>Comment type mask to be used ot filter the comment type. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a61b63f714ffaddacaf58b14cdb3acd49"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment_index_mask</span></span></span><br /></dt>
+<dd><p>Comment type mask to be used ot filter the comment type. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ad5fc37c0857ff7d17a0df878ecf152d9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">raw_comment</span></span></span><br /></dt>
+<dd><p>Store the comment exactly as provided (whitespace and comments). </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a4dd686e569f4ea99811a346b5bd6e10a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">raw_comment</span></span></span><br /></dt>
+<dd><p>Store the comment exactly as provided (whitespace and comments). </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9a4dd686e569f4ea99811a346b5bd6e10a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">raw_comment</span></span></span><br /></dt>
+<dd><p>Store the comment exactly as provided (whitespace and comments). </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9ab115a61f3fde6d539c425148fbf9cdf6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">replace_whitespace</span></span></span><br /></dt>
+<dd><p>When set, the comment will replace the current whitespace as well. Used with SetComment function. Automatically enabled for raw comments. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9aa77f081eda4d0575221291e0ea770801"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">replace_whitespace</span></span></span><br /></dt>
+<dd><p>When set, the comment will replace the current whitespace as well. Used with SetComment function. Automatically enabled for raw comments. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af1ddc354f1d7342670866fcef0188ea9aa77f081eda4d0575221291e0ea770801"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">replace_whitespace</span></span></span><br /></dt>
+<dd><p>When set, the comment will replace the current whitespace as well. Used with SetComment function. Automatically enabled for raw comments. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3sdv4toml9INodeInfo7GetNameEv">
 <span id="_CPPv3NK3sdv4toml9INodeInfo7GetNameEv"></span><span id="_CPPv2NK3sdv4toml9INodeInfo7GetNameEv"></span><span id="sdv::toml::INodeInfo::GetNameC"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a58398cd22db3d7cd699a5f49eb35e402"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1a14fa0ffa079b2906ffd654035a1eb146.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetName</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3sdv4toml9INodeInfo7GetNameEv" title="Permalink to this definition">#</a><br /></dt>
-<dd><p>Get the node name. </p>
+<dd><p>Get the node name (no conversion to a literal or quoted key is made). </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>String containing the name of the node. </p>
@@ -633,8 +988,22 @@ document.write(`
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3sdv4toml9INodeInfo7GetPathEb">
+<span id="_CPPv3NK3sdv4toml9INodeInfo7GetPathEb"></span><span id="_CPPv2NK3sdv4toml9INodeInfo7GetPathEb"></span><span id="sdv::toml::INodeInfo::GetPath__bC"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a9b738a60c54c7be0b9fafed67a842061"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1a14fa0ffa079b2906ffd654035a1eb146.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetPath</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bResolveArrays</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3sdv4toml9INodeInfo7GetPathEb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the node path following the key rules for bar, literal and quoted keys. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bResolveArrays</strong> – <strong>[in]</strong> When set, include array indices in the path. The path returned without array indices is identical to the code in the TOML file. The path returned with array indices is identical to the direct access of nodes within the parser. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>String containing the path of the node. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3sdv4toml9INodeInfo7GetTypeEv">
-<span id="_CPPv3NK3sdv4toml9INodeInfo7GetTypeEv"></span><span id="_CPPv2NK3sdv4toml9INodeInfo7GetTypeEv"></span><span id="sdv::toml::INodeInfo::GetTypeC"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a455a9b1827fe77228f513cd5c8697737"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="enum_namespacesdv_1_1toml_1a5ea8a0ec55ab218053301b069e3b9411.html#_CPPv4N3sdv4toml9ENodeTypeE" title="sdv::toml::ENodeType"><span class="n"><span class="pre">ENodeType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetType</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3sdv4toml9INodeInfo7GetTypeEv" title="Permalink to this definition">#</a><br /></dt>
+<span id="_CPPv3NK3sdv4toml9INodeInfo7GetTypeEv"></span><span id="_CPPv2NK3sdv4toml9INodeInfo7GetTypeEv"></span><span id="sdv::toml::INodeInfo::GetTypeC"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a455a9b1827fe77228f513cd5c8697737"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="enum_namespacesdv_1_1toml_1a3a8798ef6d6710c29bed671bf01fd765.html#_CPPv4N3sdv4toml9ENodeTypeE" title="sdv::toml::ENodeType"><span class="n"><span class="pre">ENodeType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetType</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3sdv4toml9INodeInfo7GetTypeEv" title="Permalink to this definition">#</a><br /></dt>
 <dd><p>Get the node type. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -655,9 +1024,31 @@ document.write(`
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3sdv4toml9INodeInfo8GetIndexEv">
+<span id="_CPPv3NK3sdv4toml9INodeInfo8GetIndexEv"></span><span id="_CPPv2NK3sdv4toml9INodeInfo8GetIndexEv"></span><span id="sdv::toml::INodeInfo::GetIndexC"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1acf15d24457611f3ffb4f26f560d22449"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetIndex</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3sdv4toml9INodeInfo8GetIndexEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the index of this node within the parent collection. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The index of the node within the parent collection node or npos when no parent is available. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3sdv4toml9INodeInfo9GetParentEv">
+<span id="_CPPv3NK3sdv4toml9INodeInfo9GetParentEv"></span><span id="_CPPv2NK3sdv4toml9INodeInfo9GetParentEv"></span><span id="sdv::toml::INodeInfo::GetParentC"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a80938090ae2a8c1088e682c81c0cb7f7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetParent</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3sdv4toml9INodeInfo9GetParentEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the parent collection node. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the parent collection node or NULL when there is no parent collection node. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3sdv4toml9INodeInfo7GetTOMLEv">
 <span id="_CPPv3NK3sdv4toml9INodeInfo7GetTOMLEv"></span><span id="_CPPv2NK3sdv4toml9INodeInfo7GetTOMLEv"></span><span id="sdv::toml::INodeInfo::GetTOMLC"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a0afa2a5bbac04da6b65cd328be8d9e16"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1a14fa0ffa079b2906ffd654035a1eb146.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetTOML</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3sdv4toml9INodeInfo7GetTOMLEv" title="Permalink to this definition">#</a><br /></dt>
-<dd><p>Return the TOML string belonging to this node including all potential child nodes. </p>
+<dd><p>Return the TOML string belonging to this node including all potential child nodes and comments. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The TOML string. </p>
@@ -666,9 +1057,52 @@ document.write(`
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv4toml9INodeInfo10SetCommentERKN3sdv8u8stringE8uint32_t">
+<span id="_CPPv3N3sdv4toml9INodeInfo10SetCommentERKN3sdv8u8stringE8uint32_t"></span><span id="_CPPv2N3sdv4toml9INodeInfo10SetCommentERKN3sdv8u8stringE8uint32_t"></span><span id="sdv::toml::INodeInfo::SetComment__sdv::u8stringCR.uint32_t"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a46b5e15de7a363144eb0f8601505c327"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetComment</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1a14fa0ffa079b2906ffd654035a1eb146.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ssComment</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiFlags</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3sdv4toml9INodeInfo10SetCommentERKN3sdv8u8stringE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set or replace a comment for the node. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>This function can also be used to insert whitespace (with or without comments) when used in raw mode. Set the comment text for the node. If a comment is proided as text (normal behavior), the comment text will be formatted automatically when generating the TOML text. If the comment is provided as raw comment, the text should contain all whitespace and the comment ‘#’ character before the comment text. Comments inserted before the enode will be inserted on the line before the node uness the comment is provided in raw format and is ended with a newline and optionally whitespace. Comment inserted behind the node will be inserted on the same line as the node. Comments provided as text is automatically wrapped to 80 characters if possible. Newlines in the text will cause a new comment line to start. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ssComment</strong> – <strong>[in]</strong> String containing the comment text or the raw comment string to set. </p></li>
+<li><p><strong>uiFlags</strong> – <strong>[in]</strong> One or more ECommentFlags flags influencing the behavior of the comment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv4toml9INodeInfo10GetCommentE8uint32_t">
+<span id="_CPPv3N3sdv4toml9INodeInfo10GetCommentE8uint32_t"></span><span id="_CPPv2N3sdv4toml9INodeInfo10GetCommentE8uint32_t"></span><span id="sdv::toml::INodeInfo::GetComment__uint32_t"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1af4ff37f713bdabb6a43cfd3667bfe587"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1a14fa0ffa079b2906ffd654035a1eb146.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetComment</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiFlags</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3sdv4toml9INodeInfo10GetCommentE8uint32_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the current comment for the node. <div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>To receive the whitespace formatting the node, use this function in raw mode. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiFlags</strong> – <strong>[in]</strong> One or more ECommentFlags flags identifying the string format of the comment to return. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>String with the comment text or an empty string if no comment is available. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv4toml9INodeInfo15AutomaticFormatEv">
+<span id="_CPPv3N3sdv4toml9INodeInfo15AutomaticFormatEv"></span><span id="_CPPv2N3sdv4toml9INodeInfo15AutomaticFormatEv"></span><span id="sdv::toml::INodeInfo::AutomaticFormat"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a4a5979f1286512e26cbf4d78f4a4e2f5"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AutomaticFormat</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3sdv4toml9INodeInfo15AutomaticFormatEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Format the node automatically. This will remove the whitespace between the elements within the node. Comments will not be changed. </p>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp">
 <span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a0da91f8d6fc0b9b09b6d6cae7541cdaa"></span><a class="reference internal" href="typedef_namespacesdv_1a14fa0ffa079b2906ffd654035a1eb146.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetName</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
-<dd><p>Get the node name. </p>
+<dd><p>Get the node name (no conversion to a literal or quoted key is made). </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>String containing the name of the node. </p>
@@ -678,7 +1112,21 @@ document.write(`
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp">
-<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a6e5cf3301f58943125d60c6691d4ada5"></span><a class="reference internal" href="enum_namespacesdv_1_1toml_1a5ea8a0ec55ab218053301b069e3b9411.html#_CPPv4N3sdv4toml9ENodeTypeE" title="sdv::toml::ENodeType"><span class="n"><span class="pre">ENodeType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetType</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a8576730de557e7e62201c814d40ca7b4"></span><span class="sig-name descname"><span class="pre">u8string</span> <span class="pre">GetPath</span> <span class="pre">(in</span> <span class="pre">boolean</span> <span class="pre">bResolveArrays)</span> <span class="pre">const</span></span></dt>
+<dd><p>Get the node path following the key rules for bar, literal and quoted keys. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bResolveArrays</strong> – <strong>[in]</strong> When set, include array indices in the path. The path returned without array indices is identical to the code in the TOML file. The path returned with array indices is identical to the direct access of nodes within the parser. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>String containing the path of the node. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a6e5cf3301f58943125d60c6691d4ada5"></span><a class="reference internal" href="enum_namespacesdv_1_1toml_1a3a8798ef6d6710c29bed671bf01fd765.html#_CPPv4N3sdv4toml9ENodeTypeE" title="sdv::toml::ENodeType"><span class="n"><span class="pre">ENodeType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetType</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
 <dd><p>Get the node type. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -700,8 +1148,30 @@ document.write(`
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a8cd99b9f7e232c5c68a721e73b03ac40"></span><span class="n"><span class="pre">uint32</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetIndex</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Get the index of this node within the parent collection. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The index of the node within the parent collection node or npos when no parent is available. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1aaa252ec48dc3bd1cebaafb3727901a34"></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetParent</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Get the parent collection node. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the parent collection node or NULL when there is no parent collection node. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
 <span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a3ca2cb84e6e6a5029d430634089c6669"></span><a class="reference internal" href="typedef_namespacesdv_1a14fa0ffa079b2906ffd654035a1eb146.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetTOML</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
-<dd><p>Return the TOML string belonging to this node including all potential child nodes. </p>
+<dd><p>Return the TOML string belonging to this node including all potential child nodes and comments. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The TOML string. </p>
@@ -709,12 +1179,55 @@ document.write(`
 </dl>
 </dd></dl>
 
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a88cf557944407efa0ed5a77811eb1a8f"></span><span class="sig-name descname"><span class="pre">void</span> <span class="pre">SetComment</span> <span class="pre">(in</span> <span class="pre">u8string</span> <span class="pre">ssComment,</span> <span class="pre">in</span> <span class="pre">uint32</span> <span class="pre">uiFlags)</span></span></dt>
+<dd><p>Set or replace a comment for the node. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>This function can also be used to insert whitespace (with or without comments) when used in raw mode. Set the comment text for the node. If a comment is proided as text (normal behavior), the comment text will be formatted automatically when generating the TOML text. If the comment is provided as raw comment, the text should contain all whitespace and the comment ‘#’ character before the comment text. Comments inserted before the enode will be inserted on the line before the node uness the comment is provided in raw format and is ended with a newline and optionally whitespace. Comment inserted behind the node will be inserted on the same line as the node. Comments provided as text is automatically wrapped to 80 characters if possible. Newlines in the text will cause a new comment line to start. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ssComment</strong> – <strong>[in]</strong> String containing the comment text or the raw comment string to set. </p></li>
+<li><p><strong>uiFlags</strong> – <strong>[in]</strong> One or more ECommentFlags flags influencing the behavior of the comment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a303e0274efd669c11eccd875846d26e3"></span><span class="sig-name descname"><span class="pre">u8string</span> <span class="pre">GetComment</span> <span class="pre">(in</span> <span class="pre">uint32</span> <span class="pre">uiFlags)</span></span></dt>
+<dd><p>Get the current comment for the node. <div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>To receive the whitespace formatting the node, use this function in raw mode. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>uiFlags</strong> – <strong>[in]</strong> One or more ECommentFlags flags identifying the string format of the comment to return. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>String with the comment text or an empty string if no comment is available. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1toml_1_1_i_node_info_1a9166d728b3aff6957b06b6517c555dc8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AutomaticFormat</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Format the node automatically. This will remove the whitespace between the elements within the node. Comments will not be changed. </p>
+</dd></dl>
+
 </div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3sdv4toml9INodeInfo3_idE">
-<span id="_CPPv3N3sdv4toml9INodeInfo3_idE"></span><span id="_CPPv2N3sdv4toml9INodeInfo3_idE"></span><span id="sdv::toml::INodeInfo::_id__sdv::interface_id"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1aff41adac99594089de29da32e5ddbe48"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ade2e90c3525c019671927618b95a907b.html#_CPPv4N3sdv12interface_idE" title="sdv::interface_id"><span class="n"><span class="pre">interface_id</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_id</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x238A8EF0420C4DB8</span></span><a class="headerlink" href="#_CPPv4N3sdv4toml9INodeInfo3_idE" title="Permalink to this definition">#</a><br /></dt>
+<span id="_CPPv3N3sdv4toml9INodeInfo3_idE"></span><span id="_CPPv2N3sdv4toml9INodeInfo3_idE"></span><span id="sdv::toml::INodeInfo::_id__sdv::interface_id"></span><span class="target" id="structsdv_1_1toml_1_1_i_node_info_1aff41adac99594089de29da32e5ddbe48"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ade2e90c3525c019671927618b95a907b.html#_CPPv4N3sdv12interface_idE" title="sdv::interface_id"><span class="n"><span class="pre">interface_id</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_id</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x74CE8D0D93E7F270</span></span><a class="headerlink" href="#_CPPv4N3sdv4toml9INodeInfo3_idE" title="Permalink to this definition">#</a><br /></dt>
 <dd><p>Interface ID. </p>
 </dd></dl>
 

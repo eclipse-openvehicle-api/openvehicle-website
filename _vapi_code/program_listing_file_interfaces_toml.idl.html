@@ -614,7 +614,7 @@ module<span class="w"> </span>sdv
 <span class="w">            </span>u8string<span class="w"> </span>ssMessage;
 <span class="w">        </span>};
 
-<span class="w">        </span>enum<span class="w"> </span>ENodeType<span class="w"> </span><span class="o">:</span><span class="w"> </span>uint8
+<span class="w">        </span>enum<span class="w"> </span>ENodeType<span class="w"> </span><span class="o">:</span><span class="w"> </span>uint32
 <span class="w">        </span>{
 <span class="w">            </span>node_table,
 <span class="w">            </span>node_array,
@@ -625,15 +625,40 @@ module<span class="w"> </span>sdv
 <span class="w">            </span>node_invalid
 <span class="w">        </span>};
 
+<span class="w">        </span>const<span class="w"> </span>uint32<span class="w"> </span>npos<span class="w"> </span><span class="o">=</span><span class="w"> </span>0xFFFFFFFF;
+
 <span class="w">        </span>interface<span class="w"> </span>INodeInfo
 <span class="w">        </span>{
 <span class="w">            </span>u8string<span class="w"> </span>GetName()<span class="w"> </span>const;
+
+<span class="w">            </span>u8string<span class="w"> </span>GetPath(in<span class="w"> </span>boolean<span class="w"> </span>bResolveArrays)<span class="w"> </span>const;
 
 <span class="w">            </span>ENodeType<span class="w"> </span>GetType()<span class="w"> </span>const;
 
 <span class="w">            </span>any<span class="w"> </span>GetValue()<span class="w"> </span>const;
 
+<span class="w">            </span>uint32<span class="w"> </span>GetIndex()<span class="w"> </span>const;
+
+<span class="w">            </span>IInterfaceAccess<span class="w"> </span>GetParent()<span class="w"> </span>const;
+
 <span class="w">            </span>u8string<span class="w"> </span>GetTOML()<span class="w"> </span>const;
+
+<span class="w">            </span>enum<span class="w"> </span>ECommentFlags
+<span class="w">            </span>{
+<span class="w">                </span>comment_before<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>,
+<span class="w">                </span>comment_behind<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>,
+<span class="w">                </span>out_of_scope_comment_before<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span>,
+<span class="w">                </span>out_of_scope_comment_behind<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span>,
+<span class="w">                </span>comment_index_mask<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span>,
+<span class="w">                </span>raw_comment<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>,
+<span class="w">                </span>replace_whitespace<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span>,
+<span class="w">            </span>};
+
+<span class="w">            </span>void<span class="w"> </span>SetComment(in<span class="w"> </span>u8string<span class="w"> </span>ssComment,<span class="w"> </span>in<span class="w"> </span>uint32<span class="w"> </span>uiFlags);
+
+<span class="w">            </span>u8string<span class="w"> </span>GetComment(in<span class="w"> </span>uint32<span class="w"> </span>uiFlags);
+
+<span class="w">            </span>void<span class="w"> </span>AutomaticFormat();
 <span class="w">        </span>};
 
 <span class="w">        </span>interface<span class="w"> </span>INodeCollection
@@ -643,6 +668,42 @@ module<span class="w"> </span>sdv
 <span class="w">            </span>IInterfaceAccess<span class="w"> </span>GetNode(in<span class="w"> </span>uint32<span class="w"> </span>uiIndex)<span class="w"> </span>const;
 
 <span class="w">            </span>IInterfaceAccess<span class="w"> </span>GetNodeDirect(in<span class="w"> </span>u8string<span class="w"> </span>ssPath)<span class="w"> </span>const;
+<span class="w">        </span>};
+
+<span class="w">        </span>interface<span class="w"> </span>INodeCollectionInsert
+<span class="w">        </span>{
+<span class="w">            </span>IInterfaceAccess<span class="w"> </span>InsertValue(in<span class="w"> </span>uint32<span class="w"> </span>uiIndex,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssName,<span class="w"> </span>in<span class="w"> </span>any<span class="w"> </span>anyValue);
+
+<span class="w">            </span>IInterfaceAccess<span class="w"> </span>InsertArray(in<span class="w"> </span>uint32<span class="w"> </span>uiIndex,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssName);
+
+<span class="w">            </span>IInterfaceAccess<span class="w"> </span>InsertTable(in<span class="w"> </span>uint32<span class="w"> </span>uiIndex,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssKeyName);
+
+<span class="w">            </span>IInterfaceAccess<span class="w"> </span>InsertTableArray(in<span class="w"> </span>uint32<span class="w"> </span>uiIndex,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssName);
+
+<span class="w">            </span>enum<span class="w"> </span>EInsertResult<span class="w"> </span><span class="o">:</span><span class="w"> </span>uint32
+<span class="w">            </span>{
+<span class="w">                </span>invalid_TOML,
+<span class="w">                </span>insert_partly_success,
+<span class="w">                </span>insert_success,
+<span class="w">            </span>};
+
+<span class="w">            </span>EInsertResult<span class="w"> </span>InsertTOML(in<span class="w"> </span>u8string<span class="w"> </span>ssTOML,<span class="w"> </span>in<span class="w"> </span>boolean<span class="w"> </span>bRollbackOnPartly);
+<span class="w">        </span>};
+
+<span class="w">        </span>interface<span class="w"> </span>INodeDelete
+<span class="w">        </span>{
+<span class="w">            </span>boolean<span class="w"> </span>DeleteNode();
+<span class="w">        </span>};
+
+<span class="w">        </span>interface<span class="w"> </span>INodeUpdate
+<span class="w">        </span>{
+<span class="w">            </span>boolean<span class="w"> </span>ChangeName(in<span class="w"> </span>u8string<span class="w"> </span>ssNewName);
+
+<span class="w">            </span>boolean<span class="w"> </span>ChangeValue(in<span class="w"> </span>any<span class="w"> </span>anyNewValue);
+
+<span class="w">            </span>boolean<span class="w"> </span>MoveUp();
+
+<span class="w">            </span>boolean<span class="w"> </span>MoveDown();
 <span class="w">        </span>};
 
 <span class="w">        </span>interface<span class="w"> </span>ITOMLParser

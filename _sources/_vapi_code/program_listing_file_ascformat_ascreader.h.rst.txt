@@ -17,6 +17,7 @@ Program Listing for File ascreader.h
    #include <functional>
    #include <filesystem>
    #include <thread>
+   #include <atomic>
    
    namespace asc
    {
@@ -75,8 +76,8 @@ Program Listing for File ascreader.h
            std::list<SCanMessage>              m_lstMessages;                  
            std::list<SCanMessage>::iterator    m_itCurrent;                    
            std::thread                         m_threadPlayback;               
-           bool                                m_bPlaybackThread = false;      
-           bool                                m_bPlayback = false;            
+           std::atomic_bool                    m_bPlaybackThread = false;      
+           std::atomic_bool                    m_bPlayback = false;            
            std::atomic<uint32_t>               m_uiLoopCount{ 0 };             
        };
    }
