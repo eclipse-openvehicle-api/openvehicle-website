@@ -18,6 +18,7 @@ Program Listing for File trace_fifo.h
    #include <string>
    #include <sstream>
    #include <map>
+   #include <atomic>
    
    enum class ETraceFifoOpenFlags : uint32_t
    {
@@ -198,14 +199,14 @@ Program Listing for File trace_fifo.h
    private:
        void DispatchThreadFunc();
    
-       const size_t nReadIndex = 0;                    
-       const size_t nWriteIndex = 1;                   
-       bool        m_bShutdown = false;                
-       int         m_rgPipeStdOut[2] = { -1, -1 };     
-       int         m_rgPipeStdErr[2] = { -1, -1 };     
-       int         m_iOldStdOut = -1;                  
-       int         m_iOldStdErr = -1;                  
-       std::thread m_threadDispatch;                   
+       const size_t        nReadIndex = 0;                    
+       const size_t        nWriteIndex = 1;                   
+       std::atomic_bool    m_bShutdown = false;                
+       int                 m_rgPipeStdOut[2] = { -1, -1 };     
+       int                 m_rgPipeStdErr[2] = { -1, -1 };     
+       int                 m_iOldStdOut = -1;                  
+       int                 m_iOldStdErr = -1;                  
+       std::thread         m_threadDispatch;                   
    };
    
    #endif // !defined TRACE_FIFO_H

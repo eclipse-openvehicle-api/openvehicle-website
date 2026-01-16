@@ -606,82 +606,68 @@ document.write(`
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;lexer_toml.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;parser_node_toml.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;miscellaneous.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stack&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;memory&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">CParserTOML</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">ITOMLParser</span>
+<span class="k">namespace</span><span class="w"> </span><span class="nn">toml_parser</span>
 <span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">CParserTOML</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CNode</span><span class="p">;</span>
 
-<span class="w">    </span><span class="n">CParserTOML</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssString</span><span class="p">);</span>
-
-<span class="w">    </span><span class="c1">// Interface map</span>
-<span class="w">    </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
-<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">ITOMLParser</span><span class="p">)</span>
-<span class="w">        </span><span class="n">SDV_INTERFACE_CHAIN_MEMBER</span><span class="p">(</span><span class="n">m_ptrRoot</span><span class="p">)</span>
-<span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
-
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">Clear</span><span class="p">();</span>
-
-<span class="w">    </span><span class="c1">// Ignore cppcheck warning for not using dynamic binding when being called through the constructor.</span>
-<span class="w">    </span><span class="c1">// cppcheck-suppress virtualCallInConstructor</span>
-<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Process</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssContent</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
-
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">CNodeCollection</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">GetRoot</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
-<span class="w">    </span><span class="n">CNodeCollection</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">GetRoot</span><span class="p">();</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">CreateTOMLText</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssParent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">())</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
-
-<span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TCollectionNode</span><span class="o">&gt;</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">Add</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssPath</span><span class="p">);</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Add</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssPath</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bVal</span><span class="p">);</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Add</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssPath</span><span class="p">,</span><span class="w"> </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">iVal</span><span class="p">);</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Add</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssPath</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">dVal</span><span class="p">);</span>
-
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Add</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssPath</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssVal</span><span class="p">);</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessTable</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessTableArray</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessValueKey</span><span class="p">();</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessValue</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssKeyPath</span><span class="p">);</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessArray</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssKeyPath</span><span class="p">);</span>
-
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessInlineTable</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssKeyPath</span><span class="p">);</span>
-
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">ComposePath</span><span class="p">();</span>
-
-<span class="w">    </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EEnvironment</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CParser</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">ITOMLParser</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">env_array</span><span class="p">,</span>
-<span class="w">        </span><span class="n">env_inline_table</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">CParser</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CParser</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssString</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// Interface map</span>
+<span class="w">        </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">            </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">ITOMLParser</span><span class="p">)</span>
+<span class="w">            </span><span class="n">SDV_INTERFACE_CHAIN_MEMBER</span><span class="p">(</span><span class="n">m_ptrRoot</span><span class="p">)</span>
+<span class="w">        </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">Clear</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">// Ignore cppcheck warning for not using dynamic binding when being called through the constructor.</span>
+<span class="w">        </span><span class="c1">// cppcheck-suppress virtualCallInConstructor</span>
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Process</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssContent</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CLexer</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Lexer</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">CNodeCollection</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Root</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CNodeCollection</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Root</span><span class="p">();</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">GenerateTOML</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssPrefixKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">())</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">ProcessTable</span><span class="p">(</span><span class="n">CNodeTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rNodeRange</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessTableArray</span><span class="p">(</span><span class="n">CNodeTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rNodeRange</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessValueKey</span><span class="p">(</span><span class="n">CNodeTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rNodeRange</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessValue</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rrangeKeyPath</span><span class="p">,</span><span class="w"> </span><span class="n">CNodeTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rNodeRange</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessArray</span><span class="p">(</span><span class="n">CNodeTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rNodeRange</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessInlineTable</span><span class="p">(</span><span class="n">CNodeTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rNodeRange</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CTokenRange</span><span class="w"> </span><span class="nf">ProcessKeyPath</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EEnvironment</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">env_array</span><span class="p">,</span>
+<span class="w">            </span><span class="n">env_inline_table</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">stack</span><span class="o">&lt;</span><span class="n">EEnvironment</span><span class="o">&gt;</span><span class="w">            </span><span class="n">m_stackEnvironment</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CRootTable</span><span class="o">&gt;</span><span class="w">         </span><span class="n">m_ptrRoot</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CNodeCollection</span><span class="o">&gt;</span><span class="w">    </span><span class="n">m_ptrCurrentCollection</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CLexer</span><span class="w">                              </span><span class="n">m_lexer</span><span class="p">;</span>
 <span class="w">    </span><span class="p">};</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">stack</span><span class="o">&lt;</span><span class="n">EEnvironment</span><span class="o">&gt;</span><span class="w">    </span><span class="n">m_stackEnvironment</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CNode</span><span class="o">&gt;</span><span class="w">      </span><span class="n">m_ptrRoot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">CRootTable</span><span class="o">&gt;</span><span class="p">();</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">                 </span><span class="n">m_ssCurrentTable</span><span class="p">;</span>
-<span class="w">    </span><span class="n">CLexerTOML</span><span class="w">                  </span><span class="n">m_lexer</span><span class="p">;</span>
-<span class="p">};</span>
-
-<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TCollectionNode</span><span class="o">&gt;</span>
-<span class="kr">inline</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">CParserTOML</span><span class="o">::</span><span class="n">Add</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssPath</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nOffset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rssPath</span><span class="p">.</span><span class="n">rfind</span><span class="p">(</span><span class="sc">&#39;.&#39;</span><span class="p">);</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nOffset</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
-<span class="w">        </span><span class="n">nOffset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="k">else</span>
-<span class="w">        </span><span class="n">nOffset</span><span class="o">++</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rssPath</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">nOffset</span><span class="p">);</span>
-
-<span class="w">    </span><span class="n">m_ptrRoot</span><span class="o">-&gt;</span><span class="n">Add</span><span class="p">(</span><span class="n">rssPath</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">TCollectionNode</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ssName</span><span class="p">),</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
-
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace toml_parser</span>
 
 <span class="cp">#endif </span><span class="c1">// PARSER_TOML_H</span>
 </pre></div>

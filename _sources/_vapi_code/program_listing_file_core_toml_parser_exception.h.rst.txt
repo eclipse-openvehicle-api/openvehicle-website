@@ -15,11 +15,20 @@ Program Listing for File exception.h
    
    #include <interfaces/toml.h>
    
-   except XTOMLParseException : public sdv::toml::XTOMLParseException
+   namespace toml_parser
    {
-       XTOMLParseException(const std::string& rss) { ssMessage = rss; };
+       except XTOMLParseException : public sdv::toml::XTOMLParseException
+       {
+           XTOMLParseException(const std::string& rss)
+           {
+               ssMessage = rss;
+           };
    
-       virtual const char* what() const noexcept override { return ssMessage.c_str(); }
-   };
+           virtual const char* what() const noexcept override
+           {
+               return ssMessage.c_str();
+           }
+       };
+   } // namespace toml_parser
    
    #endif // !defined CONFIG_EXCEPTION_H

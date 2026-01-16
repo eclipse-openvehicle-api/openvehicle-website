@@ -1,0 +1,53 @@
+
+.. _program_listing_file_core_toml_parser_miscellaneous.h:
+
+Program Listing for File miscellaneous.h
+========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_toml_parser_miscellaneous.h>` (``core\toml_parser\miscellaneous.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef MISCELLANEOUS_H
+   #define MISCELLANEOUS_H
+   
+   #include <string>
+   #include <cstdint>
+   #include <cctype>
+   #include <utility>
+   #include "lexer_toml_token.h"
+   
+   namespace toml_parser
+   {
+       std::string EscapedUnicodeCharacterToUTF8(const std::string& rss);
+   
+       uint32_t HexadecimalToDecimal(const std::string& rss);
+   
+       uint32_t DecimalToDecimal(const std::string& rss);
+   
+       uint32_t OctalToDecimal(const std::string& rss);
+   
+       uint32_t BinaryToDecimal(const std::string& rss);
+   
+       std::pair<std::string, std::string> SplitNodeKey(const std::string& rssKeyPath);
+   
+       std::pair<std::reference_wrapper<const CToken>, CTokenRange> SplitNodeKey(const CTokenRange& rrangeKeyPath);
+   
+       std::string ExtractKeyName(const std::string& rssKeyPath);
+   
+       enum class EQuoteRequest
+       {
+           smart_key,                  
+           smart_text,                 
+           quoted_text,                
+           literal_text,               
+           multi_line_quoted_text,     
+           multi_line_literal_text,    
+       };
+   
+       std::string QuoteText(const std::string& rssText, EQuoteRequest eQuoteRequest = EQuoteRequest::smart_text);
+   } // namespace toml_parser
+   
+   #endif // !defined MISCELLANEOUS_H

@@ -613,6 +613,7 @@ document.write(`
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;condition_variable&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdint&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;list&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;atomic&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../flags.h&quot;</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">CTaskScheduler</span>
@@ -655,8 +656,8 @@ document.write(`
 <span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">ThreadFunc</span><span class="p">();</span>
 
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="w">             </span><span class="n">m_thread</span><span class="p">;</span>
-<span class="w">        </span><span class="kt">bool</span><span class="w">                    </span><span class="n">m_bShutdown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="w">        </span><span class="kt">bool</span><span class="w">                    </span><span class="n">m_bStarted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="kt">atomic_bool</span><span class="w">        </span><span class="n">m_bShutdown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="kt">atomic_bool</span><span class="w">        </span><span class="n">m_bStarted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span><span class="w">   </span><span class="n">m_fnTask</span><span class="p">;</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w">              </span><span class="n">m_mtxSyncStart</span><span class="p">;</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">condition_variable</span><span class="w"> </span><span class="n">m_cvStarted</span><span class="p">;</span>

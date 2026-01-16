@@ -11,8 +11,8 @@ Program Listing for File toml.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__TOML_H__20251209_171344_168__
-   #define __IDL_GENERATED__TOML_H__20251209_171344_168__
+   #ifndef __IDL_GENERATED__TOML_H__20260115_165121_290__
+   #define __IDL_GENERATED__TOML_H__20260115_165121_290__
    
    #ifdef _MSC_VER
    // Prevent bogus warnings about uninitialized members during static code analysis.
@@ -46,7 +46,7 @@ Program Listing for File toml.h
                virtual ::sdv::exception_id id() const noexcept override { return _id; }
            };
    
-           enum class ENodeType : uint8_t
+           enum class ENodeType : uint32_t
            {
                node_table,
    
@@ -63,17 +63,48 @@ Program Listing for File toml.h
                node_invalid,
            };
    
+           static const uint32_t npos = 0xFFFFFFFF;
+   
            interface INodeInfo
            {
-               static constexpr ::sdv::interface_id _id = 0x238A8EF0420C4DB8;
+               static constexpr ::sdv::interface_id _id = 0x74CE8D0D93E7F270;
    
                virtual sdv::u8string GetName() const = 0;
+   
+               virtual sdv::u8string GetPath(/*in*/ bool bResolveArrays) const = 0;
    
                virtual ENodeType GetType() const = 0;
    
                virtual sdv::any_t GetValue() const = 0;
    
+               virtual uint32_t GetIndex() const = 0;
+   
+               virtual IInterfaceAccess* GetParent() const = 0;
+   
                virtual sdv::u8string GetTOML() const = 0;
+   
+               enum class ECommentFlags : int32_t
+               {
+                   comment_before = 0,
+   
+                   comment_behind = 1,
+   
+                   out_of_scope_comment_before = 2,
+   
+                   out_of_scope_comment_behind = 3,
+   
+                   comment_index_mask = 15,
+   
+                   raw_comment = 8,
+   
+                   replace_whitespace = 16,
+               };
+   
+               virtual void SetComment(/*in*/ const sdv::u8string& ssComment, /*in*/ uint32_t uiFlags) = 0;
+   
+               virtual sdv::u8string GetComment(/*in*/ uint32_t uiFlags) = 0;
+   
+               virtual void AutomaticFormat() = 0;
            };
    
            interface INodeCollection
@@ -85,6 +116,50 @@ Program Listing for File toml.h
                virtual IInterfaceAccess* GetNode(/*in*/ uint32_t uiIndex) const = 0;
    
                virtual IInterfaceAccess* GetNodeDirect(/*in*/ const sdv::u8string& ssPath) const = 0;
+           };
+   
+           interface INodeCollectionInsert
+           {
+               static constexpr ::sdv::interface_id _id = 0xE0E4E7111E37C4D9;
+   
+               virtual IInterfaceAccess* InsertValue(/*in*/ uint32_t uiIndex, /*in*/ const sdv::u8string& ssName, /*in*/ sdv::any_t anyValue) = 0;
+   
+               virtual IInterfaceAccess* InsertArray(/*in*/ uint32_t uiIndex, /*in*/ const sdv::u8string& ssName) = 0;
+   
+               virtual IInterfaceAccess* InsertTable(/*in*/ uint32_t uiIndex, /*in*/ const sdv::u8string& ssKeyName) = 0;
+   
+               virtual IInterfaceAccess* InsertTableArray(/*in*/ uint32_t uiIndex, /*in*/ const sdv::u8string& ssName) = 0;
+   
+               enum class EInsertResult : uint32_t
+               {
+                   invalid_TOML,
+   
+                   insert_partly_success,
+   
+                   insert_success,
+               };
+   
+               virtual EInsertResult InsertTOML(/*in*/ const sdv::u8string& ssTOML, /*in*/ bool bRollbackOnPartly) = 0;
+           };
+   
+           interface INodeDelete
+           {
+               static constexpr ::sdv::interface_id _id = 0x1F4940AD4D24EFB3;
+   
+               virtual bool DeleteNode() = 0;
+           };
+   
+           interface INodeUpdate
+           {
+               static constexpr ::sdv::interface_id _id = 0x7BCFDBEAC34E2A6D;
+   
+               virtual bool ChangeName(/*in*/ const sdv::u8string& ssNewName) = 0;
+   
+               virtual bool ChangeValue(/*in*/ sdv::any_t anyNewValue) = 0;
+   
+               virtual bool MoveUp() = 0;
+   
+               virtual bool MoveDown() = 0;
            };
    
            interface ITOMLParser
@@ -100,4 +175,4 @@ Program Listing for File toml.h
    #pragma warning(pop)
    #endif
    
-   #endif // !defined(__IDL_GENERATED__TOML_H__20251209_171344_169__)
+   #endif // !defined(__IDL_GENERATED__TOML_H__20260115_165121_293__)

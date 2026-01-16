@@ -15,163 +15,132 @@ Program Listing for File lexer_toml.h
    
    #include <algorithm>
    #include <stack>
+   #include <list>
+   #include <functional>
    #include "character_reader_utf_8.h"
+   #include "lexer_toml_token.h"
    
-   class CLexerTOML
+   namespace toml_parser
    {
-   public:
-       enum class ETokenCategory : uint8_t
+       class CNodeTokenRange
        {
-           token_none,                         
-           token_syntax_assignment,            
-           token_syntax_array_open,            
-           token_syntax_array_close,           
-           token_syntax_table_open,            
-           token_syntax_table_close,           
-           token_syntax_table_array_open,      
-           token_syntax_table_array_close,     
-           token_syntax_inline_table_open,     
-           token_syntax_inline_table_close,    
-           token_syntax_comma,                 
-           token_syntax_dot,                   
-           token_syntax_new_line,              
-           token_key,                          
-           token_string,                       
-           token_integer,                      
-           token_float,                        
-           token_boolean,                      
-           token_time_local,                   
-           token_date_time_offset,             
-           token_date_time_local,              
-           token_date_local,                   
-           token_eof,                          
-           token_error,                        
-           token_empty,                        
-           token_terminated,                   
+       public:
+           CNodeTokenRange(const CToken& rInitialToken);
+   
+           CNodeTokenRange(const CTokenRange& rrangeNodeMain);
+   
+           void LinesBeforeNode(const CToken& rTokenBegin);
+   
+           CTokenRange LinesBeforeNode() const;
+   
+           void ExtendedNode(const CTokenRange& rRange);
+   
+           CTokenRange ExtendedNode() const;
+   
+           CTokenRange NodeCommentsBefore() const;
+   
+           void NodeMain(const CTokenRange& rRange);
+   
+           CTokenRange NodeMain() const;
+   
+           void NodeMainFinish(const CTokenRange& rRange);
+   
+           CTokenRange NodeMainFinish() const;
+   
+           CTokenRange NodeCommentsBehind() const;
+   
+           void LinesBehindNode(const CToken& rTokenEnd);
+   
+           CTokenRange LinesBehindNode() const;
+   
+       private:
+           std::reference_wrapper<const CToken>    m_refBeforeNodeBegin;   
+           CTokenRange                             m_rangeExtendedNode;    
+           CTokenRange                             m_rangeNodeMain;        
+           CTokenRange                             m_rangeNodeFinish;      
+           std::reference_wrapper<const CToken>    m_refBehindNodeEnd;     
        };
    
-       struct SToken
+       class CLexer
        {
-           SToken() = default;
+       public:
+           CLexer() = default;
    
-           explicit SToken(ETokenCategory category) : eCategory(category)
-           {}
+           CLexer(const std::string& rssString, bool bValueOnly = false);
    
-           std::string    ssContentString;                         
-           int64_t        iContentInteger{};                       
-           double         dContentFloatingpoint{};                 
-           bool           bContentBoolean{};                       
-           ETokenCategory eCategory{ETokenCategory::token_none};   
+           void Feed(const std::string& rssString, bool bValueOnly = false);
+   
+           void Reset();
+   
+           enum class ENavigationMode
+           {
+               skip_comments_and_whitespace = 1,   
+               do_not_skip_anything = 2,           
+           };
+   
+           ENavigationMode NavigationMode() const;
+   
+           void NavigationMode(ENavigationMode eMode);
+   
+           const CToken& Peek(size_t nSkip = 0) const;
+   
+           const CToken& Consume(size_t nSkip = 0);
+   
+           bool IsEnd() const;
+   
+           void SmartExtendNodeRange(CNodeTokenRange& rTokenRange) const;
+   
+       private:
+           void GenerateTokens(CCharacterReaderUTF8& rReader);
+   
+           CToken ReadBasicQuotedKey(CCharacterReaderUTF8& rReader) const;
+   
+           CToken ReadLiteralQuotedKey(CCharacterReaderUTF8& rReader) const;
+   
+           CToken ReadBareKey(CCharacterReaderUTF8& rReader) const;
+   
+           CToken ReadBasicString(CCharacterReaderUTF8& rReader);
+   
+           CToken ReadBasicMultilineString(CCharacterReaderUTF8& rReader);
+   
+           CToken ReadLiteralString(CCharacterReaderUTF8& rReader);
+   
+           CToken ReadLiteralMultilineString(CCharacterReaderUTF8& rReader);
+   
+           CToken ReadInteger(CCharacterReaderUTF8& rReader);
+   
+           CToken ReadFloat(CCharacterReaderUTF8& rReader);
+   
+           CToken ReadBool(CCharacterReaderUTF8& rReader);
+   
+           CToken ReadWhitespace(CCharacterReaderUTF8& rReader) const;
+   
+           CToken ReadSyntaxElement(CCharacterReaderUTF8& rReader);
+   
+           static CToken ReadComment(CCharacterReaderUTF8& rReader);
+   
+           CToken ReadUnknownSequence(CCharacterReaderUTF8& rReader);
+   
+           static std::string Unescape(CCharacterReaderUTF8& rReader);
+   
+           static std::string EscapedUnicodeCharacterToUTF8(CCharacterReaderUTF8& rReader, size_t nDigits);
+   
+           ENavigationMode     m_eNavMode = ENavigationMode::skip_comments_and_whitespace; 
+           TTokenList          m_lstTokens;                                                
+           TTokenListIterator  m_itCursor{m_lstTokens.end()};                              
+   
+           enum class EExpectation
+           {
+               expect_key,        
+               expect_value,      
+               expect_value_once, 
+           };
+           std::stack<EExpectation> m_stackExpectations; 
+   
+           const std::vector<std::string>
+               m_vecKeyDelimiters{"\n", "\t", "\r", " ", "", ".", "=", "]"}; 
+           const std::vector<std::string>
+               m_vecValueDelimiters{"\n", "\t", "\r", " ", ",", "", "]", "}", "#"}; 
        };
-   
-       CLexerTOML() = default;
-   
-       CLexerTOML(const std::string& rssString);
-   
-       void Feed(const std::string& rssString);
-   
-       void Reset();
-   
-       SToken Peek() const;
-   
-       SToken Consume();
-   
-       SToken Peek(int32_t n);
-   
-       SToken Consume(int32_t n);
-   
-       bool IsEnd() const;
-   
-   private:
-       void GenerateTokens();
-   
-       bool IsBasicQuotedKey();
-   
-       void ReadBasicQuotedKey();
-   
-       bool IsLiteralQuotedKey();
-   
-       void ReadLiteralQuotedKey();
-   
-       bool IsBareKey();
-   
-       void ReadBareKey();
-   
-       bool IsBasicString();
-   
-       void ReadBasicString();
-   
-       bool IsBasicMultilineString();
-   
-       void ReadBasicMultilineString();
-   
-       bool IsLiteralString();
-   
-       void ReadLiteralString();
-   
-       bool IsLiteralMultilineString();
-   
-       void ReadLiteralMultilineString();
-   
-       bool IsInteger();
-   
-       void ReadInteger();
-   
-       bool IsFloat();
-   
-       void ReadFloat();
-   
-       bool IsBool();
-   
-       void ReadBool();
-   
-       bool IsWhitespace();
-   
-       void ReadWhitespace();
-   
-       bool IsSyntaxElement();
-   
-       void ReadSyntaxElement();
-   
-       bool IsComment();
-   
-       void ReadComment();
-   
-       void ReadUnknownSequence();
-   
-       std::string Unescape();
-   
-       std::string Unicode4DigitToUTF8();
-   
-       std::string Unicode8DigitToUTF8();
-   
-       std::string UnicodeToUTF8(uint8_t numCharacters);
-   
-       static uint32_t HexToDecimal(const char character);
-   
-       static uint32_t DecimalToDecimal(const char character);
-   
-       static uint32_t OctalToDecimal(const char character);
-   
-       static uint32_t BinaryToDecimal(const char character);
-   
-       CCharacterReaderUTF8 m_reader;
-       std::vector<SToken> m_vecTokens;
-       std::size_t         m_nCursor{0};
-   
-       enum class EExpectation
-       {
-           expect_key,         
-           expect_value,       
-           expect_value_once,  
-       };
-       std::stack<EExpectation> m_stackExpectations; 
-       // int32_t m_LineCount{0};
-   
-       const std::vector<std::string> m_vecKeyDelimiters{
-           "\n", "\t", "\r", " ", "", ".", "=", "]"}; 
-       const std::vector<std::string> m_vecValueDelimiters{
-           "\n", "\t", "\r", " ", ",", "", "]", "}"}; 
-   };
-   
+   } // namespace toml_parser
    #endif // LEXER_TOML_H

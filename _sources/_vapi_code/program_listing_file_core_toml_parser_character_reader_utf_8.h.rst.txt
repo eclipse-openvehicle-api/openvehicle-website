@@ -18,58 +18,57 @@ Program Listing for File character_reader_utf_8.h
    #include <vector>
    #include <cstdint>
    
-   class CCharacterReaderUTF8
+   namespace toml_parser
    {
-   public:
-       CCharacterReaderUTF8();
+       class CCharacterReaderUTF8
+       {
+       public:
+           CCharacterReaderUTF8() = default;
    
-       CCharacterReaderUTF8(const std::string& rssString);
+           CCharacterReaderUTF8(const std::string& rssString);
    
-       void Feed(const std::string& rssString);
+           void Feed(const std::string& rssString);
    
-       void Reset();
+           void Reset();
    
-       std::string Peek();
+           std::string Peek(size_t nSkip = 0, size_t nAmount = 1) const;
    
-       std::string Peek(std::size_t n);
+           std::string PeekUntil(const std::vector<std::string>& lstCollection) const;
    
-       std::string PeekUntil(const std::vector<std::string>& lstCollection);
+           std::string Consume(size_t nSkip = 0, size_t nAmount = 1);
    
-       std::string Consume();
+           std::string ConsumeUntil(const std::vector<std::string>& lstCollection);
    
-       std::string Consume(std::size_t n);
+           bool IsEOF() const;
    
-       std::string ConsumeUntil(const std::vector<std::string>& lstCollection);
+           void SetBookmark();
    
-       bool IsEOF() const;
+           std::string StringFromBookmark() const;
    
-   private:
-       void CheckForInvalidUTF8Bytes() const;
+       private:
+           void CheckForInvalidUTF8Bytes() const;
    
-       void CheckForInvalidUTF8Sequences() const;
+           void CheckForInvalidUTF8Sequences() const;
    
-       std::string GetNextCharacter();
+           std::string GetNextCharacter(size_t nOffset = 0) const;
    
-       std::string GetNextCharacter(std::size_t offset);
+           size_t GetLengthOfNextCharacter(size_t nOffset = 0) const;
    
-       size_t GetLengthOfNextCharacter() const;
+           static const uint8_t m_uiOneByteCheckMask{0b10000000};    
+           static const uint8_t m_OneByteCheckValue{0b00000000};     
+           static const uint8_t m_uiFollowByteCheckMask{0b11000000}; 
+           static const uint8_t m_uiFollowByteValue{0b10000000};     
+           static const uint8_t m_uiTwoByteCheckMask{0b11100000};    
+           static const uint8_t m_uiTwoByteCheckValue{0b11000000};   
+           static const uint8_t m_uiThreeByteCheckMask{0b11110000};  
+           static const uint8_t m_uiThreeByteCheckValue{0b11100000}; 
+           static const uint8_t m_uiFourByteCheckMask{0b11111000};   
+           static const uint8_t m_uiFourByteCheckValue{0b11110000};  
    
-       size_t GetLengthOfNextCharacter(std::size_t offset) const;
-   
-       static const uint8_t m_uiOneByteCheckMask{0b10000000};  
-       static const uint8_t m_OneByteCheckValue{0b00000000}; 
-       static const uint8_t m_uiFollowByteCheckMask{0b11000000}; 
-       static const uint8_t m_uiFollowByteValue{0b10000000};     
-       static const uint8_t m_uiTwoByteCheckMask{0b11100000};  
-       static const uint8_t m_uiTwoByteCheckValue{0b11000000}; 
-       static const uint8_t m_uiThreeByteCheckMask{0b11110000};    
-       static const uint8_t m_uiThreeByteCheckValue{0b11100000}; 
-       static const uint8_t m_uiFourByteCheckMask{0b11111000}; 
-       static const uint8_t m_uiFourByteCheckValue{0b11110000};    
-   
-       std::string m_ssString;
-       std::size_t m_nDataLength;
-       std::size_t m_nCursor;
-   };
+           std::string m_ssString; 
+           size_t m_nCursor   = 0; 
+           size_t m_nBookmark = 0; 
+       };
+   } // namespace toml_parser
    
    #endif // CHARACTER_READER_UTF_8_H

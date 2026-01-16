@@ -34,6 +34,8 @@ Program Listing for File toml.h
    
            sdv::u8string GetName();
    
+           sdv::u8string GetQualifiedPath();
+   
            ENodeType GetType();
    
            sdv::any_t GetValue();
@@ -131,6 +133,11 @@ Program Listing for File toml.h
        inline sdv::u8string CNode::GetName()
        {
            return m_pNodeInfo ? m_pNodeInfo->GetName() : sdv::u8string();
+       }
+   
+       inline sdv::u8string CNode::GetQualifiedPath()
+       {
+           return m_pNodeInfo ? m_pNodeInfo->GetPath(true) : sdv::u8string();
        }
    
        inline ENodeType CNode::GetType()

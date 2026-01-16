@@ -60,10 +60,16 @@ Program Listing for File com_channel.h
    
        struct SCallEntry
        {
-           sdv::sequence<sdv::pointer<uint8_t>>    seqResult;          
-           std::mutex                              mtxWaitForResult;   
-           std::condition_variable                 cvWaitForResult;    
-           bool                                    bCancel = false;    
+           enum EState
+           {
+               initialized,
+               processing,
+               processed,
+               canceled,
+           }                                       eState = EState::initialized;   
+           sdv::sequence<sdv::pointer<uint8_t>>    seqResult;                      
+           std::mutex                              mtxWaitForResult;               
+           std::condition_variable                 cvWaitForResult;                
        };
    
        CCommunicationControl&              m_rcontrol;                     

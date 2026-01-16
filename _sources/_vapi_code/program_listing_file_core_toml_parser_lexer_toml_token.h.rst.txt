@@ -1,0 +1,211 @@
+
+.. _program_listing_file_core_toml_parser_lexer_toml_token.h:
+
+Program Listing for File lexer_toml_token.h
+===========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_toml_parser_lexer_toml_token.h>` (``core\toml_parser\lexer_toml_token.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   #ifndef LEXER_TOML_TOKEN_H
+   #define LEXER_TOML_TOKEN_H
+   
+   #include <string>
+   #include <cstdint>
+   #include <list>
+   #include <optional>
+   #include <memory>
+   #include "exception.h"
+   
+   namespace toml_parser
+   {
+       enum class ETokenCategory : uint32_t
+       {
+           token_none,                      
+           token_syntax_assignment,         
+           token_syntax_array_open,         
+           token_syntax_array_close,        
+           token_syntax_table_open,         
+           token_syntax_table_close,        
+           token_syntax_table_array_open,   
+           token_syntax_table_array_close,  
+           token_syntax_inline_table_open,  
+           token_syntax_inline_table_close, 
+           token_syntax_comma,              
+           token_syntax_dot,                
+           token_syntax_new_line,           
+           token_key,                       
+           token_string,                    
+           token_integer,                   
+           token_float,                     
+           token_boolean,                   
+           token_time_local,                
+           token_date_time_offset,          
+           token_date_time_local,           
+           token_date_local,                
+           token_whitespace,                
+           token_comment,                   
+           token_error,                     
+           token_empty,                     
+           token_terminated,                
+       };
+   
+       enum ETokenStringType
+       {
+           not_specified,      
+           quoted_string,      
+           literal_string,     
+           multi_line_quoted,  
+           multi_line_literal, 
+       };
+   
+       // Forward declaration
+       class CLexer;
+       class CToken;
+       class CTokenList;
+       class CTokenRange;
+   
+       using TTokenList = CTokenList;
+   
+       using TTokenListIterator = std::list<CToken>::const_iterator;
+   
+       class CToken
+       {
+           // Access to private functions is allowed for the following classes:
+           friend class CLexer;
+           friend class CTokenRange;
+   
+       public:
+           CToken();
+   
+           enum EBoundary
+           {
+               no_boundary,        
+               lower_boundary,     
+               upper_boundary,     
+           };
+   
+           explicit CToken(const TTokenList& rTokenList, EBoundary eBoundary);
+   
+           explicit CToken(ETokenCategory eCategory);
+   
+           CToken(ETokenCategory eCategory, const std::string& rssContent,
+               ETokenStringType eStringType = ETokenStringType::not_specified);
+   
+           explicit CToken(ETokenCategory eCategory, int64_t iContent);
+   
+           explicit CToken(ETokenCategory eCategory, double dContent);
+   
+           explicit CToken(ETokenCategory eCategory, bool bContent);
+   
+           CToken(ETokenCategory eCategory, const sdv::toml::XTOMLParseException& rexcept);
+   
+           CToken(const CToken& rToken);
+   
+           CToken(CToken&& rToken);
+   
+           ~CToken();
+   
+           CToken& operator=(const CToken& rToken);
+   
+           CToken& operator=(CToken&& rToken);
+   
+           bool operator==(const CToken& rToken) const;
+   
+           bool operator!=(const CToken& rToken) const;
+   
+           operator bool() const;
+   
+           const CToken& Next(size_t nSkip = 0) const;
+   
+           const CToken& Prev(size_t nSkip = 0) const;
+   
+           const CToken& JumpToBegin() const;
+   
+           const CToken& JumpToEnd() const;
+   
+           ETokenCategory Category() const;
+   
+           ETokenStringType StringType() const;
+   
+           std::string StringValue() const;
+   
+           int64_t IntegerValue() const;
+   
+           double FloatValue() const;
+   
+           bool BooleanValue() const;
+   
+           const std::string& RawString() const;
+   
+           uint32_t TokenIndex() const;
+   
+       private:
+           void RawDataInfo(const std::string& rssString, const TTokenList& rTokenList, const TTokenListIterator& ritLocation);
+   
+           const std::optional<TTokenListIterator>& Location() const;
+   
+           const std::optional<std::reference_wrapper<const TTokenList>>& TokenList() const;
+   
+           static uint32_t CreateIndex();
+   
+           std::string m_ssRawString;                                              
+           std::optional<std::reference_wrapper<const TTokenList>> m_optTokenList; 
+           std::optional<TTokenListIterator> m_optLocation;                        
+   
+           union
+           {
+               std::string m_ssContentString;  
+               int64_t m_iContentInteger;      
+               double m_dContentFloatingpoint; 
+               bool m_bContentBoolean;         
+           };
+           ETokenCategory      m_eCategory = ETokenCategory::token_none;           
+           ETokenStringType    m_eStringType = ETokenStringType::not_specified;    
+           uint32_t            m_uiIndex = CreateIndex();                          
+       };
+   
+       class CTokenList : public std::list<CToken>
+       {
+       public:
+           CTokenList();
+   
+           CToken tokenReverseEnd; 
+           CToken tokenEnd;        
+       };
+   
+       class CTokenRange
+       {
+       public:
+           CTokenRange() = delete;
+   
+           CTokenRange(const CToken& rTokenBegin);
+   
+           CTokenRange(const CToken& rTokenBegin, const CToken& rTokenEnd);
+   
+           void ReassignBeginToken(const CToken& rTokenBegin);
+   
+           void ReassignTokenRange(const CToken& rTokenBegin, const CToken& rTokenEnd);
+   
+           void AssignEndToken(const CToken& rTokenEnd, bool bIncludeEnd = true);
+   
+           const CToken& Begin() const;
+   
+           const CToken& End() const;
+   
+           std::list<CToken> TokenListSLice() const;
+   
+           operator bool() const;
+   
+       private:
+           std::reference_wrapper<const CToken> m_rTokenBegin; 
+           std::reference_wrapper<const CToken> m_rTokenEnd;   
+       };
+   
+   
+   } // namespace toml_parser
+   
+   #endif // !defined LEXER_TOML_TOKEN_H

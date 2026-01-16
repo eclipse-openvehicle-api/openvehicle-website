@@ -631,6 +631,7 @@ document.write(`
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thread&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;queue&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;condition_variable&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;atomic&gt;</span>
 
 <span class="c1">// Forward declaration</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">CConnection</span><span class="p">;</span>
@@ -672,7 +673,7 @@ document.write(`
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">condition_variable</span><span class="w">     </span><span class="n">m_cvTriggerConnectionDestruction</span><span class="p">;</span>
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">queue</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CConnection</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">m_queueScheduledConnectionDestructions</span><span class="p">;</span>
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="w">                 </span><span class="n">m_threadScheduledConnectionDestructions</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w">                        </span><span class="n">m_bShutdown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">atomic_bool</span><span class="w">            </span><span class="n">m_bShutdown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
 <span class="p">};</span>
 
 <span class="cp">#endif </span><span class="c1">// !defined WATCH_DOG_H</span>

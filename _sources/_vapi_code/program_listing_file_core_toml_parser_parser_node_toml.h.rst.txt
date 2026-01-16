@@ -18,249 +18,627 @@ Program Listing for File parser_node_toml.h
    #include <stdexcept>
    #include <string>
    #include <vector>
+   #include <list>
+   #include <map>
    
    #include <interfaces/toml.h>
    #include <support/interface_ptr.h>
+   #include "lexer_toml.h"
+   #include "miscellaneous.h"
    
-   // Forward declaration
-   class CArray;
-   class CTable;
-   
-   size_t FindFirst(const std::string& rss, const std::string& rssSeparator = ".");
-   
-   size_t FindLast(const std::string& rss, const std::string& rssSeparator = ".");
-   
-   bool CompareEqual(const std::string& rss1, const std::string& rss2);
-   
-   std::string EscapeString(const std::string& rssString, const char cQuoteType = '\"');
-   
-   class CNode : public std::enable_shared_from_this<CNode>, public sdv::IInterfaceAccess, public sdv::toml::INodeInfo
+   namespace toml_parser
    {
-   protected:
-       CNode(const std::string& rssName);
+       // Forward declaration
+       class CArray;
+       class CTable;
+       class CTableArray;
+       class CParser;
+       class CNode;
+       class CNodeCollection;
    
-   public:
-       CNode(const CNode&) = delete;
-       CNode& operator=(const CNode&) = delete;
-       CNode(const CNode&&) = delete;
-       CNode& operator=(const CNode&&) = delete;
-       ~CNode();
+       enum class EGenerateOptions : uint32_t
+       {
+           inline_when_possible   = 0x01, 
+           explicit_when_possible = 0x02, 
+           no_comments            = 0x10, 
+       };
    
-       // Interface map
-       BEGIN_SDV_INTERFACE_MAP()
-           SDV_INTERFACE_ENTRY(sdv::toml::INodeInfo)
-       END_SDV_INTERFACE_MAP()
+       class CGenContext
+       {
+       public:
+           CGenContext(const std::string& rssPrefixKey = std::string(), uint32_t uiOptions = 0);
    
+           void InitTopMostNode(const std::shared_ptr<const CNode>& rptrNode);
+   
+           bool PartOfExcludedParents(const std::shared_ptr<const CNode>& rptrNode) const;
+   
+           CGenContext CopyWithContext(const std::string& rssNewKeyContext) const;
+   
+           const std::string& PrefixKey() const;
+   
+           const std::string& KeyContext() const;
+   
+           bool TopMostNode() const;
+   
+           void SetOption(EGenerateOptions eOption);
+   
+           bool CheckOption(EGenerateOptions eOption) const;
+   
+       private:
+           std::shared_ptr<const CNode>    m_ptrTopMostNode;   
+           std::string                     m_ssPrefixKey;      
+           std::string                     m_ssKeyContext;     
+           uint32_t                        m_uiOptions = 0;    
+           bool                            m_bTopMost = true;  
+       };
+   
+       class CNode :
+           public std::enable_shared_from_this<CNode>, public sdv::IInterfaceAccess, public sdv::toml::INodeInfo,
+           public sdv::toml::INodeDelete, public sdv::toml::INodeUpdate
+       {
+       protected:
+           CNode(CParser& rparser, const std::string& rssName, const std::string& rssRawName);
+   
+       public:
+           CNode(const CNode&) = delete;
+           CNode& operator=(const CNode&) = delete;
+           CNode(const CNode&&) = delete;
+           CNode& operator=(const CNode&&) = delete;
+           ~CNode();
+   
+           // Interface map
+           BEGIN_SDV_INTERFACE_MAP()
+               SDV_INTERFACE_ENTRY(sdv::toml::INodeInfo)
+               SDV_INTERFACE_ENTRY(sdv::toml::INodeDelete)
+               SDV_INTERFACE_ENTRY(sdv::toml::INodeUpdate)
+           END_SDV_INTERFACE_MAP()
+   
+           
+           CParser& Parser();
+   
+           virtual sdv::u8string GetName() const override;
+   
+           virtual sdv::u8string GetPath(bool bResolveArrays) const override;
+   
+           std::list<std::pair<std::string, std::string>> GetRawPath(bool bResolveArrays) const;
+   
+           /*
+            * @brief The node value. Overload of sdv::toml::INodeInfo::GetValue.
+            * @return For boolean, integer, floating point and strings, the function returns a value. Otherwise the function
+            * returns empty.
+            */
+           virtual sdv::any_t GetValue() const override;
+   
+           virtual uint32_t GetIndex() const override;
+   
+           virtual sdv::IInterfaceAccess* GetParent() const override;
+   
+           virtual sdv::u8string GetTOML() const override;
+   
+           virtual void SetComment(const sdv::u8string& ssComment, uint32_t uiFlags) override;
+   
+           virtual sdv::u8string GetComment(uint32_t uiFlags) override;
+   
+           virtual void AutomaticFormat() override;
+   
+           virtual void UpdateNodeCode(const CNodeTokenRange& rNodeRange);
+   
+           virtual bool DeleteNode() override;
+   
+           bool IsDeleted() const;
+   
+           virtual bool ChangeName(const sdv::u8string& ssNewName) override;
+   
+           virtual bool ChangeValue(sdv::any_t anyNewValue) override;
+   
+           virtual bool MoveUp() override;
+   
+           virtual bool MoveDown() override;
+   
+           template <typename TNodeType>
+           std::shared_ptr<TNodeType> Cast();
+   
+           template <typename TNodeType>
+           std::shared_ptr<const TNodeType> Cast() const;
+   
+           std::shared_ptr<CNodeCollection> GetParentPtr() const;
+   
+           void SetParentPtr(const std::shared_ptr<CNodeCollection>& rptrParent);
+   
+           std::string GetParentPath() const;
+   
+           void SetViewPtr(const std::shared_ptr<CNodeCollection>& rptrView);
+   
+           bool IsPartOfView(const CGenContext& rContext, const std::shared_ptr<const CNodeCollection>& rptrNode) const;
+   
+           virtual std::shared_ptr<CNode> Direct(const std::string& rssPath) const = 0;
+   
+           virtual std::string GenerateTOML(const CGenContext& rContext = CGenContext()) const = 0;
+   
+       protected:
+           std::string GetCustomPath(const std::string& rssPrefixKey, const std::string& rssContext) const;
+   
+           class CCodeSnippet
+           {
+           public:
+               std::list<CToken>& List();
+   
+               std::string& Str();
+   
+               enum class EComposeMode
+               {
+                   compose_inline,         
+                   compose_before,         
+                   compose_behind,         
+                   compose_standalone,     
+               };
+   
+               std::string Compose(EComposeMode eMode, size_t nAssignmentOffset = 0, size_t nCommentOffset = 0) const;
+   
+           private:
+               std::list<CToken>   m_lstTokens;    
+               std::string         m_ssComment;    
+           };
+   
+           // White space and comment preservation indices for code generation.
+           const size_t m_nPreNodeCode = 0;             
+           const size_t m_nPostNodeCode = 1;           
+           const size_t m_nOutOfScopeCodeBefore = 2;   
+           const size_t m_nOutOfScopeCodeBehind = 3;   
+           const size_t m_nPreKeyCode = 4;             
+           const size_t m_nPostKeyCode = 5;            
+           const size_t m_nPreValueCode = 6;           
+           const size_t m_nPostValueCode = 7;          
+           const size_t m_nPostValuesArray = 8;        
+   
+           const CCodeSnippet& CodeSnippet(size_t nIndex, const std::string& rssKey = std::string()) const;
+   
+           CCodeSnippet& CodeSnippet(size_t nIndex, const std::string& rssKey = std::string());
+   
+       private:
+           std::weak_ptr<CNodeCollection>      m_ptrParent;            
+           std::weak_ptr<CNodeCollection>      m_ptrView;              
+           std::string                         m_ssName;               
+           std::string                         m_ssRawName;            
+           bool                                m_bDeleted = false;     
+           CParser&                            m_rParser;              
+           std::vector<std::map<std::string, CCodeSnippet>> m_vecCodeSnippets; 
+   
+       public:
+           virtual bool Inline() const = 0;
+   
+           virtual bool Inline(bool bInline) = 0;
+   
+           virtual bool ExplicitlyDefined() const;
+   
+           virtual void MakeExplicit();
+       };
+   
+       class CValueNode : public CNode
+       {
+       protected:
+           CValueNode(CParser& rparser, const std::string& rssName, const std::string& rssRawName, const std::string& rssRawValue);
+   
+           virtual bool Inline() const override;
+   
+           virtual bool Inline(bool bInline) override;
+   
+           virtual std::shared_ptr<CNode> Direct(const std::string& rssPath) const override;
+   
+           virtual std::string GenerateTOML(const CGenContext& rContext = CGenContext()) const override;
+   
+           virtual std::string ValueText() const = 0;
+   
+           virtual void UpdateNodeCode(const CNodeTokenRange& rNodeRange) override;
+   
+           std::string RawValueText() const;
+   
+       private:
+           std::string m_ssRawValue;                   
+       };
+   
+       class CBooleanNode : public CValueNode
+       {
+       public:
+           CBooleanNode(CParser& rparser, const std::string& rssName, const std::string& rssRawName, bool bVal,
+               const std::string& rssRawValue);
+   
+           virtual sdv::toml::ENodeType GetType() const override;
+   
+           virtual sdv::any_t GetValue() const override;
+   
+           virtual bool ChangeValue(sdv::any_t anyNewValue) override;
+   
+           virtual std::string ValueText() const override;
+   
+       private:
+           bool    m_bVal = false;     
+       };
+   
+       class CIntegerNode : public CValueNode
+       {
+       public:
+           CIntegerNode(CParser& rparser, const std::string& rssName, const std::string& rssRawName, int64_t iVal,
+               const std::string& rssRawValue);
+   
+           virtual sdv::toml::ENodeType GetType() const override;
+   
+           virtual sdv::any_t GetValue() const override;
+   
+           virtual bool ChangeValue(sdv::any_t anyNewValue) override;
+   
+           virtual std::string ValueText() const override;
+   
+       private:
+           int64_t     m_iVal = 0;     
+       };
+   
+       class CFloatingPointNode : public CValueNode
+       {
+       public:
+           CFloatingPointNode(CParser& rparser, const std::string& rssName, const std::string& rssRawName, double dVal,
+               const std::string& rssRawValue);
+   
+           virtual sdv::toml::ENodeType GetType() const override;
+   
+           virtual sdv::any_t GetValue() const override;
+   
+           virtual bool ChangeValue(sdv::any_t anyNewValue) override;
+   
+           virtual std::string ValueText() const override;
+   
+       private:
+           double      m_dVal = 0.0;       
+       };
+   
+       class CStringNode : public CValueNode
+       {
+       public:
+           enum EQuotationType
+           {
+               quoted_string,      
+               literal_string,     
+               multi_line_quoted,  
+               multi_line_literal, 
+           };
+           
+           CStringNode(CParser& rparser, const std::string& rssName, const std::string& rssRawName, const std::string& rssVal,
+               EQuotationType eQuotationType, const std::string& rssRawValue);
+   
+           virtual sdv::toml::ENodeType GetType() const override;
+   
+           virtual sdv::any_t GetValue() const override;
+   
+           virtual bool ChangeValue(sdv::any_t anyNewValue) override;
+   
+           virtual std::string ValueText() const override;
+   
+       private:
+           std::string     m_ssVal;                                            
+           EQuotationType  m_eQuotationType = EQuotationType::quoted_string;   
+       };
+   
+       class CNodeCollection : public CNode, public sdv::toml::INodeCollection, public sdv::toml::INodeCollectionInsert
+       {
+       protected:
+           CNodeCollection(CParser& rparser, const std::string& rssName, const std::string& rssRawName);
+   
+       public:
+           // Interface map
+           BEGIN_SDV_INTERFACE_MAP()
+               SDV_INTERFACE_ENTRY(sdv::toml::INodeCollection)
+               SDV_INTERFACE_ENTRY(sdv::toml::INodeCollectionInsert)
+               SDV_INTERFACE_CHAIN_BASE(CNode)
+           END_SDV_INTERFACE_MAP()
+   
+           
+           virtual uint32_t GetCount() const override;
+   
+           virtual IInterfaceAccess* GetNode(/*in*/ uint32_t uiIndex) const override;
+   
+           std::shared_ptr<CNode> Get(uint32_t uiIndex) const;
+   
+           virtual std::shared_ptr<CNode> Direct(const std::string& rssPath) const override;
+   
+           virtual sdv::IInterfaceAccess* GetNodeDirect(/*in*/ const sdv::u8string& ssPath) const override;
+   
+           virtual sdv::IInterfaceAccess* InsertValue(uint32_t uiIndex, const sdv::u8string& ssName, sdv::any_t anyValue) override;
+   
+           virtual sdv::IInterfaceAccess* InsertArray(uint32_t uiIndex, const sdv::u8string& ssName) override;
+   
+           virtual sdv::IInterfaceAccess* InsertTable(uint32_t uiIndex, const sdv::u8string& ssKeyName) override;
+   
+           virtual sdv::IInterfaceAccess* InsertTableArray(uint32_t uiIndex, const sdv::u8string& ssName) override;
+   
+           virtual sdv::toml::INodeCollectionInsert::EInsertResult InsertTOML(const sdv::u8string& ssTOML,
+               bool bRollbackOnPartly) override;
+   
+           virtual bool DeleteNode() override;
+   
+   //protected:
+           bool RemoveNode(const std::shared_ptr<CNode>& rptrNode);
+   
+           bool RemoveFromView(const std::shared_ptr<CNode>& rptrNode);
+   
+           bool CheckLast(const std::shared_ptr<CNode>& rptrNode);
+   
+       public:
+           uint32_t FindIndex(const std::shared_ptr<CNode>& rptrNode);
+   
+           template <typename TNodeType, typename... TArgs>
+           std::shared_ptr<CNode> Insert(uint32_t uiIndex, const CTokenRange& rrangeKeyPath, const TArgs&... rtArgs);
+   
+       private:
+           virtual bool GroupChildNodes() const { return Inline(); }
+   
+           // A table could contain nodes that are child notes of (implicitly) generated tables. For example:
+           // [MyTable]
+           // normal_value1 = "normal1"
+           // child_table.my_value1 = "hello1"
+           // normal_value2 = "normal2"
+           // child_table.my_value2 = "hello2"
+           // normal_value2 = "normal3"
+           //
+           // The implicit table MyTable.child_table has two values: my_value1 and my_value2
+           //
+           // Making an explicit table out of it would theoretically be possible, but the insertion of values according to the position
+           // will become extremely difficult.
+           //
+           // [MyTable.child_table]     # This will cause an explicit table
+           // 
+           // The result will be, that the table is explicitly defined, causing the original table from above to not print the implicit
+           // table entries any more:
+           // [MyTable]
+           // normal_value1 = "normal1"
+           // normal_value2 = "normal2"
+           // normal_value2 = "normal3"
+           // 
+           // [MyTable.child_table]     # This will cause an explicit table
+           // child_table.my_value1 = "hello1"
+           // child_table.my_value2 = "hello2"
+           //
+           // The node collection uses the vector to include the nodes by order.
+           // The node collection uses the node list to include child nodes.
+           // The child node uses the parent node pointer to indicate which node holds node.
+           // The child node uses the view node pointer to indicate which node displays the node content.
+                   
+           std::vector<std::shared_ptr<CNode>> m_vecNodeOrder;     
+           std::list<std::shared_ptr<CNode>>   m_lstNodes;         
+           std::list<std::shared_ptr<CNode>>   m_lstRecycleBin;    
+       };
+   
+       class CTable : public CNodeCollection
+       {
+       public:
+           CTable(CParser& rparser, const std::string& rssName, const std::string& rssRawName, bool bDefaultInline,
+               bool bExplicit = true);
+   
+           virtual sdv::toml::ENodeType GetType() const override;
+   
+           virtual std::string GenerateTOML(const CGenContext& rContext = CGenContext()) const override;
+   
+           virtual void UpdateNodeCode(const CNodeTokenRange& rNodeRange) override;
+   
+           virtual bool Inline() const override;
+   
+           virtual bool Inline(bool bInline) override;
+   
+           virtual bool ExplicitlyDefined() const override;
+   
+           virtual void MakeExplicit() override;
+   
+   
+           //bool m_bOpenToAddChildren = true;   ///< If internal table, the table can be extended until the table is closed.
+   
+       private:
+           bool m_bDefinedExplicitly = true;   
+           bool m_bInline = false;             
+       };
+   
+       class CArray : public CNodeCollection
+       {
+       public:
+           CArray(CParser& rparser, const std::string& rssName, const std::string& rssRawName, bool bExplicitTableArray = false);
+   
+           virtual sdv::toml::ENodeType GetType() const override;
+   
+           virtual std::shared_ptr<CNode> Direct(const std::string& rssPath) const override;
+   
+           virtual std::string GenerateTOML(const CGenContext& rContext = CGenContext()) const override;
        
-       virtual sdv::u8string GetName() const override;
-   
-       virtual sdv::any_t GetValue() const override;
-   
-       virtual sdv::u8string GetTOML() const override;
-   
-       std::shared_ptr<const CArray> GetArray() const;
-   
-       std::shared_ptr<CArray> GetArray();
-   
-       std::shared_ptr<const CTable> GetTable() const;
-   
-       std::shared_ptr<CTable> GetTable();
-   
-   protected:
-       std::weak_ptr<const CNode> GetParent() const;
-   
-   public:
-       void SetParent(const std::shared_ptr<CNode>& rptrParent);
-   
-       virtual std::shared_ptr<CNode> GetDirect(const std::string& rssPath) const;
-   
-       std::string CreateTOMLText(const std::string& rssParent = std::string()) const;
-   
-       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst = true,
-           bool bEmbedded = false, bool bAssignment = true, bool bRoot = false) const = 0;
-   
-   private:
-       std::weak_ptr<CNode>                m_ptrParent;    
-       std::string                         m_ssName;       
-   
-   public:
-       virtual std::shared_ptr<CNode> Find(const std::string& rssPath) const;
-   
-       virtual void Add(const std::string& rssPath, const std::shared_ptr<CNode>& rptrNode, bool bDefinedExplicitly = true);
-   };
-   
-   class CBooleanNode : public CNode
-   {
-   public:
-       CBooleanNode(const std::string& rssName, bool bVal);
-   
-       virtual sdv::toml::ENodeType GetType() const override;
-   
-       virtual sdv::any_t GetValue() const override;
-   
-       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
-           bool bAssignment, bool bRoot) const override;
-   
-   private:
-       bool    m_bVal;    
-   };
-   
-   class CIntegerNode : public CNode
-   {
-   public:
-       CIntegerNode(const std::string& rssName, int64_t iVal);
-   
-       virtual sdv::toml::ENodeType GetType() const override;
-   
-       virtual sdv::any_t GetValue() const override;
-   
-       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
-           bool bAssignment, bool bRoot) const override;
-   
-   private:
-       int64_t     m_iVal;     
-   };
-   
-   class CFloatingPointNode : public CNode
-   {
-   public:
-       CFloatingPointNode(const std::string& rssName, double dVal);
-   
-       virtual sdv::toml::ENodeType GetType() const override;
-   
-       virtual sdv::any_t GetValue() const override;
-   
-       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
-           bool bAssignment, bool bRoot) const override;
-   
-   private:
-       double      m_dVal;     
-   };
-   
-   class CStringNode : public CNode
-   {
-   public:
-       CStringNode(const std::string& rssName, const std::string& rssVal);
-   
-       virtual sdv::toml::ENodeType GetType() const override;
-   
-       virtual sdv::any_t GetValue() const override;
-   
-       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
-           bool bAssignment, bool bRoot) const override;
-   
-   private:
-       std::string     m_ssVal;        
-   };
-   
-   class CNodeCollection : public CNode, public sdv::toml::INodeCollection
-   {
-   protected:
-       CNodeCollection(const std::string& rssName);
-   
-   public:
-       // Interface map
-       BEGIN_SDV_INTERFACE_MAP()
-           SDV_INTERFACE_ENTRY(sdv::toml::INodeCollection)
-           SDV_INTERFACE_CHAIN_BASE(CNode)
-       END_SDV_INTERFACE_MAP()
-   
-       
-       virtual uint32_t GetCount() const override;
-   
-       virtual IInterfaceAccess* GetNode(/*in*/ uint32_t uiIndex) const override;
-   
-       std::shared_ptr<CNode> Get(uint32_t uiIndex) const;
-   
-       virtual sdv::IInterfaceAccess* GetNodeDirect(/*in*/ const sdv::u8string& ssPath) const override;
-   
-       bool AddElement(const std::shared_ptr<CNode>& rptrNode, bool bUnique = false);
-   
-   private:
-   
-       std::vector<std::shared_ptr<CNode>>     m_vecContent;                   
-   
-   public:
-       bool                                    m_bDefinedExplicitly = true;    
-   };
-   
-   class CTable : public CNodeCollection
-   {
-   protected:
-       CTable(const std::string& rssName);
-   
-   public:
-       virtual sdv::toml::ENodeType GetType() const override;
-   
-       virtual std::shared_ptr<CNode> GetDirect(const std::string& rssPath) const override;
-   
-       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
-           bool bAssignment, bool bRoot) const override;
-   
-       virtual void Add(const std::string& rssPath, const std::shared_ptr<CNode>& rptrNode, bool bDefinedExplicitly) override;
-   
-       virtual std::shared_ptr<CNode> Find(const std::string& rssPath) const override;
-   
-       bool        m_bOpenToAddChildren = true;                    
-   
-   };
-   
-   class CArray : public CNodeCollection
-   {
-   protected:
-       CArray(const std::string& rssName);
-   
-   public:
-       virtual sdv::toml::ENodeType GetType() const override;
-   
-       virtual std::shared_ptr<CNode> GetDirect(const std::string& rssPath) const override;
-   
-       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
-           bool bAssignment, bool bRoot) const override;
-   
-       virtual void Add(const std::string& rssPath, const std::shared_ptr<CNode>& rptrNode, bool bDefinedExplicitly) override;
-   
-       virtual std::shared_ptr<CNode> Find(const std::string& rssPath) const override;
-   };
-   
-   class CNormalTable : public CTable
-   {
-   public:
-       CNormalTable(const std::string& rssName) : CTable(rssName) {}
-   };
-   
-   class CInlineTable : public CTable
-   {
-   public:
-       CInlineTable(const std::string& rssName) : CTable(rssName) {}
-   };
-   
-   class CNormalArray : public CArray
-   {
-   public:
-       CNormalArray(const std::string& rssName) : CArray(rssName) {}
-   };
-   
-   class CTableArray : public CArray
-   {
-   public:
-       CTableArray(const std::string& rssName) : CArray(rssName) {}
-   
-       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
-           bool bAssignment, bool bRoot) const override;
-   
-       virtual void Add(const std::string& rssPath, const std::shared_ptr<CNode>& rptrNode, bool bDefinedExplicitly) override;
-   
-       virtual std::shared_ptr<CNode> Find(const std::string& rssPath) const override;
-   };
-   
-   class CRootTable : public CNormalTable
-   {
-   public:
-       CRootTable() : CNormalTable("root") {}
-   
-       virtual std::string CreateTOMLText(const std::string& rssParent, std::string& rssLastPrintedTable, bool bFirst, bool bEmbedded,
-           bool bAssignment, bool bRoot) const override;
-   };
+           virtual void UpdateNodeCode(const CNodeTokenRange& rNodeRange) override;
+   
+           bool TableArray() const;
+   
+           virtual bool Inline() const override;
+   
+           virtual bool Inline(bool bInline) override;
+   
+       private:
+           bool m_bDefinedExplicitly = true;   
+           bool m_bInline = false;             
+       };
+   
+       class CTableArray : public CArray
+       {
+       public:
+           CTableArray(CParser& rparser, const std::string& rssName, const std::string& rssRawName) :
+               CArray(rparser, rssName, rssRawName, true)
+           {}
+       };
+   
+       class CRootTable : public CTable
+       {
+       public:
+           CRootTable(CParser& rparser) : CTable(rparser, "root", "", false)
+           {}
+   
+           virtual bool DeleteNode() override;
+   
+           virtual bool Inline() const override
+           {
+               return false;
+           }
+   
+           virtual bool Inline(bool bInline) override
+           {
+               return bInline == false;
+           }
+       };
+   
+       template <typename TNodeType>
+       std::shared_ptr<TNodeType> CNode::Cast()
+       {
+           return std::dynamic_pointer_cast<TNodeType>(shared_from_this());
+       }
+   
+       template <typename TNodeType>
+       std::shared_ptr<const TNodeType> CNode::Cast() const
+       {
+           return std::dynamic_pointer_cast<const TNodeType>(shared_from_this());
+       }
+   
+       template <typename TNodeType, typename... TArgs>
+       inline std::shared_ptr<CNode> CNodeCollection::Insert(uint32_t uiIndex, const CTokenRange& rrangeKeyPath, const TArgs&... rtArgs)
+       {
+           // Get the first part of the node
+           auto prKey = SplitNodeKey(rrangeKeyPath);
+   
+           // Find the node if it exists.
+           auto itNode = std::find_if(m_lstNodes.begin(),
+               m_lstNodes.end(),
+               [&](const std::shared_ptr<CNode>& rptrNode) { return rptrNode->GetName() == prKey.first.get().StringValue(); });
+   
+           // Is this the target node?
+           std::shared_ptr<CNode> ptrNode;
+           if (!prKey.second)
+           {
+               if (std::is_same_v<TNodeType, CTableArray>)
+               {
+                   // If this is a table array, create if not existing and then create a table.
+                   std::shared_ptr<CTableArray> ptrTableArray;
+                   if (itNode == m_lstNodes.end())
+                   {
+                       ptrTableArray = std::make_shared<CTableArray>(Parser(), prKey.first.get().StringValue(),
+                           prKey.first.get().RawString());
+                       ptrTableArray->SetParentPtr(Cast<CNodeCollection>());
+   
+                       // Add to the list
+                       m_lstNodes.push_back(ptrTableArray);
+                   }
+                   else
+                       ptrTableArray = (*itNode)->template Cast<CTableArray>();
+                   if (!ptrTableArray)
+                       throw XTOMLParseException("The node '" + prKey.first.get().StringValue() +
+                           "' exists already, but is not a table array.");
+   
+                   // Create the table.
+                   ptrNode = ptrTableArray->Insert<CTable>(sdv::toml::npos, CTokenRange(prKey.first, prKey.first.get().Next()),
+                       false, true);
+               } else if (!Cast<CArray>() && itNode != m_lstNodes.end())
+               {
+                   // If existing... this might be a duplicate if not explicitly defined before.
+                   // But only when the parent is not an array.
+                   ptrNode = *itNode;
+   
+                   // Explicitly defined nodes cannot be defined once more
+                   if (ptrNode->ExplicitlyDefined())
+                       throw XTOMLParseException("The node '" + prKey.first.get().StringValue() + "' exists already.");
+   
+                   // Inline nodes cannot be made explicit
+                   if (ptrNode->Inline())
+                       throw XTOMLParseException("The node '" + prKey.first.get().StringValue() + "' exists already as inline node.");
+   
+                   // Make the note explicit. This will remove the view pointer if it was set before.
+                   ptrNode->MakeExplicit();
+               } else
+               {
+                   // Create the target node.
+                   ptrNode = std::make_shared<TNodeType>(Parser(), prKey.first.get().StringValue(), prKey.first.get().RawString(),
+                       rtArgs...);
+                   ptrNode->SetParentPtr(Cast<CNodeCollection>());
+   
+                   // Add to the list
+                   m_lstNodes.push_back(ptrNode);
+   
+                   // If the current node is implicit, take over the inline flag (this determines whether a sub-table definition is
+                   // allowed or not).
+                   if (!ExplicitlyDefined())
+                       Inline(ptrNode->Inline());
+               }
+           }
+           else // Intermediate node
+           {
+               // This must be a non-inline table node
+               if (itNode != m_lstNodes.end())
+               {
+                   ptrNode = *itNode;
+   
+                   // Process the nodes dependable on the type
+                   if (ptrNode->Cast<CTableArray>())
+                   {
+                       // In case the node is a table array, check for the next key part. If this is a number, then the current node
+                       // can be an array, which will be indexed by the next key part. If this is not a number, the last table node
+                       // is automatically assumed.
+                       auto prNextKey = SplitNodeKey(prKey.second);
+                       if (prNextKey.first.get().Category() != ETokenCategory::token_integer)
+                       {
+                           // Get the last table
+                           if (!ptrNode->Cast<CTableArray>()->GetCount())
+                               throw XTOMLParseException("The parent table array node '" + prKey.first.get().StringValue() +
+                                   "' doesn't have any tables assigned.");
+                           ptrNode = ptrNode->Cast<CTableArray>()->Get(ptrNode->Cast<CTableArray>()->GetCount() - 1);
+                           if (ptrNode->Inline() || !ptrNode->Cast<CTable>())
+                               throw XTOMLParseException("The parent node '" + prKey.first.get().StringValue() +
+                                   "' is of unexpected type.");
+                       }
+                   }
+                   else if ((!ptrNode->Cast<CTable>() && !ptrNode->Cast<CArray>()) || (ptrNode->ExplicitlyDefined() && ptrNode->Inline()))
+                   {
+                       // This is allowed:
+                       // [fruit]
+                       // apple.color = "red"
+                       // apple.taste.sweet = true
+                       // [fruit.apple.texture]  # you can add sub-tables
+                       // --> fuit is explicitly defined, but not inline. apple is not explicitly defined
+                       //
+                       // This not:
+                       // type = { name = "Nail" }
+                       // type.edible = false  # INVALID
+                       // --> type is explicitly defined
+                       throw XTOMLParseException("The parent node '" + prKey.first.get().StringValue() + "' is of unexpected type.");
+                   }
+               }
+               else
+               {
+                   // Create an implicit table node.
+                   ptrNode = std::make_shared<CTable>(Parser(), prKey.first.get().StringValue(), prKey.first.get().RawString(), false, false);
+                   ptrNode->SetParentPtr(Cast<CNodeCollection>());
+                   m_lstNodes.push_back(ptrNode);
+               }
+   
+               // Insert the node in the child node
+               std::shared_ptr<CNodeCollection> ptrNodeCollection = ptrNode->Cast<CNodeCollection>();
+               if (!ptrNodeCollection)
+                   throw XTOMLParseException("Parent node is not an array or table '" + ptrNode->GetPath(true) + "'.");
+               ptrNode = ptrNodeCollection->Insert<TNodeType>(sdv::toml::npos, prKey.second, rtArgs...);
+               if (!ptrNode)
+                   throw XTOMLParseException("Could not create the node '" + prKey.first.get().StringValue() + "'.");
+   
+               // This node is not the parent, but still presents of the created node. Add the view pointer that they are linked.
+               ptrNode->SetViewPtr(Cast<CNodeCollection>());
+           }
+   
+           // Insert the node at the requested location if this node is inline or this is the view of the node.
+           auto itPos = (static_cast<size_t>(uiIndex) >= m_vecNodeOrder.size()) ? m_vecNodeOrder.end() :
+               m_vecNodeOrder.begin() + static_cast<size_t>(uiIndex);
+           m_vecNodeOrder.insert(itPos, ptrNode);
+   
+           // Return the result
+           return ptrNode;
+       }
+   
+   
+   } // namespace toml_parser
    
    #endif // !defined PARSER_NODE_TOML_H

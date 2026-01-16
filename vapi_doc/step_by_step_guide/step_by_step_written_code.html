@@ -622,11 +622,14 @@ and sensor data. This document explains the structure and logic of the applicati
 <h2>Implementation Steps<a class="headerlink" href="#implementation-steps" title="Permalink to this heading">#</a></h2>
 <p>This section explains the essential steps to initialize and run the Wiper application within the SDV framework.</p>
 <p>To complete these steps, you need to create three source files:</p>
-<blockquote>
-<div><p>wiper_app/wiper_application.cpp
-wiper_app/wiper_application.h
-wiper_app/wiper_example.cpp</p>
-</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="line-block">
+<div class="line">wiper_app/wiper_application.cpp</div>
+<div class="line">wiper_app/wiper_application.h</div>
+<div class="line">wiper_app/wiper_example.cpp</div>
+</div>
+</div>
 <section id="application-initialization">
 <h3>Application Initialization<a class="headerlink" href="#application-initialization" title="Permalink to this heading">#</a></h3>
 <p>First, we need the <cite>Initialize()</cite> method, which sets up the runtime environment, loads configuration files, and registers signals.</p>
@@ -699,6 +702,7 @@ Example:</p>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialize startup failed.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
 <span class="p">}</span>
+<span class="n">m_appcontrol</span><span class="p">.</span><span class="n">SetConfigMode</span><span class="p">();</span><span class="w"> </span><span class="c1">// we need to switch to configuration mode for any further system changes (e.g. loading components)</span>
 </pre></div>
 </div>
 </section>
@@ -712,8 +716,7 @@ Example:</p>
 <li><p>It ensures that all required services are initialized with correct parameters.</p></li>
 <li><p>It provides runtime flexibility and easier debugging.</p></li>
 </ul>
-<p>Code:</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">LoadConfigFile</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">inputMsg</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">configFileName</span><span class="p">)</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">CWiperControl::LoadConfigFile</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">inputMsg</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">configFileName</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inputMsg</span><span class="p">;</span>
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_appcontrol</span><span class="p">.</span><span class="n">LoadConfig</span><span class="p">(</span><span class="n">configFileName</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">EConfigProcessResult</span><span class="o">::</span><span class="n">successful</span><span class="p">)</span>
@@ -735,69 +738,68 @@ Example:</p>
 <span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load vehicle devices and basic services for wiper: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wiper_vehicle_device_and_basic_service.toml&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
 <details>
-<summary> See full wiper_application.cpp</summary>
-<pre>
-
-#include "wiper_application.h"
+<summary> See full wiper_application.cpp</summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>#include &quot;wiper_application.h&quot;
 
 #ifdef _WIN32
-#include <conio.h>
+#include &lt;conio.h&gt;
 #else
-#include <fcntl.h>
+#include &lt;fcntl.h&gt;
 #endif
 
-bool CWiperControl::LoadConfigFile(const std::string& inputMsg, const std::string& configFileName)
+bool CWiperControl::LoadConfigFile(const std::string&amp; inputMsg, const std::string&amp; configFileName)
 {
         std::string msg = inputMsg;
         if (m_appcontrol.LoadConfig(configFileName) == sdv::core::EConfigProcessResult::successful)
         {
-                msg.append("ok\n");
-                std::cout << msg.c_str();
+                msg.append(&quot;ok\n&quot;);
+                std::cout &lt;&lt; msg.c_str();
                 return true;
         }
 
-        msg.append("FAILED.\n");
-        std::cout << msg.c_str();
+        msg.append(&quot;FAILED.\n&quot;);
+        std::cout &lt;&lt; msg.c_str();
         return false;
 }
 
 bool CWiperControl::IsSDVFrameworkEnvironmentSet()
 {
-        const char* envVariable = std::getenv("SDV_FRAMEWORK_RUNTIME");
+        const char* envVariable = std::getenv(&quot;SDV_FRAMEWORK_RUNTIME&quot;);
         return envVariable != nullptr;
 }
 
 bool CWiperControl::Initialize()
 {
 
-        std::cout << "Initialize call started" << std::endl;
+        std::cout &lt;&lt; &quot;Initialize call started&quot; &lt;&lt; std::endl;
         if (m_bInitialized)
                 return true;
 
         if (!IsSDVFrameworkEnvironmentSet())
         {
-                m_appcontrol.SetFrameworkRuntimeDirectory("../../bin");
-                std::cout << "SDVFrameworkEnvironmentSet" << std::endl;
+                m_appcontrol.SetFrameworkRuntimeDirectory(&quot;../../bin&quot;);
+                std::cout &lt;&lt; &quot;SDVFrameworkEnvironmentSet&quot; &lt;&lt; std::endl;
         }
 
-        if (!m_appcontrol.Startup(""))
+        if (!m_appcontrol.Startup(&quot;&quot;))
         {
-                std::cout << "Initialize startup failed." << std::endl;
+                std::cout &lt;&lt; &quot;Initialize startup failed.&quot; &lt;&lt; std::endl;
                 return false;
         }
+        m_appcontrol.SetConfigMode(); // we need to switch to configuration mode for any further system changes (e.g. loading components)
 
-        std::cout << "Starting the load config file" << std::endl;
+        std::cout &lt;&lt; &quot;Starting the load config file&quot; &lt;&lt; std::endl;
 
-        bool bResult = LoadConfigFile("Load dispatch example: ", "data_dispatch_wiper.toml");
-        bResult &= LoadConfigFile("Load task timer: ", "task_timer_wiper.toml");
-        bResult &= LoadConfigFile("Load vehicle devices and basic services for wiper: ", "wiper_vehicle_device_and_basic_service.toml");
+        bool bResult = LoadConfigFile(&quot;Load dispatch example: &quot;, &quot;data_dispatch_wiper.toml&quot;);
+        bResult &amp;= LoadConfigFile(&quot;Load task timer: &quot;, &quot;task_timer_wiper.toml&quot;);
 
-        std::cout << "Ended the load config file" << std::endl;
+        std::cout &lt;&lt; &quot;Ended the load config file&quot; &lt;&lt; std::endl;
 
         if (!bResult)
         {
-                SDV_LOG_ERROR("One or more configurations could not be loaded. Cannot continue.");
+                SDV_LOG_ERROR(&quot;One or more configurations could not be loaded. Cannot continue.&quot;);
                 return false;
         }
 
@@ -813,59 +815,81 @@ void CWiperControl::Shutdown()
                 m_bInitialized = false;
         }
 }
+</pre></div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<details>
+<summary> See full wiper_application.h</summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>#include &lt;support/app_control.h&gt;
+#include &lt;support/signal_support.h&gt;
 
-</pre>
-</details><br>
+/**
+ * @brief Application Class for the Wiper Example
+ */
+class CWiperControl
+{
+public:
+        /**
+         * @brief Initialize the application and load configuration files
+         * @return true on success, false otherwise
+         */
+        bool Initialize();
 
-     <details>
-     <summary> See full wiper_application.h</summary>
-     <pre>
-     #include <support/app_control.h>
-     #include <support/signal_support.h>
+        /**
+         * @brief Shutdown the application
+         */
+        void Shutdown();
 
-     /**
-      * @brief Application Class for the Wiper Example
-      */
-     class CWiperControl
-     {
-     public:
-             /**
-              * @brief Initialize the application and load configuration files
-              * @return true on success, false otherwise
-              */
-             bool Initialize();
+private:
+        /**
+         * @brief Check if SDV_FRAMEWORK_RUNTIME environment variable is set
+         * @return true if set, false otherwise
+         */
+        bool IsSDVFrameworkEnvironmentSet();
 
-             /**
-              * @brief Shutdown the application
-              */
-             void Shutdown();
+        /**
+         * @brief Load a configuration file and print result
+         * @param inputMsg Message to display
+         * @param configFileName Name of the TOML config file
+         * @return true on success, false otherwise
+         */
+        bool LoadConfigFile(const std::string&amp; inputMsg, const std::string&amp; configFileName);
 
-     private:
-             /**
-              * @brief Check if SDV_FRAMEWORK_RUNTIME environment variable is set
-              * @return true if set, false otherwise
-              */
-             bool IsSDVFrameworkEnvironmentSet();
+        sdv::app::CAppControl m_appcontrol;
 
-             /**
-              * @brief Load a configuration file and print result
-              * @param inputMsg Message to display
-              * @param configFileName Name of the TOML config file
-              * @return true on success, false otherwise
-              */
-             bool LoadConfigFile(const std::string& inputMsg, const std::string& configFileName);
+        bool m_bInitialized = false;
 
-             sdv::app::CAppControl m_appcontrol;
-             bool m_bInitialized = false;
+};
+</pre></div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<details>
+<summary> See full wiper_example.cpp</summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>#include &lt;iostream&gt;
+#include &quot;wiper_application.h&quot;
 
-             sdv::core::CSignal m_signalRainDetected;
-             sdv::core::CSignal m_signalWiperMode;
-             sdv::core::CSignal m_signalFrontWiperActive;
-             sdv::core::CSignal m_signalRearWiperActive;
-     };
+int main()
+{
+        std::cout &lt;&lt; &quot;Main call&quot; &lt;&lt; std::endl;
+        CWiperControl appobj;
+        if (!appobj.Initialize())
+        {
+                std::cout &lt;&lt; &quot;ERROR: Failed to initialize application control.&quot; &lt;&lt; std::endl;
+                return 1;
+        }
+        else
+        {
+                std::cout &lt;&lt; &quot;Application control initialized successfully.&quot; &lt;&lt; std::endl;
+        }
 
-     </pre>
-     </details></section>
+        return 0;
+}
+</pre></div>
+</div>
+</div>
+<br></section>
 </section>
 <section id="verifying-the-implementation">
 <h3>Verifying the Implementation<a class="headerlink" href="#verifying-the-implementation" title="Permalink to this heading">#</a></h3>
@@ -888,31 +912,7 @@ void CWiperControl::Shutdown()
 <span class="p">}</span>
 </pre></div>
 </div>
-<details>
-<summary> See full wiper_example.cpp</summary>
-<pre>
-#include <iostream>
-#include "wiper_application.h"
-#include "console.h"
-
-int main()
-{
-        std::cout << "Main call" << std::endl;
-        CWiperControl appobj;
-        if (!appobj.Initialize())
-        {
-                std::cout << "ERROR: Failed to initialize application control." << std::endl;
-                return 1;
-        }
-        else
-        {
-                std::cout << "Application control initialized successfully." << std::endl;
-        }
-
-        return 0;
-}
-</pre>
-</details><br></section>
+</section>
 <section id="build-and-execution">
 <h3>Build and Execution<a class="headerlink" href="#build-and-execution" title="Permalink to this heading">#</a></h3>
 <section id="define-the-executable-with-cmake">
@@ -944,119 +944,105 @@ int main()
 <span class="nb">endif</span><span class="p">()</span>
 </pre></div>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
 <details>
-<summary> See full CMakeLists.txt</summary>
-<pre>
-        project(WiperDemoExample)
+<summary> See full CMakeLists.txt</summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>project(WiperDemoExample)
 
-        # Use new policy for project version settings and default warning level
-        cmake_policy(SET CMP0048 NEW)   # requires CMake 3.14
-        cmake_policy(SET CMP0092 NEW)   # requires CMake 3.15
+# Use new policy for project version settings and default warning level
+cmake_policy(SET CMP0048 NEW)   # requires CMake 3.14
+cmake_policy(SET CMP0092 NEW)   # requires CMake 3.15
 
-        set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 17)
 
-        # Library symbols are hidden by default
-        set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+# Library symbols are hidden by default
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
-        # Include directory to the core framework
-        include_directories(${SDV_FRAMEWORK_DEV_INCLUDE})
+# Include directory to the core framework
+include_directories(${SDV_FRAMEWORK_DEV_INCLUDE})
 
-        ######################################################################################################################################################################
-        #                                                                   preparation
-        ######################################################################################################################################################################
+######################################################################################################################################################################
+#                                                                   preparation
+######################################################################################################################################################################
 
-        # REMARK: The code generation for the proxy/stub, interface definitions and serialization, the vehicle devices and the basic
-        # services are generated during the configuration phase of CMake. This is necessary, since CMakeFiles.txt files are generated and
-        # they have to be available during the configuration phase of CMake to be taken into the build process. Requisite for the code
-        # generation during the configuration time of CMake is the availability of the tools to do the generation. Hence the tools cannot be
-        # created during the build process, which is executed after the configuration process.
+# REMARK: The code generation for the proxy/stub, interface definitions and serialization, the vehicle devices and the basic
+# services are generated during the configuration phase of CMake. This is necessary, since CMakeFiles.txt files are generated and
+# they have to be available during the configuration phase of CMake to be taken into the build process. Requisite for the code
+# generation during the configuration time of CMake is the availability of the tools to do the generation. Hence the tools cannot be
+# created during the build process, which is executed after the configuration process.
 
-        # Execute sdv_vss_util to create IDL files for devices and basic services.
-        message("Create interface code for devices and basic services of wiper example.")
-        execute_process(COMMAND "${SDV_VSS_UTIL}" "${PROJECT_SOURCE_DIR}/vss_wiper_example.csv" "-O${PROJECT_SOURCE_DIR}/generated/" --prefixwiper --version1.0.0.1 --enable_components)
+# Execute sdv_vss_util to create IDL files for devices and basic services.
+message(&quot;Create interface code for devices and basic services of wiper example.&quot;)
+execute_process(COMMAND &quot;${SDV_VSS_UTIL}&quot; &quot;${PROJECT_SOURCE_DIR}/vss_wiper_example.csv&quot; &quot;-O${PROJECT_SOURCE_DIR}/generated/&quot; --prefixwiper --version1.0.0.1 --enable_components)
 
-        # Execute the IDL compiler for the VSS interfaces to digest interface code. Compile with --no_ps as we do not need proxies and stubs as we do not like to expose these interfaces for complex services or applications
-        message("Compiling vss_vehiclebodyweatherrain_vd_tx.idl")
-        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
-        message("Compiling vss_vehiclebodyweatherrain_vd_rx.idl")
-        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
-        message("Compiling vss_vehiclebodywindshieldwiperFront_bs_tx.idl")
-        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
-        message("Compiling vss_vehiclebodywindshieldwiperfront_vd_tx.idl")
-        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
-        message("Compiling vss_vehiclebodywindshieldwiperMode_bs_rx.idl")
-        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
-        message("Compiling vss_vehiclebodywindshieldwipermode_vd_rx.idl")
-        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
-        message("Compiling vss_vehiclebodywindshieldwiperrear_bs_tx.idl")
-        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
-        message("Compiling vss_vehiclebodywindshieldwiperrear_vd_tx.idl")
-        execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+# Execute the IDL compiler for the VSS interfaces to digest interface code. Compile with --no_ps as we do not need proxies and stubs as we do not like to expose these interfaces for complex services or applications
+message(&quot;Compiling vss_vehiclebodyweatherrain_vd_tx.idl&quot;)
+execute_process(COMMAND &quot;${SDV_IDL_COMPILER}&quot; &quot;${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_bs_rx.idl&quot; &quot;-O${PROJECT_SOURCE_DIR}/generated/vss_files/&quot; &quot;-I${SDV_FRAMEWORK_DEV_INCLUDE}&quot; -Igenerated/vss_files/ --no_ps)
+message(&quot;Compiling vss_vehiclebodyweatherrain_vd_rx.idl&quot;)
+execute_process(COMMAND &quot;${SDV_IDL_COMPILER}&quot; &quot;${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_vd_rx.idl&quot; &quot;-O${PROJECT_SOURCE_DIR}/generated/vss_files/&quot; &quot;-I${SDV_FRAMEWORK_DEV_INCLUDE}&quot; -Igenerated/vss_files/ --no_ps)
+message(&quot;Compiling vss_vehiclebodywindshieldwiperFront_bs_tx.idl&quot;)
+execute_process(COMMAND &quot;${SDV_IDL_COMPILER}&quot; &quot;${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_bs_tx.idl&quot; &quot;-O${PROJECT_SOURCE_DIR}/generated/vss_files/&quot; &quot;-I${SDV_FRAMEWORK_DEV_INCLUDE}&quot; -Igenerated/vss_files/ --no_ps)
+message(&quot;Compiling vss_vehiclebodywindshieldwiperfront_vd_tx.idl&quot;)
+execute_process(COMMAND &quot;${SDV_IDL_COMPILER}&quot; &quot;${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_vd_tx.idl&quot; &quot;-O${PROJECT_SOURCE_DIR}/generated/vss_files/&quot; &quot;-I${SDV_FRAMEWORK_DEV_INCLUDE}&quot; -Igenerated/vss_files/ --no_ps)
+message(&quot;Compiling vss_vehiclebodywindshieldwiperMode_bs_rx.idl&quot;)
+execute_process(COMMAND &quot;${SDV_IDL_COMPILER}&quot; &quot;${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_bs_rx.idl&quot; &quot;-O${PROJECT_SOURCE_DIR}/generated/vss_files/&quot; &quot;-I${SDV_FRAMEWORK_DEV_INCLUDE}&quot; -Igenerated/vss_files/ --no_ps)
+message(&quot;Compiling vss_vehiclebodywindshieldwipermode_vd_rx.idl&quot;)
+execute_process(COMMAND &quot;${SDV_IDL_COMPILER}&quot; &quot;${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_vd_rx.idl&quot; &quot;-O${PROJECT_SOURCE_DIR}/generated/vss_files/&quot; &quot;-I${SDV_FRAMEWORK_DEV_INCLUDE}&quot; -Igenerated/vss_files/ --no_ps)
+message(&quot;Compiling vss_vehiclebodywindshieldwiperrear_bs_tx.idl&quot;)
+execute_process(COMMAND &quot;${SDV_IDL_COMPILER}&quot; &quot;${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_bs_tx.idl&quot; &quot;-O${PROJECT_SOURCE_DIR}/generated/vss_files/&quot; &quot;-I${SDV_FRAMEWORK_DEV_INCLUDE}&quot; -Igenerated/vss_files/ --no_ps)
+message(&quot;Compiling vss_vehiclebodywindshieldwiperrear_vd_tx.idl&quot;)
+execute_process(COMMAND &quot;${SDV_IDL_COMPILER}&quot; &quot;${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_vd_tx.idl&quot; &quot;-O${PROJECT_SOURCE_DIR}/generated/vss_files/&quot; &quot;-I${SDV_FRAMEWORK_DEV_INCLUDE}&quot; -Igenerated/vss_files/ --no_ps)
 
-        # Execute sdv_dbc_util to create data link code & FMU code.
-        message("Create data link for wiper example")
-        execute_process(COMMAND ${SDV_DBC_UTIL} "${PROJECT_SOURCE_DIR}/datalink_wiper_example.dbc" "-O${PROJECT_SOURCE_DIR}/generated/" --nodeswiper --version1.0.0.1 --moduleWiperExampleFMU --dl_lib_namecan_dl_wiper)
+#######################################################################################################################################################################
+##                                                                   vehicle devices and basic services
+#######################################################################################################################################################################
 
-        ######################################################################################################################################################################
-        #                                                                   data link component
-        ######################################################################################################################################################################
+# REMARK: Proxy/stub and vehicle device and basic service code was generated during the configuration phase of CMake. Following
+# below are the build steps to build the components that were generated.
 
-        # REMARK: CAN data link code was generated during the configuration phase of CMake. Following below is the build step to build the
-        # component that was generated.
+message(&quot;Include: wiper proxy/stub for vehicle devices and basic services&quot;)
+include_directories(${CMAKE_CURRENT_LIST_DIR}/generated/vss_files)
+#add_subdirectory(generated/vss_files/ps)
 
-        message("Include: example component can_dl_wiper")
-        add_subdirectory(generated/can_dl)
+add_subdirectory(generated/vss_files/bs_frontwiper)
+add_subdirectory(generated/vss_files/bs_rainsensor)
+add_subdirectory(generated/vss_files/bs_rearwiper)
+add_subdirectory(generated/vss_files/bs_wipermode)
 
-        #######################################################################################################################################################################
-        ##                                                                   vehicle devices and basic services
-        #######################################################################################################################################################################
+add_subdirectory(generated/vss_files/vd_frontwiper)
+add_subdirectory(generated/vss_files/vd_rainsensor)
+add_subdirectory(generated/vss_files/vd_rearwiper)
+add_subdirectory(generated/vss_files/vd_wipermode)
 
-        # REMARK: Proxy/stub and vehicle device and basic service code was generated during the configuration phase of CMake. Following
-        # below are the build steps to build the components that were generated.
+######################################################################################################################################################################
+#                                                                   basic_system wiper application
+######################################################################################################################################################################
 
-        message("Include: wiper proxy/stub for vehicle devices and basic services")
-        include_directories(${CMAKE_CURRENT_LIST_DIR}/generated/vss_files)
-        #add_subdirectory(generated/vss_files/ps)
+# Copy the config files
+file (COPY ${PROJECT_SOURCE_DIR}/config/data_dispatch_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+file (COPY ${PROJECT_SOURCE_DIR}/config/task_timer_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
+file (COPY ${PROJECT_SOURCE_DIR}/config/wiper_vehicle_device_and_basic_service.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
 
-        add_subdirectory(generated/vss_files/bs_frontwiper)
-        add_subdirectory(generated/vss_files/bs_rainsensor)
-        add_subdirectory(generated/vss_files/bs_rearwiper)
-        add_subdirectory(generated/vss_files/bs_wipermode)
+# Define the executable
+add_executable(wiper_example
+        wiper_app/wiper_example.cpp
+        wiper_app/wiper_application.cpp
+        wiper_app/wiper_application.h
+        )
 
-        add_subdirectory(generated/vss_files/vd_frontwiper)
-        add_subdirectory(generated/vss_files/vd_rainsensor)
-        add_subdirectory(generated/vss_files/vd_rearwiper)
-        add_subdirectory(generated/vss_files/vd_wipermode)
-
-        ######################################################################################################################################################################
-        #                                                                   basic_system wiper application
-        ######################################################################################################################################################################
-
-        # Copy the config files
-        file (COPY ${PROJECT_SOURCE_DIR}/config/data_dispatch_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
-        file (COPY ${PROJECT_SOURCE_DIR}/config/task_timer_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
-        file (COPY ${PROJECT_SOURCE_DIR}/config/wiper_vehicle_device_and_basic_service.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
-
-        # Define the executable
-        add_executable(wiper_example
-                wiper_app/wiper_example.cpp
-                wiper_app/wiper_application.cpp
-                wiper_app/wiper_application.h
-                wiper_app/signal_names.h
-                )
-
-        if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-                if (WIN32)
-                        target_link_libraries(wiper_example Ws2_32 Winmm Rpcrt4.lib)
-                else()
-                        target_link_libraries(wiper_example  ${CMAKE_DL_LIBS} rt ${CMAKE_THREAD_LIBS_INIT})
-                endif()
+if (CMAKE_CXX_COMPILER_ID STREQUAL &quot;GNU&quot;)
+        if (WIN32)
+                target_link_libraries(wiper_example Ws2_32 Winmm Rpcrt4.lib)
         else()
-                target_link_libraries(wiper_example Rpcrt4.lib)
+                target_link_libraries(wiper_example  ${CMAKE_DL_LIBS} rt ${CMAKE_THREAD_LIBS_INIT})
         endif()
-
-</pre>
-</details><br><details>
+else()
+        target_link_libraries(wiper_example Rpcrt4.lib)
+endif()
+</pre></div>
+</div>
+</div>
+<br><details>
 <summary>View Bin Folder Structure after Build </summary>
 <pre>
 bin/
@@ -1161,8 +1147,8 @@ bin/
 <li><p>Supports both standalone and integrated builds.</p></li>
 </ul>
 </section>
-<section id="register-signals">
-<h4>Register Signals<a class="headerlink" href="#register-signals" title="Permalink to this heading">#</a></h4>
+<section id="register-and-reset-signals">
+<h4>Register And Reset Signals<a class="headerlink" href="#register-and-reset-signals" title="Permalink to this heading">#</a></h4>
 <p>After you defined the signals, then you need to register them.
 This function should registers the signals used by the application to communicate with the SDV signal bus.</p>
 <p>Why it’s important:</p>
@@ -1170,6 +1156,7 @@ This function should registers the signals used by the application to communicat
 <li><p>Without signal registration, the application cannot receive sensor input or send control commands.</p></li>
 <li><p>It connects the application to the SDV Dispatch Service, enabling real-time interaction.</p></li>
 <li><p>It defines the communication interface of the application.</p></li>
+<li><p>Reset signal ensures that no lingering signal connections remain after the application exits, which is important for clean shutdown and avoiding memory leaks.</p></li>
 </ul>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">CWiperControl::RegisterSignals</span><span class="p">()</span>
 <span class="p">{</span>
@@ -1180,7 +1167,20 @@ This function should registers the signals used by the application to communicat
 <span class="w">        </span><span class="n">m_signalFrontWiperActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dispatch</span><span class="p">.</span><span class="n">RegisterTxSignal</span><span class="p">(</span><span class="n">wiper</span><span class="o">::</span><span class="n">dsFrontWiperActive</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 <span class="w">        </span><span class="n">m_signalRearWiperActive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dispatch</span><span class="p">.</span><span class="n">RegisterTxSignal</span><span class="p">(</span><span class="n">wiper</span><span class="o">::</span><span class="n">dsRearWiperActive</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_signalRainDetected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">m_signalWiperMode</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">m_signalFrontWiperActive</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">m_signalRearWiperActive</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">CWiperControl::ResetSignals</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="n">m_signalRainDetected</span><span class="p">.</span><span class="n">Reset</span><span class="p">();</span>
+<span class="w">        </span><span class="n">m_signalWiperMode</span><span class="p">.</span><span class="n">Reset</span><span class="p">();</span>
+<span class="w">        </span><span class="n">m_signalFrontWiperActive</span><span class="p">.</span><span class="n">Reset</span><span class="p">();</span>
+<span class="w">        </span><span class="n">m_signalRearWiperActive</span><span class="p">.</span><span class="n">Reset</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -1194,13 +1194,13 @@ This function should registers the signals used by the application to communicat
 <p>Purpose of RegisterTxSignal and RegisterRxSignal:</p>
 <ul class="simple">
 <li><dl class="simple">
-<dt><strong>RegisterTxSignal</strong>:</dt><dd><p>Registers a signal for <strong>transmission</strong> (Tx) over the network. This is used when your component is a <strong>data provider</strong> and wants to send out signal values.
+<dt>RegisterTxSignal:</dt><dd><p>Registers a signal for <strong>transmission</strong> (Tx) over the network. This is used when your component is a <strong>data provider</strong> and wants to send out signal values.
 It initializes the signal with a default value and prepares it for dispatching.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><strong>RegisterRxSignal</strong>:</dt><dd><p>Registers a signal for <strong>reception</strong> (Rx) from the network. This is used when your component is a <strong>data consumer</strong> and wants to receive updates from other components.
+<dt>RegisterRxSignal:</dt><dd><p>Registers a signal for <strong>reception</strong> (Rx) from the network. This is used when your component is a <strong>data consumer</strong> and wants to receive updates from other components.
 It sets up the signal to be handled by the dispatch service.</p>
 </dd>
 </dl>
@@ -1228,9 +1228,7 @@ It sets up the signal to be handled by the dispatch service.</p>
 <span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialize startup failed.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
 <span class="w">        </span><span class="p">}</span>
-
-<span class="w">        </span><span class="c1">// Switch to config mode.</span>
-<span class="w">        </span><span class="n">m_appcontrol</span><span class="p">.</span><span class="n">SetConfigMode</span><span class="p">();</span>
+<span class="w">        </span><span class="n">m_appcontrol</span><span class="p">.</span><span class="n">SetConfigMode</span><span class="p">();</span><span class="w"> </span><span class="c1">// we need to switch to configuration mode for any further system changes (e.g. loading components)</span>
 
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Starting the load config file&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
@@ -1293,7 +1291,190 @@ It sets up the signal to be handled by the dispatch service.</p>
      2025.10.21 11:23:26.559199;Info;";"(0): End logging..."
 
 </pre>
-</details><br></section>
+</details><div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<details>
+<summary> Updated wiper_application.cpp</summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>#include &quot;wiper_application.h&quot;
+
+#ifdef _WIN32
+#include &lt;conio.h&gt;
+#else
+#include &lt;fcntl.h&gt;
+#endif
+
+bool CWiperControl::LoadConfigFile(const std::string&amp; inputMsg, const std::string&amp; configFileName)
+{
+        std::string msg = inputMsg;
+        if (m_appcontrol.LoadConfig(configFileName) == sdv::core::EConfigProcessResult::successful)
+        {
+                msg.append(&quot;ok\n&quot;);
+                std::cout &lt;&lt; msg.c_str();
+                return true;
+        }
+
+        msg.append(&quot;FAILED.\n&quot;);
+        std::cout &lt;&lt; msg.c_str();
+        return false;
+}
+
+bool CWiperControl::IsSDVFrameworkEnvironmentSet()
+{
+        const char* envVariable = std::getenv(&quot;SDV_FRAMEWORK_RUNTIME&quot;);
+        return envVariable != nullptr;
+}
+
+bool CWiperControl::Initialize()
+{
+
+        std::cout &lt;&lt; &quot;Initialize call started&quot; &lt;&lt; std::endl;
+        if (m_bInitialized)
+                return true;
+
+        if (!IsSDVFrameworkEnvironmentSet())
+        {
+                m_appcontrol.SetFrameworkRuntimeDirectory(&quot;../../bin&quot;);
+                std::cout &lt;&lt; &quot;SDVFrameworkEnvironmentSet&quot; &lt;&lt; std::endl;
+        }
+
+        if (!m_appcontrol.Startup(&quot;&quot;))
+        {
+                std::cout &lt;&lt; &quot;Initialize startup failed.&quot; &lt;&lt; std::endl;
+                return false;
+        }
+        m_appcontrol.SetConfigMode(); // we need to switch to configuration mode for any further system changes (e.g. loading components)
+
+        std::cout &lt;&lt; &quot;Starting the load config file&quot; &lt;&lt; std::endl;
+
+        bool bResult = LoadConfigFile(&quot;Load dispatch example: &quot;, &quot;data_dispatch_wiper.toml&quot;);
+        bResult &amp;= LoadConfigFile(&quot;Load task timer: &quot;, &quot;task_timer_wiper.toml&quot;);
+        bResult &amp;= RegisterSignals();
+
+        bResult &amp;= LoadConfigFile(&quot;Load vehicle devices and basic services for wiper: &quot;, &quot;wiper_vehicle_device_and_basic_service.toml&quot;);
+
+        std::cout &lt;&lt; &quot;Ended the load config file&quot; &lt;&lt; std::endl;
+
+        if (!bResult)
+        {
+                SDV_LOG_ERROR(&quot;One or more configurations could not be loaded. Cannot continue.&quot;);
+                return false;
+        }
+
+        m_bInitialized = true;
+        return true;
+}
+
+void CWiperControl::Shutdown()
+{
+        if (m_bInitialized)
+        {
+                ResetSignals();
+
+                m_appcontrol.Shutdown();
+                m_bInitialized = false;
+        }
+}
+
+bool CWiperControl::RegisterSignals()
+{
+        sdv::core::CDispatchService dispatch;
+
+        m_signalRainDetected = dispatch.RegisterRxSignal(wiper::dsRainDetected);
+        m_signalWiperMode = dispatch.RegisterRxSignal(wiper::dsWiperMode);
+        m_signalFrontWiperActive = dispatch.RegisterTxSignal(wiper::dsFrontWiperActive, 0);
+        m_signalRearWiperActive = dispatch.RegisterTxSignal(wiper::dsRearWiperActive, 0);
+
+        if (m_signalRainDetected &amp;&amp; m_signalWiperMode &amp;&amp; m_signalFrontWiperActive &amp;&amp; m_signalRearWiperActive)
+        {
+                return true;
+        }
+
+        return false;
+}
+
+void CWiperControl::ResetSignals()
+{
+        m_signalRainDetected.Reset();
+        m_signalWiperMode.Reset();
+        m_signalFrontWiperActive.Reset();
+        m_signalRearWiperActive.Reset();
+}
+
+void CWiperControl::SetRunningMode()
+{
+    m_appcontrol.SetRunningMode();
+}
+</pre></div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<details>
+<summary> Updated wiper_application.h</summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>#include &lt;support/app_control.h&gt;
+#include &lt;support/signal_support.h&gt;
+
+#include &quot;../generated/vss_files/signal_identifier.h&quot;
+
+/**
+ * @brief Application Class for the Wiper Example
+ */
+class CWiperControl
+{
+public:
+        /**
+         * @brief Initialize the application and load configuration files
+         * @return true on success, false otherwise
+         */
+        bool Initialize();
+
+        /**
+         * @brief Register signals
+         * @return true on success, false otherwise
+         */
+        bool RegisterSignals();
+
+        /**
+         * @brief Reset signals
+         */
+        void ResetSignals();
+
+        /**
+         * @brief Shutdown the application
+         */
+        void Shutdown();
+
+        /**
+         * @brief Set running mode
+         */
+        void SetRunningMode();
+
+private:
+        /**
+         * @brief Check if SDV_FRAMEWORK_RUNTIME environment variable is set
+         * @return true if set, false otherwise
+         */
+        bool IsSDVFrameworkEnvironmentSet();
+
+        /**
+         * @brief Load a configuration file and print result
+         * @param inputMsg Message to display
+         * @param configFileName Name of the TOML config file
+         * @return true on success, false otherwise
+         */
+        bool LoadConfigFile(const std::string&amp; inputMsg, const std::string&amp; configFileName);
+
+        sdv::app::CAppControl m_appcontrol;
+        bool m_bInitialized = false;
+
+        sdv::core::CSignal m_signalRainDetected;
+        sdv::core::CSignal m_signalWiperMode;
+        sdv::core::CSignal m_signalFrontWiperActive;
+        sdv::core::CSignal m_signalRearWiperActive;
+
+};
+</pre></div>
+</div>
+</div>
+<br></section>
 </section>
 </section>
 <section id="class-and-sequence-diagrams">
