@@ -1,0 +1,923 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Class CParamGuardian &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=9c3fb72b" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=323e3408"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/classsdv_1_1internal_1_1_c_param_guardian';</script>
+    <script src="../_static/js/sidebar-toggle.js?v=714d0a57"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/step_by_step_guide/step_by_step_index.html">
+                        Step by Step Example
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/sdv_executables.html">
+                        SDV Executables
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/step_by_step_guide/step_by_step_index.html">
+                        Step by Step Example
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/sdv_executables.html">
+                        SDV Executables
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Class CParamGuardian</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-cparamguardian">
+<span id="exhale-class-classsdv-1-1internal-1-1-c-param-guardian"></span><h1>Class CParamGuardian<a class="headerlink" href="#class-cparamguardian" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_support_param_impl.h.html#file-support-param-impl-h"><span class="std std-ref">File param_impl.h</span></a></p></li>
+</ul>
+<section id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Permalink to this heading">#</a></h2>
+<section id="base-type">
+<h3>Base Type<a class="headerlink" href="#base-type" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::CSdvParamInfo</span></code> (<a class="reference internal" href="classsdv_1_1_c_sdv_param_info.html#exhale-class-classsdv-1-1-c-sdv-param-info"><span class="std std-ref">Class CSdvParamInfo</span></a>)</p></li>
+</ul>
+</section>
+<section id="derived-type">
+<h3>Derived Type<a class="headerlink" href="#derived-type" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">sdv::internal::CParamValue&lt;</span> <span class="pre">TVar</span> <span class="pre">&gt;</span></code> (<a class="reference internal" href="classsdv_1_1internal_1_1_c_param_value.html#exhale-class-classsdv-1-1internal-1-1-c-param-value"><span class="std std-ref">Template Class CParamValue</span></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this heading">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv8internal14CParamGuardianE">
+<span id="_CPPv3N3sdv8internal14CParamGuardianE"></span><span id="_CPPv2N3sdv8internal14CParamGuardianE"></span><span id="sdv::internal::CParamGuardian"></span><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CParamGuardian</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1_c_sdv_param_info.html#_CPPv4N3sdv13CSdvParamInfoE" title="sdv::CSdvParamInfo"><span class="n"><span class="pre">CSdvParamInfo</span></span></a><a class="headerlink" href="#_CPPv4N3sdv8internal14CParamGuardianE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>The parameter guardian class limits manages the parameter states and allows access to the parameter infos and values. </p>
+<p>Subclassed by <a class="reference internal" href="classsdv_1_1internal_1_1_c_param_value.html#classsdv_1_1internal_1_1_c_param_value"><span class="std std-ref">sdv::internal::CParamValue&lt; TVar &gt;</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IDpEN3sdv8internal14CParamGuardian14CParamGuardianEbbDp14TInfoConstruct">
+<span id="_CPPv3IDpEN3sdv8internal14CParamGuardian14CParamGuardianEbbDp14TInfoConstruct"></span><span id="_CPPv2IDpEN3sdv8internal14CParamGuardian14CParamGuardianEbbDp14TInfoConstruct"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">TInfoConstruct</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian_1a12fc8e2a820d2190ceed87bc45855920"></span><span class="sig-name descname"><span class="n"><span class="pre">CParamGuardian</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bLockable</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bAutoDirty</span></span>, <a class="reference internal" href="#_CPPv4IDpEN3sdv8internal14CParamGuardian14CParamGuardianEbbDp14TInfoConstruct" title="sdv::internal::CParamGuardian::CParamGuardian::TInfoConstruct"><span class="n"><span class="pre">TInfoConstruct</span></span></a><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">tConstruct</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN3sdv8internal14CParamGuardian14CParamGuardianEbbDp14TInfoConstruct" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TInfoConstruct</strong> – The type of the variables that are provided to the constructor function of the parameter information. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>bLockable</strong> – <strong>[in]</strong> When set, the parameter is lockable. Only use with writable parameters. </p></li>
+<li><p><strong>bAutoDirty</strong> – <strong>[in]</strong> When set, the parameter dirty flag is detected automatically. Only use with writable parameters. </p></li>
+<li><p><strong>tConstruct</strong> – <strong>[in]</strong> The construct function arguments. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3sdv8internal14CParamGuardian10InfoStructEv">
+<span id="_CPPv3NK3sdv8internal14CParamGuardian10InfoStructEv"></span><span id="_CPPv2NK3sdv8internal14CParamGuardian10InfoStructEv"></span><span id="sdv::internal::CParamGuardian::InfoStructC"></span><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian_1ac299e67ba7a36495bec13244df5f083f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_s_param_info.html#_CPPv4N3sdv10SParamInfoE" title="sdv::SParamInfo"><span class="n"><span class="pre">SParamInfo</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InfoStruct</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK3sdv8internal14CParamGuardian10InfoStructEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the parameter information structure. Overload of <a class="reference internal" href="classsdv_1_1_c_sdv_param_info.html#classsdv_1_1_c_sdv_param_info_1aaa090dec3b30727717fba09c569dd28a"><span class="std std-ref">sdv::CSdvParamInfo::InfoStruct</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference to the parameter information structure. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3sdv8internal14CParamGuardian5FlagsEv">
+<span id="_CPPv3NK3sdv8internal14CParamGuardian5FlagsEv"></span><span id="_CPPv2NK3sdv8internal14CParamGuardian5FlagsEv"></span><span id="sdv::internal::CParamGuardian::FlagsC"></span><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian_1a009f51a686051308689a8548f3e63576"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Flags</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK3sdv8internal14CParamGuardian5FlagsEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the parameter flags. Overload of <a class="reference internal" href="classsdv_1_1_c_sdv_param_info.html#classsdv_1_1_c_sdv_param_info_1a08cef29787203f03a187c9b8b4b33edc"><span class="std std-ref">sdv::CSdvParamInfo::Flags</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The parameter flags. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv8internal14CParamGuardian11UpdateDirtyERKN3sdv5any_tE">
+<span id="_CPPv3N3sdv8internal14CParamGuardian11UpdateDirtyERKN3sdv5any_tE"></span><span id="_CPPv2N3sdv8internal14CParamGuardian11UpdateDirtyERKN3sdv5any_tE"></span><span id="sdv::internal::CParamGuardian::UpdateDirty__sdv::any_tCR"></span><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian_1a5bda9ce4ba0a8f6c305a32cc1891b4d2"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UpdateDirty</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1any__t.html#_CPPv4N3sdv5any_tE" title="sdv::any_t"><span class="n"><span class="pre">any_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ranyValue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3sdv8internal14CParamGuardian11UpdateDirtyERKN3sdv5any_tE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Mark the parameter as dirty if the value has changed. This implies the automatic dirty detection to be enabled. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ranyValue</strong> – Reference to the value to be used to to check. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns ‘true’ if the dirty flag has changed. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv8internal14CParamGuardian8SetDirtyEv">
+<span id="_CPPv3N3sdv8internal14CParamGuardian8SetDirtyEv"></span><span id="_CPPv2N3sdv8internal14CParamGuardian8SetDirtyEv"></span><span id="sdv::internal::CParamGuardian::SetDirty"></span><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian_1a2ba47b14d4603b311aa5c3bcbe4dfef9"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetDirty</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3sdv8internal14CParamGuardian8SetDirtyEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Explicitly set the parameter to dirty. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns ‘true’ if the dirty flag has changed. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv8internal14CParamGuardian10ResetDirtyEv">
+<span id="_CPPv3N3sdv8internal14CParamGuardian10ResetDirtyEv"></span><span id="_CPPv2N3sdv8internal14CParamGuardian10ResetDirtyEv"></span><span id="sdv::internal::CParamGuardian::ResetDirty"></span><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian_1aefe32cd3d4426873ec34336c485f6ee0"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ResetDirty</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3sdv8internal14CParamGuardian10ResetDirtyEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Reset the parameter dirty flag. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns ‘true’ if the dirty flag has changed. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3sdv8internal14CParamGuardian5DirtyEv">
+<span id="_CPPv3NK3sdv8internal14CParamGuardian5DirtyEv"></span><span id="_CPPv2NK3sdv8internal14CParamGuardian5DirtyEv"></span><span id="sdv::internal::CParamGuardian::DirtyC"></span><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian_1a92759d61a1c91d627b872b850d946957"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Dirty</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK3sdv8internal14CParamGuardian5DirtyEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Is the parameter marked dirty? Overload of <a class="reference internal" href="classsdv_1_1_c_sdv_param_info.html#classsdv_1_1_c_sdv_param_info_1ac8433ba972ad94a17f143fc34d23429f"><span class="std std-ref">sdv::CSdvParamInfo::Dirty</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the dirty flag of the parameter. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3sdv8internal14CParamGuardian8LockableEv">
+<span id="_CPPv3NK3sdv8internal14CParamGuardian8LockableEv"></span><span id="_CPPv2NK3sdv8internal14CParamGuardian8LockableEv"></span><span id="sdv::internal::CParamGuardian::LockableC"></span><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian_1a326c6d082825175e51ec919d64ca5400"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Lockable</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3sdv8internal14CParamGuardian8LockableEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Is the parameter lockable? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether the parameter can be locked. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv8internal14CParamGuardian4LockEv">
+<span id="_CPPv3N3sdv8internal14CParamGuardian4LockEv"></span><span id="_CPPv2N3sdv8internal14CParamGuardian4LockEv"></span><span id="sdv::internal::CParamGuardian::Lock"></span><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian_1a1807431a30d49220ea9af7a9c72dcdfa"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Lock</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3sdv8internal14CParamGuardian4LockEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Lock the parameter. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns ‘true’ if the lock flag has changed. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv8internal14CParamGuardian6UnlockEv">
+<span id="_CPPv3N3sdv8internal14CParamGuardian6UnlockEv"></span><span id="_CPPv2N3sdv8internal14CParamGuardian6UnlockEv"></span><span id="sdv::internal::CParamGuardian::Unlock"></span><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian_1a4c38932aff9717ed0c0dfc1fc9f1c341"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Unlock</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3sdv8internal14CParamGuardian6UnlockEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Unlock the parameter. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns ‘true’ if the lock flag has changed. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3sdv8internal14CParamGuardian6LockedEv">
+<span id="_CPPv3NK3sdv8internal14CParamGuardian6LockedEv"></span><span id="_CPPv2NK3sdv8internal14CParamGuardian6LockedEv"></span><span id="sdv::internal::CParamGuardian::LockedC"></span><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian_1aeeda323901d2051b891fd53ceb9de393"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Locked</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK3sdv8internal14CParamGuardian6LockedEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Is the parameter currently locked? Overload of <a class="reference internal" href="classsdv_1_1_c_sdv_param_info.html#classsdv_1_1_c_sdv_param_info_1a45d6fb4364dce383b49cbdf9e96f19ff"><span class="std std-ref">sdv::CSdvParamInfo::Locked</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the lock flag for the parameter. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv8internal14CParamGuardian3SetERK5any_t">
+<span id="_CPPv3N3sdv8internal14CParamGuardian3SetERK5any_t"></span><span id="_CPPv2N3sdv8internal14CParamGuardian3SetERK5any_t"></span><span id="sdv::internal::CParamGuardian::Set__any_tCR"></span><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian_1ad47e61111460a6251ba7f0aaff7b6705"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classsdv_1_1any__t.html#_CPPv4N3sdv5any_tE" title="sdv::any_t"><span class="n"><span class="pre">any_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ranyValue</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3sdv8internal14CParamGuardian3SetERK5any_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set a value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ranyValue</strong> – <strong>[in]</strong> Reference to the value. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns whether the parameter is writable and can be set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3sdv8internal14CParamGuardian3GetEv">
+<span id="_CPPv3NK3sdv8internal14CParamGuardian3GetEv"></span><span id="_CPPv2NK3sdv8internal14CParamGuardian3GetEv"></span><span id="sdv::internal::CParamGuardian::GetC"></span><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian_1a914f2559453c02eeb6bbd21a79df19e0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="classsdv_1_1any__t.html#_CPPv4N3sdv5any_tE" title="sdv::any_t"><span class="n"><span class="pre">any_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3sdv8internal14CParamGuardian3GetEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get a value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the value. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv8internal14CParamGuardian17CheckRestrictionsERK5any_t">
+<span id="_CPPv3N3sdv8internal14CParamGuardian17CheckRestrictionsERK5any_t"></span><span id="_CPPv2N3sdv8internal14CParamGuardian17CheckRestrictionsERK5any_t"></span><span id="sdv::internal::CParamGuardian::CheckRestrictions__any_tCR"></span><span class="target" id="classsdv_1_1internal_1_1_c_param_guardian_1aa240be0d43da69925e60d566e9675fb2"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CheckRestrictions</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="classsdv_1_1any__t.html#_CPPv4N3sdv5any_tE" title="sdv::any_t"><span class="n"><span class="pre">any_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ranyValue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3sdv8internal14CParamGuardian17CheckRestrictionsERK5any_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Check the variable for compatibility the restrictions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ranyValue</strong> – <strong>[in]</strong> Reference to the value. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns whether the variable passes the restrictions. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
+        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
+    </ul>
+    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
+</ul>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
+
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
+
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
+        } 
+    });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

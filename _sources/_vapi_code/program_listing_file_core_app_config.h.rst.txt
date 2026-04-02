@@ -10,6 +10,19 @@ Program Listing for File app_config.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
    #ifndef APP_CONFIG_H
    #define APP_CONFIG_H
    
@@ -21,6 +34,7 @@ Program Listing for File app_config.h
    #include <filesystem>
    #include <vector>
    #include <map>
+   #include "app_config_file.h"
    
    // @cond DOXYGEN_IGNORE
    // Components are installed using two procedures:
@@ -37,6 +51,8 @@ Program Listing for File app_config.h
    // The installation might need companion files to be installed in various relative sub-directories.
    // @endcond
    
+   std::filesystem::path GetCoreDirectory();
+   
    class CAppConfig : public sdv::IInterfaceAccess, public sdv::core::IConfig, public sdv::installation::IAppInstall
    {
    public:
@@ -52,11 +68,19 @@ Program Listing for File app_config.h
    
        void UnloadInstallatonManifests();
    
+       bool LoadAppConfigs();
+   
+       void SaveAppConfigs();
+   
        virtual sdv::core::EConfigProcessResult ProcessConfig(/*in*/ const sdv::u8string& ssContent) override;
    
        virtual sdv::core::EConfigProcessResult LoadConfig(/*in*/ const sdv::u8string& ssConfigPath) override;
    
        virtual bool SaveConfig(/*in*/ const sdv::u8string& ssConfigPath) const override;
+   
+       virtual sdv::u8string GenerateConfigString() const override;
+   
+       virtual void CloseConfig() override;
    
        virtual bool AddConfigSearchDir(/*in*/ const sdv::u8string& ssDir) override;
    
@@ -78,9 +102,13 @@ Program Listing for File app_config.h
    
        std::string FindInstalledModuleManifest(const std::filesystem::path& rpathRelModule);
    
-       std::optional<CInstallManifest::SComponent> FindInstalledComponent(const std::string& rssClass) const;
+       std::optional<sdv::SClassInfo> FindInstalledComponent(const std::string& rssClass) const;
+   
+       bool RemoveFromConfig(const CInstallManifest& rManifest);
    
    private:
+       std::filesystem::path ComposeConfigPathStandaloneApp(const std::filesystem::path& rpathConfigFile) const;
+   
        void AddCurrentPath();
    
        struct SInstallation
@@ -88,17 +116,19 @@ Program Listing for File app_config.h
            sdv::sequence<sdv::installation::SFileDesc>  seqFiles;       
        };
    
-       std::mutex                              m_mtxSearchPaths;       
-       std::list<std::filesystem::path>        m_lstSearchPaths;       
-       std::filesystem::path                   m_pathLastSearchDir;    
-       std::mutex                              m_mtxInstallations;     
-       CInstallManifest                        m_manifestCore;         
-       CInstallManifest                        m_manifestExe;          
-       std::vector<CInstallManifest>           m_vecUserManifests;     
-       std::map<std::string, SInstallation>    m_mapInstallations;     
+       std::mutex                                      m_mtxSearchPaths;       
+       std::list<std::filesystem::path>                m_lstSearchPaths;       
+       std::filesystem::path                           m_pathLastSearchDir;    
+       std::mutex                                      m_mtxInstallations;     
+       CInstallManifest                                m_manifestCore;         
+       CInstallManifest                                m_manifestExe;          
+       std::vector<CInstallManifest>                   m_vecUserManifests;     
+       std::map<std::string, SInstallation>            m_mapInstallations;     
+       std::vector<CAppConfigFile>                     m_vecSysConfigs;        
+       CAppConfigFile                                  m_configUserConfig;     
    };
    
-   #ifndef DO_NOT_INCLUDE_IN_UNIT_TEST
+   CAppConfig& GetAppConfig();
    
    class CAppConfigService : public sdv::CSdvObject
    {
@@ -119,7 +149,7 @@ Program Listing for File app_config.h
        END_SDV_INTERFACE_MAP()
    
        // Object declarations
-       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
        DECLARE_OBJECT_CLASS_NAME("ConfigService")
        DECLARE_OBJECT_SINGLETON()
    
@@ -130,8 +160,6 @@ Program Listing for File app_config.h
    
        static bool EnableAppInstallAccess();
    };
-   DEFINE_SDV_OBJECT_NO_EXPORT(CAppConfigService)
-   
-   #endif
+   DEFINE_SDV_OBJECT(CAppConfigService)
    
    #endif // !defined APP_CONFIG_H

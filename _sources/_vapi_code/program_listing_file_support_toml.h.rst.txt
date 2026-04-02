@@ -10,6 +10,19 @@ Program Listing for File toml.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the 
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
    #ifndef SDV_CONFIG_H
    #define SDV_CONFIG_H
    
@@ -32,13 +45,27 @@ Program Listing for File toml.h
    
            virtual operator bool() const;
    
-           sdv::u8string GetName();
+           TInterfaceAccessPtr GetInterface();
    
-           sdv::u8string GetQualifiedPath();
+           sdv::u8string GetName() const;
    
-           ENodeType GetType();
+           sdv::u8string GetQualifiedPath() const;
    
-           sdv::any_t GetValue();
+           ENodeType GetType() const;
+   
+           std::string GetComment() const;
+   
+           void SetComment(const std::string& rssComment);
+   
+           sdv::any_t GetValue() const;
+   
+           std::string GetValueAsString() const;
+   
+           std::filesystem::path GetValueAsPath() const;
+   
+           bool SetValue(const sdv::any_t& ranyValue);
+   
+           bool Delete();
    
            virtual void Clear();
    
@@ -76,6 +103,26 @@ Program Listing for File toml.h
    
            CNode GetDirect(const sdv::u8string& rssNode) const;
    
+           CNode InsertValue(size_t nIndex, const std::string& rssName, const sdv::any_t& ranyValue);
+   
+           CNode AddValue(const std::string& rssName, const sdv::any_t& ranyValue);
+   
+           CNodeCollection InsertArray(size_t nIndex, const std::string& rssName);
+   
+           CNodeCollection AddArray(const std::string& rssName);
+   
+           CNodeCollection InsertTable(size_t nIndex, const std::string& rssName, bool bFavorInline = false);
+   
+           CNodeCollection AddTable(const std::string& rssName, bool bFavorInline = false);
+   
+           CNodeCollection InsertTableArray(size_t nIndex, const std::string& rssName, bool bFavorInline = false);
+   
+           CNodeCollection AddTableArray(const std::string& rssName, bool bFavorInline = false);
+   
+           int InsertTOML(size_t nIndex, const std::string& rssTOML, bool bAllowPartial = false);
+   
+           int AddTOML(const std::string& rssTOML, bool bAllowPartial = false);
+   
        private:
            INodeCollection*    m_pCollection = nullptr;        
        };
@@ -105,8 +152,7 @@ Program Listing for File toml.h
        inline CNode::CNode(const TInterfaceAccessPtr& rptrNode)
        {
            m_pNodeInfo = rptrNode.GetInterface<INodeInfo>();
-           if (!m_pNodeInfo)
-               return;
+           if (!m_pNodeInfo) return;
            m_ptrNode = rptrNode;
        }
    
@@ -130,24 +176,93 @@ Program Listing for File toml.h
            return m_pNodeInfo ? true : false;
        }
    
-       inline sdv::u8string CNode::GetName()
+       inline TInterfaceAccessPtr CNode::GetInterface()
+       {
+           return m_ptrNode;
+       }
+   
+       inline sdv::u8string CNode::GetName() const
        {
            return m_pNodeInfo ? m_pNodeInfo->GetName() : sdv::u8string();
        }
    
-       inline sdv::u8string CNode::GetQualifiedPath()
+       inline sdv::u8string CNode::GetQualifiedPath() const
        {
            return m_pNodeInfo ? m_pNodeInfo->GetPath(true) : sdv::u8string();
        }
    
-       inline ENodeType CNode::GetType()
+       inline ENodeType CNode::GetType() const
        {
            return m_pNodeInfo ? m_pNodeInfo->GetType() : ENodeType::node_invalid;
        }
    
-       inline sdv::any_t CNode::GetValue()
+       inline std::string CNode::GetComment() const
+       {
+           if (!m_pNodeInfo) return {};
+           std::string ssComment;
+           switch (GetType())
+           {
+           case ENodeType::node_boolean:
+           case ENodeType::node_integer:
+           case ENodeType::node_floating_point:
+           case ENodeType::node_string:
+               ssComment = m_pNodeInfo->GetComment(INodeInfo::ECommentType::comment_behind);
+               if (ssComment.empty())
+                   ssComment = m_pNodeInfo->GetComment(INodeInfo::ECommentType::comment_before);
+               break;
+           default:
+               ssComment = m_pNodeInfo->GetComment(INodeInfo::ECommentType::comment_before);
+               if (ssComment.empty())
+                   ssComment = m_pNodeInfo->GetComment(INodeInfo::ECommentType::comment_behind);
+               break;
+           }
+           return ssComment;
+       }
+   
+       inline void CNode::SetComment(const std::string& rssComment)
+       {
+           if (!m_pNodeInfo) return;
+           switch (GetType())
+           {
+           case ENodeType::node_boolean:
+           case ENodeType::node_integer:
+           case ENodeType::node_floating_point:
+           case ENodeType::node_string:
+               m_pNodeInfo->SetComment(INodeInfo::ECommentType::comment_behind, rssComment);
+               break;
+           default:
+               m_pNodeInfo->SetComment(INodeInfo::ECommentType::comment_before, rssComment);
+               break;
+           }
+       }
+   
+       inline sdv::any_t CNode::GetValue() const
        {
            return m_pNodeInfo ? m_pNodeInfo->GetValue() : sdv::any_t();
+       }
+   
+       inline std::string CNode::GetValueAsString() const
+       {
+           return m_pNodeInfo ? m_pNodeInfo->GetValue().get<std::string>() : std::string();
+       }
+   
+       inline std::filesystem::path CNode::GetValueAsPath() const
+       {
+           return m_pNodeInfo ? m_pNodeInfo->GetValue().get<std::filesystem::path>() : std::filesystem::path();
+       }
+   
+       inline bool CNode::SetValue(const sdv::any_t& ranyValue)
+       {
+           INodeUpdate* pNodeUpdate = m_ptrNode.GetInterface<INodeUpdate>();
+           if (!pNodeUpdate) return false;
+           return pNodeUpdate->ChangeValue(ranyValue);
+       }
+   
+       inline bool CNode::Delete()
+       {
+           INodeUpdate* pNodeUpdate = m_ptrNode.GetInterface<INodeUpdate>();
+           if (!pNodeUpdate) return false;
+           return pNodeUpdate->DeleteNode();
        }
    
        inline void CNode::Clear()
@@ -223,6 +338,105 @@ Program Listing for File toml.h
        inline CNode CNodeCollection::GetDirect(const sdv::u8string& rssNode) const
        {
            return m_pCollection ? CNode(m_pCollection->GetNodeDirect(rssNode)) : CNode();
+       }
+   
+       inline CNode CNodeCollection::InsertValue(size_t nIndex, const std::string& rssName, const sdv::any_t& ranyValue)
+       {
+           INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
+           if (!pInsert) return {};
+           return CNode(pInsert->InsertValue(static_cast<uint32_t>(nIndex), rssName, ranyValue));
+       }
+   
+       inline CNode CNodeCollection::AddValue(const std::string& rssName, const sdv::any_t& ranyValue)
+       {
+           INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
+           if (!pInsert) return {};
+           return CNode(pInsert->InsertValue(npos, rssName, ranyValue));
+       }
+   
+       inline CNodeCollection CNodeCollection::InsertArray(size_t nIndex, const std::string& rssName)
+       {
+           INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
+           if (!pInsert) return {};
+           return CNodeCollection(pInsert->InsertArray(static_cast<uint32_t>(nIndex), rssName));
+       }
+   
+       inline CNodeCollection CNodeCollection::AddArray(const std::string& rssName)
+       {
+           INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
+           if (!pInsert) return {};
+           return CNodeCollection(pInsert->InsertArray(npos, rssName));
+       }
+   
+       inline CNodeCollection CNodeCollection::InsertTable(size_t nIndex, const std::string& rssName, bool bFavorInline /*= false*/)
+       {
+           INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
+           if (!pInsert) return {};
+           return CNodeCollection(pInsert->InsertTable(static_cast<uint32_t>(nIndex), rssName,
+               bFavorInline ? INodeCollectionInsert::EInsertPreference::prefer_inline :
+                   INodeCollectionInsert::EInsertPreference::prefer_standard));
+       }
+   
+       inline CNodeCollection CNodeCollection::AddTable(const std::string& rssName, bool bFavorInline /*= false*/)
+       {
+           INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
+           if (!pInsert) return {};
+           return CNodeCollection(pInsert->InsertTable(npos, rssName,
+               bFavorInline ? INodeCollectionInsert::EInsertPreference::prefer_inline :
+                   INodeCollectionInsert::EInsertPreference::prefer_standard));
+       }
+   
+       inline CNodeCollection CNodeCollection::InsertTableArray(size_t nIndex, const std::string& rssName,
+           bool bFavorInline /*= false*/)
+       {
+           INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
+           if (!pInsert) return {};
+           return CNodeCollection(pInsert->InsertTableArray(static_cast<uint32_t>(nIndex), rssName,
+               bFavorInline ? INodeCollectionInsert::EInsertPreference::prefer_inline :
+                   INodeCollectionInsert::EInsertPreference::prefer_standard));
+       }
+   
+       inline CNodeCollection CNodeCollection::AddTableArray(const std::string& rssName, bool bFavorInline /*= false*/)
+       {
+           INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
+           if (!pInsert) return {};
+           return CNodeCollection(pInsert->InsertTableArray(npos, rssName,
+               bFavorInline ? INodeCollectionInsert::EInsertPreference::prefer_inline :
+                   INodeCollectionInsert::EInsertPreference::prefer_standard));
+       }
+   
+       inline int CNodeCollection::InsertTOML(size_t nIndex, const std::string& rssTOML, bool bAllowPartial /*= false*/)
+       {
+           INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
+           if (!pInsert) return 0;
+           INodeCollectionInsert::EInsertResult eRet = pInsert->InsertTOML(static_cast<uint32_t>(nIndex), rssTOML, !bAllowPartial);
+           switch (eRet)
+           {
+           case INodeCollectionInsert::EInsertResult::insert_success:
+               return 1;
+           case INodeCollectionInsert::EInsertResult::insert_partly_success:
+               return -1;
+           case INodeCollectionInsert::EInsertResult::insert_fail:
+           default:
+               return 0;
+           }
+       }
+   
+       inline int CNodeCollection::AddTOML(const std::string& rssTOML, bool bAllowPartial /*= false*/)
+       {
+           INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
+           if (!pInsert) return 0;
+           INodeCollectionInsert::EInsertResult eRet = pInsert->InsertTOML(npos, rssTOML, !bAllowPartial);
+           switch (eRet)
+           {
+           case INodeCollectionInsert::EInsertResult::insert_success:
+               return 1;
+           case INodeCollectionInsert::EInsertResult::insert_partly_success:
+               return -1;
+           case INodeCollectionInsert::EInsertResult::insert_fail:
+           default:
+               return 0;
+           }
        }
    
        inline CTOMLParser::CTOMLParser(const std::string& rssConfig)

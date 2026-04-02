@@ -11,8 +11,8 @@ Program Listing for File toml_serdes.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__TOML_SERDES_H__20260115_165121_337__
-   #define __IDL_GENERATED__TOML_SERDES_H__20260115_165121_337__
+   #ifndef __IDL_GENERATED__TOML_SERDES_H__20260402_165455_206__
+   #define __IDL_GENERATED__TOML_SERDES_H__20260402_165455_206__
    
    // Includes...
    #include <cstdint>
@@ -143,31 +143,84 @@ Program Listing for File toml_serdes.h
        };
    
        template <>
-       class CSerdes<sdv::toml::INodeInfo::ECommentFlags>
+       class CSerdes<sdv::toml::INodeInfo::ECommentType>
        {
        public:
-           static void CalcSize(const sdv::toml::INodeInfo::ECommentFlags& rVar, size_t& rnSize)
+           static void CalcSize(const sdv::toml::INodeInfo::ECommentType& rVar, size_t& rnSize)
            {
    
-               // Calculating the size of ECommentFlags
+               // Calculating the size of ECommentType
                sdv::ser_size(static_cast<int32_t>(rVar), rnSize);
            }
    
            template <sdv::EEndian eTargetEndianess, typename TCRC>
-           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::toml::INodeInfo::ECommentFlags& rVar)
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::toml::INodeInfo::ECommentType& rVar)
            {
-               // Serializing members of ECommentFlags
+               // Serializing members of ECommentType
                rSerializer << static_cast<int32_t>(rVar);
                return rSerializer;
            }
    
            template <sdv::EEndian eSourceEndianess, typename TCRC>
-           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::toml::INodeInfo::ECommentFlags& rVar)
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::toml::INodeInfo::ECommentType& rVar)
            {
-               // Deserializing members of ECommentFlags
+               // Deserializing members of ECommentType
                int32_t base = 0;
                rDeserializer >> base;
-               rVar = static_cast<sdv::toml::INodeInfo::ECommentFlags>(base);
+               rVar = static_cast<sdv::toml::INodeInfo::ECommentType>(base);
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::toml::INodeUpdate*>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] sdv::toml::INodeUpdate* pInterface, size_t& rnSize)
+           {
+               sdv::ser_size(sdv::interface_id(), rnSize);
+               sdv::ser_size(sdv::ps::TMarshallID(), rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, sdv::toml::INodeUpdate* pInterface)
+           {
+               // Get interface to the component isolation service.
+               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
+               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
+               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
+               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
+   
+               // Serialize the interface ID first
+               rSerializer << sdv::GetInterfaceId<sdv::toml::INodeUpdate>();
+   
+               // Create and serialize a stub object for the interface.
+               sdv::ps::TMarshallID tStubID = pMarshallAccess->GetStub(pInterface);
+               rSerializer << tStubID;
+   
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::toml::INodeUpdate*& rpInterface)
+           {
+               // Get interface to the component isolation service.
+               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
+               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
+               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
+               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
+   
+               // Get the interface ID
+               sdv::interface_id id = 0;
+               rDeserializer >> id;
+   
+               // Get the stub ID
+               sdv::ps::TMarshallID tStubID{};
+               rDeserializer >> tStubID;
+   
+               // Create the proxy
+               rpInterface = pMarshallAccess->GetProxy(tStubID, id).get<sdv::toml::INodeUpdate>();
+   
                return rDeserializer;
            }
        };
@@ -220,6 +273,59 @@ Program Listing for File toml_serdes.h
    
                // Create the proxy
                rpInterface = pMarshallAccess->GetProxy(tStubID, id).get<sdv::toml::INodeCollection>();
+   
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::toml::INodeCollectionConvert*>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] sdv::toml::INodeCollectionConvert* pInterface, size_t& rnSize)
+           {
+               sdv::ser_size(sdv::interface_id(), rnSize);
+               sdv::ser_size(sdv::ps::TMarshallID(), rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, sdv::toml::INodeCollectionConvert* pInterface)
+           {
+               // Get interface to the component isolation service.
+               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
+               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
+               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
+               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
+   
+               // Serialize the interface ID first
+               rSerializer << sdv::GetInterfaceId<sdv::toml::INodeCollectionConvert>();
+   
+               // Create and serialize a stub object for the interface.
+               sdv::ps::TMarshallID tStubID = pMarshallAccess->GetStub(pInterface);
+               rSerializer << tStubID;
+   
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::toml::INodeCollectionConvert*& rpInterface)
+           {
+               // Get interface to the component isolation service.
+               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
+               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
+               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
+               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
+   
+               // Get the interface ID
+               sdv::interface_id id = 0;
+               rDeserializer >> id;
+   
+               // Get the stub ID
+               sdv::ps::TMarshallID tStubID{};
+               rDeserializer >> tStubID;
+   
+               // Create the proxy
+               rpInterface = pMarshallAccess->GetProxy(tStubID, id).get<sdv::toml::INodeCollectionConvert>();
    
                return rDeserializer;
            }
@@ -279,6 +385,36 @@ Program Listing for File toml_serdes.h
        };
    
        template <>
+       class CSerdes<sdv::toml::INodeCollectionInsert::EInsertPreference>
+       {
+       public:
+           static void CalcSize(const sdv::toml::INodeCollectionInsert::EInsertPreference& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of EInsertPreference
+               sdv::ser_size(static_cast<int32_t>(rVar), rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::toml::INodeCollectionInsert::EInsertPreference& rVar)
+           {
+               // Serializing members of EInsertPreference
+               rSerializer << static_cast<int32_t>(rVar);
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::toml::INodeCollectionInsert::EInsertPreference& rVar)
+           {
+               // Deserializing members of EInsertPreference
+               int32_t base = 0;
+               rDeserializer >> base;
+               rVar = static_cast<sdv::toml::INodeCollectionInsert::EInsertPreference>(base);
+               return rDeserializer;
+           }
+       };
+   
+       template <>
        class CSerdes<sdv::toml::INodeCollectionInsert::EInsertResult>
        {
        public:
@@ -304,112 +440,6 @@ Program Listing for File toml_serdes.h
                uint32_t base = 0;
                rDeserializer >> base;
                rVar = static_cast<sdv::toml::INodeCollectionInsert::EInsertResult>(base);
-               return rDeserializer;
-           }
-       };
-   
-       template <>
-       class CSerdes<sdv::toml::INodeDelete*>
-       {
-       public:
-           static void CalcSize([[maybe_unused]] sdv::toml::INodeDelete* pInterface, size_t& rnSize)
-           {
-               sdv::ser_size(sdv::interface_id(), rnSize);
-               sdv::ser_size(sdv::ps::TMarshallID(), rnSize);
-           }
-   
-           template <sdv::EEndian eTargetEndianess, typename TCRC>
-           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, sdv::toml::INodeDelete* pInterface)
-           {
-               // Get interface to the component isolation service.
-               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
-               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
-               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
-               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
-   
-               // Serialize the interface ID first
-               rSerializer << sdv::GetInterfaceId<sdv::toml::INodeDelete>();
-   
-               // Create and serialize a stub object for the interface.
-               sdv::ps::TMarshallID tStubID = pMarshallAccess->GetStub(pInterface);
-               rSerializer << tStubID;
-   
-               return rSerializer;
-           }
-   
-           template <sdv::EEndian eSourceEndianess, typename TCRC>
-           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::toml::INodeDelete*& rpInterface)
-           {
-               // Get interface to the component isolation service.
-               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
-               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
-               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
-               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
-   
-               // Get the interface ID
-               sdv::interface_id id = 0;
-               rDeserializer >> id;
-   
-               // Get the stub ID
-               sdv::ps::TMarshallID tStubID{};
-               rDeserializer >> tStubID;
-   
-               // Create the proxy
-               rpInterface = pMarshallAccess->GetProxy(tStubID, id).get<sdv::toml::INodeDelete>();
-   
-               return rDeserializer;
-           }
-       };
-   
-       template <>
-       class CSerdes<sdv::toml::INodeUpdate*>
-       {
-       public:
-           static void CalcSize([[maybe_unused]] sdv::toml::INodeUpdate* pInterface, size_t& rnSize)
-           {
-               sdv::ser_size(sdv::interface_id(), rnSize);
-               sdv::ser_size(sdv::ps::TMarshallID(), rnSize);
-           }
-   
-           template <sdv::EEndian eTargetEndianess, typename TCRC>
-           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, sdv::toml::INodeUpdate* pInterface)
-           {
-               // Get interface to the component isolation service.
-               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
-               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
-               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
-               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
-   
-               // Serialize the interface ID first
-               rSerializer << sdv::GetInterfaceId<sdv::toml::INodeUpdate>();
-   
-               // Create and serialize a stub object for the interface.
-               sdv::ps::TMarshallID tStubID = pMarshallAccess->GetStub(pInterface);
-               rSerializer << tStubID;
-   
-               return rSerializer;
-           }
-   
-           template <sdv::EEndian eSourceEndianess, typename TCRC>
-           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::toml::INodeUpdate*& rpInterface)
-           {
-               // Get interface to the component isolation service.
-               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
-               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
-               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
-               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
-   
-               // Get the interface ID
-               sdv::interface_id id = 0;
-               rDeserializer >> id;
-   
-               // Get the stub ID
-               sdv::ps::TMarshallID tStubID{};
-               rDeserializer >> tStubID;
-   
-               // Create the proxy
-               rpInterface = pMarshallAccess->GetProxy(tStubID, id).get<sdv::toml::INodeUpdate>();
-   
                return rDeserializer;
            }
        };
@@ -468,4 +498,4 @@ Program Listing for File toml_serdes.h
        };
    } // serdes namespace
    
-   #endif // !defined(__IDL_GENERATED__TOML_SERDES_H__20260115_165121_340__)
+   #endif // !defined(__IDL_GENERATED__TOML_SERDES_H__20260402_165455_223__)

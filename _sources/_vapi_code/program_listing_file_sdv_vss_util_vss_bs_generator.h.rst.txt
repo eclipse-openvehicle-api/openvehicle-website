@@ -10,6 +10,19 @@ Program Listing for File vss_bs_generator.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Thomas Pfleiderer - initial API and implementation
+    ********************************************************************************/
+   
    #ifndef VSS_BS_GENERATOR_H
    #define VSS_BS_GENERATOR_H
    
@@ -39,9 +52,9 @@ Program Listing for File vss_bs_generator.h
    
        void CreateFiles(const std::string& ssVersion);
    
-       void CreateRXFiles(const std::string& ssVersion) const;
+       void CreateRXFiles(const std::string& ssVersion);
    
-       void CreateBasicServiceFilesForRXSignal(const SSignalBSDefinition& signal, const std::string& ssVersion) const;
+       void CreateBasicServiceFilesForRXSignal(const SSignalBSDefinition& signal, const std::string& ssVersion);
    
        void CreateIDLBasicServiceFileForRXSignal(const SSignalBSDefinition& signal, const std::string& ssVersion) const;
    
@@ -51,27 +64,37 @@ Program Listing for File vss_bs_generator.h
    
        void CreateIDLBasicServiceFileForTXSignal(const SSignalBSDefinition& signal, const std::string& ssVersion) const;
    
-       SSignalVDDefinition GetVDSignal(const std::string& vssDefinition) const
+       bool UpdateExistingFiles(const std::filesystem::path& rootPath, const std::string& subfolder, const SSignalBSDefinition& signal) const;    
+   
+       bool UpdateCppFile(const std::filesystem::path& rootFolder, const SSignalBSDefinition& signal, const std::string& initializeList, const std::string& implementation) const;
+   
+       bool UpdateHeaderFile(const std::filesystem::path& rootFolder, const SSignalBSDefinition& signal, const std::string& includeList, 
+       const std::string& interfaceList, const std::string& interfaceEntryList, const std::string& functionList, const std::string& variablePointerList) const;
+       SSignalVDDefinition GetVDSignal(const std::string& vssDefinition,const sdv::core::ESignalDirection signalDirection) const
        {
            SSignalVDDefinition noSignal;
            for (const auto& signal : m_signalsVD)
            {
                if (signal.vssDefinition.compare(vssDefinition) == 0)
                {
-                   return signal;
+                   if (signal.signalDirection == signalDirection)
+                   {
+                       return signal;
+                   }
                }
            }
            return noSignal;
        }
    
-       bool m_enableComponentCreation;                
-       std::string m_ssPrefix;                        
-       std::string m_ssVersion;                       
-       std::filesystem::path  m_pathProject;          
-       std::vector <SSignalBSDefinition> m_signals;   
-       std::vector <SSignalVDDefinition> m_signalsVD; 
-       std::vector <SSignalBSDefinition> m_TXsignals; 
-       std::vector <SSignalBSDefinition> m_RXsignals; 
+       bool m_enableComponentCreation;                    
+       std::string m_ssPrefix;                            
+       std::string m_ssVersion;                           
+       std::filesystem::path  m_pathProject;              
+       std::vector <SSignalBSDefinition> m_signals;       
+       std::vector <SSignalVDDefinition> m_signalsVD;     
+       std::vector <SSignalBSDefinition> m_TXsignals;     
+       std::vector <SSignalBSDefinition> m_RXsignals;     
+       std::vector<std::filesystem::path> m_createdFiles; 
    };
    
    #endif // !defined VSS_BS_GENERATOR_H

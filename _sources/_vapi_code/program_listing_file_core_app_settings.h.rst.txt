@@ -1,0 +1,164 @@
+
+.. _program_listing_file_core_app_settings.h:
+
+Program Listing for File app_settings.h
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_app_settings.h>` (``core\app_settings.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
+   #ifndef APP_SETTINGS_H
+   #define APP_SETTINGS_H
+   
+   #include <interfaces/app.h>
+   #include <support/component_impl.h>
+   
+   class CAppSettings : public sdv::IInterfaceAccess, public sdv::app::IAppContext, public sdv::IAttributes
+   {
+   public:
+       CAppSettings();
+   
+       ~CAppSettings();
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::app::IAppContext)
+       END_SDV_INTERFACE_MAP()
+   
+       
+       bool ProcessAppStartupConfig(const sdv::u8string& rssConfig);
+   
+       bool LoadSettingsFile();
+   
+       bool SaveSettingsFile();
+   
+       bool IsMainApplication() const;
+   
+       bool IsIsolatedApplication() const;
+   
+       bool IsStandaloneApplication() const;
+   
+       bool IsEssentialApplication() const;
+   
+       bool IsMaintenanceApplication() const;
+   
+       bool IsExternalApplication() const;
+   
+       sdv::app::EAppContext GetContextType() const override;
+   
+       uint32_t GetInstanceID() const override;
+   
+       uint32_t GetRetries() const override;
+   
+       std::string GetLoggerClass() const;
+   
+       std::filesystem::path GetLoggerModulePath() const;
+   
+       std::string GetLoggerProgramTag() const;
+   
+       sdv::core::ELogSeverity GetLoggerSeverityFilter() const;
+   
+       sdv::core::ELogSeverity GetConsoleSeverityFilter() const;
+   
+       bool IsConsoleSilent() const;
+   
+       bool IsConsoleVerbose() const;
+   
+       std::filesystem::path GetRootDir() const;
+   
+       std::filesystem::path GetInstallDir() const;
+   
+       std::vector<std::filesystem::path> GetSystemConfigPaths() const;
+   
+       enum class EConfigType
+       {
+           platform_config,                
+           vehicle_interface_config,       
+           vehicle_abstraction_config,     
+           user_config                     
+       };
+   
+       std::filesystem::path GetConfigPath(EConfigType eType) const;
+   
+       bool EnableConfig(EConfigType eType);
+   
+       bool DisableConfig(EConfigType eType);
+   
+       std::filesystem::path GetUserConfigPath() const;
+   
+       bool SetUserConfigPath(const std::filesystem::path& rpathConfig);
+   
+       bool RemoveUserConfigPath();
+   
+       virtual sdv::sequence<sdv::u8string> GetNames() const override;
+   
+       virtual sdv::any_t Get(/*in*/ const sdv::u8string& ssAttribute) const override;
+   
+       virtual bool Set(/*in*/ const sdv::u8string& ssAttribute, /*in*/ sdv::any_t anyAttribute) override;
+   
+       virtual uint32_t GetFlags(/*in*/ const sdv::u8string& ssAttribute) const override;
+   
+       void Reset();
+   
+   private:
+       sdv::app::EAppContext       m_eContextMode = sdv::app::EAppContext::no_context; 
+       uint32_t                    m_uiInstanceID = 0u;            
+       uint32_t                    m_uiRetries = 0u;               
+       std::string                 m_ssLoggerClass;                
+       std::filesystem::path       m_pathLoggerModule;             
+       std::string                 m_ssProgramTag;                 
+       sdv::core::ELogSeverity     m_eSeverityFilter = sdv::core::ELogSeverity::info;      
+       sdv::core::ELogSeverity     m_eSeverityViewFilter = sdv::core::ELogSeverity::error; 
+       bool                        m_bSilent = false;              
+       bool                        m_bVerbose = false;             
+       std::filesystem::path       m_pathRootDir;                  
+       std::filesystem::path       m_pathInstallDir;               
+       std::filesystem::path       m_pathPlatformConfig;           
+       std::filesystem::path       m_pathVehIfcConfig;             
+       std::filesystem::path       m_pathVehAbstrConfig;           
+       std::filesystem::path       m_pathUserConfig;               
+       bool                        m_bPlatformConfig = false;      
+       bool                        m_bVehIfcConfig = false;        
+       bool                        m_bVehAbstrConfig = false;      
+       bool                        m_bUserConfig = false;          
+   };
+   
+   CAppSettings& GetAppSettings();
+   
+   class CAppSettingsService : public sdv::CSdvObject
+   {
+   public:
+       CAppSettingsService() = default;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY_MEMBER(sdv::IAttributes, GetAppSettings())
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
+       DECLARE_OBJECT_CLASS_NAME("AppSettingsService")
+       DECLARE_OBJECT_SINGLETON()
+   
+       
+       static CAppSettings& GetAppSettings();
+   };
+   DEFINE_SDV_OBJECT(CAppSettingsService)
+   
+   #endif // !defined APP_SETTINGS_H

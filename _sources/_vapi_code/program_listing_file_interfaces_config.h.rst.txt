@@ -11,8 +11,8 @@ Program Listing for File config.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__CONFIG_H__20260115_165121_308__
-   #define __IDL_GENERATED__CONFIG_H__20260115_165121_308__
+   #ifndef __IDL_GENERATED__CONFIG_H__20260402_165454_783__
+   #define __IDL_GENERATED__CONFIG_H__20260402_165454_783__
    
    #ifdef _MSC_VER
    // Prevent bogus warnings about uninitialized members during static code analysis.
@@ -25,10 +25,10 @@ Program Listing for File config.h
    
    #include "core.h"
    
-   namespace sdv
-   {
    #include "../support/string.h"
    
+   namespace sdv
+   {
        except XCannotOpenFile : XSysExcept
        {
            // _id might also be member of the base class. Suppress in static code analysis.
@@ -178,13 +178,17 @@ Program Listing for File config.h
    
            /*local*/ interface IConfig
            {
-               static constexpr ::sdv::interface_id _id = 0x8A3E712D61F4105D;
+               static constexpr ::sdv::interface_id _id = 0xD357F9D74CC00EE2;
    
                virtual EConfigProcessResult ProcessConfig(/*in*/ const sdv::u8string& ssContent) = 0;
    
                virtual EConfigProcessResult LoadConfig(/*in*/ const sdv::u8string& ssConfigPath) = 0;
    
                virtual bool SaveConfig(/*in*/ const sdv::u8string& ssConfigPath) const = 0;
+   
+               virtual sdv::u8string GenerateConfigString() const = 0;
+   
+               virtual void CloseConfig() = 0;
    
                virtual bool AddConfigSearchDir(/*in*/ const sdv::u8string& ssDir) = 0;
    
@@ -254,16 +258,14 @@ Program Listing for File config.h
    
            struct SPackageBLOB
            {
-               // No initialization of variables is done in the constructor; suppress cppcheck warning.
-               // cppcheck-suppress uninitMemberVar
                SPackageBLOB()
                {
                    construct_eBLOBType();
                }
    
-               // No initialization of variables is done in the constructor; suppress cppcheck warning.
-               // cppcheck-suppress uninitMemberVar
-               SPackageBLOB(const SPackageBLOB& rvar)
+               SPackageBLOB(const SPackageBLOB& rvar) :
+                   uiChecksumInit(rvar.uiChecksumInit),
+                   uiBLOBSize(rvar.uiBLOBSize)
                {
                    // Construct content based on eBLOBType
                    eBLOBType = rvar.eBLOBType;
@@ -279,9 +281,9 @@ Program Listing for File config.h
                    }
                }
    
-               // No initialization of variables is done in the constructor; suppress cppcheck warning.
-               // cppcheck-suppress uninitMemberVar
-               SPackageBLOB(SPackageBLOB&& rvar) noexcept
+               SPackageBLOB(SPackageBLOB&& rvar) noexcept :
+                   uiChecksumInit(rvar.uiChecksumInit),
+                   uiBLOBSize(rvar.uiBLOBSize)
                {
                    // Construct content based on eBLOBType
                    eBLOBType = rvar.eBLOBType;
@@ -302,12 +304,13 @@ Program Listing for File config.h
                    destruct_eBLOBType();
                }
    
-               // Assignment of variables is done in a member function; suppress cppcheck warning.
-               // cppcheck-suppress operatorEqVarError
                SPackageBLOB& operator=(const SPackageBLOB & rvar)
                {
                    // Destroy previous allocation.
                    destruct_eBLOBType();
+   
+                   uiChecksumInit = rvar.uiChecksumInit;
+                   uiBLOBSize = rvar.uiBLOBSize;
    
                    // Construct content based on eBLOBType
                    eBLOBType = rvar.eBLOBType;
@@ -325,12 +328,13 @@ Program Listing for File config.h
                    return *this;
                }
    
-               // Assignment of variables is done in a member function; suppress cppcheck warning.
-               // cppcheck-suppress operatorEqVarError
                SPackageBLOB& operator=(SPackageBLOB&& rvar) noexcept
                {
                    // Destroy previous allocation.
                    destruct_eBLOBType();
+   
+                   uiChecksumInit = rvar.uiChecksumInit;
+                   uiBLOBSize = rvar.uiBLOBSize;
    
                    // Construct content based on eBLOBType
                    eBLOBType = rvar.eBLOBType;
@@ -697,4 +701,4 @@ Program Listing for File config.h
    #pragma warning(pop)
    #endif
    
-   #endif // !defined(__IDL_GENERATED__CONFIG_H__20260115_165121_316__)
+   #endif // !defined(__IDL_GENERATED__CONFIG_H__20260402_165454_875__)

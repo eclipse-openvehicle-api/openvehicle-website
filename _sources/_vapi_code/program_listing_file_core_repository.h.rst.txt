@@ -10,9 +10,21 @@ Program Listing for File repository.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
    
-   #ifndef VAPI_REPOSITORY_H
-   #define VAPI_REPOSITORY_H
+   #ifndef REPOSITORY_H
+   #define REPOSITORY_H
    
    #include <list>
    #include <map>
@@ -26,6 +38,7 @@ Program Listing for File repository.h
    #include "module.h"
    #include "object_lifetime_control.h"
    #include "iso_monitor.h"
+   #include "app_config_file.h"
    
    class CRepository :
        public sdv::IInterfaceAccess, public sdv::core::IObjectAccess, public sdv::core::IRepositoryUtilityCreate,
@@ -98,6 +111,8 @@ Program Listing for File repository.h
    
        void ResetConfigBaseline();
    
+       sdv::core::EConfigProcessResult StartFromConfig(const CAppConfigFile& rconfig, bool bAllowPartialLoad);
+   
        std::string SaveConfig();
    
    private:
@@ -144,7 +159,7 @@ Program Listing for File repository.h
        bool                            m_bIsoObjectLoaded = false;     
    };
    
-   #ifndef DO_NOT_INCLUDE_IN_UNIT_TEST
+   CRepository& GetRepository();
    
    class CRepositoryService : public sdv::CSdvObject
    {
@@ -169,13 +184,11 @@ Program Listing for File repository.h
        END_SDV_INTERFACE_MAP()
    
        // Object declarations
-       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
        DECLARE_OBJECT_CLASS_NAME("RepositoryService")
        DECLARE_OBJECT_SINGLETON()
    
        
-       static CRepository& GetRepository();
-   
        static bool EnableRepositoryObjectControl();
    
        static bool EnableRepositoryRegisterForeignApp();
@@ -183,7 +196,6 @@ Program Listing for File repository.h
        static bool EnableRepositoryLink();
    };
    
-   DEFINE_SDV_OBJECT_NO_EXPORT(CRepositoryService)
-   #endif
+   DEFINE_SDV_OBJECT(CRepositoryService)
    
-   #endif // !define VAPI_REPOSITORY_H
+   #endif // !define REPOSITORY_H

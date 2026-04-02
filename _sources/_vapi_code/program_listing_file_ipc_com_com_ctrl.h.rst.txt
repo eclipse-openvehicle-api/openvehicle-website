@@ -10,6 +10,19 @@ Program Listing for File com_ctrl.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
    #ifndef COM_CTRL_H
    #define COM_CTRL_H
    
@@ -21,7 +34,7 @@ Program Listing for File com_ctrl.h
    class CChannelConnector;
    class CMarshallObject;
    
-   class CCommunicationControl : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::com::IConnectionControl,
+   class CCommunicationControl : public sdv::CSdvObject, public sdv::com::IConnectionControl,
        public sdv::ps::IMarshallAccess
    {
    public:
@@ -33,22 +46,17 @@ Program Listing for File com_ctrl.h
        BEGIN_SDV_INTERFACE_MAP()
            SDV_INTERFACE_ENTRY(sdv::ps::IMarshallAccess)
            SDV_INTERFACE_ENTRY(sdv::com::IConnectionControl)
-           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
        END_SDV_INTERFACE_MAP()
    
        // Component declarations
-       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
        DECLARE_OBJECT_SINGLETON()
        DECLARE_OBJECT_CLASS_NAME("CommunicationControl")
    
        
-       virtual void Initialize(const sdv::u8string& ssObjectConfig) override;
+       virtual bool OnInitialize() override;
    
-       virtual sdv::EObjectStatus GetStatus() const override;
-   
-       void SetOperationMode(sdv::EOperationMode eMode) override;
-   
-       virtual void Shutdown() override;
+       virtual void OnShutdown() override;
    
        virtual sdv::com::TConnectionID CreateServerConnection(/*in*/ sdv::com::EChannelType eChannelType,
            /*in*/ sdv::IInterfaceAccess* pObject, /*in*/ uint32_t uiTimeoutMs, /*out*/ sdv::u8string& ssConnectionString) override;
@@ -80,7 +88,6 @@ Program Listing for File com_ctrl.h
        sdv::sequence<sdv::pointer<uint8_t>> CallStub(sdv::ps::TMarshallID tStubID, sdv::sequence<sdv::pointer<uint8_t>>& seqInputData);
    
    private:
-       sdv::EObjectStatus                              m_eObjectStatus = sdv::EObjectStatus::initialization_pending;   
        std::mutex                                      m_mtxChannels;                  
        std::vector<std::shared_ptr<CChannelConnector>> m_vecChannels;                  
        std::vector<std::thread>                        m_vecInitialConnectMon;         

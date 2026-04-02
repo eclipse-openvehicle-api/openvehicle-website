@@ -1,0 +1,351 @@
+
+.. _program_listing_file_interfaces_param.h:
+
+Program Listing for File param.h
+================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_param.h>` (``interfaces\param.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__PARAM_H__20260402_165454_492__
+   #define __IDL_GENERATED__PARAM_H__20260402_165454_492__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   namespace sdv
+   {
+       enum class EParamFlags : uint32_t
+       {
+           mask = 0xff,
+   
+           read_write = 0x00,
+   
+           read_only = 0x01,
+   
+           temporary = 0x20,
+   
+           state_mask = 0xff00,
+   
+           dirty = 0x0100,
+   
+           locked = 0x0400,
+       };
+   
+       enum class EParamType : int32_t
+       {
+           boolean_param,
+   
+           number_param,
+   
+           string_param,
+   
+           enum_param,
+   
+           bitmask_param,
+       };
+   
+       struct SNumberInfo
+       {
+           sdv::any_t anyLowerLimit;
+   
+           bool bIncludeLowerLinit;
+   
+           sdv::any_t anyUpperLimit;
+   
+           bool bIncludeUpperLimit;
+       };
+   
+       struct SStringInfo
+       {
+           sdv::u8string ssPattern;
+       };
+   
+       struct SLabelInfo
+       {
+           struct SLabel
+           {
+               sdv::any_t anyValue;
+   
+               sdv::u8string ssLabel;
+           };
+   
+           sdv::sequence<SLabel> seqLabels;
+       };
+   
+       struct SParamInfo
+       {
+           SParamInfo()
+           {
+               construct_eType();
+           }
+   
+           SParamInfo(const SParamInfo& rvar) :
+               uiFlags(rvar.uiFlags),
+               ssName(rvar.ssName),
+               ssGroup(rvar.ssGroup),
+               ssUnit(rvar.ssUnit),
+               ssDescription(rvar.ssDescription),
+               anyDefaultVal(rvar.anyDefaultVal)
+           {
+               // Construct content based on eType
+               eType = rvar.eType;
+               switch (rvar.eType)
+               {
+               case sdv::EParamType::number_param:
+                   new (&uExtInfo.sNumberInfo) SNumberInfo(rvar.uExtInfo.sNumberInfo);
+                   break;
+               case sdv::EParamType::string_param:
+                   new (&uExtInfo.sStringInfo) SStringInfo(rvar.uExtInfo.sStringInfo);
+                   break;
+               case sdv::EParamType::enum_param:
+                   new (&uExtInfo.sEnumInfo) SLabelInfo(rvar.uExtInfo.sEnumInfo);
+                   break;
+               case sdv::EParamType::bitmask_param:
+                   new (&uExtInfo.sBitmaskInfo) SLabelInfo(rvar.uExtInfo.sBitmaskInfo);
+                   break;
+               default:
+                   break;
+               }
+           }
+   
+           SParamInfo(SParamInfo&& rvar) noexcept :
+               uiFlags(rvar.uiFlags),
+               ssName(std::move(rvar.ssName)),
+               ssGroup(std::move(rvar.ssGroup)),
+               ssUnit(std::move(rvar.ssUnit)),
+               ssDescription(std::move(rvar.ssDescription)),
+               anyDefaultVal(std::move(rvar.anyDefaultVal))
+           {
+               // Construct content based on eType
+               eType = rvar.eType;
+               switch (rvar.eType)
+               {
+               case sdv::EParamType::number_param:
+                   new (&uExtInfo.sNumberInfo) SNumberInfo(std::move(rvar.uExtInfo.sNumberInfo));
+                   break;
+               case sdv::EParamType::string_param:
+                   new (&uExtInfo.sStringInfo) SStringInfo(std::move(rvar.uExtInfo.sStringInfo));
+                   break;
+               case sdv::EParamType::enum_param:
+                   new (&uExtInfo.sEnumInfo) SLabelInfo(std::move(rvar.uExtInfo.sEnumInfo));
+                   break;
+               case sdv::EParamType::bitmask_param:
+                   new (&uExtInfo.sBitmaskInfo) SLabelInfo(std::move(rvar.uExtInfo.sBitmaskInfo));
+                   break;
+               default:
+                   break;
+               }
+           }
+   
+           ~SParamInfo()
+           {
+               destruct_eType();
+           }
+   
+           SParamInfo& operator=(const SParamInfo & rvar)
+           {
+               // Destroy previous allocation.
+               destruct_eType();
+   
+               uiFlags = rvar.uiFlags;
+               ssName = rvar.ssName;
+               ssGroup = rvar.ssGroup;
+               ssUnit = rvar.ssUnit;
+               ssDescription = rvar.ssDescription;
+               anyDefaultVal = rvar.anyDefaultVal;
+   
+               // Construct content based on eType
+               eType = rvar.eType;
+               switch (rvar.eType)
+               {
+               case sdv::EParamType::number_param:
+                   new (&uExtInfo.sNumberInfo) SNumberInfo(rvar.uExtInfo.sNumberInfo);
+                   break;
+               case sdv::EParamType::string_param:
+                   new (&uExtInfo.sStringInfo) SStringInfo(rvar.uExtInfo.sStringInfo);
+                   break;
+               case sdv::EParamType::enum_param:
+                   new (&uExtInfo.sEnumInfo) SLabelInfo(rvar.uExtInfo.sEnumInfo);
+                   break;
+               case sdv::EParamType::bitmask_param:
+                   new (&uExtInfo.sBitmaskInfo) SLabelInfo(rvar.uExtInfo.sBitmaskInfo);
+                   break;
+               default:
+                   break;
+               }
+   
+               return *this;
+           }
+   
+           SParamInfo& operator=(SParamInfo&& rvar) noexcept
+           {
+               // Destroy previous allocation.
+               destruct_eType();
+   
+               uiFlags = rvar.uiFlags;
+               ssName = std::move(rvar.ssName);
+               ssGroup = std::move(rvar.ssGroup);
+               ssUnit = std::move(rvar.ssUnit);
+               ssDescription = std::move(rvar.ssDescription);
+               anyDefaultVal = std::move(rvar.anyDefaultVal);
+   
+               // Construct content based on eType
+               eType = rvar.eType;
+               switch (rvar.eType)
+               {
+               case sdv::EParamType::number_param:
+                   new (&uExtInfo.sNumberInfo) SNumberInfo(std::move(rvar.uExtInfo.sNumberInfo));
+                   break;
+               case sdv::EParamType::string_param:
+                   new (&uExtInfo.sStringInfo) SStringInfo(std::move(rvar.uExtInfo.sStringInfo));
+                   break;
+               case sdv::EParamType::enum_param:
+                   new (&uExtInfo.sEnumInfo) SLabelInfo(std::move(rvar.uExtInfo.sEnumInfo));
+                   break;
+               case sdv::EParamType::bitmask_param:
+                   new (&uExtInfo.sBitmaskInfo) SLabelInfo(std::move(rvar.uExtInfo.sBitmaskInfo));
+                   break;
+               default:
+                   break;
+               }
+   
+               return *this;
+           }
+   
+       private:
+           void construct_eType(sdv::EParamType val = sdv::EParamType{})
+           {
+               eType = val;
+               switch (val)
+               {
+               case sdv::EParamType::number_param:
+                   new (&uExtInfo.sNumberInfo) SNumberInfo;
+                   break;
+               case sdv::EParamType::string_param:
+                   new (&uExtInfo.sStringInfo) SStringInfo;
+                   break;
+               case sdv::EParamType::enum_param:
+                   new (&uExtInfo.sEnumInfo) SLabelInfo;
+                   break;
+               case sdv::EParamType::bitmask_param:
+                   new (&uExtInfo.sBitmaskInfo) SLabelInfo;
+                   break;
+               default:
+                   break;
+               }
+           }
+   
+           void destruct_eType()
+           {
+               switch (eType)
+               {
+               case sdv::EParamType::number_param:
+                   uExtInfo.sNumberInfo.~SNumberInfo();
+                   break;
+               case sdv::EParamType::string_param:
+                   uExtInfo.sStringInfo.~SStringInfo();
+                   break;
+               case sdv::EParamType::enum_param:
+                   uExtInfo.sEnumInfo.~SLabelInfo();
+                   break;
+               case sdv::EParamType::bitmask_param:
+                   uExtInfo.sBitmaskInfo.~SLabelInfo();
+                   break;
+               default:
+                   break;
+               }
+           }
+   
+       public:
+           void switch_to(sdv::EParamType val)
+           {
+               // Anything to do?
+               if (eType == val) return;
+               
+               // Destruct and construct eType...
+               destruct_eType();
+               construct_eType(val);
+           }
+   
+           sdv::EParamType get_switch() const
+           {
+               return eType;
+           }
+   
+       private:
+           EParamType eType;
+   
+       public:
+           uint32_t uiFlags;
+   
+           sdv::u8string ssName;
+   
+           sdv::u8string ssGroup;
+   
+           sdv::u8string ssUnit;
+   
+           sdv::u8string ssDescription;
+   
+           sdv::any_t anyDefaultVal;
+   
+   
+           union union_0 /*switch(eType)*/
+           {
+               union_0() {}
+   
+               ~union_0() {}
+   
+               // case sdv::EParamType::number_param:
+               SNumberInfo sNumberInfo;
+   
+               // case sdv::EParamType::string_param:
+               SStringInfo sStringInfo;
+   
+               // case sdv::EParamType::enum_param:
+               SLabelInfo sEnumInfo;
+   
+               // case sdv::EParamType::bitmask_param:
+               SLabelInfo sBitmaskInfo;
+           } uExtInfo;
+       };
+   
+       interface IParameters
+       {
+           static constexpr ::sdv::interface_id _id = 0x454F3BF881A931D2;
+   
+           virtual sdv::sequence<sdv::u8string> GetParamPaths() const = 0;
+   
+           virtual sdv::any_t GetParam(/*in*/ const sdv::u8string& ssPath) const = 0;
+   
+           virtual bool SetParam(/*in*/ const sdv::u8string& ssPath, /*in*/ sdv::any_t anyValue) = 0;
+   
+           virtual SParamInfo GetParamInfo(/*in*/ const sdv::u8string& ssPath) const = 0;
+   
+           virtual bool IsParamDirty(/*in*/ const sdv::u8string& ssPath) const = 0;
+   
+           virtual void ResetParamDirtyFlag(/*in*/ const sdv::u8string& ssPath) = 0;
+   
+           virtual bool IsParamMapDirty() const = 0;
+   
+           virtual void ResetParamMapDirtyFlags() = 0;
+       };
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__PARAM_H__20260402_165454_516__)

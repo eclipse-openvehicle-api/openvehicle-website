@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=1697948e" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=9c3fb72b" />
     <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
     <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
@@ -74,6 +74,7 @@
     <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
     <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/class_c_connection';</script>
+    <script src="../_static/js/sidebar-toggle.js?v=714d0a57"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -635,8 +636,7 @@ document.write(`
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv411CConnection">
 <span id="_CPPv311CConnection"></span><span id="_CPPv211CConnection"></span><span id="CConnection"></span><span class="target" id="class_c_connection"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CConnection</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_shared_from_this</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv411CConnection" title="CConnection"><span class="n"><span class="pre">CConnection</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_object_destroy.html#_CPPv4N3sdv14IObjectDestroyE" title="sdv::IObjectDestroy"><span class="n"><span class="pre">IObjectDestroy</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ipc</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1ipc_1_1_i_data_send.html#_CPPv4N3sdv3ipc9IDataSendE" title="sdv::ipc::IDataSend"><span class="n"><span class="pre">IDataSend</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ipc</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#_CPPv4N3sdv3ipc8IConnectE" title="sdv::ipc::IConnect"><span class="n"><span class="pre">IConnect</span></span></a><a class="headerlink" href="#_CPPv411CConnection" title="Permalink to this definition">#</a><br /></dt>
-<dd><p>Class for local IPC connection Created and managed by IPCAccess::AccessLocalIPCConnection(best use unique_ptr to store, so memory address stays valid)</p>
-<p>Class for remote IPC connection Created and managed by IPCAccess::AccessRemoveIPCConnection(best use unique_ptr to store, so memory address stays valid) </p>
+<dd><p>Class for local IPC connection Created and managed by IPCAccess::AccessLocalIPCConnection(best use unique_ptr to store, so memory address stays valid) </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -709,7 +709,7 @@ document.write(`
 <dd class="field-odd"><p><strong>pReceiver</strong> – <strong>[in]</strong> The message has to be forwarded. </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Returns ‘true’ when a connection could be established. Use IConnectStatus or IConnectEventCallback to check the connection state. </p>
+<dd class="field-even"><p>Returns ‘true’ when a connection could be established. Use IConnect or IConnectEventCallback to check the connection state. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -737,14 +737,14 @@ document.write(`
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N11CConnection10DisconnectEv">
 <span id="_CPPv3N11CConnection10DisconnectEv"></span><span id="_CPPv2N11CConnection10DisconnectEv"></span><span id="CConnection::Disconnect"></span><span class="target" id="class_c_connection_1aa872cce672a9db530a4df388d17a1e1f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Disconnect</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11CConnection10DisconnectEv" title="Permalink to this definition">#</a><br /></dt>
-<dd><p>Disconnect from a connection. This will set the connect status to disconnected. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a4a4180baf9ae5e0f92c0d1ec89001d37"><span class="std std-ref">sdv::ipc::IConnect::Disconnect</span></a>. </p>
+<dd><p>Disconnect from a connection. This will set the connect state to disconnected. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a4a4180baf9ae5e0f92c0d1ec89001d37"><span class="std std-ref">sdv::ipc::IConnect::Disconnect</span></a>. </p>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N11CConnection27RegisterStatusEventCallbackEPN3sdv16IInterfaceAccessE">
-<span id="_CPPv3N11CConnection27RegisterStatusEventCallbackEPN3sdv16IInterfaceAccessE"></span><span id="_CPPv2N11CConnection27RegisterStatusEventCallbackEPN3sdv16IInterfaceAccessE"></span><span id="CConnection::RegisterStatusEventCallback__sdv::IInterfaceAccessP"></span><span class="target" id="class_c_connection_1a831bfe1811e51bac8ede3c0dfeaf5346"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegisterStatusEventCallback</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pEventCallback</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11CConnection27RegisterStatusEventCallbackEPN3sdv16IInterfaceAccessE" title="Permalink to this definition">#</a><br /></dt>
-<dd><p>Register event callback interface. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a794270d91388d7f74f08164bf07044c7"><span class="std std-ref">sdv::ipc::IConnect::RegisterStatusEventCallback</span></a>. </p>
-<p>Register a connection status event callback interface. The exposed interface must be of type IConnectEventCallback. The registration will exist until a call to the unregister function with the returned cookie or until the connection is terminated. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection26RegisterStateEventCallbackEPN3sdv16IInterfaceAccessE">
+<span id="_CPPv3N11CConnection26RegisterStateEventCallbackEPN3sdv16IInterfaceAccessE"></span><span id="_CPPv2N11CConnection26RegisterStateEventCallbackEPN3sdv16IInterfaceAccessE"></span><span id="CConnection::RegisterStateEventCallback__sdv::IInterfaceAccessP"></span><span class="target" id="class_c_connection_1af650185d9fcb01592e35b35b1a67938f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegisterStateEventCallback</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pEventCallback</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11CConnection26RegisterStateEventCallbackEPN3sdv16IInterfaceAccessE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Register event callback interface. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a35e7c7bee58c7c15ce121febe08c3b45"><span class="std std-ref">sdv::ipc::IConnect::RegisterStateEventCallback</span></a>. </p>
+<p>Register a connection state event callback interface. The exposed interface must be of type IConnectEventCallback. The registration will exist until a call to the unregister function with the returned cookie or until the connection is terminated. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>pEventCallback</strong> – <strong>[in]</strong> Pointer to the object exposing the IConnectEventCallback interface. </p>
@@ -756,9 +756,9 @@ document.write(`
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N11CConnection29UnregisterStatusEventCallbackE8uint64_t">
-<span id="_CPPv3N11CConnection29UnregisterStatusEventCallbackE8uint64_t"></span><span id="_CPPv2N11CConnection29UnregisterStatusEventCallbackE8uint64_t"></span><span id="CConnection::UnregisterStatusEventCallback__uint64_t"></span><span class="target" id="class_c_connection_1ad6b8b0d8e21d40e7e8511f96629f5dbb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UnregisterStatusEventCallback</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiCookie</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11CConnection29UnregisterStatusEventCallbackE8uint64_t" title="Permalink to this definition">#</a><br /></dt>
-<dd><p>Unregister the status event callback with the returned cookie from the registration. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a08431f87a1c2ffb35547a952f14e4838"><span class="std std-ref">sdv::ipc::IConnect::UnregisterStatusEventCallback</span></a>. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection28UnregisterStateEventCallbackE8uint64_t">
+<span id="_CPPv3N11CConnection28UnregisterStateEventCallbackE8uint64_t"></span><span id="_CPPv2N11CConnection28UnregisterStateEventCallbackE8uint64_t"></span><span id="CConnection::UnregisterStateEventCallback__uint64_t"></span><span class="target" id="class_c_connection_1a26f66f8dc4563ce6b81f86a7d6f42758"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UnregisterStateEventCallback</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiCookie</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11CConnection28UnregisterStateEventCallbackE8uint64_t" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Unregister the state event callback with the returned cookie from the registration. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a5db8c701ee8f1b1e0f5f6152eaa886dd"><span class="std std-ref">sdv::ipc::IConnect::UnregisterStateEventCallback</span></a>. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>uiCookie</strong> – <strong>[in]</strong> The cookie returned by a previous call to the registration function. </p>
@@ -767,12 +767,12 @@ document.write(`
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK11CConnection9GetStatusEv">
-<span id="_CPPv3NK11CConnection9GetStatusEv"></span><span id="_CPPv2NK11CConnection9GetStatusEv"></span><span id="CConnection::GetStatusC"></span><span class="target" id="class_c_connection_1abcbc94507fd3336820049c47b6455f24"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ipc</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="enum_namespacesdv_1_1ipc_1a3bbfad9878931eee7f9b873d673755bc.html#_CPPv4N3sdv3ipc14EConnectStatusE" title="sdv::ipc::EConnectStatus"><span class="n"><span class="pre">EConnectStatus</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetStatus</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11CConnection9GetStatusEv" title="Permalink to this definition">#</a><br /></dt>
-<dd><p>Get status of the connection. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a16fe9e4b20c052a25d87079b837ff3d5"><span class="std std-ref">sdv::ipc::IConnect::GetStatus</span></a>. </p>
+<dt class="sig sig-object cpp" id="_CPPv4NK11CConnection15GetConnectStateEv">
+<span id="_CPPv3NK11CConnection15GetConnectStateEv"></span><span id="_CPPv2NK11CConnection15GetConnectStateEv"></span><span id="CConnection::GetConnectStateC"></span><span class="target" id="class_c_connection_1a4f55350d71aac88d62ed52406e019098"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ipc</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="enum_namespacesdv_1_1ipc_1a9adc671012008a4d512f75361f47b9cd.html#_CPPv4N3sdv3ipc13EConnectStateE" title="sdv::ipc::EConnectState"><span class="n"><span class="pre">EConnectState</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetConnectState</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11CConnection15GetConnectStateEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the current state of the IPC conection. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a12962f628e33be8deb78aaf95bc5be45"><span class="std std-ref">sdv::ipc::IConnect::GetConnectState</span></a>. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Returns the ipc::EConnectStatus struct </p>
+<dd class="field-odd"><p>Returns connection state. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -789,12 +789,12 @@ document.write(`
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N11CConnection9SetStatusEN3sdv3ipc14EConnectStatusE">
-<span id="_CPPv3N11CConnection9SetStatusEN3sdv3ipc14EConnectStatusE"></span><span id="_CPPv2N11CConnection9SetStatusEN3sdv3ipc14EConnectStatusE"></span><span id="CConnection::SetStatus__sdv::ipc::EConnectStatus"></span><span class="target" id="class_c_connection_1a762248e12d9555edbbc56a976d0856e4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetStatus</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ipc</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="enum_namespacesdv_1_1ipc_1a3bbfad9878931eee7f9b873d673755bc.html#_CPPv4N3sdv3ipc14EConnectStatusE" title="sdv::ipc::EConnectStatus"><span class="n"><span class="pre">EConnectStatus</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eStatus</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11CConnection9SetStatusEN3sdv3ipc14EConnectStatusE" title="Permalink to this definition">#</a><br /></dt>
-<dd><p>Set the connection status and if needed call the event callback. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N11CConnection15SetConnectStateEN3sdv3ipc13EConnectStateE">
+<span id="_CPPv3N11CConnection15SetConnectStateEN3sdv3ipc13EConnectStateE"></span><span id="_CPPv2N11CConnection15SetConnectStateEN3sdv3ipc13EConnectStateE"></span><span id="CConnection::SetConnectState__sdv::ipc::EConnectState"></span><span class="target" id="class_c_connection_1a5a0edb57468296cb452b5cb040be63ad"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SetConnectState</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ipc</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="enum_namespacesdv_1_1ipc_1a9adc671012008a4d512f75361f47b9cd.html#_CPPv4N3sdv3ipc13EConnectStateE" title="sdv::ipc::EConnectState"><span class="n"><span class="pre">EConnectState</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">eConnectState</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11CConnection15SetConnectStateEN3sdv3ipc13EConnectStateE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Set the connection state and if needed call the event callback. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>eStatus</strong> – <strong>[in]</strong> The new status. </p>
+<dd class="field-odd"><p><strong>eConnectState</strong> – <strong>[in]</strong> The new state. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -808,134 +808,6 @@ document.write(`
 <dd class="field-odd"><p>The server connection flag. If ‘true’ the connection is a server connection; otherwise a client connection. </p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N11CConnection11CConnectionEv">
-<span id="_CPPv3N11CConnection11CConnectionEv"></span><span id="_CPPv2N11CConnection11CConnectionEv"></span><span id="CConnection::CConnection"></span><span class="target" id="class_c_connection_1a147096f462c29cf3736e419eb5333cfb"></span><span class="sig-name descname"><span class="n"><span class="pre">CConnection</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11CConnection11CConnectionEv" title="Permalink to this definition">#</a><br /></dt>
-<dd><p>default constructor used by create endpoint - allocates new buffers m_Sender and m_Receiver </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N11CConnection11CConnectionE6SOCKETb">
-<span id="_CPPv3N11CConnection11CConnectionE6SOCKETb"></span><span id="_CPPv2N11CConnection11CConnectionE6SOCKETb"></span><span id="CConnection::CConnection__SOCKET.b"></span><span class="target" id="class_c_connection_1a3dfdf41c80e31a891630e4d281b8a2fa"></span><span class="sig-name descname"><span class="n"><span class="pre">CConnection</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">SOCKET</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">preconfiguredSocket</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">acceptConnectionRequired</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11CConnection11CConnectionE6SOCKETb" title="Permalink to this definition">#</a><br /></dt>
-<dd><p>access existing connection </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>preconfiguredSocket</strong> – <strong>[in]</strong> Prepared socket for the connection. </p></li>
-<li><p><strong>acceptConnectionRequired</strong> – <strong>[in]</strong> If true connection has to be accepted before receive thread can be started. </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_c_connection_1ad7767fab2275a43909d3a69681b11a8f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~CConnection</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><br /></dt>
-<dd><p>Virtual destructor needed for “delete this;”. </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_c_connection_1a44c058e5b7e77cd8bb2be9c49fa7a6ef"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SendData</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1sequence.html#_CPPv4I0_6size_tEN3sdv8sequenceE" title="sdv::sequence"><span class="n"><span class="pre">sequence</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1pointer.html#_CPPv4I0_6size_tEN3sdv7pointerE" title="sdv::pointer"><span class="n"><span class="pre">pointer</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">uint8_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">seqData</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
-<dd><p>Sends data consisting of multiple data chunks via the IPC connection. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_data_send.html#structsdv_1_1ipc_1_1_i_data_send_1a7200bcf8bd513bf6567079e4657640ac"><span class="std std-ref">sdv::ipc::IDataSend::SendData</span></a>. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>seqData</strong> – <strong>[inout]</strong> Sequence of data buffers to be sent. The sequence might be changed to optimize the communication without having to copy the data. </p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Return ‘true’ if all data could be sent; ‘false’ otherwise. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_c_connection_1a009339bc9e01209a2f59290c893483e7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AsyncConnect</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pReceiver</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
-<dd><p>Establish a connection and start sending/receiving messages. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a96253544b10039926019e07a7f7f409b"><span class="std std-ref">sdv::ipc::IConnect::AsyncConnect</span></a>. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>pReceiver</strong> – <strong>[in]</strong> The message has to be forwarded. </p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Returns ‘true’ when a connection could be established. Use IConnectStatus or IConnectEventCallback to check the connection state. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_c_connection_1aa2e4082b3146cc10f29a694b7d27368e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WaitForConnection</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiWaitMs</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
-<dd><p>Wait for a connection to take place. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a916331029fd58ede5bf2ed731ce0c489"><span class="std std-ref">sdv::ipc::IConnect::WaitForConnection</span></a>. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>uiWaitMs</strong> – <strong>[in]</strong> Wait for a connection to take place. A value of 0 doesn’t wait at all, a value of 0xffffffff waits for infinite time. </p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Returns ‘true’ when a connection took place. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_c_connection_1a2899fdf42a42c6159de513b928f06998"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CancelWait</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
-<dd><p>Cancel a wait for connection. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a21582bc1d4aed13ba8f34eb06a34bc02"><span class="std std-ref">sdv::ipc::IConnect::CancelWait</span></a>. </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_c_connection_1aa872cce672a9db530a4df388d17a1e1f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Disconnect</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
-<dd><p>Disconnect from a connection. This will set the connect status to disconnected and release the interface used for the status events. </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_c_connection_1a831bfe1811e51bac8ede3c0dfeaf5346"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RegisterStatusEventCallback</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">pEventCallback</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
-<dd><p>Register event callback interface. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a794270d91388d7f74f08164bf07044c7"><span class="std std-ref">sdv::ipc::IConnect::RegisterStatusEventCallback</span></a>. </p>
-<p>Register a connection status event callback interface. The exposed interface must be of type IConnectEventCallback. The registration will exist until a call to the unregister function with the returned cookie or until the connection is terminated. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>pEventCallback</strong> – <strong>[in]</strong> Pointer to the object exposing the IConnectEventCallback interface. </p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The cookie assigned to the registration. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_c_connection_1ad6b8b0d8e21d40e7e8511f96629f5dbb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UnregisterStatusEventCallback</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uiCookie</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
-<dd><p>Unregister the status event callback with the returned cookie from the registration. Overload of <a class="reference internal" href="structsdv_1_1ipc_1_1_i_connect.html#structsdv_1_1ipc_1_1_i_connect_1a08431f87a1c2ffb35547a952f14e4838"><span class="std std-ref">sdv::ipc::IConnect::UnregisterStatusEventCallback</span></a>. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>uiCookie</strong> – <strong>[in]</strong> The cookie returned by a previous call to the registration function. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_c_connection_1abcbc94507fd3336820049c47b6455f24"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ipc</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="enum_namespacesdv_1_1ipc_1a3bbfad9878931eee7f9b873d673755bc.html#_CPPv4N3sdv3ipc14EConnectStatusE" title="sdv::ipc::EConnectStatus"><span class="n"><span class="pre">EConnectStatus</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetStatus</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
-<dd><p>Get status of the connection. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Returns the ipc::EConnectStatus struct </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp">
-<span class="target" id="class_c_connection_1a50571abf7a7e342d915f61cc75f47a3c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DestroyObject</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
-<dd><p>Destroy the object. Overload of IObjectDestroy::DestroyObject. </p>
-<p><dl class="simple">
-<dt><strong>Attention</strong></dt><dd><p>After a call of this function, all exposed interfaces render invalid and should not be used any more. </p>
-</dd>
-</dl>
-</p>
 </dd></dl>
 
 </div>
@@ -1001,48 +873,6 @@ document.write(`
         } 
     });
 </script>
-</div>
-
-<div class="toggle-sidebar">
-  <h3>Contents</h3>
-  <ul>
-    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
-    <ul>
-        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
-        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
-    </ul>
-    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
-    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
-</ul>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const links = document.querySelectorAll(".sidebar-link");
-        const currentPath = window.location.pathname;
-
-        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
-        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
-        let rootPath = '/';
-
-        if (match) {
-            rootPath = match[1];
-            const relPath = currentPath.replace(rootPath, '');
-            const upLevels = relPath.split('/').length - 1;
-            const prefix = '../'.repeat(upLevels);
-
-            links.forEach(link => {
-                const target = link.getAttribute("data-target");
-                if (target) {
-                    link.setAttribute("href", prefix + target);
-                }
-            });
-        } 
-    });
-</script>
 </div></div>
               
             
@@ -1068,7 +898,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2025, Open Vehicle API Team.
+      © Copyright 2026, Open Vehicle API Team.
       <br/>
     
   </p>

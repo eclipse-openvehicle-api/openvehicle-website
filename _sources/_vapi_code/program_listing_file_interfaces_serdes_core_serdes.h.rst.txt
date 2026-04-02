@@ -11,8 +11,8 @@ Program Listing for File core_serdes.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__CORE_SERDES_H__20260115_165121_312__
-   #define __IDL_GENERATED__CORE_SERDES_H__20260115_165121_312__
+   #ifndef __IDL_GENERATED__CORE_SERDES_H__20260402_165455_194__
+   #define __IDL_GENERATED__CORE_SERDES_H__20260402_165455_194__
    
    // Includes...
    #include <cstdint>
@@ -149,9 +149,10 @@ Program Listing for File core_serdes.h
    
                // Calculating the size of SClassInfo
                sdv::ser_size(rVar.ssModulePath, rnSize);
-               sdv::ser_size(rVar.ssClassName, rnSize);
+               sdv::ser_size(rVar.ssName, rnSize);
                sdv::ser_size(rVar.seqClassAliases, rnSize);
                sdv::ser_size(rVar.ssDefaultObjectName, rnSize);
+               sdv::ser_size(rVar.ssDefaultConfig, rnSize);
                sdv::ser_size(rVar.eType, rnSize);
                sdv::ser_size(rVar.uiFlags, rnSize);
                sdv::ser_size(rVar.seqDependencies, rnSize);
@@ -162,9 +163,10 @@ Program Listing for File core_serdes.h
            {
                // Serializing members of SClassInfo
                rSerializer << rVar.ssModulePath;
-               rSerializer << rVar.ssClassName;
+               rSerializer << rVar.ssName;
                rSerializer << rVar.seqClassAliases;
                rSerializer << rVar.ssDefaultObjectName;
+               rSerializer << rVar.ssDefaultConfig;
                rSerializer << rVar.eType;
                rSerializer << rVar.uiFlags;
                rSerializer << rVar.seqDependencies;
@@ -176,9 +178,10 @@ Program Listing for File core_serdes.h
            {
                // Deserializing members of SClassInfo
                rDeserializer >> rVar.ssModulePath;
-               rDeserializer >> rVar.ssClassName;
+               rDeserializer >> rVar.ssName;
                rDeserializer >> rVar.seqClassAliases;
                rDeserializer >> rVar.ssDefaultObjectName;
+               rDeserializer >> rVar.ssDefaultConfig;
                rDeserializer >> rVar.eType;
                rDeserializer >> rVar.uiFlags;
                rDeserializer >> rVar.seqDependencies;
@@ -240,31 +243,31 @@ Program Listing for File core_serdes.h
        };
    
        template <>
-       class CSerdes<sdv::EObjectStatus>
+       class CSerdes<sdv::EObjectState>
        {
        public:
-           static void CalcSize(const sdv::EObjectStatus& rVar, size_t& rnSize)
+           static void CalcSize(const sdv::EObjectState& rVar, size_t& rnSize)
            {
    
-               // Calculating the size of EObjectStatus
+               // Calculating the size of EObjectState
                sdv::ser_size(static_cast<uint32_t>(rVar), rnSize);
            }
    
            template <sdv::EEndian eTargetEndianess, typename TCRC>
-           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::EObjectStatus& rVar)
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::EObjectState& rVar)
            {
-               // Serializing members of EObjectStatus
+               // Serializing members of EObjectState
                rSerializer << static_cast<uint32_t>(rVar);
                return rSerializer;
            }
    
            template <sdv::EEndian eSourceEndianess, typename TCRC>
-           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::EObjectStatus& rVar)
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::EObjectState& rVar)
            {
-               // Deserializing members of EObjectStatus
+               // Deserializing members of EObjectState
                uint32_t base = 0;
                rDeserializer >> base;
-               rVar = static_cast<sdv::EObjectStatus>(base);
+               rVar = static_cast<sdv::EObjectState>(base);
                return rDeserializer;
            }
        };
@@ -543,4 +546,4 @@ Program Listing for File core_serdes.h
    } // serdes namespace
    #include "mem_serdes.h"
    
-   #endif // !defined(__IDL_GENERATED__CORE_SERDES_H__20260115_165121_315__)
+   #endif // !defined(__IDL_GENERATED__CORE_SERDES_H__20260402_165455_211__)
