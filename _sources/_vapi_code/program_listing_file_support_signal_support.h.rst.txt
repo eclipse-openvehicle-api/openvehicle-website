@@ -10,6 +10,18 @@ Program Listing for File signal_support.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the 
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
    
    #ifndef SIGNAL_SUPPORT_H
    #define SIGNAL_SUPPORT_H
@@ -224,7 +236,7 @@ Program Listing for File signal_support.h
                template <typename TType>
                void Write(TType tVal, const CTransaction& rTransaction = CTransaction())
                {
-                   if (m_pSignalWrite) m_pSignalWrite->Write(any_t(tVal), rTransaction.GetTransaction());
+                   if (m_pSignalWrite) m_pSignalWrite->Write(tVal, rTransaction.GetTransaction());
                }
    
                any_t Read(const CTransaction& rTransaction = CTransaction()) const
@@ -442,7 +454,7 @@ Program Listing for File signal_support.h
                CSignal signal;
                if (pRegister)
                    signal = CSignal(*this, rssName,
-                       pRegister->RegisterTxSignal(rssName, any_t(tDefVal)),
+                       pRegister->RegisterTxSignal(rssName, tDefVal),
                        true);
                return signal;
            }

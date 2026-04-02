@@ -10,6 +10,19 @@ Program Listing for File com_channel.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
    #ifndef COM_CHANNEL_H
    #define COM_CHANNEL_H
    
@@ -42,7 +55,7 @@ Program Listing for File com_channel.h
    
        bool IsConnected() const;
    
-       virtual void SetStatus(/*in*/ sdv::ipc::EConnectStatus eConnectStatus) override;
+       virtual void SetConnectState(/*in*/ sdv::ipc::EConnectState eConnectState) override;
    
        virtual void ReceiveData(/*inout*/ sdv::sequence<sdv::pointer<uint8_t>>& seqData) override;
    
@@ -74,9 +87,9 @@ Program Listing for File com_channel.h
    
        CCommunicationControl&              m_rcontrol;                     
        sdv::TObjectPtr                     m_ptrChannelEndpoint;           
-       uint64_t                            m_uiConnectionStatusCookie = 0; 
+       uint64_t                            m_uiConnectStateCookie = 0;     
        std::shared_ptr<CMarshallObject>    m_ptrInitialMarshallObject;     
-       sdv::ipc::EConnectStatus            m_eConnectStatus = sdv::ipc::EConnectStatus::uninitialized;     
+       sdv::ipc::EConnectState             m_eConnectState = sdv::ipc::EConnectState::uninitialized;     
        bool                                m_bAllowReconnect = false;      
        EEndpointType                       m_eEndpointType = EEndpointType::client;    
        std::recursive_mutex                m_mtxMarshallObjects;           

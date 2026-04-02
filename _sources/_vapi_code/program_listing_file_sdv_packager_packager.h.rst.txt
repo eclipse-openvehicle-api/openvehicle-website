@@ -10,10 +10,25 @@ Program Listing for File packager.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the 
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
    #ifndef PACKAGER_H
    #define PACKAGER_H
    
+   #include "core_control.h"
    #include "environment.h"
+   #include "../../sdv_services/core/installation_manifest.h"
    
    class CPackager
    {
@@ -33,13 +48,24 @@ Program Listing for File packager.h
    
        bool Copy();
    
+       bool Configure();
+   
        bool Remove();
    
        bool CheckIntegrity();
    
        bool ShowContent();
+   
+   private:
+       bool ConfigureFromManifest(const CInstallManifest& rmanifest);
+   
+       void WriteConfig(const std::vector<sdv::SClassInfo>& rvecAllClasses, const std::filesystem::path& rpathConfig,
+           const CSdvPackagerEnvironment::CComponentVector& rvecComponents, bool bUserConfig,
+           CSdvPackagerEnvironment::CComponentVector& rvecAddedToConfig);
+   
+       static void DrawTable(const std::vector<std::vector<std::string>>& rvecInfoTable, bool bSimple);
        
-       CSdvPackagerEnvironment                m_env;                              
+       CSdvPackagerEnvironment     m_env;                              
        int                         m_nError = NO_ERROR;                
        std::string                 m_ssArgError;                       
    };

@@ -1,0 +1,83 @@
+
+.. _program_listing_file_core_toml_parser_code_snippet.h:
+
+Program Listing for File code_snippet.h
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_toml_parser_code_snippet.h>` (``core\toml_parser\code_snippet.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
+   #ifndef CODE_SNIPPET_H
+   #define CODE_SNIPPET_H
+   
+   #include <list>
+   #include <string>
+   #include <memory>
+   #include <interfaces/toml.h>
+   #include "lexer_toml.h"
+   
+   namespace toml_parser
+   {
+       // Forward declaration
+       class CGenContext;
+   
+       class CCodeSnippet
+       {
+       public:
+       
+           void SetTokenList(const std::list<CToken>& rlstTokens);
+       
+           void SetTokenList(std::list<CToken>&& rlstTokens);
+       
+           enum class EComposeMode
+           {
+               compose_inline,             
+               compose_before,             
+               compose_behind,             
+               compose_standalone_before,  
+               compose_standalone_behind,  
+           };
+       
+           std::string Compose(EComposeMode eMode, const CGenContext& rContext, size_t nAssignmentOffset = 0, size_t nCommentOffset = 0) const;
+       
+           std::string GetComment() const;
+       
+           void SetComment(const std::string& rssComment);
+   
+           void Clear();
+   
+           bool HasCode() const;
+       
+           void RemoveFormat();
+   
+           bool HasComma() const;
+       
+           void Insert(const CCodeSnippet& rCode);
+   
+           void Append(const CCodeSnippet& rCode);
+   
+       private:
+           std::list<CToken>   m_lstTokens;                
+           std::string         m_ssComment;                
+           bool                m_bCommentReplaced = false; 
+           bool                m_bUseDefault = false;      
+       };
+   } // namespace toml_parser
+   
+   #endif // !defined CODE_SNIPPET_H

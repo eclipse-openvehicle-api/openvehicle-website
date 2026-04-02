@@ -1,0 +1,1124 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Class CAppConfigFile &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=9c3fb72b" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=323e3408"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/class_c_app_config_file';</script>
+    <script src="../_static/js/sidebar-toggle.js?v=714d0a57"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/step_by_step_guide/step_by_step_index.html">
+                        Step by Step Example
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/sdv_executables.html">
+                        SDV Executables
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/step_by_step_guide/step_by_step_index.html">
+                        Step by Step Example
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/sdv_executables.html">
+                        SDV Executables
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Class CAppConfigFile</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="class-cappconfigfile">
+<span id="exhale-class-class-c-app-config-file"></span><h1>Class CAppConfigFile<a class="headerlink" href="#class-cappconfigfile" title="Permalink to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_core_app_config_file.h.html#file-core-app-config-file-h"><span class="std std-ref">File app_config_file.h</span></a></p></li>
+</ul>
+<section id="nested-relationships">
+<h2>Nested Relationships<a class="headerlink" href="#nested-relationships" title="Permalink to this heading">#</a></h2>
+<section id="nested-types">
+<h3>Nested Types<a class="headerlink" href="#nested-types" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="struct_c_app_config_file_1_1_s_component.html#exhale-struct-struct-c-app-config-file-1-1-s-component"><span class="std std-ref">Struct CAppConfigFile::SComponent</span></a></p></li>
+<li><p><a class="reference internal" href="struct_c_app_config_file_1_1_s_module.html#exhale-struct-struct-c-app-config-file-1-1-s-module"><span class="std std-ref">Struct CAppConfigFile::SModule</span></a></p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Permalink to this heading">#</a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv414CAppConfigFile">
+<span id="_CPPv314CAppConfigFile"></span><span id="_CPPv214CAppConfigFile"></span><span id="CAppConfigFile"></span><span class="target" id="class_c_app_config_file"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAppConfigFile</span></span></span><a class="headerlink" href="#_CPPv414CAppConfigFile" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Application configuration file loading and saving the configuration in a TOML file. </p>
+<p>The configuration file is a TOML and follows the specification of TOML 1.0 (<a class="reference external" href="https://toml.io/en/v1.0.0">https://toml.io/en/v1.0.0</a>). The configuration file starts with the “Configuration” table, which identifies that this a configuration file. The table needs to contain the version of the configuration. For example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Configuration</span><span class="p">]</span>
+<span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span>
+</pre></div>
+</div>
+</p>
+<p>The configuration consists of several sections:<ul class="simple">
+<li><p>Modules Modules can contain component classes, which are only made accessible, but not automatically loaded. This section applies to standalone applications only. Server applications use installations to provide accessible component classes.</p></li>
+<li><p>Classes The classes that are present in a module and contain specific class information.</p></li>
+<li><p>Components The components that are started when loading the configuration.</p></li>
+</ul>
+</p>
+<p>The modules specify the location of the modules relative to the executable or with an absolute path. They are only available for standalone applications and are ignored by server based application, who install the modules rather than provide them in a configuration. A module has the following attribute:<ul class="simple">
+<li><p>Path [Compulsory] Identifying the module path of components which should be made accessible. The path can be relative to the application executable (or relocation path) or can be an absolute path to the module in the system. Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">Module</span><span class="p">]]</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;my_module.sdv&quot;</span>
+</pre></div>
+</div>
+</p></li>
+</ul>
+</p>
+<p>Classes are used to specify default parameter for a component instance. These parameter can be overridden by the component instance when specifying the parameter with identical name in the component section. The class has the following attributes:<ul class="simple">
+<li><p>Path [Optional] Identifying the module path of the component. Only used for standalone applications. If not specified the component class must be known in the system (e.g. through the module section or the component section).</p></li>
+<li><p>Name [Compulsory] Name of the class.</p></li>
+<li><p>Aliases [Optional] Array of strings with alternative names for this class.</p></li>
+<li><p>DefaultName [Optional] Name to use when instantiating the component. If not specified, the class name will be used.</p></li>
+<li><p>Type [Compulsory] Object type this class represents.</p></li>
+<li><p>Singleton [Optional] Boolean specifying whether the component allows more than one instantiation. Default is false.</p></li>
+<li><p>Dependencies [Optional] Array of strings with component instances that this class depends on.</p></li>
+<li><p>Parameters [Optional] Table containing component instance specific parameters which are default parameters of all instances of the components with of this class. Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">Class</span><span class="p">]]</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;my_module.sdv&quot;</span>
+<span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;MyComponent&quot;</span>
+<span class="n">Aliases</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Component1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ComponentA&quot;</span><span class="p">]</span>
+<span class="n">DefaultName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;MyComp&quot;</span>
+<span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Device&quot;</span>
+<span class="n">Singleton</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span>
+<span class="n">Dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Component15&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Component16&quot;</span><span class="p">]</span>
+<span class="p">[</span><span class="n">Class</span><span class="p">.</span><span class="n">Parameters</span><span class="p">]</span>
+<span class="n">AttributeA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;default_blep&quot;</span><span class="w">                     </span>
+<span class="n">AttributeB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1234</span>
+<span class="n">AttributeC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">4567.7890</span>
+</pre></div>
+</div>
+</p></li>
+</ul>
+</p>
+<p>Components are class instances that are instantiated during the loading of the configuration. They are stored as table array and contain as a minimum a class name. They can have instance specific parameters, which are stored as a table within the component. Components are instantiated in the order of appearance. A component can have the following attributes:<ul class="simple">
+<li><p>Path [Optional] Identifying the module path of the component. Only used for standalone applications. If not specified the component class must be known in the system (e.g. through the module section or the class section).</p></li>
+<li><p>Class [Compulsory] Name of the class that has to be instantiated.</p></li>
+<li><p>Name [Optional] Name of the component instance. If not available, the class name determines the component name.</p></li>
+<li><p>Parameters [Optional] Table containing the component instance specific parameters. They override default component class parameters. Example: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">Component</span><span class="p">]]</span>
+<span class="n">Path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;my_module.sdv&quot;</span>
+<span class="n">Class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;MyComponent&quot;</span>
+<span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;MyPersonalComponent&quot;</span>
+<span class="p">[</span><span class="n">Component</span><span class="p">.</span><span class="n">Parameters</span><span class="p">]</span>
+<span class="n">AttributeA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;blep&quot;</span><span class="w">                     </span>
+<span class="n">AttributeB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">123</span>
+<span class="n">AttributeC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">456.789</span>
+<span class="n">AttributeD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</p></li>
+</ul>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile12EMergeResultE">
+<span id="_CPPv3N14CAppConfigFile12EMergeResultE"></span><span id="_CPPv2N14CAppConfigFile12EMergeResultE"></span><span class="target" id="class_c_app_config_file_1a7445b687039004bf76ed38d13981a03a"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EMergeResult</span></span></span><a class="headerlink" href="#_CPPv4N14CAppConfigFile12EMergeResultE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile12EMergeResult10successfulE">
+<span id="_CPPv3N14CAppConfigFile12EMergeResult10successfulE"></span><span id="_CPPv2N14CAppConfigFile12EMergeResult10successfulE"></span><span class="target" id="class_c_app_config_file_1a7445b687039004bf76ed38d13981a03aa802024b279b2158800d75b4725bc77ba"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">successful</span></span></span><a class="headerlink" href="#_CPPv4N14CAppConfigFile12EMergeResult10successfulE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile12EMergeResult18partly_successfullE">
+<span id="_CPPv3N14CAppConfigFile12EMergeResult18partly_successfullE"></span><span id="_CPPv2N14CAppConfigFile12EMergeResult18partly_successfullE"></span><span class="target" id="class_c_app_config_file_1a7445b687039004bf76ed38d13981a03aa78d10755f70ed1f5ecb0b167091ff204"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">partly_successfull</span></span></span><a class="headerlink" href="#_CPPv4N14CAppConfigFile12EMergeResult18partly_successfullE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile12EMergeResult14not_successfulE">
+<span id="_CPPv3N14CAppConfigFile12EMergeResult14not_successfulE"></span><span id="_CPPv2N14CAppConfigFile12EMergeResult14not_successfulE"></span><span class="target" id="class_c_app_config_file_1a7445b687039004bf76ed38d13981a03aa1fbc8eef01d9698c254de2af7b755f2e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">not_successful</span></span></span><a class="headerlink" href="#_CPPv4N14CAppConfigFile12EMergeResult14not_successfulE" title="Permalink to this definition">#</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile14CAppConfigFileEv">
+<span id="_CPPv3N14CAppConfigFile14CAppConfigFileEv"></span><span id="_CPPv2N14CAppConfigFile14CAppConfigFileEv"></span><span id="CAppConfigFile::CAppConfigFile"></span><span class="target" id="class_c_app_config_file_1ab2667411d4c0c61906bf99f6d3765845"></span><span class="sig-name descname"><span class="n"><span class="pre">CAppConfigFile</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N14CAppConfigFile14CAppConfigFileEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>default constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile14CAppConfigFileERKNSt10filesystem4pathE">
+<span id="_CPPv3N14CAppConfigFile14CAppConfigFileERKNSt10filesystem4pathE"></span><span id="_CPPv2N14CAppConfigFile14CAppConfigFileERKNSt10filesystem4pathE"></span><span id="CAppConfigFile::CAppConfigFile__std::filesystem::pathCR"></span><span class="target" id="class_c_app_config_file_1a3b296091769182ea08eab31da6f6238f"></span><span class="sig-name descname"><span class="n"><span class="pre">CAppConfigFile</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rpathConfigFile</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CAppConfigFile14CAppConfigFileERKNSt10filesystem4pathE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Constructor with the config path. The config file is automatically loaded. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rpathConfigFile</strong> – <strong>[in]</strong> Path to the configuration. The path must be a file name when running in main, isolation or maintenance mode. Otherwise the path should contain the location of the config file. The file path will be located in the root directory of the instance. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile5ClearEv">
+<span id="_CPPv3N14CAppConfigFile5ClearEv"></span><span id="_CPPv2N14CAppConfigFile5ClearEv"></span><span id="CAppConfigFile::Clear"></span><span class="target" id="class_c_app_config_file_1add65d800e88c68e8ab59396eff65bac4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Clear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CAppConfigFile5ClearEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Clear the configuration. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14CAppConfigFile8IsLoadedEv">
+<span id="_CPPv3NK14CAppConfigFile8IsLoadedEv"></span><span id="_CPPv2NK14CAppConfigFile8IsLoadedEv"></span><span id="CAppConfigFile::IsLoadedC"></span><span class="target" id="class_c_app_config_file_1ab915a9d281d107450d6d49a9361c671e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsLoaded</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK14CAppConfigFile8IsLoadedEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Is the configuration loaded or created? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether the file is loaded. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14CAppConfigFile10ConfigPathEv">
+<span id="_CPPv3NK14CAppConfigFile10ConfigPathEv"></span><span id="_CPPv2NK14CAppConfigFile10ConfigPathEv"></span><span id="CAppConfigFile::ConfigPathC"></span><span class="target" id="class_c_app_config_file_1a49819501ed8d3b2b6cf6ade931b83e5e"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">ConfigPath</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK14CAppConfigFile10ConfigPathEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the configuration file path. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The config file path. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile14LoadConfigFileEv">
+<span id="_CPPv3N14CAppConfigFile14LoadConfigFileEv"></span><span id="_CPPv2N14CAppConfigFile14LoadConfigFileEv"></span><span id="CAppConfigFile::LoadConfigFile"></span><span class="target" id="class_c_app_config_file_1a5bac6d936b256c322ab24b8951dc5cfa"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LoadConfigFile</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CAppConfigFile14LoadConfigFileEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Load the application config file. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>When there is no config file, this is not an error. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether the loading was successful. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile20LoadConfigFromStringERKNSt6stringE">
+<span id="_CPPv3N14CAppConfigFile20LoadConfigFromStringERKNSt6stringE"></span><span id="_CPPv2N14CAppConfigFile20LoadConfigFromStringERKNSt6stringE"></span><span id="CAppConfigFile::LoadConfigFromString__ssCR"></span><span class="target" id="class_c_app_config_file_1a890afdfc464c5d4b4c7e16fade7ad884"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LoadConfigFromString</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssConfig</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CAppConfigFile20LoadConfigFromStringERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Load the application config from string. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssConfig</strong> – <strong>[in]</strong> Reference to the configuration string. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns whether the loading was successful. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14CAppConfigFile14SaveConfigFileERKNSt10filesystem4pathEb">
+<span id="_CPPv3NK14CAppConfigFile14SaveConfigFileERKNSt10filesystem4pathEb"></span><span id="_CPPv2NK14CAppConfigFile14SaveConfigFileERKNSt10filesystem4pathEb"></span><span id="CAppConfigFile::SaveConfigFile__std::filesystem::pathCR.bC"></span><span class="target" id="class_c_app_config_file_1ab982dc298905e47acd85bb42004cac70"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SaveConfigFile</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rpathTarget</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bSafeParamsOnly</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK14CAppConfigFile14SaveConfigFileERKNSt10filesystem4pathEb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Save the application config file (or create when not existing yet). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rpathTarget</strong> – <strong>[in]</strong> Reference to a target path. When set, the file is saved to the target file. If not set, the original file is used. </p></li>
+<li><p><strong>bSafeParamsOnly</strong> – <strong>[in]</strong> When set, only the parameters are stored in the configuration. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns whether the saving was successful (returns ‘true’ when there is no change is needed). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14CAppConfigFile18UpdateConfigStringERNSt6stringERbb">
+<span id="_CPPv3NK14CAppConfigFile18UpdateConfigStringERNSt6stringERbb"></span><span id="_CPPv2NK14CAppConfigFile18UpdateConfigStringERNSt6stringERbb"></span><span id="CAppConfigFile::UpdateConfigString__ssR.bR.bC"></span><span class="target" id="class_c_app_config_file_1a01f6c3849413581b1d8882e6dda56c16"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UpdateConfigString</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssContent</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rbChanged</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bSaveParamsOnly</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK14CAppConfigFile18UpdateConfigStringERNSt6stringERbb" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Update the configuration string with the stored configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssContent</strong> – <strong>[inout]</strong> Reference to the string providing the current configuration being updated by this function. </p></li>
+<li><p><strong>rbChanged</strong> – <strong>[inout]</strong> Reference to the boolean being set when the string was changed. </p></li>
+<li><p><strong>bSaveParamsOnly</strong> – <strong>[in]</strong> When set, only the parameters are stored in the configuration. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns whether the update was successful (even when no change occurred). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14CAppConfigFile16GetComponentListEv">
+<span id="_CPPv3NK14CAppConfigFile16GetComponentListEv"></span><span id="_CPPv2NK14CAppConfigFile16GetComponentListEv"></span><span id="CAppConfigFile::GetComponentListC"></span><span class="target" id="class_c_app_config_file_1a799ba363c207b1a3f523958339664212"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N14CAppConfigFile10SComponentE" title="CAppConfigFile::SComponent"><span class="n"><span class="pre">SComponent</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetComponentList</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK14CAppConfigFile16GetComponentListEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the component list. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference to the vector containing the components in order of the configuration. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14CAppConfigFile12GetClassListEv">
+<span id="_CPPv3NK14CAppConfigFile12GetClassListEv"></span><span id="_CPPv2NK14CAppConfigFile12GetClassListEv"></span><span id="CAppConfigFile::GetClassListC"></span><span class="target" id="class_c_app_config_file_1adcee6d91245df7c41516a4de7f12a66e"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="structsdv_1_1_s_class_info.html#_CPPv4N3sdv10SClassInfoE" title="sdv::SClassInfo"><span class="n"><span class="pre">SClassInfo</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetClassList</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK14CAppConfigFile12GetClassListEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the class list. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>Only available when running as standalone application. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference to the vector containing the classes in order of the configuration. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK14CAppConfigFile13GetModuleListEv">
+<span id="_CPPv3NK14CAppConfigFile13GetModuleListEv"></span><span id="_CPPv2NK14CAppConfigFile13GetModuleListEv"></span><span id="CAppConfigFile::GetModuleListC"></span><span class="target" id="class_c_app_config_file_1ac24f4388fedbc1eb957ee3d508caa71a"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N14CAppConfigFile7SModuleE" title="CAppConfigFile::SModule"><span class="n"><span class="pre">SModule</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetModuleList</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK14CAppConfigFile13GetModuleListEv" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Get the module list. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>Only available when running as standalone application. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reference to the vector containing the modules in order of the configuration. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile15InsertComponentE6size_tRKNSt10filesystem4pathERKNSt6stringERKNSt6stringERK16TParameterVector">
+<span id="_CPPv3N14CAppConfigFile15InsertComponentE6size_tRKNSt10filesystem4pathERKNSt6stringERKNSt6stringERK16TParameterVector"></span><span id="_CPPv2N14CAppConfigFile15InsertComponentE6size_tRKNSt10filesystem4pathERKNSt6stringERKNSt6stringERK16TParameterVector"></span><span id="CAppConfigFile::InsertComponent__s.std::filesystem::pathCR.ssCR.ssCR.TParameterVectorCR"></span><span class="target" id="class_c_app_config_file_1a4f1f9ac617b922738bc3331a2b523930"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InsertComponent</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nIndex</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rpathModule</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssClassName</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssInstanceName</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="typedef_app__config__file_8h_1a31a11de0bc743ceb051e19138bccd974.html#_CPPv416TParameterVector" title="TParameterVector"><span class="n"><span class="pre">TParameterVector</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rvecParameters</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CAppConfigFile15InsertComponentE6size_tRKNSt10filesystem4pathERKNSt6stringERKNSt6stringERK16TParameterVector" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Insert a component at the provided location. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nIndex</strong> – <strong>[in]</strong> The index location to insert the component before or when larger than the component list, at the end of the component list. </p></li>
+<li><p><strong>rpathModule</strong> – <strong>[in]</strong> Reference to the path of the module. Only used when running as standalone application. </p></li>
+<li><p><strong>rssClassName</strong> – <strong>[in]</strong> Reference to the string containing the module class name of the class to be instantiated when loading the configuration. </p></li>
+<li><p><strong>rssInstanceName</strong> – <strong>[in]</strong> Reference to the string containing an optional instantiating name of the component instance. Using additional names allows multiple instantiation of the same component. </p></li>
+<li><p><strong>rvecParameters</strong> – <strong>[in]</strong> Reference to the optional parameter vector belonging to the object instance. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns whether inserting the component was successful. If a component with the same class and instance names and the same path is installed, the function succeeds. In all other cases, having a duplicate class or instance name will result in a function failure. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile15RemoveComponentERKNSt6stringE">
+<span id="_CPPv3N14CAppConfigFile15RemoveComponentERKNSt6stringE"></span><span id="_CPPv2N14CAppConfigFile15RemoveComponentERKNSt6stringE"></span><span id="CAppConfigFile::RemoveComponent__ssCR"></span><span class="target" id="class_c_app_config_file_1ad74a3e98e9f216c028892696f649cc63"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RemoveComponent</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssInstanceName</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CAppConfigFile15RemoveComponentERKNSt6stringE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Remove the component with the provided instance name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rssInstanceName</strong> – <strong>[in]</strong> Reference to the instance name of the component. If the component uses the class name for its instance, the class name will be used for the search. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile12InsertModuleE6size_tRKNSt10filesystem4pathE">
+<span id="_CPPv3N14CAppConfigFile12InsertModuleE6size_tRKNSt10filesystem4pathE"></span><span id="_CPPv2N14CAppConfigFile12InsertModuleE6size_tRKNSt10filesystem4pathE"></span><span id="CAppConfigFile::InsertModule__s.std::filesystem::pathCR"></span><span class="target" id="class_c_app_config_file_1adc6031379b4ed09f059552e3cf3df6b1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InsertModule</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nIndex</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rpathModule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CAppConfigFile12InsertModuleE6size_tRKNSt10filesystem4pathE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Insert a module into the configuration. Modules listed in the configuration are loaded, but components are not started automatically. This might be useful if the module contains utilities that might be loaded on demand. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>Modules can only be added when running as standalone application. </p>
+</div>
+<div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>The modules are only added once. If a module is present in either the component or the module list, it is not added again, and the function returns ‘true’. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nIndex</strong> – <strong>[in]</strong> The index location to insert the module before or when larger than the module list, at the end of the module list. </p></li>
+<li><p><strong>rpathModule</strong> – <strong>[in]</strong> Reference to the path of the module. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns whether inserting the module was successful. If a module with the same path is installed, the function succeeds. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile12RemoveModuleERKNSt10filesystem4pathE">
+<span id="_CPPv3N14CAppConfigFile12RemoveModuleERKNSt10filesystem4pathE"></span><span id="_CPPv2N14CAppConfigFile12RemoveModuleERKNSt10filesystem4pathE"></span><span id="CAppConfigFile::RemoveModule__std::filesystem::pathCR"></span><span class="target" id="class_c_app_config_file_1ad6627fb8a0991d236e7f4d3773ee4f03"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RemoveModule</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rpathModule</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CAppConfigFile12RemoveModuleERKNSt10filesystem4pathE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Remove the module with the provided module name. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>Removing the module will also remove any components that are registered for the module. </p>
+</div>
+<div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>Modules can only be removed when running as standalone application. </p>
+</div>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rpathModule</strong> – <strong>[in]</strong> Reference to the path of the module. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile15MergeConfigFileERKNSt10filesystem4pathE">
+<span id="_CPPv3N14CAppConfigFile15MergeConfigFileERKNSt10filesystem4pathE"></span><span id="_CPPv2N14CAppConfigFile15MergeConfigFileERKNSt10filesystem4pathE"></span><span id="CAppConfigFile::MergeConfigFile__std::filesystem::pathCR"></span><span class="target" id="class_c_app_config_file_1ad63465e8e2c2f863bf34235a59c6f077"></span><a class="reference internal" href="#_CPPv4N14CAppConfigFile12EMergeResultE" title="CAppConfigFile::EMergeResult"><span class="n"><span class="pre">EMergeResult</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MergeConfigFile</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rpathConfigFile</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CAppConfigFile15MergeConfigFileERKNSt10filesystem4pathE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Merge a configuration into this configuration. </p>
+<p>All modules, classes and components will be added or updated. If a classes already exist, the class parameters will be overwritten (or removed if present before). If a component already exist, the component parameters will be updated (new parameters added, parameters existing in both configurations updated and other parameters left unchanged). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rpathConfigFile</strong> – <strong>[in]</strong> Reference to the config file to merge. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns whether the configuration could be merged. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile10SComponentE">
+<span id="_CPPv3N14CAppConfigFile10SComponentE"></span><span id="_CPPv2N14CAppConfigFile10SComponentE"></span><span id="CAppConfigFile::SComponent"></span><span class="target" id="struct_c_app_config_file_1_1_s_component"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SComponent</span></span></span><a class="headerlink" href="#_CPPv4N14CAppConfigFile10SComponentE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>** </p>
+<p>Component structure </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile10SComponent10pathModuleE">
+<span id="_CPPv3N14CAppConfigFile10SComponent10pathModuleE"></span><span id="_CPPv2N14CAppConfigFile10SComponent10pathModuleE"></span><span id="CAppConfigFile::SComponent::pathModule__std::filesystem::path"></span><span class="target" id="struct_c_app_config_file_1_1_s_component_1a8a699a667d2daa6443ce42db257bf730"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pathModule</span></span></span><a class="headerlink" href="#_CPPv4N14CAppConfigFile10SComponent10pathModuleE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Optional component module path. Only used in standalone applications. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile10SComponent11ssClassNameE">
+<span id="_CPPv3N14CAppConfigFile10SComponent11ssClassNameE"></span><span id="_CPPv2N14CAppConfigFile10SComponent11ssClassNameE"></span><span id="CAppConfigFile::SComponent::ssClassName__ss"></span><span class="target" id="struct_c_app_config_file_1_1_s_component_1a2eaf521811fd7d8d4165c0762f9989a6"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ssClassName</span></span></span><a class="headerlink" href="#_CPPv4N14CAppConfigFile10SComponent11ssClassNameE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Class name of the component. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile10SComponent14ssInstanceNameE">
+<span id="_CPPv3N14CAppConfigFile10SComponent14ssInstanceNameE"></span><span id="_CPPv2N14CAppConfigFile10SComponent14ssInstanceNameE"></span><span id="CAppConfigFile::SComponent::ssInstanceName__ss"></span><span class="target" id="struct_c_app_config_file_1_1_s_component_1a0fb1baa0f6f60940c26c6fa8c10f8463"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ssInstanceName</span></span></span><a class="headerlink" href="#_CPPv4N14CAppConfigFile10SComponent14ssInstanceNameE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Optional instance name. If not provided, will be identical to the class name. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile10SComponent15ssParameterTOMLE">
+<span id="_CPPv3N14CAppConfigFile10SComponent15ssParameterTOMLE"></span><span id="_CPPv2N14CAppConfigFile10SComponent15ssParameterTOMLE"></span><span id="CAppConfigFile::SComponent::ssParameterTOML__ss"></span><span class="target" id="struct_c_app_config_file_1_1_s_component_1a1ac5f47e456bd535f757e62615238cec"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ssParameterTOML</span></span></span><a class="headerlink" href="#_CPPv4N14CAppConfigFile10SComponent15ssParameterTOMLE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Parameter configuration (excluding [Parameters]-group). </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile7SModuleE">
+<span id="_CPPv3N14CAppConfigFile7SModuleE"></span><span id="_CPPv2N14CAppConfigFile7SModuleE"></span><span id="CAppConfigFile::SModule"></span><span class="target" id="struct_c_app_config_file_1_1_s_module"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SModule</span></span></span><a class="headerlink" href="#_CPPv4N14CAppConfigFile7SModuleE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Module structure (only used in standalone applications). </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N14CAppConfigFile7SModule10pathModuleE">
+<span id="_CPPv3N14CAppConfigFile7SModule10pathModuleE"></span><span id="_CPPv2N14CAppConfigFile7SModule10pathModuleE"></span><span id="CAppConfigFile::SModule::pathModule__std::filesystem::path"></span><span class="target" id="struct_c_app_config_file_1_1_s_module_1af407e2a719269d02c1ca42633ae0895d"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pathModule</span></span></span><a class="headerlink" href="#_CPPv4N14CAppConfigFile7SModule10pathModuleE" title="Permalink to this definition">#</a><br /></dt>
+<dd><p>Component module path. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
+        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
+    </ul>
+    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
+</ul>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
+
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
+
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
+        } 
+    });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

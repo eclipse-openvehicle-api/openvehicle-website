@@ -1,0 +1,85 @@
+
+.. _program_listing_file_uds_win_tunnel_channel_mgnt.h:
+
+Program Listing for File channel_mgnt.h
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_uds_win_tunnel_channel_mgnt.h>` (``uds_win_tunnel\channel_mgnt.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   /********************************************************************************
+   * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+   *
+   * This program and the accompanying materials are made available under the
+   * terms of the Apache License Version 2.0 which is available at
+   * https://www.apache.org/licenses/LICENSE-2.0
+   *
+   * SPDX-License-Identifier: Apache-2.0
+   *
+   * Contributors:
+   *   Denisa Ros - initial API and implementation
+   ********************************************************************************/
+   #ifdef _WIN32
+   #ifndef WIN_TUNNEL_CHANNEL_MGNT_H
+   #define WIN_TUNNEL_CHANNEL_MGNT_H
+   
+   #include <support/component_impl.h>
+   #include <interfaces/ipc.h>
+   #include "../sdv_services/uds_win_sockets/channel_mgnt.h"              
+   #include "../sdv_services/uds_win_sockets/connection.h"
+   #include "connection.h"   
+   
+   #include <mutex>
+   #include <map>
+   #include <memory>
+   #include <set>
+   #include <string>
+   
+   // Winsock headers are required for SOCKET / AF_UNIX / WSAStartup
+   // NOTE: The actual initialization is done via StartUpWinSock()
+   #include <ws2tcpip.h>
+   
+   class CWinTunnelConnection;
+   
+   class CSocketsTunnelChannelMgnt :
+       public sdv::CSdvObject,
+       public sdv::ipc::ICreateEndpoint,
+       public sdv::ipc::IChannelAccess
+   {
+   public:
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::ipc::IChannelAccess)
+           SDV_INTERFACE_ENTRY(sdv::ipc::ICreateEndpoint)
+       END_SDV_INTERFACE_MAP()
+   
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
+       DECLARE_OBJECT_CLASS_NAME("WinTunnelChannelControl")
+       DECLARE_OBJECT_CLASS_ALIAS("LocalChannelControl")
+       DECLARE_DEFAULT_OBJECT_NAME("LocalChannelControl")
+       DECLARE_OBJECT_SINGLETON()
+   
+       virtual ~CSocketsTunnelChannelMgnt() = default;
+   
+       virtual bool OnInitialize() override;
+   
+       virtual void OnShutdown() override;
+   
+       sdv::ipc::SChannelEndpoint CreateEndpoint(const sdv::u8string& cfgStr) override;
+   
+       sdv::IInterfaceAccess* Access(const sdv::u8string& cs) override;
+   
+       void OnServerClosed(const std::string& udsPath, CWinTunnelConnection* ptr);
+   
+   private:
+       std::mutex m_udsMtx;
+       std::map<std::string, std::shared_ptr<CWinTunnelConnection>> m_udsServers;
+       std::set<std::string> m_udsServerClaimed;
+   };
+   
+   DEFINE_SDV_OBJECT(CSocketsTunnelChannelMgnt)
+   
+   #endif // ! defined WIN_TUNNEL_CHANNEL_MGNT_H
+   #endif

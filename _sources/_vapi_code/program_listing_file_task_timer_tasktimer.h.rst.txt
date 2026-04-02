@@ -10,6 +10,18 @@ Program Listing for File tasktimer.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
    
    #ifndef TASK_TIMER_H
    #define TASK_TIMER_H
@@ -21,6 +33,7 @@ Program Listing for File tasktimer.h
    #include <map>
    #include <set>
    #include <fstream>
+   #include <atomic>
    
    #ifdef _WIN32
    // Resolve conflict
@@ -79,15 +92,15 @@ Program Listing for File tasktimer.h
        sdv::core::ITaskExecute*    m_pExecute = nullptr;                   
    #ifdef _WIN32
        UINT                        m_uiTimerID = 0ul;                      
-       bool                        m_bPrioritySet = false;                 
+       std::atomic_bool            m_bPrioritySet = false;                 
    #elif defined __unix__
        timer_t                     m_timerid = 0;                          
-       bool                        m_bRunning = false;                     
+       std::atomic_bool            m_bRunning = false;                     
        std::mutex                  m_mtxExecution;                         
    #endif
    };
    
-   class CTaskTimerService : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::core::ITaskTimer
+   class CTaskTimerService : public sdv::CSdvObject, public sdv::core::ITaskTimer
    {
    public:
        CTaskTimerService();
@@ -96,32 +109,26 @@ Program Listing for File tasktimer.h
    
        // Interface map
        BEGIN_SDV_INTERFACE_MAP()
-           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
            SDV_INTERFACE_ENTRY(sdv::core::ITaskTimer)
        END_SDV_INTERFACE_MAP()
    
        // Object declarations
-       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
        DECLARE_OBJECT_CLASS_NAME("TaskTimerService")
        DECLARE_OBJECT_SINGLETON()
    
        
-       virtual void Initialize(/*in*/ const sdv::u8string& ssObjectConfig) override;
+       virtual bool OnInitialize() override;
    
-       virtual sdv::EObjectStatus GetStatus() const override;
-   
-       virtual void SetOperationMode(/*in*/ sdv::EOperationMode eMode) override;
-   
-       virtual void Shutdown() override;
+       virtual void OnShutdown() override;
    
        virtual sdv::IInterfaceAccess* CreateTimer(uint32_t uiPeriod, sdv::IInterfaceAccess* pTask) override;
    
        void RemoveTimer(CTimer* pTimer);
    
    private:
-       sdv::EObjectStatus      m_eObjectStatus = sdv::EObjectStatus::initialization_pending;   
-       std::mutex              m_mtxTasks;                                                     
-       std::map<CTimer*, std::unique_ptr<CTimer>>  m_mapTasks;                                 
+       std::mutex                                  m_mtxTasks;         
+       std::map<CTimer*, std::unique_ptr<CTimer>>  m_mapTasks;         
    };
    
    DEFINE_SDV_OBJECT(CTaskTimerService)

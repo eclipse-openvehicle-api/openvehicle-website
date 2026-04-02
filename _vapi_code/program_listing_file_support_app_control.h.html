@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=1697948e" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=9c3fb72b" />
     <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
     <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
@@ -74,6 +74,7 @@
     <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
     <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/program_listing_file_support_app_control.h';</script>
+    <script src="../_static/js/sidebar-toggle.js?v=714d0a57"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -601,7 +602,20 @@ document.write(`
   <section id="program-listing-for-file-app-control-h">
 <span id="program-listing-file-support-app-control-h"></span><h1>Program Listing for File app_control.h<a class="headerlink" href="#program-listing-for-file-app-control-h" title="Permalink to this heading">#</a></h1>
 <p>↰ <a class="reference internal" href="file_support_app_control.h.html#file-support-app-control-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">support\app_control.h</span></code>)</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef SDV_APP_CONTROL_H</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="cm">/********************************************************************************</span>
+<span class="cm"> * Copyright (c) 2025-2026 ZF Friedrichshafen AG</span>
+<span class="cm"> *</span>
+<span class="cm"> * This program and the accompanying materials are made available under the</span>
+<span class="cm"> * terms of the Apache License Version 2.0 which is available at</span>
+<span class="cm"> * https://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="cm"> *</span>
+<span class="cm"> * SPDX-License-Identifier: Apache-2.0</span>
+<span class="cm"> *</span>
+<span class="cm"> * Contributors:</span>
+<span class="cm"> *   Erik Verhoeven - initial API and implementation</span>
+<span class="cm"> ********************************************************************************/</span>
+
+<span class="cp">#ifndef SDV_APP_CONTROL_H</span>
 <span class="cp">#define SDV_APP_CONTROL_H</span>
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;sdv_core.h&quot;</span>
@@ -867,6 +881,33 @@ document.write(`
 <span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">eResult</span><span class="p">;</span>
 <span class="w">            </span><span class="p">}</span>
 
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="n">SaveConfig</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="w"> </span><span class="n">ssConfigPath</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">const</span><span class="w"> </span><span class="n">core</span><span class="o">::</span><span class="n">IConfig</span><span class="o">*</span><span class="w"> </span><span class="n">pAppConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">                </span><span class="n">sdv</span><span class="o">::</span><span class="n">TInterfaceAccessPtr</span><span class="w"> </span><span class="n">ptrConfigObj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;ConfigService&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ptrConfigObj</span><span class="p">)</span><span class="w"> </span><span class="n">pAppConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ptrConfigObj</span><span class="p">.</span><span class="n">GetInterface</span><span class="o">&lt;</span><span class="n">core</span><span class="o">::</span><span class="n">IConfig</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">pAppConfig</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">pAppConfig</span><span class="o">-&gt;</span><span class="n">SaveConfig</span><span class="p">(</span><span class="n">ssConfigPath</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="w"> </span><span class="n">GenerateConfigString</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">const</span><span class="w"> </span><span class="n">core</span><span class="o">::</span><span class="n">IConfig</span><span class="o">*</span><span class="w"> </span><span class="n">pAppConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">                </span><span class="n">sdv</span><span class="o">::</span><span class="n">TInterfaceAccessPtr</span><span class="w"> </span><span class="n">ptrConfigObj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;ConfigService&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ptrConfigObj</span><span class="p">)</span><span class="w"> </span><span class="n">pAppConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ptrConfigObj</span><span class="p">.</span><span class="n">GetInterface</span><span class="o">&lt;</span><span class="n">core</span><span class="o">::</span><span class="n">IConfig</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">pAppConfig</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">pAppConfig</span><span class="o">-&gt;</span><span class="n">GenerateConfigString</span><span class="p">();</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="n">CloseConfig</span><span class="p">()</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">core</span><span class="o">::</span><span class="n">IConfig</span><span class="o">*</span><span class="w"> </span><span class="n">pAppConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="w">                </span><span class="n">sdv</span><span class="o">::</span><span class="n">TInterfaceAccessPtr</span><span class="w"> </span><span class="n">ptrConfigObj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">core</span><span class="o">::</span><span class="n">GetObject</span><span class="p">(</span><span class="s">&quot;ConfigService&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ptrConfigObj</span><span class="p">)</span><span class="w"> </span><span class="n">pAppConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ptrConfigObj</span><span class="p">.</span><span class="n">GetInterface</span><span class="o">&lt;</span><span class="n">core</span><span class="o">::</span><span class="n">IConfig</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">pAppConfig</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">                </span><span class="n">pAppConfig</span><span class="o">-&gt;</span><span class="n">CloseConfig</span><span class="p">();</span>
+<span class="w">            </span><span class="p">}</span>
+
 <span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="n">AddConfigSearchDir</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rpathDir</span><span class="p">)</span>
 <span class="w">            </span><span class="p">{</span>
 <span class="w">                </span><span class="n">core</span><span class="o">::</span><span class="n">IConfig</span><span class="o">*</span><span class="w"> </span><span class="n">pAppConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
@@ -1012,48 +1053,6 @@ document.write(`
         } 
     });
 </script>
-</div>
-
-<div class="toggle-sidebar">
-  <h3>Contents</h3>
-  <ul>
-    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
-    <ul>
-        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
-        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
-    </ul>
-    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
-    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
-</ul>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const links = document.querySelectorAll(".sidebar-link");
-        const currentPath = window.location.pathname;
-
-        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
-        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
-        let rootPath = '/';
-
-        if (match) {
-            rootPath = match[1];
-            const relPath = currentPath.replace(rootPath, '');
-            const upLevels = relPath.split('/').length - 1;
-            const prefix = '../'.repeat(upLevels);
-
-            links.forEach(link => {
-                const target = link.getAttribute("data-target");
-                if (target) {
-                    link.setAttribute("href", prefix + target);
-                }
-            });
-        } 
-    });
-</script>
 </div></div>
               
             
@@ -1079,7 +1078,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2025, Open Vehicle API Team.
+      © Copyright 2026, Open Vehicle API Team.
       <br/>
     
   </p>

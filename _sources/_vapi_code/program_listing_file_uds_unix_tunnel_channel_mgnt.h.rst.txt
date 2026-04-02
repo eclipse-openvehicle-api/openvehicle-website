@@ -1,0 +1,98 @@
+
+.. _program_listing_file_uds_unix_tunnel_channel_mgnt.h:
+
+Program Listing for File channel_mgnt.h
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_uds_unix_tunnel_channel_mgnt.h>` (``uds_unix_tunnel\channel_mgnt.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   /********************************************************************************
+   * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+   *
+   * This program and the accompanying materials are made available under the
+   * terms of the Apache License Version 2.0 which is available at
+   * https://www.apache.org/licenses/LICENSE-2.0
+   *
+   * SPDX-License-Identifier: Apache-2.0
+   *
+   * Contributors:
+   *   Denisa Ros - initial API and implementation
+   ********************************************************************************/
+   #if defined(__unix__)
+   #ifndef UNIX_TUNNEL_CHANNEL_MGNT_H
+   #define UNIX_TUNNEL_CHANNEL_MGNT_H
+   
+   #include <support/component_impl.h>
+   #include <interfaces/ipc.h>
+   #include "../sdv_services/uds_unix_sockets/channel_mgnt.h"   // existing UDS transport
+   
+   class CUnixTunnelConnection;
+   inline int StartUpWinSock()
+   {
+   #ifdef _WIN32
+       static bool isInitialized = false;
+       if (isInitialized)
+       {
+           return 0;
+       }
+   
+       WSADATA wsaData {};
+       const int error = WSAStartup(MAKEWORD(2, 2), &wsaData);
+       if (error != 0)
+       {
+           SDV_LOG_ERROR("WSAStartup failed with error: ", std::to_string(error));
+       }
+       else
+       {
+           SDV_LOG_INFO("WSAStartup initialized");
+           isInitialized = true;
+       }
+       return error;
+   #else
+       // Non-Windows: nothing to do. Return success for symmetry
+       return 0;
+   #endif
+   }
+   class CUnixTunnelChannelMgnt :
+       public sdv::CSdvObject,
+       public sdv::ipc::ICreateEndpoint,
+       public sdv::ipc::IChannelAccess
+   {
+   public:
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::ipc::IChannelAccess)
+           SDV_INTERFACE_ENTRY(sdv::ipc::ICreateEndpoint)
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
+       DECLARE_OBJECT_CLASS_NAME("UnixTunnelChannelControl")
+       DECLARE_OBJECT_CLASS_ALIAS("TunnelChannelControl")
+       DECLARE_DEFAULT_OBJECT_NAME("TunnelChannelControl")
+       DECLARE_OBJECT_SINGLETON()
+   
+       virtual ~CUnixTunnelChannelMgnt() = default;
+   
+       virtual bool OnInitialize() override;
+   
+       virtual void OnShutdown() override;
+   
+       sdv::ipc::SChannelEndpoint CreateEndpoint(const sdv::u8string& ssChannelConfig) override;
+   
+       sdv::IInterfaceAccess* Access(const sdv::u8string& ssConnectString) override;
+   
+   private:
+       static std::string MakeUserRuntimeDir();
+   
+       std::vector<std::shared_ptr<CUnixTunnelConnection>> m_ServerTunnels;
+   };
+   
+   DEFINE_SDV_OBJECT(CUnixTunnelChannelMgnt)
+   
+   #endif // UNIX_TUNNEL_CHANNEL_MGNT_H
+   #endif // defined(__unix__)

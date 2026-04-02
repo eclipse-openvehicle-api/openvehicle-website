@@ -10,6 +10,20 @@ Program Listing for File parser_toml.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Martin Stimpfl - initial API and implementation
+    *   Erik Verhoeven - writing TOML and whitespace preservation
+    ********************************************************************************/
+   
    #ifndef PARSER_TOML_H
    #define PARSER_TOML_H
    
@@ -27,9 +41,7 @@ Program Listing for File parser_toml.h
        class CParser : public sdv::IInterfaceAccess, public sdv::toml::ITOMLParser
        {
        public:
-           CParser() = default;
-   
-           CParser(const std::string& rssString);
+           CParser(const std::string& rssString = std::string());
    
            // Interface map
            BEGIN_SDV_INTERFACE_MAP()
@@ -37,7 +49,6 @@ Program Listing for File parser_toml.h
                SDV_INTERFACE_CHAIN_MEMBER(m_ptrRoot)
            END_SDV_INTERFACE_MAP()
    
-           
            void Clear();
    
            // Ignore cppcheck warning for not using dynamic binding when being called through the constructor.
@@ -67,14 +78,15 @@ Program Listing for File parser_toml.h
    
            enum class EEnvironment
            {
-               env_array,       
-               env_inline_table 
+               none,               
+               array,              
+               inline_table        
            };
    
-           std::stack<EEnvironment>            m_stackEnvironment;     
-           std::shared_ptr<CRootTable>         m_ptrRoot;              
-           std::shared_ptr<CNodeCollection>    m_ptrCurrentCollection; 
-           CLexer                              m_lexer;                
+           enum_stack<EEnvironment, EEnvironment::none>    m_stackEnvironment;     
+           std::shared_ptr<CRootTable>                     m_ptrRoot;              
+           std::shared_ptr<CNodeCollection>                m_ptrCurrentCollection; 
+           CLexer                                          m_lexer;                
        };
    } // namespace toml_parser
    

@@ -10,6 +10,19 @@ Program Listing for File app_control.h
 
 .. code-block:: cpp
 
+    /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the 
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
    #ifndef SDV_APP_CONTROL_H
    #define SDV_APP_CONTROL_H
    
@@ -274,6 +287,33 @@ Program Listing for File app_control.h
                    core::EConfigProcessResult eResult = pAppConfig->LoadConfig(ssFilename);
                    if (bRunning) SetRunningMode();
                    return eResult;
+               }
+   
+               bool SaveConfig(/*in*/ sdv::u8string ssConfigPath) const
+               {
+                   const core::IConfig* pAppConfig = nullptr;
+                   sdv::TInterfaceAccessPtr ptrConfigObj = core::GetObject("ConfigService");
+                   if (ptrConfigObj) pAppConfig = ptrConfigObj.GetInterface<core::IConfig>();
+                   if (!pAppConfig) return false;
+                   return pAppConfig->SaveConfig(ssConfigPath);
+               }
+   
+               sdv::u8string GenerateConfigString() const
+               {
+                   const core::IConfig* pAppConfig = nullptr;
+                   sdv::TInterfaceAccessPtr ptrConfigObj = core::GetObject("ConfigService");
+                   if (ptrConfigObj) pAppConfig = ptrConfigObj.GetInterface<core::IConfig>();
+                   if (!pAppConfig) return {};
+                   return pAppConfig->GenerateConfigString();
+               }
+   
+               void CloseConfig()
+               {
+                   core::IConfig* pAppConfig = nullptr;
+                   sdv::TInterfaceAccessPtr ptrConfigObj = core::GetObject("ConfigService");
+                   if (ptrConfigObj) pAppConfig = ptrConfigObj.GetInterface<core::IConfig>();
+                   if (!pAppConfig) return;
+                   pAppConfig->CloseConfig();
                }
    
                bool AddConfigSearchDir(/*in*/ const std::filesystem::path& rpathDir)

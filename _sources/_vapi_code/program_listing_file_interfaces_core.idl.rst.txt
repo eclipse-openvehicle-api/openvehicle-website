@@ -10,6 +10,20 @@ Program Listing for File core.idl
 
 .. code-block:: idl
 
+    /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the 
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0 
+    *
+    * This file provides the core interface definitions of the core SDV framework.
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
    
    #include "core_types.idl"
    
@@ -46,14 +60,20 @@ Program Listing for File core.idl
    
        enum EObjectType : uint32
        {
-           SystemObject = 0,       
-           Device = 10,            
-           BasicService = 20,      
-           ComplexService = 21,    
-           Application = 30,       
-           Proxy = 100,            
-           Stub = 101,             
-           Utility = 1000,         
+           undefined = 0,              
+           system_object = 1,          
+           device = 10,                
+           platform_abstraction = 11,  
+           vehicle_bus = 12,           
+           basic_service = 20,         
+           sensor = 21,                
+           actuator = 22,              
+           complex_service = 30,       
+           vehicle_function = 31,      
+           application = 50,           
+           proxy = 100,                
+           stub = 101,                 
+           utility = 1000,             
        };
    
        enum EObjectFlags : uint32
@@ -64,9 +84,10 @@ Program Listing for File core.idl
        struct SClassInfo
        {
            u8string            ssModulePath;           
-           u8string            ssClassName;            
+           u8string            ssName;                 
            sequence<u8string>  seqClassAliases;        
            u8string            ssDefaultObjectName;    
+           u8string            ssDefaultConfig;        
            EObjectType         eType;                  
            uint32              uiFlags;                
            sequence<u8string>  seqDependencies;        
@@ -74,6 +95,10 @@ Program Listing for File core.idl
    
        interface IObjectFactory
        {
+           sequence<u8string> GetClassNames() const;
+   
+           SClassInfo GetClassInfo(in u8string ssClassName) const;
+   
            IInterfaceAccess CreateObject(in u8string ssClassName);
    
            void DestroyObject(in IInterfaceAccess sdvObject);
@@ -81,7 +106,7 @@ Program Listing for File core.idl
            void DestroyAllObjects();
        };
    
-       enum EObjectStatus : uint32
+       enum EObjectState : uint32
        {
            initialization_pending = 0,     
            initializing = 10,              
@@ -105,9 +130,11 @@ Program Listing for File core.idl
        {
            void Initialize(in u8string ssObjectConfig);
    
-           EObjectStatus GetStatus() const;
+           EObjectState GetObjectState() const;
    
            void SetOperationMode(in EOperationMode eMode);
+   
+           u8string GetObjectConfig() const;
    
            void Shutdown();
        };

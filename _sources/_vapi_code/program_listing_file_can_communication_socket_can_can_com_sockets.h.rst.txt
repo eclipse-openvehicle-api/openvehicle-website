@@ -10,6 +10,20 @@ Program Listing for File can_com_sockets.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Sudipta Durjoy - initial API and implementation
+    *   Thomas Pfleiderer - refactored and finalized 
+    ********************************************************************************/
+   
    #ifndef CAN_COM_SOCKET_H
    #define CAN_COM_SOCKET_H
    
@@ -38,7 +52,7 @@ Program Listing for File can_com_sockets.h
    #error This code builds only on LINUX
    #endif
    
-   class CCANSockets : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::can::IRegisterReceiver,
+   class CCANSockets : public sdv::CSdvObject, public sdv::can::IRegisterReceiver,
        public sdv::can::ISend, sdv::can::IInformation
    {
    public:
@@ -51,19 +65,15 @@ Program Listing for File can_com_sockets.h
            SDV_INTERFACE_ENTRY(sdv::can::IInformation)
        END_SDV_INTERFACE_MAP()
    
-       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::Device)
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::vehicle_bus)
        DECLARE_OBJECT_CLASS_NAME("CAN_Com_Sockets")
        DECLARE_DEFAULT_OBJECT_NAME("CAN_Communication_Object")
        DECLARE_OBJECT_SINGLETON()
    
        
-       virtual void Initialize(const sdv::u8string& ssObjectConfig) override;
+       virtual bool OnInitialize() override;
    
-       virtual sdv::EObjectStatus GetStatus() const override;
-   
-       void SetOperationMode(sdv::EOperationMode eMode) override;
-   
-       virtual void Shutdown() override;
+       virtual void OnShutdown() override;
    
        virtual void RegisterReceiver(/*in*/ sdv::can::IReceive* pReceiver) override;
    
@@ -81,6 +91,10 @@ Program Listing for File can_com_sockets.h
        void CreateAndBindSockets(const std::deque<std::string>& vecConfigInterfaces,
            const std::set<std::string>& availableInterfaces);
    
+       void LogConfigurations();
+   
+       void LogAllCanInterfaceNames();
+   
        struct SSocketDefinition
        {
            int networkInterface; 
@@ -88,7 +102,6 @@ Program Listing for File can_com_sockets.h
            std::string name;     
        };
    
-       std::atomic<sdv::EObjectStatus> m_eStatus = sdv::EObjectStatus::initialization_pending;  
        std::thread                     m_threadReceive;    
        mutable std::mutex              m_mtxReceivers;     
        std::set<sdv::can::IReceive*>   m_setReceivers;     

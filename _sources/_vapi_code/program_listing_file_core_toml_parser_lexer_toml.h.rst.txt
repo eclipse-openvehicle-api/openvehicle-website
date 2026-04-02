@@ -10,6 +10,20 @@ Program Listing for File lexer_toml.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Martin Stimpfl - initial API and implementation
+    *   Erik Verhoeven - writing TOML and whitespace preservation
+    ********************************************************************************/
+   
    #ifndef LEXER_TOML_H
    #define LEXER_TOML_H
    
@@ -22,6 +36,22 @@ Program Listing for File lexer_toml.h
    
    namespace toml_parser
    {
+       template <typename TEnum, TEnum TDefault>
+       class enum_stack : public std::stack<TEnum>
+       {
+       public:
+           void pop()
+           {
+               if (!std::stack<TEnum>::empty())
+                   std::stack<TEnum>::pop();
+           }
+   
+           TEnum top() const
+           {
+               return std::stack<TEnum>::empty() ? TDefault : std::stack<TEnum>::top();
+           }
+       };
+   
        class CNodeTokenRange
        {
        public:
@@ -70,7 +100,9 @@ Program Listing for File lexer_toml.h
    
            void Feed(const std::string& rssString, bool bValueOnly = false);
    
-           void Reset();
+           void Clear();
+   
+           void ResetCursor();
    
            enum class ENavigationMode
            {
@@ -131,11 +163,13 @@ Program Listing for File lexer_toml.h
    
            enum class EExpectation
            {
+               undefined,          
                expect_key,        
                expect_value,      
                expect_value_once, 
            };
-           std::stack<EExpectation> m_stackExpectations; 
+           enum_stack<EExpectation, EExpectation::undefined>
+               m_stackExpectations; 
    
            const std::vector<std::string>
                m_vecKeyDelimiters{"\n", "\t", "\r", " ", "", ".", "=", "]"}; 

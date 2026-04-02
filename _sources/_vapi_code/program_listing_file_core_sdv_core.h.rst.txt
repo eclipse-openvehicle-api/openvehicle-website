@@ -10,11 +10,25 @@ Program Listing for File sdv_core.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
    #ifndef CORE_H
    #define CORE_H
    
    #include <support/component_impl.h>
    #include "app_control.h"
+   #include "app_settings.h"
    #include "module_control.h"
    #include "memory.h"
    #include "repository.h"
@@ -30,56 +44,18 @@ Program Listing for File sdv_core.h
        ~CSDVCore();
    
        BEGIN_SDV_INTERFACE_MAP()
-           SDV_INTERFACE_CHAIN_MEMBER(m_appctrl)
-           SDV_INTERFACE_CHAIN_MEMBER(m_modulectrl)
-           SDV_INTERFACE_CHAIN_MEMBER(m_memmgr)
-           SDV_INTERFACE_CHAIN_MEMBER(m_repository)
-           SDV_INTERFACE_CHAIN_MEMBER(m_loggerctrl)
+           SDV_INTERFACE_CHAIN_MEMBER(GetAppControl())
+           SDV_INTERFACE_CHAIN_MEMBER(GetAppSettings())
+           SDV_INTERFACE_CHAIN_MEMBER(GetModuleControl())
+           SDV_INTERFACE_CHAIN_MEMBER(GetMemoryManager())
+           SDV_INTERFACE_CHAIN_MEMBER(GetRepository())
+           SDV_INTERFACE_CHAIN_MEMBER(GetLoggerControl())
        END_SDV_INTERFACE_MAP()
    
        
        static CSDVCore& GetInstance();
-   
-       CAppControl& GetAppControl();
-   
-       CModuleControl& GetModuleControl();
-   
-       CMemoryManager& GetMemoryManager();
-   
-       CRepository& GetRepository();
-   
-       CLoggerControl& GetLoggerControl();
-   
-       CLogger& GetDefaultLogger();
-   
-       CAppConfig& GetAppConfig();
-   
-   private:
-       CMemoryManager      m_memmgr;           
-       CAppControl         m_appctrl;          
-       CRepository         m_repository;       
-       CModuleControl      m_modulectrl;       
-       CLogger             m_defaultlogger;    
-       CLoggerControl      m_loggerctrl;       
-       CAppConfig          m_appconfig;        
    };
    
    extern "C" SDV_SYMBOL_PUBLIC sdv::IInterfaceAccess* SDVCore();
-   
-   CAppControl& GetAppControl();
-   
-   CModuleControl& GetModuleControl();
-   
-   CMemoryManager& GetMemoryManager();
-   
-   CRepository& GetRepository();
-   
-   CLoggerControl& GetLoggerControl();
-   
-   CLogger& GetDefaultLogger();
-   
-   CAppConfig& GetAppConfig();
-   
-   std::filesystem::path GetCoreDirectory();
    
    #endif // !defined CORE_H

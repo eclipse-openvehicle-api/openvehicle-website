@@ -27,7 +27,7 @@ To complete these steps, you need to create two source files:
 
 In CMakeLists.txt file you need to add wiper_app/console.cpp.
 
-Follwowing file contain already some functionionality to print to console.
+Following file contain already some functionality to print to console.
 
 
 Console
@@ -731,7 +731,7 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 
 		void CConsole::UpdateTxData()
 		{
-			//Basic serivce signals
+			//Basic service signals
 			PrintValue(g_bsWiperFrontActive, "Front Wiper: ", m_WiperFrontIsActive, (m_WiperFrontIsActive ? "Active" : "Inactive"));
 			PrintValue(g_bsWiperRearActive, "Rear Wiper: ", m_WiperRearIsActive, (m_WiperRearIsActive ? "Active" : "Inactive"));
 		}
@@ -742,7 +742,7 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 			PrintText(g_dsWiperModeEvent, "Wiper mode: .............   " + m_WiperMode + "      ");
 			PrintValue(g_dsWeatherRain, "Weather: ", m_IsRainDetected, (m_IsRainDetected ? "Raining" : "Clear/dry"));
 
-			//Basic serivce signals
+			//Basic service signals
 			PrintText(g_bsWiperModeEvent, "Wiper mode: .............   " + m_WiperMode + "      ");
 			PrintValue(g_bsWeatherRain, "Weather: ", m_IsRainDetected, (m_IsRainDetected ? "Raining" : "Clear/dry"));
 			PrintValue(g_bsWiperFrontActive, "Front Wiper: ", m_WiperFrontIsActive, (m_WiperFrontIsActive ? "Active" : "Inactive"));
@@ -755,13 +755,13 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 			std::cout << "\033[6n";
 
 			char buff[128];
-			int indx = 0;
+			int index = 0;
 			for (;;) {
 				int cc = std::cin.get();
-				buff[indx] = (char)cc;
-				indx++;
+				buff[index] = (char)cc;
+				index++;
 				if (cc == 'R') {
-					buff[indx + 1] = '\0';
+					buff[index + 1] = '\0';
 					break;
 				}
 			}
@@ -1060,7 +1060,7 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 			 * @param[in] sPos The location to print the value at.
 			 * @param[in] rssName Reference to the value.
 			 * @param[in] tValue The value.
-			 * @param[in] rssStatus Status, becuse we have signals of type bool
+			 * @param[in] rssStatus Status, because we have signals of type bool
 			 */
 			template <typename TValue>
 			void PrintValue(SConsolePos sPos, const std::string& rssName, TValue tValue, const std::string& rssStatus);
@@ -1183,7 +1183,7 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 
 		set(CMAKE_CXX_STANDARD 17)
 
-		# Libary symbols are hidden by default
+		# Library symbols are hidden by default
 		set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
 		# Include directory to the core framework
@@ -1197,7 +1197,7 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 		# services are generated during the configuration phase of CMake. This is necessary, since CMakeFiles.txt files are generated and
 		# they have to be available during the configuration phase of CMake to be taken into the build process. Requisite for the code
 		# generation during the configuration time of CMake is the availability of the tools to do the generation. Hence the tools cannot be
-		# created during the build process, which is executed after the configuraiton process.
+		# created during the build process, which is executed after the configuration process.
 
 		# Execute sdv_vss_util to create IDL files for devices and basic services.
 		message("Create interface code for devices and basic services of wiper example.")

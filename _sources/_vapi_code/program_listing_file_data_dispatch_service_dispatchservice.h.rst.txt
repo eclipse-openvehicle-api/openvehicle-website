@@ -10,6 +10,19 @@ Program Listing for File dispatchservice.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
    #ifndef DISPATCH_SERVICE_H
    #define DISPATCH_SERVICE_H
    
@@ -37,7 +50,7 @@ Program Listing for File dispatchservice.h
    #include "trigger.h"
    
    class CDispatchService : public sdv::CSdvObject, public sdv::core::ISignalTransmission, public sdv::core::ISignalAccess,
-       public sdv::core::IDispatchTransaction, public sdv::IObjectControl
+       public sdv::core::IDispatchTransaction
    {
    public:
        CDispatchService();
@@ -47,11 +60,10 @@ Program Listing for File dispatchservice.h
            SDV_INTERFACE_ENTRY(sdv::core::ISignalTransmission)
            SDV_INTERFACE_ENTRY(sdv::core::ISignalAccess)
            SDV_INTERFACE_ENTRY(sdv::core::IDispatchTransaction)
-           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
        END_SDV_INTERFACE_MAP()
    
        // Object declarations
-       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
        DECLARE_OBJECT_CLASS_NAME("DataDispatchService")
        DECLARE_OBJECT_SINGLETON()
        DECLARE_OBJECT_DEPENDENCIES("TaskTimerService")
@@ -78,13 +90,9 @@ Program Listing for File dispatchservice.h
    
        uint64_t GetDirectTransactionID() const;
    
-       void Initialize(const sdv::u8string& ssObjectConfig) override;
+       virtual bool OnInitialize() override;
    
-       sdv::EObjectStatus GetStatus() const override;
-   
-       void SetOperationMode(sdv::EOperationMode eMode) override;
-   
-       void Shutdown() override;
+       virtual void OnShutdown() override;
    
        void UnregisterSignal(const sdv::u8string& ssSignalName, sdv::core::ESignalDirection eDirection);
    
@@ -100,7 +108,6 @@ Program Listing for File dispatchservice.h
        mutable std::mutex                              m_mtxSignals;                           
        std::map<sdv::u8string, CSignal>                m_mapRxSignals;                         
        std::map<sdv::u8string, CSignal>                m_mapTxSignals;                         
-       sdv::EObjectStatus      m_eObjectStatus = sdv::EObjectStatus::initialization_pending;    
        std::atomic_uint64_t                            m_uiTransactionCnt = 1ull;              
        std::mutex                                      m_mtxTransactions;                      
        std::list<CTransaction>                         m_lstTransactions;                      

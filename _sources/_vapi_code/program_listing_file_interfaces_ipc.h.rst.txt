@@ -11,8 +11,8 @@ Program Listing for File ipc.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__IPC_H__20260115_165123_298__
-   #define __IDL_GENERATED__IPC_H__20260115_165123_298__
+   #ifndef __IDL_GENERATED__IPC_H__20260402_165454_861__
+   #define __IDL_GENERATED__IPC_H__20260402_165454_861__
    
    #ifdef _MSC_VER
    // Prevent bogus warnings about uninitialized members during static code analysis.
@@ -50,7 +50,7 @@ Program Listing for File ipc.h
                virtual IInterfaceAccess* Access(/*in*/ const sdv::u8string& ssConnectString) = 0;
            };
    
-           enum class EConnectStatus : uint32_t
+           enum class EConnectState : uint32_t
            {
                uninitialized = 0,
    
@@ -77,7 +77,7 @@ Program Listing for File ipc.h
    
            interface IConnect
            {
-               static constexpr ::sdv::interface_id _id = 0x8D73A5E8FFBB9261;
+               static constexpr ::sdv::interface_id _id = 0x1AEC72C2188D272A;
    
                virtual bool AsyncConnect(/*in*/ IInterfaceAccess* pReceiver) = 0;
    
@@ -87,18 +87,18 @@ Program Listing for File ipc.h
    
                virtual void Disconnect() = 0;
    
-               virtual uint64_t RegisterStatusEventCallback(/*in*/ IInterfaceAccess* pEventCallback) = 0;
+               virtual uint64_t RegisterStateEventCallback(/*in*/ IInterfaceAccess* pEventCallback) = 0;
    
-               virtual void UnregisterStatusEventCallback(/*in*/ uint64_t uiCookie) = 0;
+               virtual void UnregisterStateEventCallback(/*in*/ uint64_t uiCookie) = 0;
    
-               virtual EConnectStatus GetStatus() const = 0;
+               virtual EConnectState GetConnectState() const = 0;
            };
    
            interface IConnectEventCallback
            {
-               static constexpr ::sdv::interface_id _id = 0x6B0B33C1F11C7CF9;
+               static constexpr ::sdv::interface_id _id = 0x659B4E92C6FB812D;
    
-               virtual void SetStatus(/*in*/ EConnectStatus eConnectStatus) = 0;
+               virtual void SetConnectState(/*in*/ EConnectState eConnectState) = 0;
            };
    
            interface IDataSend
@@ -121,4 +121,4 @@ Program Listing for File ipc.h
    #pragma warning(pop)
    #endif
    
-   #endif // !defined(__IDL_GENERATED__IPC_H__20260115_165123_301__)
+   #endif // !defined(__IDL_GENERATED__IPC_H__20260402_165454_873__)

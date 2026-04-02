@@ -10,16 +10,27 @@ Program Listing for File config.idl
 
 .. code-block:: idl
 
+    /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the 
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0 
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
    
    #include "core.idl"
    
+   #verbatim_begin
+   #include "../support/string.h"
+   #verbatim_end
+    
    module sdv
    {
-       #verbatim_begin
-   #include "../support/string.h"
-       #verbatim_end
-   
-   
        exception XCannotOpenFile : XSysExcept
        {
            const char _description[] = "Cannot open a file.";
@@ -93,11 +104,15 @@ Program Listing for File config.idl
    
                boolean SaveConfig(in u8string ssConfigPath) const;
    
+               u8string GenerateConfigString() const;
+   
+               void CloseConfig();
+   
                boolean AddConfigSearchDir(in u8string ssDir);
    
                void ResetConfigBaseline();
            };
-       };      // module core
+       }; // module core
    
        module installation
        {

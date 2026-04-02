@@ -11,8 +11,8 @@ Program Listing for File core.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__CORE_H__20260115_165121_286__
-   #define __IDL_GENERATED__CORE_H__20260115_165121_286__
+   #ifndef __IDL_GENERATED__CORE_H__20260402_165454_596__
+   #define __IDL_GENERATED__CORE_H__20260402_165454_596__
    
    #ifdef _MSC_VER
    // Prevent bogus warnings about uninitialized members during static code analysis.
@@ -59,21 +59,33 @@ Program Listing for File core.h
    
        enum class EObjectType : uint32_t
        {
-           SystemObject = 0,
+           undefined = 0,
    
-           Device = 10,
+           system_object = 1,
    
-           BasicService = 20,
+           device = 10,
    
-           ComplexService = 21,
+           platform_abstraction = 11,
    
-           Application = 30,
+           vehicle_bus = 12,
    
-           Proxy = 100,
+           basic_service = 20,
    
-           Stub = 101,
+           sensor = 21,
    
-           Utility = 1000,
+           actuator = 22,
+   
+           complex_service = 30,
+   
+           vehicle_function = 31,
+   
+           application = 50,
+   
+           proxy = 100,
+   
+           stub = 101,
+   
+           utility = 1000,
        };
    
        enum class EObjectFlags : uint32_t
@@ -85,11 +97,13 @@ Program Listing for File core.h
        {
            sdv::u8string ssModulePath;
    
-           sdv::u8string ssClassName;
+           sdv::u8string ssName;
    
            sdv::sequence<sdv::u8string> seqClassAliases;
    
            sdv::u8string ssDefaultObjectName;
+   
+           sdv::u8string ssDefaultConfig;
    
            EObjectType eType;
    
@@ -100,7 +114,11 @@ Program Listing for File core.h
    
        interface IObjectFactory
        {
-           static constexpr ::sdv::interface_id _id = 0xD44C24E971FFB2F0;
+           static constexpr ::sdv::interface_id _id = 0x7C840B3236DD6933;
+   
+           virtual sdv::sequence<sdv::u8string> GetClassNames() const = 0;
+   
+           virtual SClassInfo GetClassInfo(/*in*/ const sdv::u8string& ssClassName) const = 0;
    
            virtual IInterfaceAccess* CreateObject(/*in*/ const sdv::u8string& ssClassName) = 0;
    
@@ -109,7 +127,7 @@ Program Listing for File core.h
            virtual void DestroyAllObjects() = 0;
        };
    
-       enum class EObjectStatus : uint32_t
+       enum class EObjectState : uint32_t
        {
            initialization_pending = 0,
    
@@ -141,13 +159,15 @@ Program Listing for File core.h
    
        interface IObjectControl
        {
-           static constexpr ::sdv::interface_id _id = 0xD8AE1C98934FBA73;
+           static constexpr ::sdv::interface_id _id = 0x42C63A3374DB3813;
    
            virtual void Initialize(/*in*/ const sdv::u8string& ssObjectConfig) = 0;
    
-           virtual EObjectStatus GetStatus() const = 0;
+           virtual EObjectState GetObjectState() const = 0;
    
            virtual void SetOperationMode(/*in*/ EOperationMode eMode) = 0;
+   
+           virtual sdv::u8string GetObjectConfig() const = 0;
    
            virtual void Shutdown() = 0;
        };
@@ -201,4 +221,4 @@ Program Listing for File core.h
    #pragma warning(pop)
    #endif
    
-   #endif // !defined(__IDL_GENERATED__CORE_H__20260115_165121_288__)
+   #endif // !defined(__IDL_GENERATED__CORE_H__20260402_165454_614__)
