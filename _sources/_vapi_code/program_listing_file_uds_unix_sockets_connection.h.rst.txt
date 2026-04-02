@@ -1,0 +1,250 @@
+
+.. _program_listing_file_uds_unix_sockets_connection.h:
+
+Program Listing for File connection.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_uds_unix_sockets_connection.h>` (``uds_unix_sockets\connection.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   /********************************************************************************
+   * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+   *
+   * This program and the accompanying materials are made available under the
+   * terms of the Apache License Version 2.0 which is available at
+   * https://www.apache.org/licenses/LICENSE-2.0
+   *
+   * SPDX-License-Identifier: Apache-2.0
+   *
+   * Contributors:
+   *   Denisa Ros - initial API and implementation
+   ********************************************************************************/
+   
+   #if defined(__unix__)
+   #ifndef CONNECTION_H
+   #define CONNECTION_H
+   
+   #include <interfaces/ipc.h>
+   #include <support/component_impl.h>
+   #include <support/interface_ptr.h>
+   
+   #include <atomic>
+   #include <cstdint>
+   #include <condition_variable>
+   #include <mutex>
+   #include <string>
+   #include <thread>
+   #include <vector>
+   #include <list>
+   
+   class CUnixSocketConnection
+       : public std::enable_shared_from_this<CUnixSocketConnection>
+       , public sdv::IInterfaceAccess
+       , public sdv::IObjectDestroy
+       , public sdv::ipc::IDataSend
+       , public sdv::ipc::IConnect
+   {
+   public:
+       CUnixSocketConnection(int preconfiguredFd, bool acceptConnectionRequired, const std::string& udsPath);
+   
+       virtual ~CUnixSocketConnection();
+   
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::ipc::IDataSend)
+           SDV_INTERFACE_ENTRY(sdv::ipc::IConnect)
+           SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
+       END_SDV_INTERFACE_MAP()
+   
+       std::string GetConnectionString();
+   
+       // ---------- IDataSend ----------
+       bool SendData(/*inout*/ sdv::sequence<sdv::pointer<uint8_t>>& seqData) override;
+   
+       // ---------- IConnect ----------
+       bool AsyncConnect(/*in*/ sdv::IInterfaceAccess* pReceiver) override;
+   
+       bool WaitForConnection(/*in*/ uint32_t uiWaitMs) override;
+   
+       void CancelWait() override;
+   
+       void Disconnect() override;
+   
+       // ---------- IConnect: event callbacks ----------
+       uint64_t RegisterStateEventCallback(/*in*/ sdv::IInterfaceAccess* pEventCallback) override;
+   
+       void UnregisterStateEventCallback(/*in*/ uint64_t uiCookie) override;
+   
+       sdv::ipc::EConnectState GetConnectState() const override;
+   
+       void DestroyObject() override;
+   
+       void SetConnectState(sdv::ipc::EConnectState eConnectState);
+   
+       bool IsServer() const;
+   
+       // ---------- Protocol types ----------
+       enum class EMsgType : uint32_t
+       {
+           sync_request     = 0,         
+           sync_answer      = 1,         
+           connect_request  = 10,        
+           connect_answer   = 11,        
+           connect_term     = 90,        
+           data             = 0x10000000,
+           data_fragment    = 0x10000001 
+       };
+   
+       struct SMsgHdr
+       {
+           uint32_t uiVersion; 
+           EMsgType eType;     
+       };
+   
+       struct SConnectMsg : SMsgHdr
+       {
+           sdv::process::TProcessID tProcessID; 
+       };
+   
+       struct SFragmentedMsgHdr : SMsgHdr
+       {
+           uint32_t uiTotalLength; 
+           uint32_t uiOffset;      
+       };
+   
+       // ---------- Minimal SDV message wrapper ----------
+       class CMessage
+       {
+       public:
+           explicit CMessage(std::vector<uint8_t>&& data) : m_Data(std::move(data)) {}
+   
+           const uint8_t* GetData() const { return m_Data.empty() ? nullptr : m_Data.data(); }
+   
+           uint32_t GetSize() const { return static_cast<uint32_t>(m_Data.size()); }
+   
+           SMsgHdr GetMsgHdr() const
+           {
+               if (GetSize() < sizeof(SMsgHdr)) return SMsgHdr{0, EMsgType::connect_term};
+               return *reinterpret_cast<const SMsgHdr*>(GetData());
+           }
+   
+           SConnectMsg GetConnectHdr() const
+           {
+               if (GetSize() < sizeof(SConnectMsg)) return SConnectMsg{};
+               return *reinterpret_cast<const SConnectMsg*>(GetData());
+           }
+   
+           SFragmentedMsgHdr GetFragmentedHdr() const
+           {
+               if (GetSize() < sizeof(SFragmentedMsgHdr)) return SFragmentedMsgHdr{};
+               return *reinterpret_cast<const SFragmentedMsgHdr*>(GetData());
+           }
+   
+           bool IsValid() const
+           {
+               if (!GetData() || GetSize() < sizeof(SMsgHdr)) return false;
+               SMsgHdr hdr = GetMsgHdr();
+               switch (hdr.eType)
+               {
+                   case EMsgType::sync_request:
+                   case EMsgType::sync_answer:
+                   case EMsgType::connect_term:
+                   case EMsgType::data:
+                       return true;
+                   case EMsgType::connect_request:
+                   case EMsgType::connect_answer:
+                       return GetSize() >= sizeof(SConnectMsg);
+                   case EMsgType::data_fragment:
+                       return GetSize() >= sizeof(SFragmentedMsgHdr);
+                   default:
+                       return false;
+               }
+           }
+   
+       private:
+           std::vector<uint8_t> m_Data;
+       };
+   
+       struct SDataContext
+       {
+           uint32_t uiTotalSize      = 0; 
+           uint32_t uiCurrentOffset  = 0; 
+           size_t   nChunkIndex      = 0; 
+           uint32_t uiChunkOffset    = 0; 
+           sdv::sequence<sdv::pointer<uint8_t>> seqDataChunks; 
+       };
+   
+       struct SEventCallback
+       {
+           uint64_t                            uiCookie = 0;           
+           sdv::ipc::IConnectEventCallback*    pCallback = nullptr;    
+       };
+   
+       static constexpr uint32_t kMaxUdsPacketSize = 64u * 1024u * 1024u; // 64 MiB
+   
+       // ---------- Transport helpers ----------
+       int AcceptConnection();
+   
+       bool ReadNumberOfBytes(char* buffer, uint32_t bufferLength);
+   
+       bool ReadTransportHeader(uint32_t& packetSize);
+   
+       bool SendSizedPacket(const void* pData, uint32_t uiDataLength);
+   
+       void ReceiveMessages();
+   
+       void ReceiveSyncRequest(const CMessage& message);
+   
+       void ReceiveSyncAnswer(const CMessage& message);
+   
+       void ReceiveConnectRequest(const CMessage& message);
+   
+       void ReceiveConnectAnswer(const CMessage& message);
+   
+       void ReceiveConnectTerm(const CMessage& message);
+   
+       void ReceiveDataMessage(const CMessage& rMessage, SDataContext& rsDataCtxt);
+   
+       void ReceiveDataFragmentMessage(const CMessage& rMessage, SDataContext& rsDataCtxt);
+   
+       uint32_t ReadDataTable(const CMessage& rMessage, SDataContext& rsDataCtxt);
+   
+       bool ReadDataChunk(const CMessage& rMessage, uint32_t uiOffset, SDataContext& rsDataCtxt);
+   
+       // ---------- Internal threading ----------
+       void ConnectWorker();
+       void StartReceiveThread_Unsafe();
+       void StopThreadsAndCloseSockets(bool unlinkPath);
+   
+   private:
+       //Transport state
+       int         m_Fd                     { -1 };  
+       int         m_ListenFd               { -1 };  
+       bool        m_AcceptConnectionRequired { false };
+       std::string m_UdsPath;
+   
+       //Threads & control
+       std::atomic<bool> m_StopReceiveThread { false };
+       std::atomic<bool> m_StopConnectThread { false };
+       std::thread       m_ReceiveThread;
+       std::thread       m_ConnectThread;
+   
+       //State & synchronization
+       std::condition_variable                m_StateCv;
+       std::atomic<sdv::ipc::EConnectState>   m_eConnectState { sdv::ipc::EConnectState::uninitialized };
+       sdv::ipc::IDataReceiveCallback*        m_pReceiver { nullptr };
+       sdv::ipc::IConnectEventCallback*       m_pEvent    { nullptr };
+       std::mutex                             m_MtxConnect;
+       std::condition_variable                m_CvConnect;
+       std::mutex                             m_StateMtx;  
+       std::list<SEventCallback>              m_lstEventCallbacks;  
+       std::shared_mutex                      m_mtxEventCallbacks;  
+   
+       //TX synchronization
+       std::mutex m_SendMtx;
+   };
+   
+   #endif // CONNECTION_H
+   #endif // defined(__unix__)

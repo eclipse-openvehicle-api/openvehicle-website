@@ -10,6 +10,20 @@ Program Listing for File parser_node_toml.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Martin Stimpfl - initial API and implementation
+    *   Erik Verhoeven - writing TOML and whitespace preservation
+    ********************************************************************************/
+   
    #ifndef PARSER_NODE_TOML_H
    #define PARSER_NODE_TOML_H
    
@@ -21,10 +35,9 @@ Program Listing for File parser_node_toml.h
    #include <list>
    #include <map>
    
-   #include <interfaces/toml.h>
    #include <support/interface_ptr.h>
-   #include "lexer_toml.h"
    #include "miscellaneous.h"
+   #include "code_snippet.h"
    
    namespace toml_parser
    {
@@ -38,9 +51,11 @@ Program Listing for File parser_node_toml.h
    
        enum class EGenerateOptions : uint32_t
        {
-           inline_when_possible   = 0x01, 
-           explicit_when_possible = 0x02, 
-           no_comments            = 0x10, 
+           inline_when_possible   = 0x01,  
+           explicit_when_possible = 0x02,  
+           no_comments            = 0x10,  
+           reduce_whitespace      = 0x20,  
+           full_header            = 0x40,  
        };
    
        class CGenContext
@@ -52,11 +67,18 @@ Program Listing for File parser_node_toml.h
    
            bool PartOfExcludedParents(const std::shared_ptr<const CNode>& rptrNode) const;
    
-           CGenContext CopyWithContext(const std::string& rssNewKeyContext) const;
+           CGenContext CopyWithContext(const std::string& rssNewKeyContext, const std::shared_ptr<CNode>& rptrNode,
+               bool bLastNode) const;
    
            const std::string& PrefixKey() const;
    
            const std::string& KeyContext() const;
+   
+           const std::string& KeyPath() const;
+   
+           const std::string& FullKeyPath() const;
+   
+           const std::string& RelKeyPath() const;
    
            bool TopMostNode() const;
    
@@ -64,17 +86,57 @@ Program Listing for File parser_node_toml.h
    
            bool CheckOption(EGenerateOptions eOption) const;
    
+           bool LastNode() const;
+   
+           enum class EPresentation
+           {
+               standard,        
+               standard_inline, 
+               embedded,        
+           };
+   
+           EPresentation Presentation() const;
+   
+           bool Standard() const;
+   
+           bool Inline() const;
+   
+           bool Embedded() const;
+   
+           bool Assignment() const;
+   
+           bool CommaNeeded() const;
+   
+           bool CommentAndNewlineAllowed() const;
+   
+           bool NewlineAllowed() const;
+   
+           bool FinalNewline() const;
+   
        private:
-           std::shared_ptr<const CNode>    m_ptrTopMostNode;   
-           std::string                     m_ssPrefixKey;      
-           std::string                     m_ssKeyContext;     
-           uint32_t                        m_uiOptions = 0;    
-           bool                            m_bTopMost = true;  
+           void ExtractContext(const std::shared_ptr<const CNode>& rptrNode);
+   
+           std::shared_ptr<const CNode> m_ptrTopMostNode;                  
+           std::string         m_ssPrefixKey;                              
+           std::string         m_ssKeyContext2;
+           std::string         m_ssKeyContext;                             
+           std::string         m_ssKeyPath;                                
+           std::string         m_ssFullKeyPath;                            
+           std::string         m_ssRelKeyPath;                             
+           uint32_t            m_uiOptions = 0;                            
+           bool                m_bTopMost = true;                          
+           bool                m_bLastNode = false;                        
+           bool                m_bFinalLastNode = false;                   
+           EPresentation       m_ePresentation = EPresentation::standard;  
+           bool                m_bOneLine = false;                         
+           bool                m_bAssignment = false;                      
+           bool                m_bCommaNeeded = false;                     
+           bool                m_bFinalNewline = false;                    
        };
    
        class CNode :
            public std::enable_shared_from_this<CNode>, public sdv::IInterfaceAccess, public sdv::toml::INodeInfo,
-           public sdv::toml::INodeDelete, public sdv::toml::INodeUpdate
+           public sdv::toml::INodeUpdate
        {
        protected:
            CNode(CParser& rparser, const std::string& rssName, const std::string& rssRawName);
@@ -89,11 +151,9 @@ Program Listing for File parser_node_toml.h
            // Interface map
            BEGIN_SDV_INTERFACE_MAP()
                SDV_INTERFACE_ENTRY(sdv::toml::INodeInfo)
-               SDV_INTERFACE_ENTRY(sdv::toml::INodeDelete)
                SDV_INTERFACE_ENTRY(sdv::toml::INodeUpdate)
            END_SDV_INTERFACE_MAP()
    
-           
            CParser& Parser();
    
            virtual sdv::u8string GetName() const override;
@@ -115,17 +175,17 @@ Program Listing for File parser_node_toml.h
    
            virtual sdv::u8string GetTOML() const override;
    
-           virtual void SetComment(const sdv::u8string& ssComment, uint32_t uiFlags) override;
+           virtual void SetComment(sdv::toml::INodeInfo::ECommentType eType, const sdv::u8string& ssComment) override;
    
-           virtual sdv::u8string GetComment(uint32_t uiFlags) override;
+           virtual sdv::u8string GetComment(sdv::toml::INodeInfo::ECommentType eType) override;
    
            virtual void AutomaticFormat() override;
    
+           virtual bool IsInline() const override;
+   
+           virtual bool IsStandard() const override;
+   
            virtual void UpdateNodeCode(const CNodeTokenRange& rNodeRange);
-   
-           virtual bool DeleteNode() override;
-   
-           bool IsDeleted() const;
    
            virtual bool ChangeName(const sdv::u8string& ssNewName) override;
    
@@ -135,19 +195,25 @@ Program Listing for File parser_node_toml.h
    
            virtual bool MoveDown() override;
    
+           virtual bool DeleteNode() override;
+   
+           bool IsDeleted() const;
+   
            template <typename TNodeType>
            std::shared_ptr<TNodeType> Cast();
    
            template <typename TNodeType>
            std::shared_ptr<const TNodeType> Cast() const;
    
-           std::shared_ptr<CNodeCollection> GetParentPtr() const;
-   
            void SetParentPtr(const std::shared_ptr<CNodeCollection>& rptrParent);
+   
+           std::shared_ptr<CNodeCollection> GetParentPtr() const;
    
            std::string GetParentPath() const;
    
            void SetViewPtr(const std::shared_ptr<CNodeCollection>& rptrView);
+   
+           std::shared_ptr<CNodeCollection> GetViewPtr() const;
    
            bool IsPartOfView(const CGenContext& rContext, const std::shared_ptr<const CNodeCollection>& rptrNode) const;
    
@@ -155,33 +221,8 @@ Program Listing for File parser_node_toml.h
    
            virtual std::string GenerateTOML(const CGenContext& rContext = CGenContext()) const = 0;
    
-       protected:
-           std::string GetCustomPath(const std::string& rssPrefixKey, const std::string& rssContext) const;
-   
-           class CCodeSnippet
-           {
-           public:
-               std::list<CToken>& List();
-   
-               std::string& Str();
-   
-               enum class EComposeMode
-               {
-                   compose_inline,         
-                   compose_before,         
-                   compose_behind,         
-                   compose_standalone,     
-               };
-   
-               std::string Compose(EComposeMode eMode, size_t nAssignmentOffset = 0, size_t nCommentOffset = 0) const;
-   
-           private:
-               std::list<CToken>   m_lstTokens;    
-               std::string         m_ssComment;    
-           };
-   
            // White space and comment preservation indices for code generation.
-           const size_t m_nPreNodeCode = 0;             
+           const size_t m_nPreNodeCode = 0;            
            const size_t m_nPostNodeCode = 1;           
            const size_t m_nOutOfScopeCodeBefore = 2;   
            const size_t m_nOutOfScopeCodeBehind = 3;   
@@ -194,6 +235,12 @@ Program Listing for File parser_node_toml.h
            const CCodeSnippet& CodeSnippet(size_t nIndex, const std::string& rssKey = std::string()) const;
    
            CCodeSnippet& CodeSnippet(size_t nIndex, const std::string& rssKey = std::string());
+   
+           const CCodeSnippet& CodeSnippet(sdv::toml::INodeInfo::ECommentType eType) const;
+   
+           CCodeSnippet& CodeSnippet(sdv::toml::INodeInfo::ECommentType eType);
+   
+           std::string GetCustomPath(const std::string& rssPrefixKey, const std::string& rssContext) const;
    
        private:
            std::weak_ptr<CNodeCollection>      m_ptrParent;            
@@ -232,6 +279,9 @@ Program Listing for File parser_node_toml.h
            virtual void UpdateNodeCode(const CNodeTokenRange& rNodeRange) override;
    
            std::string RawValueText() const;
+   
+       protected:
+           void ResetRawValueText();
    
        private:
            std::string m_ssRawValue;                   
@@ -318,8 +368,11 @@ Program Listing for File parser_node_toml.h
            EQuotationType  m_eQuotationType = EQuotationType::quoted_string;   
        };
    
-       class CNodeCollection : public CNode, public sdv::toml::INodeCollection, public sdv::toml::INodeCollectionInsert
+       class CNodeCollection : public CNode, public sdv::toml::INodeCollection, public sdv::toml::INodeCollectionInsert,
+           public sdv::toml::INodeCollectionConvert
        {
+           // Friend class CNode.
+           friend CNode;
        protected:
            CNodeCollection(CParser& rparser, const std::string& rssName, const std::string& rssRawName);
    
@@ -328,10 +381,12 @@ Program Listing for File parser_node_toml.h
            BEGIN_SDV_INTERFACE_MAP()
                SDV_INTERFACE_ENTRY(sdv::toml::INodeCollection)
                SDV_INTERFACE_ENTRY(sdv::toml::INodeCollectionInsert)
+               SDV_INTERFACE_ENTRY(sdv::toml::INodeCollectionConvert)
                SDV_INTERFACE_CHAIN_BASE(CNode)
            END_SDV_INTERFACE_MAP()
    
-           
+           virtual void AutomaticFormat() override;
+   
            virtual uint32_t GetCount() const override;
    
            virtual IInterfaceAccess* GetNode(/*in*/ uint32_t uiIndex) const override;
@@ -346,27 +401,41 @@ Program Listing for File parser_node_toml.h
    
            virtual sdv::IInterfaceAccess* InsertArray(uint32_t uiIndex, const sdv::u8string& ssName) override;
    
-           virtual sdv::IInterfaceAccess* InsertTable(uint32_t uiIndex, const sdv::u8string& ssKeyName) override;
+           virtual sdv::IInterfaceAccess* InsertTable(uint32_t uiIndex, const sdv::u8string& ssName,
+               sdv::toml::INodeCollectionInsert::EInsertPreference ePreference) override;
    
-           virtual sdv::IInterfaceAccess* InsertTableArray(uint32_t uiIndex, const sdv::u8string& ssName) override;
+           virtual sdv::IInterfaceAccess* InsertTableArray(uint32_t uiIndex, const sdv::u8string& ssName,
+               sdv::toml::INodeCollectionInsert::EInsertPreference ePreference) override;
    
-           virtual sdv::toml::INodeCollectionInsert::EInsertResult InsertTOML(const sdv::u8string& ssTOML,
+           virtual sdv::toml::INodeCollectionInsert::EInsertResult InsertTOML(uint32_t uiIndex, const sdv::u8string& ssTOML,
                bool bRollbackOnPartly) override;
    
            virtual bool DeleteNode() override;
    
-   //protected:
-           bool RemoveNode(const std::shared_ptr<CNode>& rptrNode);
+           virtual bool CanMakeInline() const override;
+   
+           virtual bool MakeInline() override;
+   
+           virtual bool CanMakeStandard() const override;
+   
+           virtual bool MakeStandard() override;
+   
+           bool DeleteNode(const std::shared_ptr<CNode>& rptrNode);
+   
+           bool InsertIntoView(uint32_t uiIndex, const std::shared_ptr<CNode>& rptrNode);
    
            bool RemoveFromView(const std::shared_ptr<CNode>& rptrNode);
    
-           bool CheckLast(const std::shared_ptr<CNode>& rptrNode);
+           uint32_t FindIndex(const std::shared_ptr<CNode>& rptrNode) const;
    
-       public:
-           uint32_t FindIndex(const std::shared_ptr<CNode>& rptrNode);
+           bool IsDescendant(const std::shared_ptr<CNode>& rptrNode) const;
    
            template <typename TNodeType, typename... TArgs>
            std::shared_ptr<CNode> Insert(uint32_t uiIndex, const CTokenRange& rrangeKeyPath, const TArgs&... rtArgs);
+   
+           virtual bool Combine(const std::shared_ptr<CNodeCollection>& rptrCollection) = 0;
+   
+           virtual bool Reduce(const std::shared_ptr<CNodeCollection>& rptrCollection) = 0;
    
        private:
            virtual bool GroupChildNodes() const { return Inline(); }
@@ -427,8 +496,9 @@ Program Listing for File parser_node_toml.h
    
            virtual void MakeExplicit() override;
    
+           virtual bool Combine(const std::shared_ptr<CNodeCollection>& rptrCollection) override;
    
-           //bool m_bOpenToAddChildren = true;   ///< If internal table, the table can be extended until the table is closed.
+           virtual bool Reduce(const std::shared_ptr<CNodeCollection>& rptrCollection) override;
    
        private:
            bool m_bDefinedExplicitly = true;   
@@ -450,13 +520,22 @@ Program Listing for File parser_node_toml.h
    
            bool TableArray() const;
    
+           virtual bool CanMakeStandard() const override;
+   
            virtual bool Inline() const override;
    
            virtual bool Inline(bool bInline) override;
    
+           bool LastNodeWithSucceedingComma() const;
+   
+           virtual bool Combine(const std::shared_ptr<CNodeCollection>& rptrCollection) override;
+   
+           virtual bool Reduce(const std::shared_ptr<CNodeCollection>& rptrCollection) override;
+   
        private:
-           bool m_bDefinedExplicitly = true;   
-           bool m_bInline = false;             
+           bool m_bDefinedExplicitly = true;       
+           bool m_bInline = false;                 
+           bool m_bLastChildNodeWithComma = false; 
        };
    
        class CTableArray : public CArray
@@ -521,10 +600,9 @@ Program Listing for File parser_node_toml.h
                    {
                        ptrTableArray = std::make_shared<CTableArray>(Parser(), prKey.first.get().StringValue(),
                            prKey.first.get().RawString());
-                       ptrTableArray->SetParentPtr(Cast<CNodeCollection>());
    
-                       // Add to the list
-                       m_lstNodes.push_back(ptrTableArray);
+                       // Set the parent pointer; this will add the node to the list.
+                       ptrTableArray->SetParentPtr(Cast<CNodeCollection>());
                    }
                    else
                        ptrTableArray = (*itNode)->template Cast<CTableArray>();
@@ -535,6 +613,7 @@ Program Listing for File parser_node_toml.h
                    // Create the table.
                    ptrNode = ptrTableArray->Insert<CTable>(sdv::toml::npos, CTokenRange(prKey.first, prKey.first.get().Next()),
                        false, true);
+                   ptrNode->SetViewPtr(Cast<CNodeCollection>());
                } else if (!Cast<CArray>() && itNode != m_lstNodes.end())
                {
                    // If existing... this might be a duplicate if not explicitly defined before.
@@ -556,10 +635,9 @@ Program Listing for File parser_node_toml.h
                    // Create the target node.
                    ptrNode = std::make_shared<TNodeType>(Parser(), prKey.first.get().StringValue(), prKey.first.get().RawString(),
                        rtArgs...);
-                   ptrNode->SetParentPtr(Cast<CNodeCollection>());
    
-                   // Add to the list
-                   m_lstNodes.push_back(ptrNode);
+                   // Set the parent pointer; this will add the node to the list.
+                   ptrNode->SetParentPtr(Cast<CNodeCollection>());
    
                    // If the current node is implicit, take over the inline flag (this determines whether a sub-table definition is
                    // allowed or not).
@@ -614,7 +692,6 @@ Program Listing for File parser_node_toml.h
                    // Create an implicit table node.
                    ptrNode = std::make_shared<CTable>(Parser(), prKey.first.get().StringValue(), prKey.first.get().RawString(), false, false);
                    ptrNode->SetParentPtr(Cast<CNodeCollection>());
-                   m_lstNodes.push_back(ptrNode);
                }
    
                // Insert the node in the child node
@@ -624,15 +701,14 @@ Program Listing for File parser_node_toml.h
                ptrNode = ptrNodeCollection->Insert<TNodeType>(sdv::toml::npos, prKey.second, rtArgs...);
                if (!ptrNode)
                    throw XTOMLParseException("Could not create the node '" + prKey.first.get().StringValue() + "'.");
-   
-               // This node is not the parent, but still presents of the created node. Add the view pointer that they are linked.
-               ptrNode->SetViewPtr(Cast<CNodeCollection>());
            }
    
            // Insert the node at the requested location if this node is inline or this is the view of the node.
            auto itPos = (static_cast<size_t>(uiIndex) >= m_vecNodeOrder.size()) ? m_vecNodeOrder.end() :
                m_vecNodeOrder.begin() + static_cast<size_t>(uiIndex);
            m_vecNodeOrder.insert(itPos, ptrNode);
+           if (ptrNode->GetParentPtr() != Cast<CNodeCollection>())
+               ptrNode->SetViewPtr(Cast<CNodeCollection>());
    
            // Return the result
            return ptrNode;

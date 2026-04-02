@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/stylesheet.css?v=1697948e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/stylesheet.css?v=9c3fb72b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/key_features.css?v=1f1425ec" />
     <link rel="stylesheet" type="text/css" href="../../../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../../../_static/fonts/font.css?v=e743f546" />
@@ -74,6 +74,7 @@
     <script src="../../../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
     <script src="../../../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'vapi_doc/examples/basic_examples/example_general_component_with_initialization';</script>
+    <script src="../../../_static/js/sidebar-toggle.js?v=714d0a57"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Example access to other components" href="example_access_to_other_components.html" />
@@ -628,7 +629,6 @@ Example</label><div class="sd-tab-content docutils">
 
 <span class="k">class</span><span class="w"> </span><span class="nc">CTestComponentWithInitialization</span>
 <span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
-<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span>
 <span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayHello</span>
 <span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayGoodbye</span>
 <span class="p">{</span>
@@ -645,68 +645,35 @@ Example</label><div class="sd-tab-content docutils">
 <span class="w">    </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
 <span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayHello</span><span class="p">)</span>
 <span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayGoodbye</span><span class="p">)</span>
-<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span><span class="p">)</span>
 <span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">Device</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">device</span><span class="p">)</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Hello_Component_With_Initialization&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Initialize the object. Overload of sdv::IObjectControl::Initialize.</span>
-<span class="cm">     * @param[in] ssObjectConfig Optional configuration string.</span>
-<span class="cm">     */</span>
-<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Initialize</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssObjectConfig</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ParseConfigurationString</span><span class="p">(</span><span class="n">ssObjectConfig</span><span class="p">))</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialization_failure</span><span class="p">;</span>
-<span class="w">            </span><span class="k">return</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">;</span>
-<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="c1">// Parameter map</span>
+<span class="w">    </span><span class="n">BEGIN_SDV_PARAM_MAP</span><span class="p">()</span>
+<span class="w">        </span><span class="n">SDV_PARAM_ENTRY</span><span class="p">(</span><span class="n">m_Number</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;number&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;A number&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">END_SDV_PARAM_MAP</span><span class="p">()</span>
 
 <span class="w">    </span><span class="cm">/**</span>
-<span class="cm">    * @brief Set the component operation mode. Overload of sdv::IObjectControl::SetOperationMode.</span>
-<span class="cm">    * @param[in] eMode The operation mode, the component should run in.</span>
-<span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetOperationMode</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EOperationMode</span><span class="w"> </span><span class="n">eMode</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
+<span class="cm">     * @brief Initialization event, called after object configuration was loaded. Overload of sdv::CSdvObject::OnInitialize.</span>
+<span class="cm">     * @return Returns &#39;true&#39; when the initialization was successful, &#39;false&#39; when not.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OnInitialize</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">eMode</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EOperationMode</span><span class="o">::</span><span class="no">configuring</span><span class="p">:</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">running</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">)</span>
-<span class="w">                </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">configuring</span><span class="p">;</span>
-<span class="w">            </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EOperationMode</span><span class="o">::</span><span class="no">running</span><span class="p">:</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">configuring</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">)</span>
-<span class="w">                </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">running</span><span class="p">;</span>
-<span class="w">            </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="k">default</span><span class="o">:</span>
-<span class="w">            </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 
 <span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Get the current status of the object. Overload of sdv::IObjectControl::GetStatus.</span>
-<span class="cm">     * @return Return the current status of the object.</span>
+<span class="cm">     * @brief Shutdown the object. Overload of sdv::CSdvObject::OnShutdown.</span>
 <span class="cm">     */</span>
-<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="w"> </span><span class="nf">GetStatus</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">m_status</span><span class="p">;</span>
-<span class="w">    </span><span class="p">};</span>
-
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Shutdown called before the object is destroyed. Overload of sdv::IObjectControl::Shutdown.</span>
-<span class="cm">     */</span>
-<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Shutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">destruction_pending</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OnShutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="p">{}</span>
 
 <span class="w">    </span><span class="cm">/**</span>
 <span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
 <span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SayHello</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayHello</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Hello from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
@@ -714,37 +681,13 @@ Example</label><div class="sd-tab-content docutils">
 <span class="w">    </span><span class="cm">/**</span>
 <span class="cm">    * @brief Show messages, implements the function of ISayGoodbye</span>
 <span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SayGoodbye</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayGoodbye</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Goodbye from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 
 <span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">ParseConfigurationString</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">objectConfig</span><span class="p">)</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">try</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">CTOMLParser</span><span class="w"> </span><span class="nf">config</span><span class="p">(</span><span class="n">objectConfig</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-
-<span class="w">            </span><span class="c1">// get any settings from the configuration</span>
-<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">nodeNumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">config</span><span class="p">.</span><span class="n">GetDirect</span><span class="p">(</span><span class="s">&quot;number&quot;</span><span class="p">);</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nodeNumber</span><span class="p">.</span><span class="n">GetType</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_integer</span><span class="p">)</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="n">m_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">nodeNumber</span><span class="p">.</span><span class="n">GetValue</span><span class="p">());</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">XTOMLParseException</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Configuration could not be read:&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialization number: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
 <span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">m_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialization_pending</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">//!&lt; To update the object status when it changes.</span>
 <span class="p">};</span>
 
 <span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CTestComponentWithInitialization</span><span class="p">)</span>
@@ -761,9 +704,8 @@ Inheritance</label><div class="sd-tab-content docutils">
 
 <span class="k">class</span><span class="w"> </span><span class="nc">CTestComponentWithInitialization</span>
 <span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
-<span class="hll"><span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span>
-</span><span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayHello</span>
-<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayGoodbye</span>
+<span class="hll"><span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayHello</span>
+</span><span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayGoodbye</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
 <span class="w">    </span><span class="n">CTestComponentWithInitialization</span><span class="p">()</span>
@@ -778,68 +720,35 @@ Inheritance</label><div class="sd-tab-content docutils">
 <span class="w">    </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
 <span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayHello</span><span class="p">)</span>
 <span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayGoodbye</span><span class="p">)</span>
-<span class="hll"><span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span><span class="p">)</span>
-</span><span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
-
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">Device</span><span class="p">)</span>
+<span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="hll">
+</span><span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">device</span><span class="p">)</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Hello_Component_With_Initialization&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Initialize the object. Overload of sdv::IObjectControl::Initialize.</span>
-<span class="cm">     * @param[in] ssObjectConfig Optional configuration string.</span>
-<span class="cm">     */</span>
-<span class="hll"><span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Initialize</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssObjectConfig</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
-</span><span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ParseConfigurationString</span><span class="p">(</span><span class="n">ssObjectConfig</span><span class="p">))</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialization_failure</span><span class="p">;</span>
-<span class="w">            </span><span class="k">return</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">;</span>
-<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="c1">// Parameter map</span>
+<span class="w">    </span><span class="n">BEGIN_SDV_PARAM_MAP</span><span class="p">()</span>
+<span class="w">        </span><span class="n">SDV_PARAM_ENTRY</span><span class="p">(</span><span class="n">m_Number</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;number&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;A number&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">END_SDV_PARAM_MAP</span><span class="p">()</span>
 
 <span class="w">    </span><span class="cm">/**</span>
-<span class="cm">    * @brief Set the component operation mode. Overload of sdv::IObjectControl::SetOperationMode.</span>
-<span class="cm">    * @param[in] eMode The operation mode, the component should run in.</span>
-<span class="cm">    */</span>
-<span class="hll"><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetOperationMode</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EOperationMode</span><span class="w"> </span><span class="n">eMode</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
-</span><span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">eMode</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EOperationMode</span><span class="o">::</span><span class="no">configuring</span><span class="p">:</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">running</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">)</span>
-<span class="w">                </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">configuring</span><span class="p">;</span>
-<span class="w">            </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EOperationMode</span><span class="o">::</span><span class="no">running</span><span class="p">:</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">configuring</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">)</span>
-<span class="w">                </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">running</span><span class="p">;</span>
-<span class="w">            </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="k">default</span><span class="o">:</span>
-<span class="w">            </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
+<span class="hll"><span class="cm">     * @brief Initialization event, called after object configuration was loaded. Overload of sdv::CSdvObject::OnInitialize.</span>
+</span><span class="cm">     * @return Returns &#39;true&#39; when the initialization was successful, &#39;false&#39; when not.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OnInitialize</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 
 <span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Get the current status of the object. Overload of sdv::IObjectControl::GetStatus.</span>
-<span class="cm">     * @return Return the current status of the object.</span>
+<span class="cm">     * @brief Shutdown the object. Overload of sdv::CSdvObject::OnShutdown.</span>
 <span class="cm">     */</span>
-<span class="hll"><span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="w"> </span><span class="nf">GetStatus</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
-</span><span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">m_status</span><span class="p">;</span>
-<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OnShutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="p">{}</span>
 
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Shutdown called before the object is destroyed. Overload of sdv::IObjectControl::Shutdown.</span>
-<span class="cm">     */</span>
-<span class="hll"><span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Shutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-</span><span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">destruction_pending</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
+<span class="hll"><span class="w">    </span><span class="cm">/**</span>
+</span><span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
 <span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SayHello</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayHello</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Hello from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
@@ -847,37 +756,13 @@ Inheritance</label><div class="sd-tab-content docutils">
 <span class="w">    </span><span class="cm">/**</span>
 <span class="cm">    * @brief Show messages, implements the function of ISayGoodbye</span>
 <span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SayGoodbye</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayGoodbye</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Goodbye from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 
 <span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">ParseConfigurationString</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">objectConfig</span><span class="p">)</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">try</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">CTOMLParser</span><span class="w"> </span><span class="nf">config</span><span class="p">(</span><span class="n">objectConfig</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-
-<span class="w">            </span><span class="c1">// get any settings from the configuration</span>
-<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">nodeNumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">config</span><span class="p">.</span><span class="n">GetDirect</span><span class="p">(</span><span class="s">&quot;number&quot;</span><span class="p">);</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nodeNumber</span><span class="p">.</span><span class="n">GetType</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_integer</span><span class="p">)</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="n">m_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">nodeNumber</span><span class="p">.</span><span class="n">GetValue</span><span class="p">());</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">XTOMLParseException</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Configuration could not be read:&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialization number: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
 <span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">m_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialization_pending</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">//!&lt; To update the object status when it changes.</span>
 <span class="p">};</span>
 
 <span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CTestComponentWithInitialization</span><span class="p">)</span>
@@ -895,7 +780,6 @@ Function implementation</label><div class="sd-tab-content docutils">
 
 <span class="k">class</span><span class="w"> </span><span class="nc">CTestComponentWithInitialization</span>
 <span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
-<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span>
 <span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayHello</span>
 <span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayGoodbye</span>
 <span class="p">{</span>
@@ -912,106 +796,49 @@ Function implementation</label><div class="sd-tab-content docutils">
 <span class="w">    </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
 <span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayHello</span><span class="p">)</span>
 <span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayGoodbye</span><span class="p">)</span>
-<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span><span class="p">)</span>
 <span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">Device</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">device</span><span class="p">)</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Hello_Component_With_Initialization&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Initialize the object. Overload of sdv::IObjectControl::Initialize.</span>
-<span class="cm">     * @param[in] ssObjectConfig Optional configuration string.</span>
-<span class="cm">     */</span>
-<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Initialize</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssObjectConfig</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="hll"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ParseConfigurationString</span><span class="p">(</span><span class="n">ssObjectConfig</span><span class="p">))</span>
-</span><span class="hll"><span class="w">        </span><span class="p">{</span>
-</span><span class="hll"><span class="w">            </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialization_failure</span><span class="p">;</span>
-</span><span class="hll"><span class="w">            </span><span class="k">return</span><span class="p">;</span>
-</span><span class="hll"><span class="w">        </span><span class="p">}</span>
-</span><span class="hll"><span class="w">        </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">;</span>
-</span><span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="c1">// Parameter map</span>
+<span class="w">    </span><span class="n">BEGIN_SDV_PARAM_MAP</span><span class="p">()</span>
+<span class="w">        </span><span class="n">SDV_PARAM_ENTRY</span><span class="p">(</span><span class="n">m_Number</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;number&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;A number&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">END_SDV_PARAM_MAP</span><span class="p">()</span>
 
 <span class="w">    </span><span class="cm">/**</span>
-<span class="cm">    * @brief Set the component operation mode. Overload of sdv::IObjectControl::SetOperationMode.</span>
-<span class="cm">    * @param[in] eMode The operation mode, the component should run in.</span>
-<span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetOperationMode</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EOperationMode</span><span class="w"> </span><span class="n">eMode</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="hll"><span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">eMode</span><span class="p">)</span>
-</span><span class="hll"><span class="w">        </span><span class="p">{</span>
-</span><span class="hll"><span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EOperationMode</span><span class="o">::</span><span class="no">configuring</span><span class="p">:</span>
-</span><span class="hll"><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">running</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">)</span>
-</span><span class="hll"><span class="w">                </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">configuring</span><span class="p">;</span>
-</span><span class="hll"><span class="w">            </span><span class="k">break</span><span class="p">;</span>
-</span><span class="hll"><span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EOperationMode</span><span class="o">::</span><span class="no">running</span><span class="p">:</span>
-</span><span class="hll"><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">configuring</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">)</span>
-</span><span class="hll"><span class="w">                </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">running</span><span class="p">;</span>
-</span><span class="hll"><span class="w">            </span><span class="k">break</span><span class="p">;</span>
-</span><span class="hll"><span class="w">        </span><span class="k">default</span><span class="o">:</span>
-</span><span class="hll"><span class="w">            </span><span class="k">break</span><span class="p">;</span>
-</span><span class="hll"><span class="w">        </span><span class="p">}</span>
-</span><span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Get the current status of the object. Overload of sdv::IObjectControl::GetStatus.</span>
-<span class="cm">     * @return Return the current status of the object.</span>
+<span class="cm">     * @brief Initialization event, called after object configuration was loaded. Overload of sdv::CSdvObject::OnInitialize.</span>
+<span class="cm">     * @return Returns &#39;true&#39; when the initialization was successful, &#39;false&#39; when not.</span>
+<span class="hll"><span class="cm">     */</span>
+</span><span class="hll"><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OnInitialize</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</span><span class="hll"><span class="w">    </span><span class="p">{</span>
+</span><span class="hll"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+</span><span class="hll"><span class="w">    </span><span class="p">}</span>
+</span><span class="hll">
+</span><span class="w">    </span><span class="cm">/**</span>
+<span class="cm">     * @brief Shutdown the object. Overload of sdv::CSdvObject::OnShutdown.</span>
 <span class="cm">     */</span>
-<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="w"> </span><span class="nf">GetStatus</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="hll"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">m_status</span><span class="p">;</span>
-</span><span class="w">    </span><span class="p">};</span>
-
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Shutdown called before the object is destroyed. Overload of sdv::IObjectControl::Shutdown.</span>
-<span class="cm">     */</span>
-<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Shutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="hll"><span class="w">        </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">destruction_pending</span><span class="p">;</span>
-</span><span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OnShutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="p">{}</span>
 
 <span class="w">    </span><span class="cm">/**</span>
 <span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
-<span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SayHello</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Hello from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">    * @brief Show messages, implements the function of ISayGoodbye</span>
-<span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SayGoodbye</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Goodbye from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
+<span class="hll"><span class="cm">    */</span>
+</span><span class="hll"><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayHello</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</span><span class="hll"><span class="w">    </span><span class="p">{</span>
+</span><span class="hll"><span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Hello from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span><span class="hll"><span class="w">    </span><span class="p">}</span>
+</span><span class="hll">
+</span><span class="hll"><span class="w">    </span><span class="cm">/**</span>
+</span><span class="hll"><span class="cm">    * @brief Show messages, implements the function of ISayGoodbye</span>
+</span><span class="hll"><span class="cm">    */</span>
+</span><span class="hll"><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayGoodbye</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+</span><span class="hll"><span class="w">    </span><span class="p">{</span>
+</span><span class="hll"><span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Goodbye from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span><span class="hll"><span class="w">    </span><span class="p">}</span>
+</span>
 <span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">ParseConfigurationString</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">objectConfig</span><span class="p">)</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">try</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">CTOMLParser</span><span class="w"> </span><span class="nf">config</span><span class="p">(</span><span class="n">objectConfig</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-
-<span class="w">            </span><span class="c1">// get any settings from the configuration</span>
-<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">nodeNumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">config</span><span class="p">.</span><span class="n">GetDirect</span><span class="p">(</span><span class="s">&quot;number&quot;</span><span class="p">);</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nodeNumber</span><span class="p">.</span><span class="n">GetType</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_integer</span><span class="p">)</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="n">m_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">nodeNumber</span><span class="p">.</span><span class="n">GetValue</span><span class="p">());</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">XTOMLParseException</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Configuration could not be read:&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialization number: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
 <span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">m_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialization_pending</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">//!&lt; To update the object status when it changes.</span>
 <span class="p">};</span>
 
 <span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CTestComponentWithInitialization</span><span class="p">)</span>
@@ -1035,7 +862,6 @@ Parsing</label><div class="sd-tab-content docutils">
 
 <span class="k">class</span><span class="w"> </span><span class="nc">CTestComponentWithInitialization</span>
 <span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
-<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span>
 <span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayHello</span>
 <span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayGoodbye</span>
 <span class="p">{</span>
@@ -1052,68 +878,35 @@ Parsing</label><div class="sd-tab-content docutils">
 <span class="w">    </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
 <span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayHello</span><span class="p">)</span>
 <span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayGoodbye</span><span class="p">)</span>
-<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span><span class="p">)</span>
 <span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">Device</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">device</span><span class="p">)</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Hello_Component_With_Initialization&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Initialize the object. Overload of sdv::IObjectControl::Initialize.</span>
-<span class="cm">     * @param[in] ssObjectConfig Optional configuration string.</span>
-<span class="cm">     */</span>
-<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Initialize</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssObjectConfig</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="hll"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ParseConfigurationString</span><span class="p">(</span><span class="n">ssObjectConfig</span><span class="p">))</span>
-</span><span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialization_failure</span><span class="p">;</span>
-<span class="w">            </span><span class="k">return</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">;</span>
-<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="c1">// Parameter map</span>
+<span class="w">    </span><span class="n">BEGIN_SDV_PARAM_MAP</span><span class="p">()</span>
+<span class="w">        </span><span class="n">SDV_PARAM_ENTRY</span><span class="p">(</span><span class="n">m_Number</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;number&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;A number&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">END_SDV_PARAM_MAP</span><span class="p">()</span>
 
 <span class="w">    </span><span class="cm">/**</span>
-<span class="cm">    * @brief Set the component operation mode. Overload of sdv::IObjectControl::SetOperationMode.</span>
-<span class="cm">    * @param[in] eMode The operation mode, the component should run in.</span>
-<span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetOperationMode</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EOperationMode</span><span class="w"> </span><span class="n">eMode</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
+<span class="cm">     * @brief Initialization event, called after object configuration was loaded. Overload of sdv::CSdvObject::OnInitialize.</span>
+<span class="cm">     * @return Returns &#39;true&#39; when the initialization was successful, &#39;false&#39; when not.</span>
+<span class="hll"><span class="cm">     */</span>
+</span><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OnInitialize</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">eMode</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EOperationMode</span><span class="o">::</span><span class="no">configuring</span><span class="p">:</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">running</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">)</span>
-<span class="w">                </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">configuring</span><span class="p">;</span>
-<span class="w">            </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EOperationMode</span><span class="o">::</span><span class="no">running</span><span class="p">:</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">configuring</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">)</span>
-<span class="w">                </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">running</span><span class="p">;</span>
-<span class="w">            </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="k">default</span><span class="o">:</span>
-<span class="w">            </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 
 <span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Get the current status of the object. Overload of sdv::IObjectControl::GetStatus.</span>
-<span class="cm">     * @return Return the current status of the object.</span>
+<span class="cm">     * @brief Shutdown the object. Overload of sdv::CSdvObject::OnShutdown.</span>
 <span class="cm">     */</span>
-<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="w"> </span><span class="nf">GetStatus</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">m_status</span><span class="p">;</span>
-<span class="w">    </span><span class="p">};</span>
-
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Shutdown called before the object is destroyed. Overload of sdv::IObjectControl::Shutdown.</span>
-<span class="cm">     */</span>
-<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Shutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">destruction_pending</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OnShutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="p">{}</span>
 
 <span class="w">    </span><span class="cm">/**</span>
 <span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
 <span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SayHello</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayHello</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Hello from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
@@ -1121,37 +914,13 @@ Parsing</label><div class="sd-tab-content docutils">
 <span class="w">    </span><span class="cm">/**</span>
 <span class="cm">    * @brief Show messages, implements the function of ISayGoodbye</span>
 <span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SayGoodbye</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayGoodbye</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Goodbye from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 
 <span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">ParseConfigurationString</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">objectConfig</span><span class="p">)</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="hll"><span class="w">        </span><span class="k">try</span>
-</span><span class="hll"><span class="w">        </span><span class="p">{</span>
-</span><span class="hll"><span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">CTOMLParser</span><span class="w"> </span><span class="nf">config</span><span class="p">(</span><span class="n">objectConfig</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-</span><span class="hll">
-</span><span class="hll"><span class="w">            </span><span class="c1">// get any settings from the configuration</span>
-</span><span class="hll"><span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">nodeNumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">config</span><span class="p">.</span><span class="n">GetDirect</span><span class="p">(</span><span class="s">&quot;number&quot;</span><span class="p">);</span>
-</span><span class="hll"><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nodeNumber</span><span class="p">.</span><span class="n">GetType</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_integer</span><span class="p">)</span>
-</span><span class="hll"><span class="w">            </span><span class="p">{</span>
-</span><span class="hll"><span class="w">                </span><span class="n">m_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">nodeNumber</span><span class="p">.</span><span class="n">GetValue</span><span class="p">());</span>
-</span><span class="hll"><span class="w">            </span><span class="p">}</span>
-</span><span class="hll"><span class="w">        </span><span class="p">}</span>
-</span><span class="hll"><span class="w">        </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">XTOMLParseException</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span>
-</span><span class="hll"><span class="w">        </span><span class="p">{</span>
-</span><span class="hll"><span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Configuration could not be read:&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-</span><span class="hll"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-</span><span class="hll"><span class="w">        </span><span class="p">}</span>
-</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialization number: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
 <span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">m_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialization_pending</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">//!&lt; To update the object status when it changes.</span>
 <span class="p">};</span>
 
 <span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CTestComponentWithInitialization</span><span class="p">)</span>
@@ -1173,7 +942,6 @@ Parsing examples</label><div class="sd-tab-content docutils">
 
 <span class="k">class</span><span class="w"> </span><span class="nc">CTestComponentWithInitialization</span>
 <span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
-<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span>
 <span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayHello</span>
 <span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayGoodbye</span>
 <span class="p">{</span>
@@ -1190,68 +958,35 @@ Parsing examples</label><div class="sd-tab-content docutils">
 <span class="w">    </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
 <span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayHello</span><span class="p">)</span>
 <span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayGoodbye</span><span class="p">)</span>
-<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span><span class="p">)</span>
 <span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">Device</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">device</span><span class="p">)</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Hello_Component_With_Initialization&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Initialize the object. Overload of sdv::IObjectControl::Initialize.</span>
-<span class="cm">     * @param[in] ssObjectConfig Optional configuration string.</span>
-<span class="cm">     */</span>
-<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Initialize</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssObjectConfig</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ParseConfigurationString</span><span class="p">(</span><span class="n">ssObjectConfig</span><span class="p">))</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialization_failure</span><span class="p">;</span>
-<span class="w">            </span><span class="k">return</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">;</span>
-<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="c1">// Parameter map</span>
+<span class="w">    </span><span class="n">BEGIN_SDV_PARAM_MAP</span><span class="p">()</span>
+<span class="w">        </span><span class="n">SDV_PARAM_ENTRY</span><span class="p">(</span><span class="n">m_Number</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;number&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;A number&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">END_SDV_PARAM_MAP</span><span class="p">()</span>
 
 <span class="w">    </span><span class="cm">/**</span>
-<span class="cm">    * @brief Set the component operation mode. Overload of sdv::IObjectControl::SetOperationMode.</span>
-<span class="cm">    * @param[in] eMode The operation mode, the component should run in.</span>
-<span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetOperationMode</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EOperationMode</span><span class="w"> </span><span class="n">eMode</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
+<span class="cm">     * @brief Initialization event, called after object configuration was loaded. Overload of sdv::CSdvObject::OnInitialize.</span>
+<span class="cm">     * @return Returns &#39;true&#39; when the initialization was successful, &#39;false&#39; when not.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OnInitialize</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">eMode</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EOperationMode</span><span class="o">::</span><span class="no">configuring</span><span class="p">:</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">running</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">)</span>
-<span class="w">                </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">configuring</span><span class="p">;</span>
-<span class="w">            </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="no">sdv</span><span class="o">::</span><span class="no">EOperationMode</span><span class="o">::</span><span class="no">running</span><span class="p">:</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">configuring</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialized</span><span class="p">)</span>
-<span class="w">                </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">running</span><span class="p">;</span>
-<span class="w">            </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="k">default</span><span class="o">:</span>
-<span class="w">            </span><span class="k">break</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 
 <span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Get the current status of the object. Overload of sdv::IObjectControl::GetStatus.</span>
-<span class="cm">     * @return Return the current status of the object.</span>
+<span class="cm">     * @brief Shutdown the object. Overload of sdv::CSdvObject::OnShutdown.</span>
 <span class="cm">     */</span>
-<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="w"> </span><span class="nf">GetStatus</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">m_status</span><span class="p">;</span>
-<span class="w">    </span><span class="p">};</span>
-
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Shutdown called before the object is destroyed. Overload of sdv::IObjectControl::Shutdown.</span>
-<span class="cm">     */</span>
-<span class="w">    </span><span class="kr">inline</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Shutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">destruction_pending</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OnShutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="p">{}</span>
 
 <span class="w">    </span><span class="cm">/**</span>
 <span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
 <span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SayHello</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayHello</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Hello from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
@@ -1259,37 +994,13 @@ Parsing examples</label><div class="sd-tab-content docutils">
 <span class="w">    </span><span class="cm">/**</span>
 <span class="cm">    * @brief Show messages, implements the function of ISayGoodbye</span>
 <span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SayGoodbye</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayGoodbye</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Goodbye from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 
 <span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">ParseConfigurationString</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">objectConfig</span><span class="p">)</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">try</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="hll"><span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">CTOMLParser</span><span class="w"> </span><span class="nf">config</span><span class="p">(</span><span class="n">objectConfig</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-</span>
-<span class="hll"><span class="w">            </span><span class="c1">// get any settings from the configuration</span>
-</span><span class="hll"><span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">nodeNumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">config</span><span class="p">.</span><span class="n">GetDirect</span><span class="p">(</span><span class="s">&quot;number&quot;</span><span class="p">);</span>
-</span><span class="hll"><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nodeNumber</span><span class="p">.</span><span class="n">GetType</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_integer</span><span class="p">)</span>
-</span><span class="hll"><span class="w">            </span><span class="p">{</span>
-</span><span class="hll"><span class="w">                </span><span class="n">m_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">nodeNumber</span><span class="p">.</span><span class="n">GetValue</span><span class="p">());</span>
-</span><span class="hll"><span class="w">            </span><span class="p">}</span>
-</span><span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">XTOMLParseException</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Configuration could not be read:&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialization number: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
 <span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">m_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialization_pending</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">//!&lt; To update the object status when it changes.</span>
 <span class="p">};</span>
 
 <span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CTestComponentWithInitialization</span><span class="p">)</span>
@@ -1393,48 +1104,6 @@ number = 7
         } 
     });
 </script>
-</div>
-
-<div class="toggle-sidebar">
-  <h3>Contents</h3>
-  <ul>
-    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
-    <ul>
-        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
-        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
-    </ul>
-    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
-    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
-</ul>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const links = document.querySelectorAll(".sidebar-link");
-        const currentPath = window.location.pathname;
-
-        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
-        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
-        let rootPath = '/';
-
-        if (match) {
-            rootPath = match[1];
-            const relPath = currentPath.replace(rootPath, '');
-            const upLevels = relPath.split('/').length - 1;
-            const prefix = '../'.repeat(upLevels);
-
-            links.forEach(link => {
-                const target = link.getAttribute("data-target");
-                if (target) {
-                    link.setAttribute("href", prefix + target);
-                }
-            });
-        } 
-    });
-</script>
 </div></div>
               
             
@@ -1460,7 +1129,7 @@ number = 7
 
   <p class="copyright">
     
-      © Copyright 2025, Open Vehicle API Team.
+      © Copyright 2026, Open Vehicle API Team.
       <br/>
     
   </p>

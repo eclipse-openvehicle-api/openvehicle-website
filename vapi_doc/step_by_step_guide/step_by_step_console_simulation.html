@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/stylesheet.css?v=1697948e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/stylesheet.css?v=9c3fb72b" />
     <link rel="stylesheet" type="text/css" href="../../_static/key_features.css?v=1f1425ec" />
     <link rel="stylesheet" type="text/css" href="../../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../../_static/fonts/font.css?v=e743f546" />
@@ -74,6 +74,7 @@
     <script src="../../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
     <script src="../../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'vapi_doc/step_by_step_guide/step_by_step_console_simulation';</script>
+    <script src="../../_static/js/sidebar-toggle.js?v=714d0a57"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Step-by-Step: Complex Service implementation" href="step_by_step_complex_service.html" />
@@ -626,7 +627,7 @@ activating wipers manually, and responding to rain detection, all within a termi
 </div>
 </div>
 <p>In CMakeLists.txt file you need to add wiper_app/console.cpp.</p>
-<p>Follwowing file contain already some functionionality to print to console.</p>
+<p>Following file contain already some functionality to print to console.</p>
 </section>
 <section id="console">
 <h2>Console<a class="headerlink" href="#console" title="Permalink to this heading">#</a></h2>
@@ -1240,7 +1241,7 @@ void CConsole::ResetSignals()
 
 void CConsole::UpdateTxData()
 {
-        //Basic serivce signals
+        //Basic service signals
         PrintValue(g_bsWiperFrontActive, &quot;Front Wiper: &quot;, m_WiperFrontIsActive, (m_WiperFrontIsActive ? &quot;Active&quot; : &quot;Inactive&quot;));
         PrintValue(g_bsWiperRearActive, &quot;Rear Wiper: &quot;, m_WiperRearIsActive, (m_WiperRearIsActive ? &quot;Active&quot; : &quot;Inactive&quot;));
 }
@@ -1251,7 +1252,7 @@ void CConsole::InitData()
         PrintText(g_dsWiperModeEvent, &quot;Wiper mode: .............   &quot; + m_WiperMode + &quot;      &quot;);
         PrintValue(g_dsWeatherRain, &quot;Weather: &quot;, m_IsRainDetected, (m_IsRainDetected ? &quot;Raining&quot; : &quot;Clear/dry&quot;));
 
-        //Basic serivce signals
+        //Basic service signals
         PrintText(g_bsWiperModeEvent, &quot;Wiper mode: .............   &quot; + m_WiperMode + &quot;      &quot;);
         PrintValue(g_bsWeatherRain, &quot;Weather: &quot;, m_IsRainDetected, (m_IsRainDetected ? &quot;Raining&quot; : &quot;Clear/dry&quot;));
         PrintValue(g_bsWiperFrontActive, &quot;Front Wiper: &quot;, m_WiperFrontIsActive, (m_WiperFrontIsActive ? &quot;Active&quot; : &quot;Inactive&quot;));
@@ -1264,13 +1265,13 @@ CConsole::SConsolePos CConsole::GetCursorPos() const
         std::cout &lt;&lt; &quot;\033[6n&quot;;
 
         char buff[128];
-        int indx = 0;
+        int index = 0;
         for (;;) {
                 int cc = std::cin.get();
-                buff[indx] = (char)cc;
-                indx++;
+                buff[index] = (char)cc;
+                index++;
                 if (cc == &#39;R&#39;) {
-                        buff[indx + 1] = &#39;\0&#39;;
+                        buff[index + 1] = &#39;\0&#39;;
                         break;
                 }
         }
@@ -1565,7 +1566,7 @@ private:
          * @param[in] sPos The location to print the value at.
          * @param[in] rssName Reference to the value.
          * @param[in] tValue The value.
-         * @param[in] rssStatus Status, becuse we have signals of type bool
+         * @param[in] rssStatus Status, because we have signals of type bool
          */
         template &lt;typename TValue&gt;
         void PrintValue(SConsolePos sPos, const std::string&amp; rssName, TValue tValue, const std::string&amp; rssStatus);
@@ -1681,7 +1682,7 @@ cmake_policy(SET CMP0092 NEW)   # requires CMake 3.15
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Libary symbols are hidden by default
+# Library symbols are hidden by default
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
 # Include directory to the core framework
@@ -1695,7 +1696,7 @@ include_directories(${SDV_FRAMEWORK_DEV_INCLUDE})
 # services are generated during the configuration phase of CMake. This is necessary, since CMakeFiles.txt files are generated and
 # they have to be available during the configuration phase of CMake to be taken into the build process. Requisite for the code
 # generation during the configuration time of CMake is the availability of the tools to do the generation. Hence the tools cannot be
-# created during the build process, which is executed after the configuraiton process.
+# created during the build process, which is executed after the configuration process.
 
 # Execute sdv_vss_util to create IDL files for devices and basic services.
 message(&quot;Create interface code for devices and basic services of wiper example.&quot;)
@@ -1868,48 +1869,6 @@ endif()
         } 
     });
 </script>
-</div>
-
-<div class="toggle-sidebar">
-  <h3>Contents</h3>
-  <ul>
-    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
-    <ul>
-        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
-        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
-    </ul>
-    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
-    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
-</ul>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const links = document.querySelectorAll(".sidebar-link");
-        const currentPath = window.location.pathname;
-
-        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
-        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
-        let rootPath = '/';
-
-        if (match) {
-            rootPath = match[1];
-            const relPath = currentPath.replace(rootPath, '');
-            const upLevels = relPath.split('/').length - 1;
-            const prefix = '../'.repeat(upLevels);
-
-            links.forEach(link => {
-                const target = link.getAttribute("data-target");
-                if (target) {
-                    link.setAttribute("href", prefix + target);
-                }
-            });
-        } 
-    });
-</script>
 </div></div>
               
             
@@ -1935,7 +1894,7 @@ endif()
 
   <p class="copyright">
     
-      © Copyright 2025, Open Vehicle API Team.
+      © Copyright 2026, Open Vehicle API Team.
       <br/>
     
   </p>

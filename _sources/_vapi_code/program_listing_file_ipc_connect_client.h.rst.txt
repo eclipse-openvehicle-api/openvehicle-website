@@ -10,6 +10,19 @@ Program Listing for File client.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
    #ifndef CLIENT_H
    #define CLIENT_H
    
@@ -44,35 +57,29 @@ Program Listing for File client.h
        sdv::TInterfaceAccessPtr        m_ptrRepositoryProxy;       
    };
    
-   class CClient : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::com::IClientConnect
+   class CClient : public sdv::CSdvObject, public sdv::com::IClientConnect
    {
    public:
        // Interface map
        BEGIN_SDV_INTERFACE_MAP()
-           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
            SDV_INTERFACE_ENTRY(sdv::com::IClientConnect)
        END_SDV_INTERFACE_MAP()
    
        // Object declaration
-       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
        DECLARE_OBJECT_CLASS_NAME("ConnectionService")
        DECLARE_OBJECT_SINGLETON()
    
        
-       void Initialize(const sdv::u8string& ssObjectConfig) override;
+       virtual bool OnInitialize() override;
    
-       sdv::EObjectStatus GetStatus() const override;
-   
-       void SetOperationMode(sdv::EOperationMode eMode) override;
-   
-       void Shutdown() override;
+       virtual void OnShutdown() override;
    
        virtual sdv::IInterfaceAccess* Connect(const sdv::u8string& ssConnectString) override;
    
        void Disconnect(sdv::com::TConnectionID tConnectionID);
    
    private:
-       sdv::EObjectStatus      m_eObjectStatus = sdv::EObjectStatus::initialization_pending; 
        std::mutex              m_mtxRepositoryProxies;                             
        std::map<sdv::com::TConnectionID, CRepositoryProxy> m_mapRepositoryProxies; 
    };

@@ -10,6 +10,18 @@ Program Listing for File connection.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
    
    #ifndef CHANNEL_H
    #define CHANNEL_H
@@ -74,15 +86,15 @@ Program Listing for File connection.h
        // cppcheck-suppress virtualCallInConstructor
        virtual void Disconnect() override;
    
-       virtual uint64_t RegisterStatusEventCallback(/*in*/ sdv::IInterfaceAccess* pEventCallback) override;
+       virtual uint64_t RegisterStateEventCallback(/*in*/ sdv::IInterfaceAccess* pEventCallback) override;
    
-       virtual void UnregisterStatusEventCallback(/*in*/ uint64_t uiCookie) override;
+       virtual void UnregisterStateEventCallback(/*in*/ uint64_t uiCookie) override;
    
-       virtual sdv::ipc::EConnectStatus GetStatus() const override;
+       virtual sdv::ipc::EConnectState GetConnectState() const override;
    
        virtual void DestroyObject() override;
    
-       void SetStatus(sdv::ipc::EConnectStatus eStatus);
+       void SetConnectState(sdv::ipc::EConnectState eConnectState);
    
        bool IsServer() const;
    
@@ -143,7 +155,7 @@ Program Listing for File connection.h
        CSharedMemBufferTx                      m_sender;                       
        CSharedMemBufferRx                      m_receiver;                     
        std::thread                             m_threadReceive;                
-       std::atomic<sdv::ipc::EConnectStatus>   m_eStatus = sdv::ipc::EConnectStatus::uninitialized; 
+       std::atomic<sdv::ipc::EConnectState>    m_eConnectState = sdv::ipc::EConnectState::uninitialized; 
        sdv::ipc::IDataReceiveCallback*         m_pReceiver = nullptr;          
        std::shared_mutex                       m_mtxEventCallbacks;            
        std::list<SEventCallback>               m_lstEventCallbacks;            

@@ -1,0 +1,142 @@
+
+.. _program_listing_file_uds_win_sockets_channel_mgnt.h:
+
+Program Listing for File channel_mgnt.h
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_uds_win_sockets_channel_mgnt.h>` (``uds_win_sockets\channel_mgnt.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   /********************************************************************************
+   * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+   *
+   * This program and the accompanying materials are made available under the
+   * terms of the Apache License Version 2.0 which is available at
+   * https://www.apache.org/licenses/LICENSE-2.0
+   *
+   * SPDX-License-Identifier: Apache-2.0
+   *
+   * Contributors:
+   *   Denisa Ros - initial API and implementation
+   ********************************************************************************/
+   #ifdef _WIN32
+   
+   #ifndef WIN_SOCKETS_CHANNEL_MGNT_H
+   #define WIN_SOCKETS_CHANNEL_MGNT_H
+   
+   #include <support/component_impl.h>
+   #include <interfaces/ipc.h>
+   #include "connection.h"
+   
+   #include <map>
+   #include <unordered_set>
+   #include <mutex>
+   #include <memory>
+   #include <string>
+   
+   #ifdef _WIN32
+   // Winsock headers are required for SOCKET / AF_UNIX / WSAStartup
+   // NOTE: The actual initialization is done via StartUpWinSock()
+   #   include <ws2tcpip.h>
+   #endif
+   
+   struct CAddrInfo
+   {
+       CAddrInfo()                            = default;
+       CAddrInfo(const CAddrInfo&)            = delete;
+       CAddrInfo& operator=(const CAddrInfo&) = delete;
+       CAddrInfo(CAddrInfo&& other)           = delete;
+   
+       CAddrInfo& operator=(CAddrInfo&& other) = delete;
+   
+       ~CAddrInfo()
+       {
+           if (AddressInfo != nullptr)
+           {
+               freeaddrinfo(AddressInfo);
+               AddressInfo = nullptr;
+           }
+       }
+   
+       addrinfo* AddressInfo { nullptr };
+   };
+   
+   inline int StartUpWinSock()
+   {
+   #ifdef _WIN32
+       static bool isInitialized = false;
+       if (isInitialized)
+       {
+           return 0;
+       }
+   
+       WSADATA wsaData {};
+       const int error = WSAStartup(MAKEWORD(2, 2), &wsaData);
+       if (error != 0)
+       {
+           SDV_LOG_ERROR("WSAStartup failed with error: ", std::to_string(error));
+       }
+       else
+       {
+           SDV_LOG_INFO("WSAStartup initialized");
+           isInitialized = true;
+       }
+       return error;
+   #else
+       // Non-Windows: nothing to do. Return success for symmetry
+       return 0;
+   #endif
+   }
+   
+   struct SocketConnection
+   {
+       SOCKET From { INVALID_SOCKET }; 
+       SOCKET To   { INVALID_SOCKET }; 
+   };
+   
+   class CSocketsChannelMgnt
+       : public sdv::CSdvObject
+       , public sdv::ipc::ICreateEndpoint
+       , public sdv::ipc::IChannelAccess
+   {
+   public:
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::ipc::IChannelAccess)
+           SDV_INTERFACE_ENTRY(sdv::ipc::ICreateEndpoint)
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
+       DECLARE_OBJECT_CLASS_NAME("WinSocketsChannelControl")
+       DECLARE_OBJECT_CLASS_ALIAS("LocalChannelControl")
+       DECLARE_DEFAULT_OBJECT_NAME("LocalChannelControl")
+       DECLARE_OBJECT_SINGLETON()
+   
+       virtual ~CSocketsChannelMgnt() = default;
+   
+       virtual bool OnInitialize() override;
+   
+       virtual void OnShutdown() override;
+   
+       sdv::ipc::SChannelEndpoint CreateEndpoint(/*in*/ const sdv::u8string& ssChannelConfig) override;
+   
+       sdv::IInterfaceAccess* Access(const sdv::u8string& ssConnectString) override;
+   
+       void OnServerClosed(const std::string& udsPath, CWinsockConnection* ptr);
+   
+   private:
+       std::map<std::string, std::shared_ptr<CWinsockConnection>> m_udsServers;
+   
+       std::unordered_set<std::string> m_udsServerClaimed;
+   
+       std::mutex m_udsMtx;
+   };
+   
+   // SDV object factory macro
+   DEFINE_SDV_OBJECT(CSocketsChannelMgnt)
+   
+   #endif // ! defined WIN_SOCKETS_CHANNEL_MGNT_H
+   #endif

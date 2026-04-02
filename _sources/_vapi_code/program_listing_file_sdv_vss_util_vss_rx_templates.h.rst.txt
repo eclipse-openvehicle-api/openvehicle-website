@@ -10,6 +10,18 @@ Program Listing for File vss_rx_templates.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Thomas Pfleiderer - initial API and implementation
+    ********************************************************************************/
    
    const char szRXVehicleDeviceHeaderTemplate[] = R"code(
    #ifndef %vd_safeguard%
@@ -24,30 +36,23 @@ Program Listing for File vss_rx_templates.h
    
    class CVehicleDevice%class_name%
        : public sdv::CSdvObject
-       , public sdv::IObjectControl
    %rx_vd_interface_list%{
    public:
    
        BEGIN_SDV_INTERFACE_MAP()
-           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
    %rx_vd_interface_entry_list%    END_SDV_INTERFACE_MAP()
    
-       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::Device)
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::vehicle_bus)
        DECLARE_OBJECT_CLASS_NAME("%vss_original%_Device")
    
        CVehicleDevice%class_name%();
    
-       void Initialize(const sdv::u8string& objectConfig) override;
+       virtual bool OnInitialize() override;
    
-       sdv::EObjectStatus GetStatus() const override;
-   
-       void SetOperationMode(/*in*/ sdv::EOperationMode eMode) override;
-   
-       void Shutdown() override;
+       virtual void OnShutdown() override;
    %rx_vd_register_events_list%
    private:
    %rx_vd_private_vd_header_part%
-       std::atomic<sdv::EObjectStatus> m_status = { sdv::EObjectStatus::initialization_pending };  ///< To update the object status when it changes.
    };
    
    DEFINE_SDV_OBJECT(CVehicleDevice%class_name%)
@@ -63,43 +68,17 @@ Program Listing for File vss_rx_templates.h
    {
    }
    
-   void CVehicleDevice%class_name%::Initialize(const sdv::u8string&)
+   bool CVehicleDevice%class_name%::OnInitialize()
    {
-       if (m_status != sdv::EObjectStatus::initialization_pending)
-       {
-           return;
-       }
        sdv::core::CDispatchService dispatch;
    %rx_vd_subscribe_signals%
    %rx_check_subscriptions%
+       return true;
    }
    
-   sdv::EObjectStatus CVehicleDevice%class_name%::GetStatus() const
-   {
-       return m_status;
-   }
-   
-   void CVehicleDevice%class_name%::SetOperationMode(/*in*/ sdv::EOperationMode eMode)
-   {
-       switch (eMode)
-       {
-       case sdv::EOperationMode::configuring:
-           if (m_status == sdv::EObjectStatus::running || m_status == sdv::EObjectStatus::initialized)
-               m_status = sdv::EObjectStatus::configuring;
-           break;
-       case sdv::EOperationMode::running:
-           if (m_status == sdv::EObjectStatus::configuring || m_status == sdv::EObjectStatus::initialized)
-               m_status = sdv::EObjectStatus::running;
-           break;
-       default:
-           break;
-       }
-   }
-   
-   void CVehicleDevice%class_name%::Shutdown()
+   void CVehicleDevice%class_name%::OnShutdown()
    {
    %rx_reset_signals%
-       m_status = sdv::EObjectStatus::destruction_pending;
    }
    %rx_vd_register%
    )code";
@@ -121,7 +100,7 @@ Program Listing for File vss_rx_templates.h
        BEGIN_SDV_INTERFACE_MAP()
    %rx_bs_interface_entry_list%    END_SDV_INTERFACE_MAP()
    
-       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::BasicService)
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::sensor)
        DECLARE_OBJECT_CLASS_NAME("%vss_original%_Service")
    
        CBasicService%class_name%();

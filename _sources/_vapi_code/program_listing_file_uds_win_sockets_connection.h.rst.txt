@@ -1,0 +1,288 @@
+
+.. _program_listing_file_uds_win_sockets_connection.h:
+
+Program Listing for File connection.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_uds_win_sockets_connection.h>` (``uds_win_sockets\connection.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   /********************************************************************************
+   * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+   *
+   * This program and the accompanying materials are made available under the
+   * terms of the Apache License Version 2.0 which is available at
+   * https://www.apache.org/licenses/LICENSE-2.0
+   *
+   * SPDX-License-Identifier: Apache-2.0
+   *
+   * Contributors:
+   *   Denisa Ros - initial API and implementation
+   ********************************************************************************/
+   #ifdef _WIN32
+   #ifndef WIN_SOCKETS_CONNECTION_H
+   #define WIN_SOCKETS_CONNECTION_H
+   
+   #include <interfaces/ipc.h>
+   #include <support/interface_ptr.h>
+   #include <support/local_service_access.h>
+   #include <support/component_impl.h>
+   
+   #include <atomic>
+   #include <mutex>
+   #include <thread>
+   #include <algorithm>
+   #include <condition_variable>
+   #include <vector>
+   #include <cstdint>
+   #include <cstddef>
+   
+   #ifdef _WIN32
+   #   include <WinSock2.h>
+   #   ifdef _MSC_VER
+   #       pragma comment(lib, "Ws2_32.lib")
+   #   endif
+   #endif
+   
+   
+   constexpr uint32_t m_MsgStart = 0x01020304; 
+   constexpr uint32_t m_MsgEnd   = 0x05060708; 
+   
+   struct SMsgHeader
+   {
+       uint32_t msgStart         = 0; 
+       uint32_t msgId            = 0; 
+       uint32_t msgSize          = 0; 
+       uint32_t packetNumber     = 0; 
+       uint32_t totalPacketCount = 0; 
+       uint32_t msgEnd           = 0; 
+   };
+   
+   class CWinsockConnection
+       : public sdv::IInterfaceAccess
+       , public sdv::ipc::IDataSend
+       , public sdv::ipc::IConnect
+       , public sdv::IObjectDestroy
+   {
+   public:
+       CWinsockConnection();
+   
+       CWinsockConnection(unsigned long long preconfiguredSocket, bool acceptConnectionRequired);
+   
+       virtual ~CWinsockConnection();
+   
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::ipc::IDataSend)
+           SDV_INTERFACE_ENTRY(sdv::ipc::IConnect)
+           SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
+       END_SDV_INTERFACE_MAP()
+   
+       bool SendData(/*inout*/ sdv::sequence<sdv::pointer<uint8_t>>& seqData) override;
+   
+       bool AsyncConnect(/*in*/ sdv::IInterfaceAccess* pReceiver) override;
+   
+       bool WaitForConnection(/*in*/ uint32_t uiWaitMs) override;
+   
+       void CancelWait() override;
+   
+       void Disconnect() override;
+   
+       uint64_t RegisterStateEventCallback(/*in*/ sdv::IInterfaceAccess* pEventCallback) override;
+   
+       void UnregisterStateEventCallback(/*in*/ uint64_t uiCookie) override;
+   
+       sdv::ipc::EConnectState GetConnectState() const override;
+   
+       void DestroyObject() override;
+   
+   private:
+   
+       std::mutex              m_MtxConnect;
+       std::condition_variable m_CvConnect;
+       std::thread                             m_ReceiveThread;                
+       std::thread                             m_ConnectThread;
+       std::atomic<bool>                       m_StopReceiveThread{false};     
+       std::atomic<bool>                       m_StopConnectThread{false};
+       std::atomic<sdv::ipc::EConnectState>    m_ConnectionState;              
+       
+       sdv::ipc::IDataReceiveCallback*         m_pReceiver = nullptr;          
+       sdv::ipc::IConnectEventCallback*        m_pEvent = nullptr;             
+       bool                                    m_AcceptConnectionRequired;     
+       mutable std::recursive_mutex            m_SendMutex;                    
+   
+       SOCKET                                  m_ListenSocket{INVALID_SOCKET};             
+       SOCKET                                  m_ConnectionSocket{INVALID_SOCKET};         
+   
+       static constexpr uint32_t               m_SendMessageSize{ 1024 };                                  
+       static constexpr uint32_t               m_SendBufferSize = sizeof(SMsgHeader) + m_SendMessageSize;  
+       char                                    m_SendBuffer[m_SendBufferSize];                             
+       char                                    m_ReceiveBuffer[sizeof(SMsgHeader)];                        
+       uint32_t                                m_ReceiveBufferLength = sizeof(SMsgHeader);                 
+   
+       std::atomic<bool> m_CancelWait{false};   
+   
+       void ConnectWorker();
+   
+       void StartReceiveThread_Unsafe();
+   
+       void StopThreadsAndCloseSockets();
+   
+       SOCKET AcceptConnection();
+   
+       int32_t Send(const char* data, int32_t dataLength);
+   
+       int SendExact(const char* data, int len);
+   
+       void ReceiveMessages();
+   
+       bool ValidateHeader(const SMsgHeader& msgHeader);
+   
+       bool ReadNumberOfBytes(char* buffer, uint32_t length);
+   
+       // Protocol types
+       enum class EMsgType : uint32_t
+       {
+           sync_request    = 0,        
+           sync_answer     = 1,        
+           connect_request = 10,       
+           connect_answer  = 11,       
+           connect_term    = 90,       
+           data            = 0x10000000, 
+           data_fragment   = 0x10000001  
+       };
+   
+       struct SMsgHdr
+       {
+           uint32_t uiVersion; 
+           EMsgType eType;     
+       };
+   
+       struct SConnectMsg : SMsgHdr
+       {
+           sdv::process::TProcessID tProcessID; 
+       };
+   
+       struct SFragmentedMsgHdr : SMsgHdr
+       {
+           uint32_t uiTotalLength; 
+           uint32_t uiOffset;      
+       };
+   
+       // Minimal SDV message wrapper
+       class CMessage
+       {
+       public:
+           explicit CMessage(std::vector<uint8_t>&& data) : m_Data(std::move(data)) {}
+   
+           const uint8_t* GetData() const
+           {
+               return m_Data.empty() ? nullptr : m_Data.data();
+           }
+   
+           uint32_t GetSize() const
+           {
+               return static_cast<uint32_t>(m_Data.size());
+           }
+   
+           SMsgHdr GetMsgHdr() const
+           {
+               if (GetSize() < sizeof(SMsgHdr))
+               {
+                   return SMsgHdr{0, EMsgType::connect_term};
+               }
+               return *reinterpret_cast<const SMsgHdr*>(GetData());
+           }
+   
+           SConnectMsg GetConnectHdr() const
+           {
+               if (GetSize() < sizeof(SConnectMsg))
+               {
+                   return SConnectMsg{};
+               }
+               return *reinterpret_cast<const SConnectMsg*>(GetData());
+           }
+   
+           SFragmentedMsgHdr GetFragmentedHdr() const
+           {
+               if (GetSize() < sizeof(SFragmentedMsgHdr))
+               {
+                   return SFragmentedMsgHdr{};
+               }
+               return *reinterpret_cast<const SFragmentedMsgHdr*>(GetData());
+           }
+   
+           bool IsValid() const
+           {
+               if (!GetData() || GetSize() < sizeof(SMsgHdr))
+               {
+                   return false;
+               }
+   
+               const SMsgHdr hdr = GetMsgHdr();
+               switch (hdr.eType)
+               {
+               case EMsgType::sync_request:
+               case EMsgType::sync_answer:
+               case EMsgType::connect_term:
+               case EMsgType::data:
+                   return true;
+   
+               case EMsgType::connect_request:
+               case EMsgType::connect_answer:
+                   return GetSize() >= sizeof(SConnectMsg);
+   
+               case EMsgType::data_fragment:
+                   return GetSize() >= sizeof(SFragmentedMsgHdr);
+   
+               default:
+                   return false;
+               }
+           }
+   
+       private:
+           std::vector<uint8_t> m_Data;
+       };
+   
+       struct SDataContext
+       {
+           uint32_t uiTotalSize      = 0; 
+           uint32_t uiCurrentOffset  = 0; 
+           size_t   nChunkIndex      = 0; 
+           uint32_t uiChunkOffset    = 0; 
+           sdv::sequence<sdv::pointer<uint8_t>> seqDataChunks; 
+       };
+   
+       struct SEventCallback
+       {
+           uint64_t                            uiCookie = 0;           
+           sdv::ipc::IConnectEventCallback*    pCallback = nullptr;    
+       };
+   
+       static constexpr uint32_t kMaxUdsPacketSize = 64u * 1024u * 1024u; // 64 MiB
+   
+       void ReceiveSyncRequest(const CMessage& message);
+   
+       void ReceiveSyncAnswer(const CMessage& message);
+   
+       void ReceiveConnectRequest(const CMessage& message);
+   
+       void ReceiveConnectAnswer(const CMessage& message);
+   
+       void ReceiveConnectTerm(const CMessage& message);
+   
+       void ReceiveDataMessage(const CMessage& rMessage, SDataContext& rsDataCtxt);
+   
+       void ReceiveDataFragmentMessage(const CMessage& rMessage, SDataContext& rsDataCtxt);
+   
+       uint32_t ReadDataTable(const CMessage& rMessage, SDataContext& rsDataCtxt);
+   
+       bool ReadDataChunk(const CMessage& rMessage, uint32_t uiOffset, SDataContext& rsDataCtxt);
+   
+       void SetConnectState(sdv::ipc::EConnectState state);
+   };
+   
+   #endif // WIN_SOCKETS_CONNECTION_H
+   #endif

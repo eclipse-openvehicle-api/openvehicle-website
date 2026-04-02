@@ -1,0 +1,1486 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Program Listing for File param_impl.h &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=9c3fb72b" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=323e3408"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/program_listing_file_support_param_impl.h';</script>
+    <script src="../_static/js/sidebar-toggle.js?v=714d0a57"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/step_by_step_guide/step_by_step_index.html">
+                        Step by Step Example
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/sdv_executables.html">
+                        SDV Executables
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/step_by_step_guide/step_by_step_index.html">
+                        Step by Step Example
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/sdv_executables.html">
+                        SDV Executables
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Program...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="program-listing-for-file-param-impl-h">
+<span id="program-listing-file-support-param-impl-h"></span><h1>Program Listing for File param_impl.h<a class="headerlink" href="#program-listing-for-file-param-impl-h" title="Permalink to this heading">#</a></h1>
+<p>↰ <a class="reference internal" href="file_support_param_impl.h.html#file-support-param-impl-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">support\param_impl.h</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Sensor</span><span class="p">.</span><span class="n">ADAS</span><span class="p">]</span>
+<span class="p">[</span><span class="n">Sensor</span><span class="p">.</span><span class="n">Radar</span><span class="p">]</span>
+<span class="cm">/********************************************************************************</span>
+<span class="cm"> * Copyright (c) 2025-2026 Contributors to the Eclipse Foundation</span>
+<span class="cm"> *</span>
+<span class="cm"> * This program and the accompanying materials are made available under the</span>
+<span class="cm"> * terms of the Apache License Version 2.0 which is available at</span>
+<span class="cm"> * https://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="cm"> *</span>
+<span class="cm"> * SPDX-License-Identifier: Apache-2.0</span>
+<span class="cm"> *</span>
+<span class="cm"> * Contributors:</span>
+<span class="cm"> *   Erik Verhoeven - initial API and implementation</span>
+<span class="cm"> ********************************************************************************/</span>
+
+<span class="cp">#ifndef PARAM_IMPL_H</span>
+<span class="cp">#define PARAM_IMPL_H</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../interfaces/param.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;interface_ptr.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdint&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;map&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;type_traits&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;algorithm&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;memory&gt;</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">sdv</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="c1">// Forward declaration</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CSdvParamMap</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CSdvParamInfo</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="n">SParamInfo</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TVar</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">TDefaultType</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="n">CSdvParamInfo</span><span class="p">(</span><span class="n">TVar</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rtVar</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssName</span><span class="p">,</span><span class="w"> </span><span class="n">TDefaultType</span><span class="w"> </span><span class="n">tDefaultVal</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssUnit</span><span class="p">,</span>
+<span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssCategory</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssDescription</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiFlags</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TVar</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">TDefaultType</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="n">CSdvParamInfo</span><span class="p">(</span><span class="n">TVar</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rtVar</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssName</span><span class="p">,</span><span class="w"> </span><span class="n">TDefaultType</span><span class="w"> </span><span class="n">tDefaultVal</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">any_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ranyLimitLow</span><span class="p">,</span>
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="n">bIncludeLow</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">any_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ranyLimitHigh</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bIncludeHigh</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssUnit</span><span class="p">,</span>
+<span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssCategory</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssDescription</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiFlags</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TVar</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">TDefaultType</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="n">CSdvParamInfo</span><span class="p">(</span><span class="n">TVar</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rtVar</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssName</span><span class="p">,</span><span class="w"> </span><span class="n">TDefaultType</span><span class="w"> </span><span class="n">tDefaultVal</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssPattern</span><span class="p">,</span>
+<span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssUnit</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssCategory</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssDescription</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiFlags</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TVar</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">TDefaultType</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="n">CSdvParamInfo</span><span class="p">(</span><span class="n">TVar</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rtVar</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssName</span><span class="p">,</span><span class="w"> </span><span class="n">TDefaultType</span><span class="w"> </span><span class="n">tDefaultVal</span><span class="p">,</span>
+<span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="n">sequence</span><span class="o">&lt;</span><span class="n">SLabelInfo</span><span class="o">::</span><span class="n">SLabel</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rseqLabels</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssCategory</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssDescription</span><span class="p">,</span>
+<span class="w">            </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiFlags</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CSdvParamInfo</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">SParamInfo</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rInfo</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CSdvParamInfo</span><span class="p">(</span><span class="n">SParamInfo</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">rInfo</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">CSdvParamInfo</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CSdvParamInfo</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">SParamInfo</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rsInfo</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">CSdvParamInfo</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">SParamInfo</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">rsInfo</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">SParamInfo</span><span class="w"> </span><span class="nf">InfoStruct</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Name</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">u8string</span><span class="w"> </span><span class="nf">Path</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">any_t</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">DefaultVal</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Group</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Description</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Unit</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">Flags</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="nf">ReadOnly</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Temporary</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Dirty</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Locked</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Boolean</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Numeric</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="nf">String</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Enum</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Bitmask</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">any_t</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">NumericLimitLow</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">any_t</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">NumericLimitHigh</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">StringPattern</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">sequence</span><span class="o">&lt;</span><span class="n">SLabelInfo</span><span class="o">::</span><span class="n">SLabel</span><span class="o">&gt;</span><span class="w"> </span><span class="n">EnumBitmaskLabels</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">protected</span><span class="o">:</span>
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TType</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">TypeIsString</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TType</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">TypeIsReadOnly</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">Init</span><span class="p">(</span><span class="n">EParamType</span><span class="w"> </span><span class="n">eType</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssName</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">any_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ranyDefaultVal</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssUnit</span><span class="p">,</span>
+<span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssCategory</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssDescription</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiFlags</span><span class="p">);</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">namespace</span><span class="w"> </span><span class="nn">internal</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">class</span><span class="w"> </span><span class="nc">CParamGuardian</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">CSdvParamInfo</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">        </span><span class="k">public</span><span class="o">:</span>
+<span class="w">            </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">TInfoConstruct</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="n">CParamGuardian</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">bLockable</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bAutoDirty</span><span class="p">,</span><span class="w"> </span><span class="n">TInfoConstruct</span><span class="p">...</span><span class="w"> </span><span class="n">tConstruct</span><span class="p">);</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">SParamInfo</span><span class="w"> </span><span class="nf">InfoStruct</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">Flags</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">UpdateDirty</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">any_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ranyValue</span><span class="p">);</span>
+
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">SetDirty</span><span class="p">();</span>
+
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">ResetDirty</span><span class="p">();</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Dirty</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Lockable</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Lock</span><span class="p">();</span>
+
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Unlock</span><span class="p">();</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Locked</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Set</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">any_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ranyValue</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="n">any_t</span><span class="w"> </span><span class="nf">Get</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">protected</span><span class="o">:</span>
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="n">CheckRestrictions</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">any_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ranyValue</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">private</span><span class="o">:</span>
+<span class="w">            </span><span class="kt">bool</span><span class="w">    </span><span class="n">m_bLockable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">bool</span><span class="w">    </span><span class="n">m_bLocked</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">bool</span><span class="w">    </span><span class="n">m_bAutoDirty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">bool</span><span class="w">    </span><span class="n">m_bDirty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">            </span><span class="n">any_t</span><span class="w">   </span><span class="n">m_anyStored</span><span class="p">;</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TVar</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="k">class</span><span class="w"> </span><span class="nc">CParamValue</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">CParamGuardian</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">        </span><span class="k">public</span><span class="o">:</span>
+<span class="w">            </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">TInfoConstruct</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="n">CParamValue</span><span class="p">(</span><span class="n">TVar</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rtVar</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bLockable</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bAutoDirty</span><span class="p">,</span><span class="w"> </span><span class="n">TInfoConstruct</span><span class="p">...</span><span class="w"> </span><span class="n">tConstruct</span><span class="p">);</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Set</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">any_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ranyValue</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="n">any_t</span><span class="w"> </span><span class="nf">Get</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">private</span><span class="o">:</span>
+<span class="w">            </span><span class="n">TVar</span><span class="o">&amp;</span><span class="w">   </span><span class="n">m_rtVar</span><span class="p">;</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="k">class</span><span class="w"> </span><span class="nc">CLabelMapHelper</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">        </span><span class="k">public</span><span class="o">:</span>
+<span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="n">Clear</span><span class="p">()</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_mapLabelCollections</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">struct</span><span class="w"> </span><span class="nc">SLabelLocal</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">sdv</span><span class="o">::</span><span class="n">any_t</span><span class="w">  </span><span class="n">anyValue</span><span class="p">;</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssLabel</span><span class="p">;</span>
+<span class="w">            </span><span class="p">};</span>
+
+<span class="w">            </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TEnum</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="n">StoreLabelMap</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">SLabelLocal</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rseqLabels</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">m_mapLabelCollections</span><span class="p">[</span><span class="k">typeid</span><span class="p">(</span><span class="n">TEnum</span><span class="p">).</span><span class="n">name</span><span class="p">()]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rseqLabels</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TEnum</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="n">sequence</span><span class="o">&lt;</span><span class="n">SLabelInfo</span><span class="o">::</span><span class="n">SLabel</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetLabelMap</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">using</span><span class="w"> </span><span class="n">TEnumLocal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">remove_reference_t</span><span class="o">&lt;</span><span class="n">TEnum</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">                </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">sequence</span><span class="o">&lt;</span><span class="n">SLabelInfo</span><span class="o">::</span><span class="n">SLabel</span><span class="o">&gt;</span><span class="w"> </span><span class="n">seqEmpty</span><span class="p">;</span>
+<span class="w">                </span><span class="k">auto</span><span class="w"> </span><span class="n">itEnum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_mapLabelCollections</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="k">typeid</span><span class="p">(</span><span class="n">TEnumLocal</span><span class="p">).</span><span class="n">name</span><span class="p">());</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">itEnum</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">m_mapLabelCollections</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+<span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="n">seqEmpty</span><span class="p">;</span>
+
+<span class="w">                </span><span class="c1">// Create a copy pf the data using the SDV memory manager.</span>
+<span class="w">                </span><span class="n">sequence</span><span class="o">&lt;</span><span class="n">SLabelInfo</span><span class="o">::</span><span class="n">SLabel</span><span class="o">&gt;</span><span class="w"> </span><span class="n">seqLabels</span><span class="p">;</span>
+<span class="w">                </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">SLabelLocal</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rsLabel</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">itEnum</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">)</span>
+<span class="w">                    </span><span class="n">seqLabels</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">SLabelInfo</span><span class="o">::</span><span class="n">SLabel</span><span class="p">{</span><span class="n">rsLabel</span><span class="p">.</span><span class="n">anyValue</span><span class="p">,</span><span class="w"> </span><span class="n">rsLabel</span><span class="p">.</span><span class="n">ssLabel</span><span class="p">});</span>
+
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">seqLabels</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">private</span><span class="o">:</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">SLabelLocal</span><span class="o">&gt;&gt;</span><span class="w">    </span><span class="n">m_mapLabelCollections</span><span class="p">;</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="kr">inline</span><span class="w"> </span><span class="n">CLabelMapHelper</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">GetLabelMapHelper</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">static</span><span class="w"> </span><span class="n">CLabelMapHelper</span><span class="w"> </span><span class="n">helper</span><span class="p">;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">helper</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ELimitType</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">up_to_limit</span><span class="p">,</span>
+<span class="w">            </span><span class="n">up_to_and_include_limit</span><span class="p">,</span>
+<span class="w">            </span><span class="n">no_limit</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">SLowerLimit</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TType</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">TType</span><span class="p">,</span><span class="w"> </span><span class="n">ELimitType</span><span class="o">&gt;</span><span class="w"> </span><span class="k">operator</span><span class="o">&gt;</span><span class="p">(</span><span class="n">TType</span><span class="w"> </span><span class="n">tLimit</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">tLimit</span><span class="p">,</span><span class="w"> </span><span class="n">ELimitType</span><span class="o">::</span><span class="n">up_to_limit</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TType</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">TType</span><span class="p">,</span><span class="w"> </span><span class="n">ELimitType</span><span class="o">&gt;</span><span class="w"> </span><span class="k">operator</span><span class="o">&gt;=</span><span class="p">(</span><span class="n">TType</span><span class="w"> </span><span class="n">tLimit</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">tLimit</span><span class="p">,</span><span class="w"> </span><span class="n">ELimitType</span><span class="o">::</span><span class="n">up_to_and_include_limit</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="n">ELimitType</span><span class="o">&gt;</span><span class="w"> </span><span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">ELimitType</span><span class="o">::</span><span class="n">no_limit</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">SUpperLimit</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TType</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">TType</span><span class="p">,</span><span class="w"> </span><span class="n">ELimitType</span><span class="o">&gt;</span><span class="w"> </span><span class="k">operator</span><span class="o">&lt;</span><span class="p">(</span><span class="n">TType</span><span class="w"> </span><span class="n">tLimit</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">tLimit</span><span class="p">,</span><span class="w"> </span><span class="n">ELimitType</span><span class="o">::</span><span class="n">up_to_limit</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TType</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">TType</span><span class="p">,</span><span class="w"> </span><span class="n">ELimitType</span><span class="o">&gt;</span><span class="w"> </span><span class="k">operator</span><span class="o">&lt;=</span><span class="p">(</span><span class="n">TType</span><span class="w"> </span><span class="n">tLimit</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">tLimit</span><span class="p">,</span><span class="w"> </span><span class="n">ELimitType</span><span class="o">::</span><span class="n">up_to_and_include_limit</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="p">,</span><span class="w"> </span><span class="n">ELimitType</span><span class="o">&gt;</span><span class="w"> </span><span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">const</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">ELimitType</span><span class="o">::</span><span class="n">no_limit</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">is_shared_ptr</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">false_type</span>
+<span class="w">        </span><span class="p">{};</span>
+
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">is_shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">true_type</span>
+<span class="w">        </span><span class="p">{};</span>
+
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="kr">inline</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_shared_ptr_v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">is_shared_ptr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">value</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">SMemberMapAccess</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">CParamGuardian</span><span class="o">&gt;</span><span class="w"> </span><span class="n">FindParamObject</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssName</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="n">CSdvParamMap</span><span class="o">*</span><span class="w"> </span><span class="nf">Access</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">CSdvParamMap</span><span class="o">*</span><span class="w"> </span><span class="nf">Access</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TMember</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">SMemberMap</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SMemberMapAccess</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">static_assert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_base_of_v</span><span class="o">&lt;</span><span class="n">CSdvParamMap</span><span class="p">,</span><span class="w"> </span><span class="n">TMember</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;The member type must derive from sdv::CSdvParamMap.&quot;</span><span class="p">);</span>
+
+<span class="w">            </span><span class="k">using</span><span class="w"> </span><span class="n">TType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TMember</span><span class="p">;</span>
+
+<span class="w">            </span><span class="n">SMemberMap</span><span class="p">(</span><span class="n">TMember</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rMember</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvParamMap</span><span class="o">*</span><span class="w"> </span><span class="n">pEventObject</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">m_pEventObject</span><span class="p">(</span><span class="n">pEventObject</span><span class="p">),</span><span class="w"> </span><span class="n">refMember</span><span class="p">(</span><span class="n">rMember</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{}</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">SMemberMap</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvParamInfo</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">BuildStatic</span><span class="p">()</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">TMember</span><span class="o">::</span><span class="n">BuildParamMap</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="n">BuildMap</span><span class="p">()</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">refMember</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">BuildParamMap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">refMember</span><span class="p">.</span><span class="n">get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pEventObject</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">CParamGuardian</span><span class="o">&gt;</span><span class="w"> </span><span class="n">FindParamObject</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssName</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">refMember</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">FindParamObject</span><span class="p">(</span><span class="n">rssName</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="n">CSdvParamMap</span><span class="o">*</span><span class="w"> </span><span class="n">Access</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="n">refMember</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">CSdvParamMap</span><span class="o">*</span><span class="w"> </span><span class="n">Access</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="n">refMember</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="k">private</span><span class="o">:</span>
+<span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvParamMap</span><span class="o">*</span><span class="w">              </span><span class="n">m_pEventObject</span><span class="p">;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">reference_wrapper</span><span class="o">&lt;</span><span class="n">TMember</span><span class="o">&gt;</span><span class="w"> </span><span class="n">refMember</span><span class="p">;</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TMember</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">SMemberMap</span><span class="o">&lt;</span><span class="n">TMember</span><span class="o">*&gt;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SMemberMapAccess</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">static_assert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_base_of_v</span><span class="o">&lt;</span><span class="n">CSdvParamMap</span><span class="p">,</span><span class="w"> </span><span class="n">TMember</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;The member type must derive from sdv::CSdvParamMap.&quot;</span><span class="p">);</span>
+
+<span class="w">            </span><span class="k">using</span><span class="w"> </span><span class="n">TType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TMember</span><span class="p">;</span>
+
+<span class="w">            </span><span class="n">SMemberMap</span><span class="p">(</span><span class="n">TMember</span><span class="o">*&amp;</span><span class="w"> </span><span class="n">rpMember</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvParamMap</span><span class="o">*</span><span class="w"> </span><span class="n">pEventObject</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">m_pEventObject</span><span class="p">(</span><span class="n">pEventObject</span><span class="p">),</span><span class="w"> </span><span class="n">refpMember</span><span class="p">(</span><span class="n">rpMember</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{}</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">SMemberMap</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvParamInfo</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">BuildStatic</span><span class="p">()</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">TMember</span><span class="o">::</span><span class="n">BuildParamMap</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="n">BuildMap</span><span class="p">()</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">refpMember</span><span class="p">.</span><span class="n">get</span><span class="p">())</span>
+<span class="w">                    </span><span class="n">refpMember</span><span class="p">.</span><span class="n">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">BuildParamMap</span><span class="p">(</span><span class="n">refpMember</span><span class="p">.</span><span class="n">get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pEventObject</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">CParamGuardian</span><span class="o">&gt;</span><span class="w"> </span><span class="n">FindParamObject</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssName</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">refpMember</span><span class="p">.</span><span class="n">get</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">refpMember</span><span class="p">.</span><span class="n">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">FindParamObject</span><span class="p">(</span><span class="n">rssName</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="n">CSdvParamMap</span><span class="o">*</span><span class="w"> </span><span class="n">Access</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// In case a change has happened, or the member was not build previously...</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">refpMember</span><span class="p">.</span><span class="n">get</span><span class="p">())</span>
+<span class="w">                    </span><span class="n">refpMember</span><span class="p">.</span><span class="n">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">BuildParamMap</span><span class="p">(</span><span class="n">refpMember</span><span class="p">.</span><span class="n">get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pEventObject</span><span class="p">);</span>
+
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">refpMember</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">CSdvParamMap</span><span class="o">*</span><span class="w"> </span><span class="n">Access</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">refpMember</span><span class="p">.</span><span class="n">get</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+
+<span class="w">                </span><span class="c1">// In case a change has happened, or the member was not build previously...</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">refpMember</span><span class="p">.</span><span class="n">get</span><span class="p">())</span>
+<span class="w">                    </span><span class="n">refpMember</span><span class="p">.</span><span class="n">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">BuildParamMap</span><span class="p">(</span><span class="n">refpMember</span><span class="p">.</span><span class="n">get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pEventObject</span><span class="p">);</span>
+
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">refpMember</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="k">private</span><span class="o">:</span>
+<span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvParamMap</span><span class="o">*</span><span class="w">      </span><span class="n">m_pEventObject</span><span class="p">;</span>
+<span class="w">            </span><span class="k">mutable</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">reference_wrapper</span><span class="o">&lt;</span><span class="n">TMember</span><span class="o">*&gt;</span><span class="w"> </span><span class="n">refpMember</span><span class="p">;</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TMember</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">SMemberMap</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">TMember</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">SMemberMapAccess</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">static_assert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_base_of_v</span><span class="o">&lt;</span><span class="n">CSdvParamMap</span><span class="p">,</span><span class="w"> </span><span class="n">TMember</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;The member type must derive from sdv::CSdvParamMap.&quot;</span><span class="p">);</span>
+
+<span class="w">            </span><span class="k">using</span><span class="w"> </span><span class="n">TType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TMember</span><span class="p">;</span>
+
+<span class="w">            </span><span class="c1">// Warning of cppcheck 2.7 for missing m_pEventObject member variable instantiation. Suppress warning.</span>
+<span class="w">            </span><span class="c1">// cppcheck-suppress uninitMemberVar</span>
+<span class="w">            </span><span class="n">SMemberMap</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">TMember</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rptrMember</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvParamMap</span><span class="o">*</span><span class="w"> </span><span class="n">pEventObject</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
+<span class="w">                </span><span class="n">m_pEventObject</span><span class="p">(</span><span class="n">pEventObject</span><span class="p">),</span><span class="w"> </span><span class="n">refptrMember</span><span class="p">(</span><span class="n">rptrMember</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{}</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">SMemberMap</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvParamInfo</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">BuildStatic</span><span class="p">()</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">TMember</span><span class="o">::</span><span class="n">BuildParamMap</span><span class="p">(</span><span class="k">nullptr</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="n">BuildMap</span><span class="p">()</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">())</span>
+<span class="w">                    </span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">BuildParamMap</span><span class="p">(</span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pEventObject</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">CParamGuardian</span><span class="o">&gt;</span><span class="w"> </span><span class="n">FindParamObject</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssName</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">FindParamObject</span><span class="p">(</span><span class="n">rssName</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="n">CSdvParamMap</span><span class="o">*</span><span class="w"> </span><span class="n">Access</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+
+<span class="w">                </span><span class="c1">// In case a change has happened, or the member was not build previously...</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">())</span>
+<span class="w">                    </span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">BuildParamMap</span><span class="p">(</span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pEventObject</span><span class="p">);</span>
+
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">get</span><span class="p">();</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">CSdvParamMap</span><span class="o">*</span><span class="w"> </span><span class="n">Access</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+
+<span class="w">                </span><span class="c1">// In case a change has happened, or the member was not build previously...</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">())</span>
+<span class="w">                    </span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">BuildParamMap</span><span class="p">(</span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">get</span><span class="p">(),</span><span class="w"> </span><span class="n">m_pEventObject</span><span class="p">);</span>
+
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">refptrMember</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">get</span><span class="p">();</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="k">private</span><span class="o">:</span>
+<span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvParamMap</span><span class="o">*</span><span class="w">      </span><span class="n">m_pEventObject</span><span class="p">;</span>
+<span class="w">            </span><span class="k">mutable</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">reference_wrapper</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">TMember</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">refptrMember</span><span class="p">;</span>
+<span class="w">        </span><span class="p">};</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="c1">// namespace internal</span>
+
+<span class="cp">#define SDV_CONCAT_IMPL(a, b) a##b</span>
+
+<span class="cp">#define SDV_CONCAT(a, b) SDV_CONCAT_IMPL(a, b)</span>
+
+<span class="cp">#define SDV_UNIQUE_VAR(prefix) SDV_CONCAT(prefix, __COUNTER__)</span>
+
+<span class="cp">#define BEGIN_SDV_LABEL_MAP(enum_type)                                                                                             \</span>
+<span class="cp">                                          \</span>
+<span class="cp">    [[maybe_unused]] static inline bool SDV_UNIQUE_VAR(_bLabelMap) = sdv::internal::GetLabelMapHelper().StoreLabelMap&lt;enum_type&gt;({</span>
+
+<span class="cp">#define SDV_LABEL_ENTRY(enum_element, name_string)                                                                                 \</span>
+<span class="cp">            { static_cast&lt;std::underlying_type_t&lt;decltype(enum_element)&gt;&gt;(enum_element), name_string },</span>
+
+<span class="cp">#define END_SDV_LABEL_MAP()                                                                                                        \</span>
+<span class="cp">        });</span>
+
+<span class="cp">#define BEGIN_SDV_PARAM_MAP()                                                                                                      \</span>
+<span class="cp">                                                                                                                        \</span>
+<span class="cp">        template &lt;typename TClassPtr = std::nullptr_t&gt;                                                                             \</span>
+<span class="cp">        static std::vector&lt;std::shared_ptr&lt;sdv::CSdvParamInfo&gt;&gt; BuildParamMap([[maybe_unused]] TClassPtr pObject,                  \</span>
+<span class="cp">            [[maybe_unused]] sdv::CSdvParamMap* pEventObject)                                                                      \</span>
+<span class="cp">        {                                                                                                                          \</span>
+<span class="cp">            bool constexpr bStatic = std::is_same_v&lt;TClassPtr, std::nullptr_t&gt;;                                                    \</span>
+<span class="cp">            static_assert(bStatic || (std::is_pointer_v&lt;TClassPtr&gt; &amp;&amp;                                                              \</span>
+<span class="cp">                    std::is_base_of_v&lt;sdv::CSdvParamMap, std::remove_pointer_t&lt;TClassPtr&gt;&gt;),                                       \</span>
+<span class="cp">                &quot;The class needs to derive from sdv::CSdvParamMap.&quot;);                                                              \</span>
+<span class="cp">            if constexpr (!bStatic)                                                                                                \</span>
+<span class="cp">            {                                                                                                                      \</span>
+<span class="cp">                </span><span class="cm">/* Build only if necessary */</span><span class="cp">                                                                                      \</span>
+<span class="cp">                if (!pObject-&gt;BuildNecessary()) return {};                                                                         \</span>
+<span class="cp">            }                                                                                                                      \</span>
+<span class="cp">            std::vector&lt;std::shared_ptr&lt;sdv::CSdvParamInfo&gt;&gt; vecParamInfo;                                                         \</span>
+<span class="cp">            [[maybe_unused]] uint32_t uiFlags = 0;                                                                                 \</span>
+<span class="cp">            [[maybe_unused]] std::string ssGroup;                                                                               \</span>
+<span class="cp">            [[maybe_unused]] bool bLockable = false;</span>
+
+<span class="cp">#define END_SDV_PARAM_MAP()                                                                                                        \</span>
+<span class="cp">            return vecParamInfo;                                                                                                   \</span>
+<span class="cp">        }                                                                                                                          \</span>
+<span class="cp">                                                                                                                                   \</span>
+<span class="cp">                                                                                                                        \</span>
+<span class="cp">        static std::vector&lt;std::shared_ptr&lt;sdv::CSdvParamInfo&gt;&gt; GetParamMapInfoStatic()                                            \</span>
+<span class="cp">        {                                                                                                                          \</span>
+<span class="cp">            std::vector&lt;std::shared_ptr&lt;sdv::CSdvParamInfo&gt;&gt; vecParamInfo = BuildParamMap(nullptr, nullptr);                       \</span>
+<span class="cp">            return vecParamInfo;                                                                                                   \</span>
+<span class="cp">        }                                                                                                                          \</span>
+<span class="cp">                                                                                                                                   \</span>
+<span class="cp">                                                                                                                        \</span>
+<span class="cp">        virtual void InitParamMap() override                                                                                       \</span>
+<span class="cp">        {                                                                                                                          \</span>
+<span class="cp">            BuildParamMap(this, this);                                                                                             \</span>
+<span class="cp">        }</span>
+
+
+<span class="cp">#define SDV_PARAM_GROUP(group_string)                                                                                              \</span>
+<span class="cp">            ssGroup = group_string;                                                                                                 \</span>
+
+
+<span class="cp">#define SDV_PARAM_NO_GROUP()                                                                                                       \</span>
+<span class="cp">            ssGroup.clear();</span>
+
+<span class="cp">#define SDV_PARAM_RESET_ATTRIBUTES()                                                                                               \</span>
+<span class="cp">            uiFlags = 0;                                                                                                           \</span>
+<span class="cp">            bLockable = false;</span>
+
+<span class="cp">#define SDV_PARAM_SET_READONLY()                                                                                                   \</span>
+<span class="cp">            uiFlags |= static_cast&lt;uint32_t&gt;(::sdv::EParamFlags::read_only);</span>
+
+<span class="cp">#define SDV_PARAM_RESET_READONLY()                                                                                                 \</span>
+<span class="cp">            uiFlags &amp;= ~static_cast&lt;uint32_t&gt;(::sdv::EParamFlags::read_only);</span>
+
+<span class="cp">#define SDV_PARAM_ENABLE_LOCKING()                                                                                                 \</span>
+<span class="cp">            bLockable = true;</span>
+
+<span class="cp">#define SDV_PARAM_DISABLE_LOCKING()                                                                                                \</span>
+<span class="cp">            bLockable = false;</span>
+
+<span class="cp">#define SDV_PARAM_SET_TEMPORARY()                                                                                                  \</span>
+<span class="cp">            uiFlags |= static_cast&lt;uint32_t&gt;(::sdv::EParamFlags::temporary);</span>
+
+<span class="cp">#define SDV_PARAM_RESET_TEMPORARY()                                                                                                \</span>
+<span class="cp">            uiFlags &amp;= ~static_cast&lt;uint32_t&gt;(::sdv::EParamFlags::temporary);</span>
+
+<span class="cp">#define SDV_PARAM_ENTRY(var, name_string, default_val, unit_string, description_string)                                            \</span>
+<span class="cp">    if constexpr (bStatic)                                                                                                         \</span>
+<span class="cp">    {                                                                                                                              \</span>
+<span class="cp">        decltype(var) temp{};                                                                                                      \</span>
+<span class="cp">        std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = std::make_shared&lt;sdv::CSdvParamInfo&gt;(temp, name_string, default_val,    \</span>
+<span class="cp">            unit_string, ssGroup, description_string, uiFlags);                                                                    \</span>
+<span class="cp">        if (ptrParamInfo) vecParamInfo.push_back(std::move(ptrParamInfo));                                                         \</span>
+<span class="cp">    }                                                                                                                              \</span>
+<span class="cp">    else                                                                                                                           \</span>
+<span class="cp">    {                                                                                                                              \</span>
+<span class="cp">        std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = pObject-&gt;RegisterParameter(pObject-&gt;var, bLockable, true, name_string,  \</span>
+<span class="cp">            default_val, unit_string, ssGroup, description_string, uiFlags);                                                       \</span>
+<span class="cp">        if (ptrParamInfo) vecParamInfo.push_back(std::move(ptrParamInfo));                                                         \</span>
+<span class="cp">    }</span>
+
+<span class="cp">#define NO_LIMIT != 0</span>
+
+<span class="cp">#define SDV_PARAM_NUMBER_ENTRY(var, name_string, default_val, low_limit, high_limit, unit_string, description_string)              \</span>
+<span class="cp">    {                                                                                                                              \</span>
+<span class="cp">        auto prLowLimit = sdv::internal::SLowerLimit() low_limit;                                                                  \</span>
+<span class="cp">        sdv::any_t anyLower;                                                                                                       \</span>
+<span class="cp">        if (prLowLimit.second != sdv::internal::ELimitType::no_limit) anyLower = prLowLimit.first;                                 \</span>
+<span class="cp">        auto prHighLimit = sdv::internal::SUpperLimit() high_limit;                                                                \</span>
+<span class="cp">        sdv::any_t anyUpper;                                                                                                       \</span>
+<span class="cp">        if (prHighLimit.second != sdv::internal::ELimitType::no_limit) anyUpper = prHighLimit.first;                               \</span>
+<span class="cp">        if constexpr (bStatic)                                                                                                     \</span>
+<span class="cp">        {                                                                                                                          \</span>
+<span class="cp">            decltype(var) temp{};                                                                                                  \</span>
+<span class="cp">            std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = std::make_shared&lt;sdv::CSdvParamInfo&gt;(temp, name_string,             \</span>
+<span class="cp">                default_val, anyLower, prLowLimit.second != sdv::internal::ELimitType::up_to_limit, anyUpper,                      \</span>
+<span class="cp">                prHighLimit.second != sdv::internal::ELimitType::up_to_limit, unit_string, ssGroup, description_string,            \</span>
+<span class="cp">                uiFlags);                                                                                                          \</span>
+<span class="cp">            if (ptrParamInfo) vecParamInfo.push_back(std::move(ptrParamInfo));                                                     \</span>
+<span class="cp">        }                                                                                                                          \</span>
+<span class="cp">        else                                                                                                                       \</span>
+<span class="cp">        {                                                                                                                          \</span>
+<span class="cp">            std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = pObject-&gt;RegisterParameter(pObject-&gt;var, bLockable, true,           \</span>
+<span class="cp">                name_string, default_val, anyLower, prLowLimit.second != sdv::internal::ELimitType::up_to_limit, anyUpper,         \</span>
+<span class="cp">                prHighLimit.second != sdv::internal::ELimitType::up_to_limit, unit_string, ssGroup, description_string,            \</span>
+<span class="cp">                uiFlags);                                                                                                          \</span>
+<span class="cp">            if (ptrParamInfo)vecParamInfo.push_back(std::move(ptrParamInfo));                                                      \</span>
+<span class="cp">        }                                                                                                                          \</span>
+<span class="cp">    }</span>
+
+<span class="cp">#define SDV_PARAM_ENUM_ENTRY(var, name_string, default_val, description_string)                                                    \</span>
+<span class="cp">    SDV_PARAM_ENTRY(var, name_string, default_val, &quot;&quot;, description_string)</span>
+
+<span class="cp">#define SDV_PARAM_STRING_ENTRY(var, name_string, default_val, pattern_string, unit_string, description_string)                     \</span>
+<span class="cp">    if constexpr (bStatic)                                                                                                         \</span>
+<span class="cp">    {                                                                                                                              \</span>
+<span class="cp">        decltype(var) temp{};                                                                                                      \</span>
+<span class="cp">        std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = std::make_shared&lt;sdv::CSdvParamInfo&gt;(temp, name_string, default_val,    \</span>
+<span class="cp">            pattern_string, unit_string, ssGroup, description_string, uiFlags);                                                    \</span>
+<span class="cp">        if (ptrParamInfo) vecParamInfo.push_back(std::move(ptrParamInfo));                                                         \</span>
+<span class="cp">    }                                                                                                                              \</span>
+<span class="cp">    else                                                                                                                           \</span>
+<span class="cp">    {                                                                                                                              \</span>
+<span class="cp">        std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = pObject-&gt;RegisterParameter(pObject-&gt;var, bLockable, true, name_string,  \</span>
+<span class="cp">            default_val, pattern_string, unit_string, ssGroup, description_string, uiFlags);                                       \</span>
+<span class="cp">        if (ptrParamInfo) vecParamInfo.push_back(std::move(ptrParamInfo));                                                         \</span>
+<span class="cp">    }</span>
+
+<span class="cp">#define SDV_PARAM_PATH_ENTRY(var, name_string, default_val, description_string)                                                    \</span>
+<span class="cp">    SDV_PARAM_ENTRY(var, name_string, default_val, &quot;&quot;, description_string)</span>
+
+<span class="cp">#define SDV_PARAM_BITMASK_ENTRY(TEnum, var, name_string, default_val, description_string)                                          \</span>
+<span class="cp">    if constexpr (bStatic)                                                                                                         \</span>
+<span class="cp">    {                                                                                                                              \</span>
+<span class="cp">        decltype(var) temp{};                                                                                                      \</span>
+<span class="cp">        std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = std::make_shared&lt;sdv::CSdvParamInfo&gt;(temp, name_string, default_val,    \</span>
+<span class="cp">            sdv::internal::GetLabelMapHelper().GetLabelMap&lt;TEnum&gt;(), ssGroup, description_string, uiFlags);                        \</span>
+<span class="cp">        if (ptrParamInfo) vecParamInfo.push_back(std::move(ptrParamInfo));                                                         \</span>
+<span class="cp">    }                                                                                                                              \</span>
+<span class="cp">    else                                                                                                                           \</span>
+<span class="cp">    {                                                                                                                              \</span>
+<span class="cp">        std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = pObject-&gt;RegisterParameter(pObject-&gt;var, bLockable, true, name_string,  \</span>
+<span class="cp">            default_val, sdv::internal::GetLabelMapHelper().GetLabelMap&lt;TEnum&gt;(), ssGroup, description_string, uiFlags);           \</span>
+<span class="cp">        if (ptrParamInfo) vecParamInfo.push_back(std::move(ptrParamInfo));                                                         \</span>
+<span class="cp">    }</span>
+
+<span class="cp">#define SDV_PARAM_CHAIN_BASE(base_class)                                                                                           \</span>
+<span class="cp">    {                                                                                                                              \</span>
+<span class="cp">        auto vecBaseParamInfo = base_class::BuildParamMap(pObject, pEventObject);                                                  \</span>
+<span class="cp">        vecParamInfo.insert(vecParamInfo.end(), vecBaseParamInfo.begin(), vecBaseParamInfo.end());                                 \</span>
+<span class="cp">    }</span>
+
+<span class="cp">#define SDV_PARAM_CHAIN_MEMBER(member)                                                                                             \</span>
+<span class="cp">    {                                                                                                                              \</span>
+<span class="cp">        std::vector&lt;std::shared_ptr&lt;sdv::CSdvParamInfo&gt;&gt; vecParamInfoMember;                                                       \</span>
+<span class="cp">        if constexpr (bStatic)                                                                                                     \</span>
+<span class="cp">        {                                                                                                                          \</span>
+<span class="cp">            vecParamInfoMember = sdv::internal::SMemberMap&lt;decltype(member)&gt;::BuildStatic();                                       \</span>
+<span class="cp">        }                                                                                                                          \</span>
+<span class="cp">        else                                                                                                                       \</span>
+<span class="cp">        {                                                                                                                          \</span>
+<span class="cp">            auto ptrMemberMap = std::make_shared&lt;sdv::internal::SMemberMap&lt;decltype(member)&gt;&gt;(pObject-&gt;member, pObject);           \</span>
+<span class="cp">            if (ptrMemberMap)                                                                                                      \</span>
+<span class="cp">            {                                                                                                                      \</span>
+<span class="cp">                ptrMemberMap-&gt;BuildMap();                                                                                          \</span>
+<span class="cp">                pObject-&gt;RegisterMemberMap(ptrMemberMap);                                                                          \</span>
+<span class="cp">            }                                                                                                                      \</span>
+<span class="cp">        }                                                                                                                          \</span>
+<span class="cp">        vecParamInfo.insert(vecParamInfo.end(), vecParamInfoMember.begin(), vecParamInfoMember.end());                             \</span>
+<span class="cp">    }</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CSdvParamMap</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IParameters</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">CSdvParamMap</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">CParamGuardian</span><span class="o">&gt;</span><span class="w"> </span><span class="n">FindParamObject</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssName</span><span class="p">);</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="n">internal</span><span class="o">::</span><span class="n">CParamGuardian</span><span class="o">&gt;</span><span class="w"> </span><span class="n">FindParamObject</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssName</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">sequence</span><span class="o">&lt;</span><span class="n">u8string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetParamPaths</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">any_t</span><span class="w"> </span><span class="nf">GetParam</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssPath</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">SetParam</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssPath</span><span class="p">,</span><span class="w"> </span><span class="cm">/*in*/</span><span class="w"> </span><span class="n">any_t</span><span class="w"> </span><span class="n">anyValue</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">SParamInfo</span><span class="w"> </span><span class="nf">GetParamInfo</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssPath</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsParamDirty</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssPath</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetParamDirtyFlag</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssPath</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">ResetParamDirtyFlag</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssPath</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsParamMapDirty</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">ResetParamMapDirtyFlags</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">LockParamMap</span><span class="p">();</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">UnlockParamMap</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnParamChanged</span><span class="p">([[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssPath</span><span class="p">,</span><span class="w"> </span><span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">any_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rvarOld</span><span class="p">,</span>
+<span class="w">            </span><span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">any_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rvarNew</span><span class="p">,</span><span class="w"> </span><span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CSdvParamInfo</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rptrParamInfo</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnParamFlagChanged</span><span class="p">([[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssPath</span><span class="p">,</span><span class="w"> </span><span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiOldFlags</span><span class="p">,</span>
+<span class="w">            </span><span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiNewFlags</span><span class="p">,</span><span class="w"> </span><span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">uiMask</span><span class="p">,</span><span class="w"> </span><span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">any_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rvar</span><span class="p">,</span>
+<span class="w">            </span><span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CSdvParamInfo</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rptrParamInfo</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="w">    </span><span class="k">protected</span><span class="o">:</span>
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TVar</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">TConstruct</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CSdvParamInfo</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RegisterParameter</span><span class="p">(</span><span class="n">TVar</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rtVar</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bLockable</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bAutoDirty</span><span class="p">,</span><span class="w"> </span><span class="n">TConstruct</span><span class="p">...</span><span class="w"> </span><span class="n">tConstruct</span><span class="p">);</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">RegisterMemberMap</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">SMemberMapAccess</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rptrMember</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">InitParamMap</span><span class="p">();</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="nf">BuildNecessary</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvParamInfo</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">GetParamMapInfoStatic</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">SParamRegistration</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TVar</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="n">SParamRegistration</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">CParamValue</span><span class="o">&lt;</span><span class="n">TVar</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">rptrParameter</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
+<span class="w">                </span><span class="n">eType</span><span class="p">(</span><span class="n">EType</span><span class="o">::</span><span class="n">parameter</span><span class="p">),</span><span class="w"> </span><span class="n">ptrParameter</span><span class="p">(</span><span class="n">rptrParameter</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{}</span>
+
+<span class="w">            </span><span class="n">SParamRegistration</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">SMemberMapAccess</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rptrMember</span><span class="p">)</span><span class="w"> </span><span class="o">:</span>
+<span class="w">                </span><span class="n">eType</span><span class="p">(</span><span class="n">EType</span><span class="o">::</span><span class="n">member_map</span><span class="p">),</span><span class="w"> </span><span class="n">ptrMemberMap</span><span class="p">(</span><span class="n">rptrMember</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{}</span>
+
+<span class="w">            </span><span class="n">SParamRegistration</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">SParamRegistration</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rRegistration</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">eType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rRegistration</span><span class="p">.</span><span class="n">eType</span><span class="p">;</span>
+<span class="w">                </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">rRegistration</span><span class="p">.</span><span class="n">eType</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="no">EType</span><span class="o">::</span><span class="no">parameter</span><span class="p">:</span>
+<span class="w">                    </span><span class="k">new</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">ptrParameter</span><span class="p">)</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">CParamGuardian</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rRegistration</span><span class="p">.</span><span class="n">ptrParameter</span><span class="p">);</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="no">EType</span><span class="o">::</span><span class="no">member_map</span><span class="p">:</span>
+<span class="w">                    </span><span class="k">new</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">ptrMemberMap</span><span class="p">)</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">SMemberMapAccess</span><span class="o">&gt;</span><span class="p">(</span><span class="n">rRegistration</span><span class="p">.</span><span class="n">ptrMemberMap</span><span class="p">);</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="n">SParamRegistration</span><span class="p">(</span><span class="n">SParamRegistration</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">rRegistration</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">eType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rRegistration</span><span class="p">.</span><span class="n">eType</span><span class="p">;</span>
+<span class="w">                </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">rRegistration</span><span class="p">.</span><span class="n">eType</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="no">EType</span><span class="o">::</span><span class="no">parameter</span><span class="p">:</span>
+<span class="w">                    </span><span class="k">new</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">ptrParameter</span><span class="p">)</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">CParamGuardian</span><span class="o">&gt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">rRegistration</span><span class="p">.</span><span class="n">ptrParameter</span><span class="p">));</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="no">EType</span><span class="o">::</span><span class="no">member_map</span><span class="p">:</span>
+<span class="w">                    </span><span class="k">new</span><span class="w"> </span><span class="p">(</span><span class="o">&amp;</span><span class="n">ptrMemberMap</span><span class="p">)</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">SMemberMapAccess</span><span class="o">&gt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">rRegistration</span><span class="p">.</span><span class="n">ptrMemberMap</span><span class="p">));</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="o">~</span><span class="n">SParamRegistration</span><span class="p">()</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">eType</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="no">EType</span><span class="o">::</span><span class="no">parameter</span><span class="p">:</span>
+<span class="w">                    </span><span class="n">ptrParameter</span><span class="p">.</span><span class="o">~</span><span class="n">shared_ptr</span><span class="p">();</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="k">case</span><span class="w"> </span><span class="no">EType</span><span class="o">::</span><span class="no">member_map</span><span class="p">:</span>
+<span class="w">                    </span><span class="n">ptrMemberMap</span><span class="p">.</span><span class="o">~</span><span class="n">shared_ptr</span><span class="p">();</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">CParamGuardian</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Parameter</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">eType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EType</span><span class="o">::</span><span class="n">parameter</span><span class="p">)</span>
+<span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="n">ptrParameter</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">SMemberMapAccess</span><span class="o">&gt;</span><span class="w"> </span><span class="n">MemberMap</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">eType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EType</span><span class="o">::</span><span class="n">member_map</span><span class="p">)</span>
+<span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="n">ptrMemberMap</span><span class="p">;</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">private</span><span class="o">:</span>
+<span class="w">            </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EType</span><span class="w"> </span><span class="p">{</span><span class="n">parameter</span><span class="p">,</span><span class="w"> </span><span class="n">member_map</span><span class="p">}</span><span class="w">        </span><span class="n">eType</span><span class="p">;</span>
+<span class="w">            </span><span class="k">union</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">CParamGuardian</span><span class="o">&gt;</span><span class="w">   </span><span class="n">ptrParameter</span><span class="p">;</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">SMemberMapAccess</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ptrMemberMap</span><span class="p">;</span>
+<span class="w">            </span><span class="p">};</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="k">mutable</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">SParamRegistration</span><span class="o">&gt;</span><span class="w">     </span><span class="n">m_vecParamMapRegistration</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="p">};</span><span class="w"> </span><span class="c1">// namespace sdv</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;param_impl.inl&quot;</span>
+
+<span class="cp">#endif </span><span class="c1">// !defined PARAM_IMPL_H</span>
+</pre></div>
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  <h3>Contents</h3>
+  <ul>
+    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
+    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
+    <ul>
+        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
+        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
+    </ul>
+    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
+    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
+</ul>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
+
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
+
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
+
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
+        } 
+    });
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -10,6 +10,19 @@ Program Listing for File cmdlnparser.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the 
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
    #ifndef CMDLN_PARSER_H
    #define CMDLN_PARSER_H
    
@@ -160,8 +173,8 @@ Program Listing for File cmdlnparser.h
        uint32_t                                        m_uiParseFlags = 0;     
        std::shared_ptr<CArgumentDefBase>               m_ptrDefaultArg;        
        std::list<std::shared_ptr<CArgumentDefBase>>    m_lstOptionArgs;        
-       std::map<std::string, CArgumentDefBase&, std::greater<std::string>> m_mapSortedOptions;     
-       std::map<std::string, CArgumentDefBase&, std::greater<std::string>> m_mapSortedSubOptions;  
+       std::multimap<std::string, CArgumentDefBase&, std::greater<std::string>> m_mapSortedOptions;     
+       std::multimap<std::string, CArgumentDefBase&, std::greater<std::string>> m_mapSortedSubOptions;  
        std::shared_ptr<SGroupDef>                      m_ptrCurrentGroup;      
        std::list<std::pair<std::reference_wrapper<CArgumentDefBase>, std::string>> m_lstSupplied;  
        size_t                                          m_nFixedWidth = 0;      
@@ -1480,21 +1493,21 @@ Program Listing for File cmdlnparser.h
            };
    
            // Find the argument
+           // NOTE: Multiple arguments with the same name, but different processing can be defined (based on the argument groups they
+           // might or might not have relevance). Therefore, process all and do not stop after on argument.
            bool bFound = false;
            if (bOption)
            {
                for (auto& rvtOption : m_mapSortedOptions)
                {
-                   bFound = fnFindAndAssign(rvtOption.second, rvtOption.first);
-                   if (bFound) break;
+                   bFound |= fnFindAndAssign(rvtOption.second, rvtOption.first);
                }
            }
            else if (bSubOption)
            {
                for (auto& rvtOption : m_mapSortedSubOptions)
                {
-                   bFound = fnFindAndAssign(rvtOption.second, rvtOption.first);
-                   if (bFound) break;
+                   bFound |= fnFindAndAssign(rvtOption.second, rvtOption.first);
                }
            } else // Default argument
                bFound = m_ptrDefaultArg ? fnFindAndAssign(*m_ptrDefaultArg.get(), {}) : false;

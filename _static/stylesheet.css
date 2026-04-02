@@ -304,3 +304,96 @@ h6 {
     font-family: ZFPrometo !important;
 }
 
+/* Let images scale nicely on mobile */
+img { max-width: 100%; height: auto; }
+
+/* Off-canvas behavior for sidebars; hidden by translate, not display:none */
+.bd-sidebar-primary, .bd-sidebar-secondary {
+  transform: translateX(-260px);
+  transition: transform 0.25s ease;
+}
+
+/* When the body has the toggle class, slide the sidebar in */
+.show-primary-sidebar .bd-sidebar-primary { transform: translateX(0); }
+.show-secondary-sidebar .bd-sidebar-secondary { transform: translateX(0); }
+
+/* On small screens, ensure sidebars remain renderable (not display:none) */
+@media (max-width: 700px) {
+  .bd-sidebar, .sidebar, .bd-sidebar-primary, .bd-sidebar-secondary {
+    display: block !important;
+  }
+}
+/* Desktop right sidebar always visible (minimal patch) */
+@media (min-width: 1024px) {
+
+  /* Right sidebar fixed on the right side of the screen */
+  .bd-sidebar-secondary {
+    position: fixed;
+    right: 0;
+    top: 60px;              /* adjust if your header is taller/shorter */
+    width: 300px;           /* same value used below on .bd-main margin-right */
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    background: var(--sidebar-background-color);
+    z-index: 100;           /* stays above main content */
+    padding: 1rem;
+    transform: none !important;
+  }
+
+  /* Main content leaves room for the fixed sidebar */
+  .bd-main {
+    margin-right: 300px !important;   /* must match .bd-sidebar-secondary width */
+    width: auto !important;
+  }
+}
+
+
+
+
+/* MOBILE (phones & small tablets) */
+@media (max-width: 1023px) {
+
+  /* Hide the desktop fixed sidebar on mobile */
+  .bd-sidebar-secondary {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 260px;        /* small mobile drawer width */
+    height: 100vh;
+    background: var(--sidebar-background-color);
+    transform: translateX(100%);   /* hidden by default */
+    transition: transform 0.25s ease;
+    z-index: 9999;
+    padding: 1rem;
+  }
+
+  /* When toggle class is added ? show drawer */
+  body.show-secondary-sidebar .bd-sidebar-secondary {
+    transform: translateX(0);
+  }
+}
+
+
+/* MOBILE: hide navbar logo to avoid duplication */
+
+@media (max-width: 1023px) {
+  .bd-header__inner img {
+    display: none !important;
+  }
+}
+
+
+@media (max-width: 1023px) {
+  .bd-sidebar-secondary {
+    color: var(--bs-body-color, #fff);     
+    background: var(--sidebar-background-color, #0b2b36);
+    padding: 1rem;                         
+    overflow-y: auto;                        
+    z-index: 9999;                           
+    box-shadow: -6px 0 16px rgba(0,0,0,.25); 
+  }
+  .bd-sidebar-secondary a { color: #57d3ff; } 
+  .bd-sidebar-secondary h3, 
+  .bd-sidebar-secondary h2 { color: #9ad3ff; }
+}
+

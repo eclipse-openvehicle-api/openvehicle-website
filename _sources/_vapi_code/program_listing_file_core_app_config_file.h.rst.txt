@@ -1,0 +1,112 @@
+
+.. _program_listing_file_core_app_config_file.h:
+
+Program Listing for File app_config_file.h
+==========================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_app_config_file.h>` (``core\app_config_file.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
+   #ifndef APP_CONFIG_FILE_H
+   #define APP_CONFIG_FILE_H
+   
+   #include <filesystem>
+   #include <string>
+   #include <vector>
+   #include <interfaces/config.h>
+   
+   using TParameterVector = std::vector<std::pair<std::string, sdv::any_t>>;
+   
+   class CAppConfigFile
+   {
+   public:
+       CAppConfigFile() = default;
+   
+       CAppConfigFile(const std::filesystem::path& rpathConfigFile);
+   
+       void Clear();
+   
+       bool IsLoaded() const;
+   
+       const std::filesystem::path& ConfigPath() const;
+   
+       bool LoadConfigFile();
+   
+       bool LoadConfigFromString(const std::string& rssConfig);
+   
+       bool SaveConfigFile(const std::filesystem::path& rpathTarget = std::filesystem::path(), bool bSafeParamsOnly = false) const;
+   
+       bool UpdateConfigString(std::string& rssContent, bool& rbChanged, bool bSaveParamsOnly = false) const;
+   
+       struct SModule
+       {
+           std::filesystem::path pathModule;           
+       };
+   
+       // * @brief Component class structure (containing default parameters).
+       // */
+       //struct SClass
+       //{
+       //    std::filesystem::path   pathModule;         ///< Optional class module path. Only used in standalone applications.
+       //    std::string             ssClassName;        ///< Class name of the component
+       //    std::string             ssParameterTOML;    ///< Parameter configuration (excluding [Parameters]-group).
+       //};
+   
+       struct SComponent
+       {
+           std::filesystem::path   pathModule;         
+           std::string             ssClassName;        
+           std::string             ssInstanceName;     
+           std::string             ssParameterTOML;    
+       };
+   
+       const std::vector<SComponent>& GetComponentList() const;
+   
+       const std::vector<sdv::SClassInfo>& GetClassList() const;
+   
+       const std::vector<SModule>& GetModuleList() const;
+   
+       bool InsertComponent(size_t nIndex, const std::filesystem::path& rpathModule, const std::string& rssClassName,
+           const std::string& rssInstanceName, const TParameterVector& rvecParameters);
+   
+       void RemoveComponent(const std::string& rssInstanceName);
+   
+       bool InsertModule(size_t nIndex, const std::filesystem::path& rpathModule);
+   
+       void RemoveModule(const std::filesystem::path& rpathModule);
+   
+       enum class EMergeResult
+       {
+           successful,
+           partly_successfull,
+           not_successful
+       };
+   
+       EMergeResult MergeConfigFile(const std::filesystem::path& rpathConfigFile);
+   
+   private:
+       std::filesystem::path           m_pathConfigFile;       
+       bool                            m_bLoaded = false;      
+       std::vector<SComponent>         m_vecComponentList;     
+       std::vector<sdv::SClassInfo>    m_vecClassList;         
+       std::vector<SModule>            m_vecModuleList;        
+   };
+   
+   
+   #endif // !defined APP_CONFIG_FILE_H

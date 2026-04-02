@@ -1,0 +1,367 @@
+
+.. _program_listing_file_interfaces_serdes_param_serdes.h:
+
+Program Listing for File param_serdes.h
+=======================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_serdes_param_serdes.h>` (``interfaces\serdes\param_serdes.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__PARAM_SERDES_H__20260402_165454_580__
+   #define __IDL_GENERATED__PARAM_SERDES_H__20260402_165454_580__
+   
+   // Includes...
+   #include <cstdint>
+   #include <support/serdes.h>
+   #include <support/local_service_access.h>
+   #include <interfaces/com.h>
+   #include <interfaces/serdes/core_ps_serdes.h>
+   #include "../param.h"
+   
+   #include "core_serdes.h"
+   
+   // Serializer / deserializer namespace
+   namespace serdes
+   {
+       template <>
+       class CSerdes<sdv::EParamFlags>
+       {
+       public:
+           static void CalcSize(const sdv::EParamFlags& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of EParamFlags
+               sdv::ser_size(static_cast<uint32_t>(rVar), rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::EParamFlags& rVar)
+           {
+               // Serializing members of EParamFlags
+               rSerializer << static_cast<uint32_t>(rVar);
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::EParamFlags& rVar)
+           {
+               // Deserializing members of EParamFlags
+               uint32_t base = 0;
+               rDeserializer >> base;
+               rVar = static_cast<sdv::EParamFlags>(base);
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::EParamType>
+       {
+       public:
+           static void CalcSize(const sdv::EParamType& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of EParamType
+               sdv::ser_size(static_cast<int32_t>(rVar), rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::EParamType& rVar)
+           {
+               // Serializing members of EParamType
+               rSerializer << static_cast<int32_t>(rVar);
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::EParamType& rVar)
+           {
+               // Deserializing members of EParamType
+               int32_t base = 0;
+               rDeserializer >> base;
+               rVar = static_cast<sdv::EParamType>(base);
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::SNumberInfo>
+       {
+       public:
+           static void CalcSize(const sdv::SNumberInfo& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of SNumberInfo
+               sdv::ser_size(rVar.anyLowerLimit, rnSize);
+               sdv::ser_size(rVar.bIncludeLowerLinit, rnSize);
+               sdv::ser_size(rVar.anyUpperLimit, rnSize);
+               sdv::ser_size(rVar.bIncludeUpperLimit, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::SNumberInfo& rVar)
+           {
+               // Serializing members of SNumberInfo
+               rSerializer << rVar.anyLowerLimit;
+               rSerializer << rVar.bIncludeLowerLinit;
+               rSerializer << rVar.anyUpperLimit;
+               rSerializer << rVar.bIncludeUpperLimit;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::SNumberInfo& rVar)
+           {
+               // Deserializing members of SNumberInfo
+               rDeserializer >> rVar.anyLowerLimit;
+               rDeserializer >> rVar.bIncludeLowerLinit;
+               rDeserializer >> rVar.anyUpperLimit;
+               rDeserializer >> rVar.bIncludeUpperLimit;
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::SStringInfo>
+       {
+       public:
+           static void CalcSize(const sdv::SStringInfo& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of SStringInfo
+               sdv::ser_size(rVar.ssPattern, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::SStringInfo& rVar)
+           {
+               // Serializing members of SStringInfo
+               rSerializer << rVar.ssPattern;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::SStringInfo& rVar)
+           {
+               // Deserializing members of SStringInfo
+               rDeserializer >> rVar.ssPattern;
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::SLabelInfo::SLabel>
+       {
+       public:
+           static void CalcSize(const sdv::SLabelInfo::SLabel& rVar, size_t& rnSize)
+           {
+   
+                   // Calculating the size of SLabel
+                   sdv::ser_size(rVar.anyValue, rnSize);
+                   sdv::ser_size(rVar.ssLabel, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::SLabelInfo::SLabel& rVar)
+           {
+                   // Serializing members of SLabel
+                   rSerializer << rVar.anyValue;
+                   rSerializer << rVar.ssLabel;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::SLabelInfo::SLabel& rVar)
+           {
+                   // Deserializing members of SLabel
+                   rDeserializer >> rVar.anyValue;
+                   rDeserializer >> rVar.ssLabel;
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::SLabelInfo>
+       {
+       public:
+           static void CalcSize(const sdv::SLabelInfo& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of SLabelInfo
+               sdv::ser_size(rVar.seqLabels, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::SLabelInfo& rVar)
+           {
+               // Serializing members of SLabelInfo
+               rSerializer << rVar.seqLabels;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::SLabelInfo& rVar)
+           {
+               // Deserializing members of SLabelInfo
+               rDeserializer >> rVar.seqLabels;
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::SParamInfo>
+       {
+       public:
+           static void CalcSize(const sdv::SParamInfo& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of SParamInfo
+               sdv::ser_size(rVar.get_switch(), rnSize);
+               sdv::ser_size(rVar.uiFlags, rnSize);
+               sdv::ser_size(rVar.ssName, rnSize);
+               sdv::ser_size(rVar.ssGroup, rnSize);
+               sdv::ser_size(rVar.ssUnit, rnSize);
+               sdv::ser_size(rVar.ssDescription, rnSize);
+               sdv::ser_size(rVar.anyDefaultVal, rnSize);
+   
+               // Calculating the size of union_0
+               switch (rVar.get_switch())
+               {
+               case sdv::EParamType::number_param:
+                   sdv::ser_size(rVar.uExtInfo.sNumberInfo, rnSize);
+                   break;
+               case sdv::EParamType::string_param:
+                   sdv::ser_size(rVar.uExtInfo.sStringInfo, rnSize);
+                   break;
+               case sdv::EParamType::enum_param:
+                   sdv::ser_size(rVar.uExtInfo.sEnumInfo, rnSize);
+                   break;
+               case sdv::EParamType::bitmask_param:
+                   sdv::ser_size(rVar.uExtInfo.sBitmaskInfo, rnSize);
+                   break;
+               }
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::SParamInfo& rVar)
+           {
+               // Serializing members of SParamInfo
+               rSerializer << rVar.get_switch();
+               rSerializer << rVar.uiFlags;
+               rSerializer << rVar.ssName;
+               rSerializer << rVar.ssGroup;
+               rSerializer << rVar.ssUnit;
+               rSerializer << rVar.ssDescription;
+               rSerializer << rVar.anyDefaultVal;
+   
+               // Serializing members of union_0
+               switch (rVar.get_switch())
+               {
+               case sdv::EParamType::number_param:
+                   rSerializer << rVar.uExtInfo.sNumberInfo;
+                   break;
+               case sdv::EParamType::string_param:
+                   rSerializer << rVar.uExtInfo.sStringInfo;
+                   break;
+               case sdv::EParamType::enum_param:
+                   rSerializer << rVar.uExtInfo.sEnumInfo;
+                   break;
+               case sdv::EParamType::bitmask_param:
+                   rSerializer << rVar.uExtInfo.sBitmaskInfo;
+                   break;
+               }
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::SParamInfo& rVar)
+           {
+               // Deserializing members of SParamInfo
+               sdv::EParamType temp_eType{};
+               rDeserializer >> temp_eType;
+               rVar.switch_to(temp_eType);
+               rDeserializer >> rVar.uiFlags;
+               rDeserializer >> rVar.ssName;
+               rDeserializer >> rVar.ssGroup;
+               rDeserializer >> rVar.ssUnit;
+               rDeserializer >> rVar.ssDescription;
+               rDeserializer >> rVar.anyDefaultVal;
+   
+               // Deserializing members of union_0
+               switch (rVar.get_switch())
+               {
+               case sdv::EParamType::number_param:
+                   rDeserializer >> rVar.uExtInfo.sNumberInfo;
+                   break;
+               case sdv::EParamType::string_param:
+                   rDeserializer >> rVar.uExtInfo.sStringInfo;
+                   break;
+               case sdv::EParamType::enum_param:
+                   rDeserializer >> rVar.uExtInfo.sEnumInfo;
+                   break;
+               case sdv::EParamType::bitmask_param:
+                   rDeserializer >> rVar.uExtInfo.sBitmaskInfo;
+                   break;
+               }
+               return rDeserializer;
+           }
+       };
+   
+       template <>
+       class CSerdes<sdv::IParameters*>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] sdv::IParameters* pInterface, size_t& rnSize)
+           {
+               sdv::ser_size(sdv::interface_id(), rnSize);
+               sdv::ser_size(sdv::ps::TMarshallID(), rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, sdv::IParameters* pInterface)
+           {
+               // Get interface to the component isolation service.
+               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
+               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
+               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
+               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
+   
+               // Serialize the interface ID first
+               rSerializer << sdv::GetInterfaceId<sdv::IParameters>();
+   
+               // Create and serialize a stub object for the interface.
+               sdv::ps::TMarshallID tStubID = pMarshallAccess->GetStub(pInterface);
+               rSerializer << tStubID;
+   
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::IParameters*& rpInterface)
+           {
+               // Get interface to the component isolation service.
+               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
+               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
+               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
+               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
+   
+               // Get the interface ID
+               sdv::interface_id id = 0;
+               rDeserializer >> id;
+   
+               // Get the stub ID
+               sdv::ps::TMarshallID tStubID{};
+               rDeserializer >> tStubID;
+   
+               // Create the proxy
+               rpInterface = pMarshallAccess->GetProxy(tStubID, id).get<sdv::IParameters>();
+   
+               return rDeserializer;
+           }
+       };
+   } // serdes namespace
+   
+   #endif // !defined(__IDL_GENERATED__PARAM_SERDES_H__20260402_165454_593__)

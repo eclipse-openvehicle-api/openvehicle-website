@@ -10,6 +10,19 @@ Program Listing for File channel_mgnt.h
 
 .. code-block:: cpp
 
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
    #ifndef CHANNEL_MGNT_H
    #define CHANNEL_MGNT_H
    
@@ -21,39 +34,31 @@ Program Listing for File channel_mgnt.h
    #include "watchdog.h"
    #include "connection.h"
    
-   #define TEST_DECLARE_OBJECT_CLASS_ALIAS(...)                                                                                            \
-       static sdv::sequence<sdv::u8string> GetClassAliasesStaticMyTest()                                                                    \
+   #define TEST_DECLARE_OBJECT_CLASS_ALIAS(...)                                                                                       \
+       static sdv::sequence<sdv::u8string> GetClassAliasesStaticMyTest()                                                              \
        {                                                                                                                              \
            return sdv::sequence<sdv::u8string>({__VA_ARGS__});                                                                        \
        }
    
    
-   class CSharedMemChannelMgnt : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::ipc::ICreateEndpoint,
-       public sdv::ipc::IChannelAccess
+   class CSharedMemChannelMgnt : public sdv::CSdvObject, public sdv::ipc::ICreateEndpoint, public sdv::ipc::IChannelAccess
    {
    public:
        // Interface map
        BEGIN_SDV_INTERFACE_MAP()
-           SDV_INTERFACE_ENTRY(sdv::IObjectControl)
            SDV_INTERFACE_ENTRY(sdv::ipc::IChannelAccess)
            SDV_INTERFACE_ENTRY(sdv::ipc::ICreateEndpoint)
        END_SDV_INTERFACE_MAP()
    
        // Object declarations
-       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::SystemObject)
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
        DECLARE_OBJECT_CLASS_NAME("DefaultSharedMemoryChannelControl")
        DECLARE_OBJECT_CLASS_ALIAS("LocalChannelControl")
        DECLARE_DEFAULT_OBJECT_NAME("LocalChannelControl")
        DECLARE_OBJECT_SINGLETON()
    
        
-       void Initialize(const sdv::u8string& ssObjectConfig) override;
-   
-       sdv::EObjectStatus GetStatus() const override;
-   
-       void SetOperationMode(sdv::EOperationMode eMode) override;
-   
-       void Shutdown() override;
+       virtual void OnShutdown() override;
    
        sdv::ipc::SChannelEndpoint CreateEndpoint(/*in*/ const sdv::u8string& ssChannelConfig) override;
    
@@ -77,7 +82,6 @@ Program Listing for File channel_mgnt.h
            CSharedMemBufferRx  bufferTargetRx;     
        };
    
-       sdv::EObjectStatus  m_eObjectStatus = sdv::EObjectStatus::initialization_pending;    
        std::map<std::string, std::unique_ptr<SChannel>>    m_mapChannels;      
        CWatchDog                   m_watchdog;                                 
    };

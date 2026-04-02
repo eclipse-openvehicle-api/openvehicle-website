@@ -1,0 +1,112 @@
+
+.. _program_listing_file_uds_unix_tunnel_connection.h:
+
+Program Listing for File connection.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_uds_unix_tunnel_connection.h>` (``uds_unix_tunnel\connection.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   /********************************************************************************
+   * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+   *
+   * This program and the accompanying materials are made available under the
+   * terms of the Apache License Version 2.0 which is available at
+   * https://www.apache.org/licenses/LICENSE-2.0
+   *
+   * SPDX-License-Identifier: Apache-2.0
+   *
+   * Contributors:
+   *   Denisa Ros - initial API and implementation
+   ********************************************************************************/
+   #if defined(__unix__)
+   #ifndef UNIX_SOCKET_TUNNEL_CONNECTION_H
+   #define UNIX_SOCKET_TUNNEL_CONNECTION_H
+   
+   #include <interfaces/ipc.h>
+   #include <support/component_impl.h>
+   #include <support/interface_ptr.h>
+   
+   #include <atomic>
+   #include <cstdint>
+   #include <mutex>
+   #include <memory>
+   #include <thread>
+   #include <vector>
+   #include <unordered_map>
+   
+   #include "../sdv_services/uds_unix_sockets/connection.h"   // existing UDS transport
+   
+   class CUnixTunnelConnection :
+       public sdv::IInterfaceAccess,
+       public sdv::IObjectDestroy,
+       public sdv::ipc::IDataSend,
+       public sdv::ipc::IConnect,
+       public sdv::ipc::IDataReceiveCallback,
+       public sdv::ipc::IConnectEventCallback
+   {
+   public:
+       struct STunnelHeader
+       {
+           uint16_t uiChannelId;  
+           uint16_t uiFlags;      
+       };
+   
+       explicit CUnixTunnelConnection(
+           std::shared_ptr<CUnixSocketConnection> transport,
+           uint16_t channelId);
+   
+       virtual ~CUnixTunnelConnection() = default;
+   
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::ipc::IDataSend)
+           SDV_INTERFACE_ENTRY(sdv::ipc::IConnect)
+           SDV_INTERFACE_ENTRY(sdv::ipc::IDataReceiveCallback)
+           SDV_INTERFACE_ENTRY(sdv::ipc::IConnectEventCallback)
+           SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
+       END_SDV_INTERFACE_MAP()
+   
+       // ---------- IDataSend ----------
+       bool SendData(/*inout*/ sdv::sequence<sdv::pointer<uint8_t>>& seqData) override;
+   
+       // ---------- IConnect ----------
+       bool AsyncConnect(/*in*/ sdv::IInterfaceAccess* pReceiver) override;
+   
+       bool WaitForConnection(/*in*/ uint32_t uiWaitMs) override;
+   
+       void CancelWait() override;
+   
+       void Disconnect() override;
+   
+       uint64_t RegisterStateEventCallback(/*in*/ sdv::IInterfaceAccess* pEventCallback) override;
+   
+       void UnregisterStateEventCallback(/*in*/ uint64_t uiCookie) override;
+   
+       sdv::ipc::EConnectState GetConnectState() const override;
+   
+       // ---------- IObjectDestroy ----------
+       void DestroyObject() override;
+   
+       // ---------- IDataReceiveCallback ----------
+       void ReceiveData(/*inout*/ sdv::sequence<sdv::pointer<uint8_t>>& seqData) override;
+   
+       // ---------- IConnectEventCallback ----------
+       void SetConnectState(sdv::ipc::EConnectState state) override;
+   
+       void SetChannelId(uint16_t channelId);
+   
+       uint16_t GetChannelId() const noexcept { return m_ChannelId; }
+   
+   private:
+       std::shared_ptr<CUnixSocketConnection> m_Transport;             
+       uint16_t m_ChannelId {0};                                       
+       sdv::ipc::IDataReceiveCallback* m_pUpperReceiver {nullptr};     
+       sdv::ipc::IConnectEventCallback* m_pUpperEvent {nullptr};       
+       mutable std::mutex m_CallbackMtx;                               
+   };
+   
+   #endif // UNIX_SOCKET_TUNNEL_CONNECTION_H
+   #endif // defined(__unix__)

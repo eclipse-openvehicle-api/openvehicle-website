@@ -10,6 +10,18 @@ Program Listing for File toml.idl
 
 .. code-block:: idl
 
+    /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the 
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0 
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
    
    #include "core.idl"
    
@@ -53,56 +65,23 @@ Program Listing for File toml.idl
    
                u8string GetTOML() const;
    
-               enum ECommentFlags
+               enum ECommentType
                {
                    comment_before = 0,                 
                    comment_behind = 1,                 
                    out_of_scope_comment_before = 2,    
                    out_of_scope_comment_behind = 3,    
-                   comment_index_mask = 15,            
-                   raw_comment = 8,                    
-                   replace_whitespace = 16,            
                };
    
-               void SetComment(in u8string ssComment, in uint32 uiFlags);
+               void SetComment(in ECommentType eType, in u8string ssComment);
    
-               u8string GetComment(in uint32 uiFlags);
+               u8string GetComment(in ECommentType eType);
    
                void AutomaticFormat();
-           };
    
-           interface INodeCollection
-           {
-               uint32 GetCount() const;
+               boolean IsInline() const;
    
-               IInterfaceAccess GetNode(in uint32 uiIndex) const;
-   
-               IInterfaceAccess GetNodeDirect(in u8string ssPath) const;
-           };
-   
-           interface INodeCollectionInsert
-           {
-               IInterfaceAccess InsertValue(in uint32 uiIndex, in u8string ssName, in any anyValue);
-   
-               IInterfaceAccess InsertArray(in uint32 uiIndex, in u8string ssName);
-   
-               IInterfaceAccess InsertTable(in uint32 uiIndex, in u8string ssKeyName);
-   
-               IInterfaceAccess InsertTableArray(in uint32 uiIndex, in u8string ssName);
-   
-               enum EInsertResult : uint32
-               {
-                   invalid_TOML,           
-                   insert_partly_success,  
-                   insert_success,         
-               };
-   
-               EInsertResult InsertTOML(in u8string ssTOML, in boolean bRollbackOnPartly);
-           };
-   
-           interface INodeDelete
-           {
-               boolean DeleteNode();
+               boolean IsStandard() const;
            };
    
            interface INodeUpdate
@@ -114,6 +93,54 @@ Program Listing for File toml.idl
                boolean MoveUp();
    
                boolean MoveDown();
+   
+               boolean DeleteNode();
+           };
+   
+           interface INodeCollection
+           {
+               uint32 GetCount() const;
+   
+               IInterfaceAccess GetNode(in uint32 uiIndex) const;
+   
+               IInterfaceAccess GetNodeDirect(in u8string ssPath) const;
+           };
+   
+           interface INodeCollectionConvert
+           {
+               boolean CanMakeInline() const;
+   
+               boolean MakeInline();
+   
+               boolean CanMakeStandard() const;
+   
+               boolean MakeStandard();
+           };
+   
+           interface INodeCollectionInsert
+           {
+               IInterfaceAccess InsertValue(in uint32 uiIndex, in u8string ssName, in any anyValue);
+   
+               IInterfaceAccess InsertArray(in uint32 uiIndex, in u8string ssName);
+   
+               enum EInsertPreference
+               {
+                   prefer_standard = 0,     
+                   prefer_inline = 1,       
+               };
+   
+               IInterfaceAccess InsertTable(in uint32 uiIndex, in u8string ssName, in EInsertPreference ePreference);
+   
+               IInterfaceAccess InsertTableArray(in uint32 uiIndex, in u8string ssName, in EInsertPreference ePreference);
+   
+               enum EInsertResult : uint32
+               {
+                   insert_fail,            
+                   insert_partly_success,  
+                   insert_success,         
+               };
+   
+               EInsertResult InsertTOML(in uint32 uiIndex, in u8string ssTOML, in boolean bRollbackOnFailure);
            };
    
            interface ITOMLParser

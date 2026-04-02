@@ -1,0 +1,42 @@
+.. _vapi-vehicle_abstraction_example:
+
+Vehicle Abstraction Example
+=============================
+
+
+.. attention:: To demonstrate the independence of the vehicle‑function implementation from the underlying vehicle platform.
+
+.. note:: 
+   | Example can be found in ``<output-folder>/examples/bin``:
+   | vehicle_abstraction_example
+
+.. hint:: 
+   
+   The :term:`Vehicle Function` will show the speed value on different levels of the component stack:
+
+   - The user can select between 2 different asc files. The first contains the CAN messages for the speed in km/h, the other in m/S unit.    
+   - The data shown via dispatch service is either in km/h or m/s.
+   - The second component is the platform abstraction. There are 2 components in the example. Both have the same interface as output: speed in km/h.
+     Therefore one component needs to convert the data, the other can pass the data directly. 
+   - There is only one sensor component necessary as both platform abstraction components offer the speed in km/h.
+   - Vehicle 1 would have the platform abstraction in km/m, vehicle 2 would need the component which converts from m/s to km/h.
+   - A vehicle function requiring the speed in km/h would run on both vehicles and would not need to have any logic for the input data.
+ 
+.. image:: ../../../vapi_media/examples/vehicle_abstraction_example/vehicle_abstraction_screenshot.png
+
+
+.. seealso:: The different component types: :ref:`Enum EObjectType <exhale_enum_namespacesdv_1a0bbcde197cee3b03e62ed5c2bc43f790>` 
+
+
+See the auto generated code in ``..examples/vehicle_abstraction_example/generated``
+
+You will find 2 components: the platform abstraction component in folder ``vd_vehiclespeedkmh`` and the sensor device in folder ``bs_vehiclespeed``.
+
+The auto generated code in ``..examples/vehicle_abstraction_example/generated2`` contains only the second platform abstraction component ``vd_vehiclespeedms``. This component has to convert the input data from m/s to km/h. The output interface is identical to the first component.
+
+.. hint::
+
+   Compare the content  of ``vehicle_abstraction_example.csv`` and ``vehicle_abstraction_example_ms.csv``
+
+
+.. image:: ../../../vapi_media/examples/vehicle_abstraction_example/vehicle_abstraction_overview.png
