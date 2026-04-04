@@ -13,49 +13,23 @@ Example Component with Initialization
       .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component_with_initialization.cpp
          :tab-width: 4
 
-   .. tab-item:: Inheritance
+   .. tab-item:: Parameter Map
 
       .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component_with_initialization.cpp
          :tab-width: 4
-         :emphasize-lines: 8, 25, 35, 49, 70, 78
+         :emphasize-lines: 29-32
 
-      Additionally to the **CSdvObject** class the component should inherit from **sdv::IObjectControl**.
-
-   .. tab-item:: Function implementation
-
-      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component_with_initialization.cpp
-         :tab-width: 4
-         :emphasize-lines: 37-42, 51-63, 72, 80
-
-      The :term:`VAPI Component` needs to implement the 4 functions `Initialize(const sdv::u8string& objectConfig)`, `SetOperationMode(/*in*/ sdv::EOperationMode eMode)`, `GetStatus()` and `Shutdown()`.
-
-      .. note::
-         The function *Initialize()*: when leaving the function the status should either be `sdv::EObjectStatus::initialization_failure` or `sdv::EObjectStatus::initialize`.
-
-         The function *SetOperationMode()*: This function is called from outside and sets the mode either `sdv::EOperationMode::configuring` or `sdv::EOperationMode::running`. The mode should only be changed if the current state is valid (initialized/configuring/running). Any false state should not be changed.
-
-         The function *Shutdown()*: during shutdown the status should be set to `sdv::EObjectStatus::destruction_pending`.
+      The easiest way is to add a parameter map. The variable value from the configuration file is automatically set. The parameter can be defined as ``SDV_PARAM_ENABLE_LOCKING()``. In that case the parameter is protected against writing after initialization. It's also possible to define the parameter as ``SDV_PARAM_SET_READONLY()``.
 
    .. tab-item:: Parsing
 
       .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component_with_initialization.cpp
          :tab-width: 4
-         :emphasize-lines: 2, 37, 102-117
+         :emphasize-lines: 38-41
 
-      The configuration string can be parsed easily with the parser class including arrays, tables, ...
+      In OnInitialize() the configuration file can be parsed if required. For details see :ref:`Example of the config files <example-config-file>`.
 
-      .. warning::
-         See :ref:`Example of the config files <example-config-file>` to write a valid `TOML <https://toml.io/en/v1.0.0>`_-like structure for the object initialization.
-
-   .. tab-item:: Parsing examples
-
-      .. literalinclude:: ../../../../examples/_howto_examples/source/example_general_component_with_initialization.cpp
-         :tab-width: 4
-         :emphasize-lines: 104, 106-111
-
-      The first example reads and validates an integer value. Just get the node from the parser, check the type and then get the value.
-
-      .. warning::
+      .. attention::
          See :ref:`Example of the config files <example-config-file>` to write a valid `TOML <https://toml.io/en/v1.0.0>`_-like structure for the object initialization.
 
 .. note::
@@ -70,5 +44,6 @@ Example Component with Initialization
       [[Component]]
       Path = "example_general_component_with_initialization.sdv"
       Class = "Hello_Component_With_Initialization"
+      [Component.Parameters]
       number = 7
 

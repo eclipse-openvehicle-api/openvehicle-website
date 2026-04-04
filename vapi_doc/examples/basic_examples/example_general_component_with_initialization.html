@@ -696,7 +696,7 @@ Example</label><div class="sd-tab-content docutils">
 </div>
 <input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
 </input><label class="sd-tab-label" for="sd-tab-item-1">
-Inheritance</label><div class="sd-tab-content docutils">
+Parameter Map</label><div class="sd-tab-content docutils">
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/toml.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/component_impl.h&gt;</span>
@@ -704,8 +704,8 @@ Inheritance</label><div class="sd-tab-content docutils">
 
 <span class="k">class</span><span class="w"> </span><span class="nc">CTestComponentWithInitialization</span>
 <span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
-<span class="hll"><span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayHello</span>
-</span><span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayGoodbye</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayHello</span>
+<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayGoodbye</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
 <span class="w">    </span><span class="n">CTestComponentWithInitialization</span><span class="p">()</span>
@@ -721,18 +721,18 @@ Inheritance</label><div class="sd-tab-content docutils">
 <span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayHello</span><span class="p">)</span>
 <span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayGoodbye</span><span class="p">)</span>
 <span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
-<span class="hll">
-</span><span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">device</span><span class="p">)</span>
+
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">device</span><span class="p">)</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Hello_Component_With_Initialization&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="c1">// Parameter map</span>
-<span class="w">    </span><span class="n">BEGIN_SDV_PARAM_MAP</span><span class="p">()</span>
-<span class="w">        </span><span class="n">SDV_PARAM_ENTRY</span><span class="p">(</span><span class="n">m_Number</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;number&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;A number&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="n">END_SDV_PARAM_MAP</span><span class="p">()</span>
-
+<span class="hll"><span class="w">    </span><span class="c1">// Parameter map</span>
+</span><span class="hll"><span class="w">    </span><span class="n">BEGIN_SDV_PARAM_MAP</span><span class="p">()</span>
+</span><span class="hll"><span class="w">        </span><span class="n">SDV_PARAM_ENTRY</span><span class="p">(</span><span class="n">m_Number</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;number&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;A number&quot;</span><span class="p">)</span>
+</span><span class="hll"><span class="w">    </span><span class="n">END_SDV_PARAM_MAP</span><span class="p">()</span>
+</span>
 <span class="w">    </span><span class="cm">/**</span>
-<span class="hll"><span class="cm">     * @brief Initialization event, called after object configuration was loaded. Overload of sdv::CSdvObject::OnInitialize.</span>
-</span><span class="cm">     * @return Returns &#39;true&#39; when the initialization was successful, &#39;false&#39; when not.</span>
+<span class="cm">     * @brief Initialization event, called after object configuration was loaded. Overload of sdv::CSdvObject::OnInitialize.</span>
+<span class="cm">     * @return Returns &#39;true&#39; when the initialization was successful, &#39;false&#39; when not.</span>
 <span class="cm">     */</span>
 <span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OnInitialize</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">    </span><span class="p">{</span>
@@ -745,8 +745,8 @@ Inheritance</label><div class="sd-tab-content docutils">
 <span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OnShutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">    </span><span class="p">{}</span>
 
-<span class="hll"><span class="w">    </span><span class="cm">/**</span>
-</span><span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
+<span class="w">    </span><span class="cm">/**</span>
+<span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
 <span class="cm">    */</span>
 <span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayHello</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">    </span><span class="p">{</span>
@@ -768,11 +768,11 @@ Inheritance</label><div class="sd-tab-content docutils">
 <span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CTestComponentWithInitialization</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Additionally to the <strong>CSdvObject</strong> class the component should inherit from <strong>sdv::IObjectControl</strong>.</p>
+<p>The easiest way is to add a parameter map. The variable value from the configuration file is automatically set. The parameter can be defined as <code class="docutils literal notranslate"><span class="pre">SDV_PARAM_ENABLE_LOCKING()</span></code>. In that case the parameter is protected against writing after initialization. It’s also possible to define the parameter as <code class="docutils literal notranslate"><span class="pre">SDV_PARAM_SET_READONLY()</span></code>.</p>
 </div>
 <input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
 </input><label class="sd-tab-label" for="sd-tab-item-2">
-Function implementation</label><div class="sd-tab-content docutils">
+Parsing</label><div class="sd-tab-content docutils">
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/toml.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/component_impl.h&gt;</span>
@@ -809,94 +809,12 @@ Function implementation</label><div class="sd-tab-content docutils">
 <span class="w">    </span><span class="cm">/**</span>
 <span class="cm">     * @brief Initialization event, called after object configuration was loaded. Overload of sdv::CSdvObject::OnInitialize.</span>
 <span class="cm">     * @return Returns &#39;true&#39; when the initialization was successful, &#39;false&#39; when not.</span>
-<span class="hll"><span class="cm">     */</span>
-</span><span class="hll"><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OnInitialize</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="cm">     */</span>
+<span class="hll"><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OnInitialize</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 </span><span class="hll"><span class="w">    </span><span class="p">{</span>
 </span><span class="hll"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
 </span><span class="hll"><span class="w">    </span><span class="p">}</span>
-</span><span class="hll">
-</span><span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Shutdown the object. Overload of sdv::CSdvObject::OnShutdown.</span>
-<span class="cm">     */</span>
-<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OnShutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{}</span>
-
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
-<span class="hll"><span class="cm">    */</span>
-</span><span class="hll"><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayHello</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-</span><span class="hll"><span class="w">    </span><span class="p">{</span>
-</span><span class="hll"><span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Hello from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-</span><span class="hll"><span class="w">    </span><span class="p">}</span>
-</span><span class="hll">
-</span><span class="hll"><span class="w">    </span><span class="cm">/**</span>
-</span><span class="hll"><span class="cm">    * @brief Show messages, implements the function of ISayGoodbye</span>
-</span><span class="hll"><span class="cm">    */</span>
-</span><span class="hll"><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayGoodbye</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-</span><span class="hll"><span class="w">    </span><span class="p">{</span>
-</span><span class="hll"><span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Goodbye from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-</span><span class="hll"><span class="w">    </span><span class="p">}</span>
 </span>
-<span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">m_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
-<span class="p">};</span>
-
-<span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CTestComponentWithInitialization</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The <a class="reference internal" href="../../glossary.html#term-VAPI-Component"><span class="xref std std-term">VAPI Component</span></a> needs to implement the 4 functions <cite>Initialize(const sdv::u8string&amp; objectConfig)</cite>, <cite>SetOperationMode(/*in*/ sdv::EOperationMode eMode)</cite>, <cite>GetStatus()</cite> and <cite>Shutdown()</cite>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The function <em>Initialize()</em>: when leaving the function the status should either be <cite>sdv::EObjectStatus::initialization_failure</cite> or <cite>sdv::EObjectStatus::initialize</cite>.</p>
-<p>The function <em>SetOperationMode()</em>: This function is called from outside and sets the mode either <cite>sdv::EOperationMode::configuring</cite> or <cite>sdv::EOperationMode::running</cite>. The mode should only be changed if the current state is valid (initialized/configuring/running). Any false state should not be changed.</p>
-<p>The function <em>Shutdown()</em>: during shutdown the status should be set to <cite>sdv::EObjectStatus::destruction_pending</cite>.</p>
-</div>
-</div>
-<input id="sd-tab-item-3" name="sd-tab-set-0" type="radio">
-</input><label class="sd-tab-label" for="sd-tab-item-3">
-Parsing</label><div class="sd-tab-content docutils">
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
-<span class="hll"><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/toml.h&gt;</span>
-</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/component_impl.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;example_interfaces.h&quot;</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">CTestComponentWithInitialization</span>
-<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
-<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayHello</span>
-<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayGoodbye</span>
-<span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">CTestComponentWithInitialization</span><span class="p">()</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Entering CTestComponentWithInitialization constructor...&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="o">~</span><span class="n">CTestComponentWithInitialization</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Entering CTestComponentWithInitialization destructor...&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
-<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayHello</span><span class="p">)</span>
-<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayGoodbye</span><span class="p">)</span>
-<span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
-
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">device</span><span class="p">)</span>
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Hello_Component_With_Initialization&quot;</span><span class="p">)</span>
-
-<span class="w">    </span><span class="c1">// Parameter map</span>
-<span class="w">    </span><span class="n">BEGIN_SDV_PARAM_MAP</span><span class="p">()</span>
-<span class="w">        </span><span class="n">SDV_PARAM_ENTRY</span><span class="p">(</span><span class="n">m_Number</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;number&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;A number&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="n">END_SDV_PARAM_MAP</span><span class="p">()</span>
-
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Initialization event, called after object configuration was loaded. Overload of sdv::CSdvObject::OnInitialize.</span>
-<span class="cm">     * @return Returns &#39;true&#39; when the initialization was successful, &#39;false&#39; when not.</span>
-<span class="hll"><span class="cm">     */</span>
-</span><span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OnInitialize</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
 <span class="w">    </span><span class="cm">/**</span>
 <span class="cm">     * @brief Shutdown the object. Overload of sdv::CSdvObject::OnShutdown.</span>
 <span class="cm">     */</span>
@@ -926,89 +844,9 @@ Parsing</label><div class="sd-tab-content docutils">
 <span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CTestComponentWithInitialization</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The configuration string can be parsed easily with the parser class including arrays, tables, …</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>See <a class="reference internal" href="example_config_file.html#example-config-file"><span class="std std-ref">Example of the config files</span></a> to write a valid <a class="reference external" href="https://toml.io/en/v1.0.0">TOML</a>-like structure for the object initialization.</p>
-</div>
-</div>
-<input id="sd-tab-item-4" name="sd-tab-set-0" type="radio">
-</input><label class="sd-tab-label" for="sd-tab-item-4">
-Parsing examples</label><div class="sd-tab-content docutils">
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/toml.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/component_impl.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;example_interfaces.h&quot;</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">CTestComponentWithInitialization</span>
-<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
-<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayHello</span>
-<span class="w">    </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">ISayGoodbye</span>
-<span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">CTestComponentWithInitialization</span><span class="p">()</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Entering CTestComponentWithInitialization constructor...&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="o">~</span><span class="n">CTestComponentWithInitialization</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Entering CTestComponentWithInitialization destructor...&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
-<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayHello</span><span class="p">)</span>
-<span class="w">        </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">ISayGoodbye</span><span class="p">)</span>
-<span class="w">    </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
-
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">device</span><span class="p">)</span>
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Hello_Component_With_Initialization&quot;</span><span class="p">)</span>
-
-<span class="w">    </span><span class="c1">// Parameter map</span>
-<span class="w">    </span><span class="n">BEGIN_SDV_PARAM_MAP</span><span class="p">()</span>
-<span class="w">        </span><span class="n">SDV_PARAM_ENTRY</span><span class="p">(</span><span class="n">m_Number</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;number&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;A number&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="n">END_SDV_PARAM_MAP</span><span class="p">()</span>
-
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Initialization event, called after object configuration was loaded. Overload of sdv::CSdvObject::OnInitialize.</span>
-<span class="cm">     * @return Returns &#39;true&#39; when the initialization was successful, &#39;false&#39; when not.</span>
-<span class="cm">     */</span>
-<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OnInitialize</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">     * @brief Shutdown the object. Overload of sdv::CSdvObject::OnShutdown.</span>
-<span class="cm">     */</span>
-<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OnShutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{}</span>
-
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">    * @brief Show messages, implements the function of IShowExample</span>
-<span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayHello</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Hello from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="cm">/**</span>
-<span class="cm">    * @brief Show messages, implements the function of ISayGoodbye</span>
-<span class="cm">    */</span>
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">SayGoodbye</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Goodbye from Hello_Component_With_Initialization ... &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">m_Number</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="kt">int32_t</span><span class="w"> </span><span class="n">m_Number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
-<span class="p">};</span>
-
-<span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CTestComponentWithInitialization</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The first example reads and validates an integer value. Just get the node from the parser, check the type and then get the value.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
+<p>In OnInitialize() the configuration file can be parsed if required. For details see <a class="reference internal" href="example_config_file.html#example-config-file"><span class="std std-ref">Example of the config files</span></a>.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
 <p>See <a class="reference internal" href="example_config_file.html#example-config-file"><span class="std std-ref">Example of the config files</span></a> to write a valid <a class="reference external" href="https://toml.io/en/v1.0.0">TOML</a>-like structure for the object initialization.</p>
 </div>
 </div>
@@ -1023,6 +861,7 @@ Version = 100
 [[Component]]
 Path = &quot;example_general_component_with_initialization.sdv&quot;
 Class = &quot;Hello_Component_With_Initialization&quot;
+[Component.Parameters]
 number = 7
 </pre></div>
 </div>

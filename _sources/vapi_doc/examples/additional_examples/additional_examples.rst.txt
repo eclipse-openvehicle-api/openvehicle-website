@@ -16,6 +16,17 @@ This example loads a :term:`VAPI Component` with a configuration file as seen be
 .. literalinclude:: ../../../../examples/configuration_example/config/test_configuration_example.toml
    :language: cpp
 
+The example contains also a parameter map. The parameter map allows to predefine and to configure easily parameters for a vehicle device for example. 
+The Headlight Example contains such a map for the tunnel parameters. With such map you do not need to parse a configuration file on your own, avoiding maintenance and errors.
+
+.. code-block:: cpp
+   
+   BEGIN_SDV_PARAM_MAP()
+      SDV_PARAM_ENABLE_LOCKING() // Parameters will be protected against writing when locked (e.g. after initialization).
+      SDV_PARAM_ENTRY(m_InitializedValue, "initializedValue", 7, "km/h", "Description for an initialized parameter.")
+      SDV_PARAM_ENTRY(m_UpdatableValue,   "updatableValue",   7, "m/s", "Description for an updatable parameter.")
+   END_SDV_PARAM_MAP()
+
 Tasktimer example
 -----------------
 
