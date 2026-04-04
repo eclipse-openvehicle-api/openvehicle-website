@@ -4,7 +4,7 @@ Vehicle Abstraction Example
 =============================
 
 
-.. attention:: To demonstrate the independence of the vehicle‑function implementation from the underlying vehicle platform.
+.. attention:: To demonstrate the independence of the vehicle-function implementation from the underlying vehicle platform.
 
 .. note:: 
    | Example can be found in ``<output-folder>/examples/bin``:
@@ -17,16 +17,48 @@ Vehicle Abstraction Example
    - The user can select between 2 different asc files. The first contains the CAN messages for the speed in km/h, the other in m/S unit.    
    - The data shown via dispatch service is either in km/h or m/s.
    - The second component is the platform abstraction. There are 2 components in the example. Both have the same interface as output: speed in km/h.
-     Therefore one component needs to convert the data, the other can pass the data directly. 
+     Therefore one component needs to convert the data, the other component can pass the data directly. 
    - There is only one sensor component necessary as both platform abstraction components offer the speed in km/h.
    - Vehicle 1 would have the platform abstraction in km/m, vehicle 2 would need the component which converts from m/s to km/h.
    - A vehicle function requiring the speed in km/h would run on both vehicles and would not need to have any logic for the input data.
- 
+
 .. image:: ../../../vapi_media/examples/vehicle_abstraction_example/vehicle_abstraction_screenshot.png
 
+.. table::  Enum EObjectType: 
+
+   +------------------------+------+----------------------------------+-------------------------+-----------------------+
+   | sdv::EObjectType       | ID   | Main category                    | Sub category            | Note                  |
+   +------------------------+------+----------------------------------+-------------------------+-----------------------+
+   | ::undefined            | 0    | Not defined                      |                         |                       |
+   +------------------------+------+----------------------------------+-------------------------+-----------------------+
+   | ::system_object        | 1    | System object                    |                         |                       |
+   +------------------------+------+----------------------------------+-------------------------+-----------------------+
+   | ::device               | 10   | Device category 10..19           |                         |                       |
+   |                        |      |                                  |                         |                       |
+   | ::platform_abstraction | 11   |                                  | Platform abstraction    |                       |
+   |                        |      |                                  |                         |                       |
+   | ::vehicle_bus          | 12   |                                  | Vehicle bus abstraction |                       |
+   +------------------------+------+----------------------------------+-------------------------+-----------------------+
+   | ::basic_service        | 20   | Basic service category 20 - 29   |                         |                       |
+   |                        |      |                                  |                         |                       |
+   | ::sensor               | 21   |                                  | Sensor object           |                       |
+   |                        |      |                                  |                         |                       |
+   | ::actuator             | 22   |                                  | Actuator object         |                       |
+   +------------------------+------+----------------------------------+-------------------------+-----------------------+
+   | ::complex_service      | 30   | Complex service category 30 - 39 |                         | Runs in isolated mode |
+   |                        |      |                                  |                         |                       |
+   | ::vehicle_function     | 31   |                                  | Vehicle function        | Runs in isolated mode |
+   +------------------------+------+----------------------------------+-------------------------+-----------------------+
+   | ::application          | 50   | Application                      |                         |                       |
+   +------------------------+------+----------------------------------+-------------------------+-----------------------+
+   | ::proxy                | 100  | Proxy object                     |                         |                       |
+   |                        |      |                                  |                         |                       |
+   | ::stub                 | 101  | Stub object                      |                         |                       |
+   +------------------------+------+----------------------------------+-------------------------+-----------------------+
+   | ::utility              | 1000 | Utility object                   |                         |                       |
+   +------------------------+------+----------------------------------+-------------------------+-----------------------+
 
 .. seealso:: The different component types: :ref:`Enum EObjectType <exhale_enum_namespacesdv_1a0bbcde197cee3b03e62ed5c2bc43f790>` 
-
 
 See the auto generated code in ``..examples/vehicle_abstraction_example/generated``
 
@@ -36,7 +68,7 @@ The auto generated code in ``..examples/vehicle_abstraction_example/generated2``
 
 .. hint::
 
-   Compare the content  of ``vehicle_abstraction_example.csv`` and ``vehicle_abstraction_example_ms.csv``
+   Compare the content of ``vehicle_abstraction_example.csv`` and ``vehicle_abstraction_example_ms.csv``
 
 
 .. image:: ../../../vapi_media/examples/vehicle_abstraction_example/vehicle_abstraction_overview.png

@@ -611,7 +611,7 @@ document.write(`
 <span id="vapi-vehicle-abstraction-example"></span><h1>Vehicle Abstraction Example<a class="headerlink" href="#vehicle-abstraction-example" title="Permalink to this heading">#</a></h1>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>To demonstrate the independence of the vehicle‑function implementation from the underlying vehicle platform.</p>
+<p>To demonstrate the independence of the vehicle-function implementation from the underlying vehicle platform.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -627,13 +627,100 @@ document.write(`
 <li><p>The user can select between 2 different asc files. The first contains the CAN messages for the speed in km/h, the other in m/S unit.</p></li>
 <li><p>The data shown via dispatch service is either in km/h or m/s.</p></li>
 <li><p>The second component is the platform abstraction. There are 2 components in the example. Both have the same interface as output: speed in km/h.
-Therefore one component needs to convert the data, the other can pass the data directly.</p></li>
+Therefore one component needs to convert the data, the other component can pass the data directly.</p></li>
 <li><p>There is only one sensor component necessary as both platform abstraction components offer the speed in km/h.</p></li>
 <li><p>Vehicle 1 would have the platform abstraction in km/m, vehicle 2 would need the component which converts from m/s to km/h.</p></li>
 <li><p>A vehicle function requiring the speed in km/h would run on both vehicles and would not need to have any logic for the input data.</p></li>
 </ul>
 </div>
 <img alt="../../../_images/vehicle_abstraction_screenshot.png" src="../../../_images/vehicle_abstraction_screenshot.png" />
+<table class="table" id="id1">
+<caption><span class="caption-text">Enum EObjectType:</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<tbody>
+<tr class="row-odd"><td><p>sdv::EObjectType</p></td>
+<td><p>ID</p></td>
+<td><p>Main category</p></td>
+<td><p>Sub category</p></td>
+<td><p>Note</p></td>
+</tr>
+<tr class="row-even"><td><p>::undefined</p></td>
+<td><p>0</p></td>
+<td><p>Not defined</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>::system_object</p></td>
+<td><p>1</p></td>
+<td><p>System object</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>::device</p>
+<p>::platform_abstraction</p>
+<p>::vehicle_bus</p>
+</td>
+<td><p>10</p>
+<p>11</p>
+<p>12</p>
+</td>
+<td><p>Device category 10..19</p></td>
+<td><p>Platform abstraction</p>
+<p>Vehicle bus abstraction</p>
+</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>::basic_service</p>
+<p>::sensor</p>
+<p>::actuator</p>
+</td>
+<td><p>20</p>
+<p>21</p>
+<p>22</p>
+</td>
+<td><p>Basic service category 20 - 29</p></td>
+<td><p>Sensor object</p>
+<p>Actuator object</p>
+</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>::complex_service</p>
+<p>::vehicle_function</p>
+</td>
+<td><p>30</p>
+<p>31</p>
+</td>
+<td><p>Complex service category 30 - 39</p></td>
+<td><p>Vehicle function</p></td>
+<td><p>Runs in isolated mode</p>
+<p>Runs in isolated mode</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>::application</p></td>
+<td><p>50</p></td>
+<td><p>Application</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>::proxy</p>
+<p>::stub</p>
+</td>
+<td><p>100</p>
+<p>101</p>
+</td>
+<td><p>Proxy object</p>
+<p>Stub object</p>
+</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>::utility</p></td>
+<td><p>1000</p></td>
+<td><p>Utility object</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>The different component types: <a class="reference internal" href="../../../_vapi_code/enum_namespacesdv_1a0bbcde197cee3b03e62ed5c2bc43f790.html#exhale-enum-namespacesdv-1a0bbcde197cee3b03e62ed5c2bc43f790"><span class="std std-ref">Enum EObjectType</span></a></p>
@@ -643,7 +730,7 @@ Therefore one component needs to convert the data, the other can pass the data d
 <p>The auto generated code in <code class="docutils literal notranslate"><span class="pre">..examples/vehicle_abstraction_example/generated2</span></code> contains only the second platform abstraction component <code class="docutils literal notranslate"><span class="pre">vd_vehiclespeedms</span></code>. This component has to convert the input data from m/s to km/h. The output interface is identical to the first component.</p>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
-<p>Compare the content  of <code class="docutils literal notranslate"><span class="pre">vehicle_abstraction_example.csv</span></code> and <code class="docutils literal notranslate"><span class="pre">vehicle_abstraction_example_ms.csv</span></code></p>
+<p>Compare the content of <code class="docutils literal notranslate"><span class="pre">vehicle_abstraction_example.csv</span></code> and <code class="docutils literal notranslate"><span class="pre">vehicle_abstraction_example_ms.csv</span></code></p>
 </div>
 <img alt="../../../_images/vehicle_abstraction_overview.png" src="../../../_images/vehicle_abstraction_overview.png" />
 </section>
