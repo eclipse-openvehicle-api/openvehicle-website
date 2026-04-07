@@ -1,0 +1,1520 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>IPC Channels (UDS/WinSock) and Tunnel Transport &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=0beb5b98" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=c3f504d0" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=678fb11e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=2389946f"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=323e3408"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+const defaultStyle = document.createElement('style');
+defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+`;
+document.head.appendChild(defaultStyle);
+
+const fullscreenStyle = document.createElement('style');
+fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+document.head.appendChild(fullscreenStyle);
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness < 128;
+    }
+    return false;
+};
+
+const load = async () => {
+    await mermaid.run();
+
+    const all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(load, 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(load, 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(load, 200);
+        return;
+    }
+
+    const darkTheme = isDarkTheme();
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    const modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    const modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    let previousScrollOffset = [window.scrollX, window.scrollY];
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    const allButtons = [];
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        container.appendChild(fullscreenBtn);
+        allButtons.push(fullscreenBtn);
+    });
+
+    // Update theme classes when theme changes
+    const updateTheme = () => {
+        const dark = isDarkTheme();
+        allButtons.forEach(btn => {
+            if (dark) {
+                btn.classList.add('dark-theme');
+            } else {
+                btn.classList.remove('dark-theme');
+            }
+        });
+        if (dark) {
+            modal.classList.add('dark-theme');
+            modalContent.classList.add('dark-theme');
+            closeBtn.classList.add('dark-theme');
+        } else {
+            modal.classList.remove('dark-theme');
+            modalContent.classList.remove('dark-theme');
+            closeBtn.classList.remove('dark-theme');
+        }
+    };
+
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style']
+    });
+};
+
+window.addEventListener("load", load);
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'vapi_doc/ipc_uds_and_tunnel';</script>
+    <script src="../_static/js/sidebar-toggle.js?v=714d0a57"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Key Features" href="main_goals.html" />
+    <link rel="prev" title="A view under the hood" href="under_the_hood.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item current active">
+                      <a class="nav-link dropdown-item nav-internal" href="the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="step_by_step_guide/step_by_step_index.html">
+                        Step by Step Example
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/sdv_executables.html">
+                        SDV Executables
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+                        Vision
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+                        Aspects
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item current active">
+                      <a class="nav-link dropdown-item nav-internal" href="the_VAPI.html">
+                        What is Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="main_goals.html">
+                        Key Features
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="component_stack.html">
+                        Component Stack
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="get_started.html">
+                        Get started… / Installation Steps
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="project_guide.html">
+                        Project Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="for_developers.html">
+                        For Developers
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="cmake_in_the_project.html">
+                        CMake in the Project
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="examples/component_examples.html">
+                        Examples of Open Vehicle API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="step_by_step_guide/step_by_step_index.html">
+                        Step by Step Example
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="simulation.html">
+                        Simulation / Testing / FMU
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="under_the_hood.html">
+                        A view under the hood
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="key_building_blocks.html">
+                        Key Building Blocks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="services.html">
+                        Components & Services
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="sdv_tools/sdv_executables.html">
+                        SDV Executables
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="glossary.html">
+                        Glossary
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="the_VAPI.html" class="nav-link">What is Open Vehicle API</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="under_the_hood.html" class="nav-link">A view under the hood</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">IPC...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="ipc-channels-uds-winsock-and-tunnel-transport">
+<span id="ipc-uds-and-tunnel"></span><h1>IPC Channels (UDS/WinSock) and Tunnel Transport<a class="headerlink" href="#ipc-channels-uds-winsock-and-tunnel-transport" title="Permalink to this heading">#</a></h1>
+<p>This page describes how to use the SDV IPC socket-based channels in two modes:</p>
+<ul class="simple">
+<li><p><strong>Plain socket channel</strong> (<code class="docutils literal notranslate"><span class="pre">proto=uds</span></code> on Linux, WinSock on Windows)</p></li>
+<li><p><strong>Tunnel channel</strong> (<code class="docutils literal notranslate"><span class="pre">proto=tunnel</span></code>) built on top of the base socket transport</p></li>
+</ul>
+<p>The application code interacts only with SDV interfaces (<code class="docutils literal notranslate"><span class="pre">IInterfaceAccess*</span></code> and related
+<code class="docutils literal notranslate"><span class="pre">IDataSend</span></code>, <code class="docutils literal notranslate"><span class="pre">IDataReceiveCallback</span></code>, <code class="docutils literal notranslate"><span class="pre">IConnectEventCallback</span></code>), while channel managers
+create and manage the underlying connections.</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id3">Overview</a></p></li>
+<li><p><a class="reference internal" href="#headers-and-namespaces" id="id4">Headers and namespaces</a></p></li>
+<li><p><a class="reference internal" href="#architecture-layering" id="id5">Architecture (Layering)</a></p></li>
+<li><p><a class="reference internal" href="#linux-plain-uds-channel-proto-uds" id="id6">Linux: Plain UDS channel (proto=uds)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#creating-a-server-endpoint" id="id7">Creating a server endpoint</a></p></li>
+<li><p><a class="reference internal" href="#connecting-as-a-client" id="id8">Connecting as a client</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#linux-tunnel-channel-proto-tunnel" id="id9">Linux: Tunnel channel (proto=tunnel)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id1" id="id10">Creating a server endpoint</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id11">Connecting as a client</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#windows-plain-sockets-and-tunnel-winsock-based" id="id12">Windows: Plain sockets and tunnel (WinSock-based)</a></p></li>
+<li><p><a class="reference internal" href="#data-exchange-common-to-uds-and-tunnel" id="id13">Data exchange (common to UDS and Tunnel)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#callbacks" id="id14">Callbacks</a></p></li>
+<li><p><a class="reference internal" href="#sending-data" id="id15">Sending data</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#disconnect-and-cleanup" id="id16">Disconnect and cleanup</a></p></li>
+<li><p><a class="reference internal" href="#sequence-diagrams" id="id17">Sequence diagrams</a></p>
+<ul>
+<li><p><a class="reference internal" href="#plain-uds-winsock-flow" id="id18">Plain UDS/WinSock flow</a></p></li>
+<li><p><a class="reference internal" href="#tunnel-flow-wrapping-base-transport" id="id19">Tunnel flow (wrapping base transport)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#design-notes-and-key-takeaways" id="id20">Design notes and key takeaways</a></p></li>
+<li><p><a class="reference internal" href="#troubleshooting" id="id21">Troubleshooting</a></p></li>
+<li><p><a class="reference internal" href="#appendix-minimal-end-to-end-skeleton-linux-uds" id="id22">Appendix: Minimal end-to-end skeleton (Linux UDS)</a></p></li>
+</ul>
+</nav>
+<section id="overview">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>Two top-level channel managers are exposed:</p>
+<ul class="simple">
+<li><p><strong>Plain sockets channel manager</strong>
+* Linux: <code class="docutils literal notranslate"><span class="pre">CUnixDomainSocketsChannelMgnt</span></code>
+* Windows: <code class="docutils literal notranslate"><span class="pre">CSocketsChannelMgnt</span></code>
+* Provides base socket channel management for non-tunneled IPC.</p></li>
+<li><p><strong>Tunnel channel manager</strong>
+* Linux: <code class="docutils literal notranslate"><span class="pre">CUnixTunnelChannelMgnt</span></code>
+* Windows: <code class="docutils literal notranslate"><span class="pre">CSocketsTunnelChannelMgnt</span></code>
+* Wraps the base transport with a tunnel header and enables future multiplexing.</p></li>
+</ul>
+<p>At runtime you typically do:</p>
+<ol class="arabic simple">
+<li><p><strong>Server</strong> creates an endpoint via <code class="docutils literal notranslate"><span class="pre">CreateEndpoint()</span></code>.</p></li>
+<li><p><strong>Client</strong> connects via <code class="docutils literal notranslate"><span class="pre">Access(&quot;proto=...;role=client;path=...;&quot;)</span></code>.</p></li>
+<li><p>Both sides call <strong>``AsyncConnect()``</strong> to register callback interfaces.</p></li>
+<li><p>Data is sent via <strong>``IDataSend::SendData()``</strong> and delivered through receive callbacks.</p></li>
+<li><p>Cleanup via <strong>``Disconnect()``</strong> (and deleting objects only if you own them).</p></li>
+</ol>
+</section>
+<section id="headers-and-namespaces">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Headers and namespaces</a><a class="headerlink" href="#headers-and-namespaces" title="Permalink to this heading">#</a></h2>
+<p>Include the channel manager header that matches your intended transport:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;interfaces/ipc.h&gt;</span>
+
+<span class="c1">// Plain (Linux UDS):</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sdv_services/uds_unix_sockets/channel_mgnt.h&gt;</span>
+
+<span class="c1">// Tunnel (Linux tunnel):</span>
+<span class="c1">// #include &lt;sdv_services/uds_unix_tunnel/channel_mgnt.h&gt;</span>
+
+<span class="c1">// Windows equivalents (names may differ by platform packaging):</span>
+<span class="c1">// #include &lt;sdv_services/winsock_sockets/channel_mgnt.h&gt;</span>
+<span class="c1">// #include &lt;sdv_services/winsock_tunnel/channel_mgnt.h&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="architecture-layering">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Architecture (Layering)</a><a class="headerlink" href="#architecture-layering" title="Permalink to this heading">#</a></h2>
+<p>Plain vs Tunnel is an implementation detail hidden behind the channel managers and SDV
+interfaces.</p>
+<pre  class="mermaid">
+        flowchart TB
+
+  subgraph CM[Channel Managers]
+    UCM[Plain Sockets Channel Manager]
+    TCM[Tunnel Channel Manager]
+  end
+
+  subgraph TL[Transport Layer]
+    BASE[Base Socket Connection]
+  end
+
+  subgraph TUN[Tunnel Layer]
+    TCONN[Tunnel Connection]
+  end
+
+  subgraph API[Process API]
+    IA[InterfaceAccess]
+    USER[User Code]
+  end
+
+  UCM --&gt; BASE
+  TCM --&gt; TCONN
+  TCONN -.-&gt; BASE
+  BASE --&gt; IA
+  TCONN --&gt; IA
+  IA --&gt; USER
+    </pre><p>If you prefer embedding your existing images instead of Mermaid, store them in your
+documentation tree and reference them like this:</p>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">figure</span><span class="p">::</span> _static/ipc/architecture.png
+   <span class="nc">:alt:</span> IPC architecture layering
+   <span class="nc">:align:</span> center
+   <span class="nc">:width:</span> 90%
+
+   Channel managers, transport layer, and tunnel wrapping.
+</pre></div>
+</div>
+</section>
+<section id="linux-plain-uds-channel-proto-uds">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Linux: Plain UDS channel (proto=uds)</a><a class="headerlink" href="#linux-plain-uds-channel-proto-uds" title="Permalink to this heading">#</a></h2>
+<section id="creating-a-server-endpoint">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Creating a server endpoint</a><a class="headerlink" href="#creating-a-server-endpoint" title="Permalink to this heading">#</a></h3>
+<p>On Linux, the plain socket mode typically binds to a filesystem path (Unix Domain Socket).</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">CUnixDomainSocketsChannelMgnt</span><span class="w"> </span><span class="n">udsManager</span><span class="p">;</span>
+
+<span class="n">sdv</span><span class="o">::</span><span class="n">ipc</span><span class="o">::</span><span class="n">SChannelEndpoint</span><span class="w"> </span><span class="n">ep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">udsManager</span><span class="p">.</span><span class="n">CreateEndpoint</span><span class="p">(</span><span class="sa">R</span><span class="s">&quot;</span><span class="dl">(</span>
+<span class="s">    [IpcChannel]</span>
+<span class="s">    Name = &quot;MY_ENDPOINT&quot;</span>
+<span class="s">    Path = &quot;/tmp/sdv/my_endpoint.sock&quot;</span>
+<span class="dl">)</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Notes</strong>
+* Ensure the parent directory exists (e.g., <code class="docutils literal notranslate"><span class="pre">/tmp/sdv</span></code>).
+* If a stale socket file exists from a previous run, remove it before binding.</p>
+</section>
+<section id="connecting-as-a-client">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Connecting as a client</a><a class="headerlink" href="#connecting-as-a-client" title="Permalink to this heading">#</a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">udsManager</span><span class="p">.</span><span class="n">Access</span><span class="p">(</span><span class="s">&quot;proto=uds;role=client;path=/tmp/sdv/my_endpoint.sock;&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="linux-tunnel-channel-proto-tunnel">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Linux: Tunnel channel (proto=tunnel)</a><a class="headerlink" href="#linux-tunnel-channel-proto-tunnel" title="Permalink to this heading">#</a></h2>
+<p>The tunnel mode uses the same underlying socket transport but adds a small tunnel header
+to each message (for channel identification and future multiplexing).</p>
+<section id="id1">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Creating a server endpoint</a><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">CUnixTunnelChannelMgnt</span><span class="w"> </span><span class="n">tunnelManager</span><span class="p">;</span>
+
+<span class="n">sdv</span><span class="o">::</span><span class="n">ipc</span><span class="o">::</span><span class="n">SChannelEndpoint</span><span class="w"> </span><span class="n">tunnelEp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tunnelManager</span><span class="p">.</span><span class="n">CreateEndpoint</span><span class="p">(</span><span class="sa">R</span><span class="s">&quot;</span><span class="dl">(</span>
+<span class="s">    [IpcChannel]</span>
+<span class="s">    Name = &quot;MY_TUNNEL&quot;</span>
+<span class="s">    Path = &quot;/tmp/sdv/my_tunnel.sock&quot;</span>
+<span class="dl">)</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Connecting as a client</a><a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="n">tunnelClient</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">tunnelManager</span><span class="p">.</span><span class="n">Access</span><span class="p">(</span><span class="s">&quot;proto=tunnel;role=client;path=/tmp/sdv/my_tunnel.sock;&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="windows-plain-sockets-and-tunnel-winsock-based">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Windows: Plain sockets and tunnel (WinSock-based)</a><a class="headerlink" href="#windows-plain-sockets-and-tunnel-winsock-based" title="Permalink to this heading">#</a></h2>
+<p>On Windows, the transport is WinSock (not filesystem-based UDS). The same conceptual flow
+applies:</p>
+<ul class="simple">
+<li><p>Plain sockets manager: <code class="docutils literal notranslate"><span class="pre">CSocketsChannelMgnt</span></code></p></li>
+<li><p>Tunnel manager: <code class="docutils literal notranslate"><span class="pre">CSocketsTunnelChannelMgnt</span></code></p></li>
+</ul>
+<p>The connection string keeps the same format:</p>
+<ul class="simple">
+<li><p>Plain: <code class="docutils literal notranslate"><span class="pre">proto=uds;role=client;path=...;</span></code> (the <em>proto label</em> may remain <code class="docutils literal notranslate"><span class="pre">uds</span></code> for API
+compatibility even if the underlying transport is WinSock — follow your project’s convention)</p></li>
+<li><p>Tunnel: <code class="docutils literal notranslate"><span class="pre">proto=tunnel;role=client;path=...;</span></code></p></li>
+</ul>
+<p>The meaning of <code class="docutils literal notranslate"><span class="pre">path=...</span></code> on Windows is <strong>implementation-defined</strong> (commonly a host/port
+or similar endpoint). Check the platform-specific manager documentation/comments.</p>
+<p>Example skeleton:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Plain (Windows)</span>
+<span class="n">CSocketsChannelMgnt</span><span class="w"> </span><span class="n">sockManager</span><span class="p">;</span>
+<span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sockManager</span><span class="p">.</span><span class="n">Access</span><span class="p">(</span><span class="s">&quot;proto=uds;role=client;path=127.0.0.1:5555;&quot;</span><span class="p">);</span>
+
+<span class="c1">// Tunnel (Windows)</span>
+<span class="n">CSocketsTunnelChannelMgnt</span><span class="w"> </span><span class="n">tunnelManager</span><span class="p">;</span>
+<span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">tclient</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tunnelManager</span><span class="p">.</span><span class="n">Access</span><span class="p">(</span><span class="s">&quot;proto=tunnel;role=client;path=127.0.0.1:5556;&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="data-exchange-common-to-uds-and-tunnel">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Data exchange (common to UDS and Tunnel)</a><a class="headerlink" href="#data-exchange-common-to-uds-and-tunnel" title="Permalink to this heading">#</a></h2>
+<p>You interact only through SDV interfaces:</p>
+<ul class="simple">
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">AsyncConnect()</span></code> to provide callback interfaces (receive + status).</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">IDataSend::SendData()</span></code> to send SDV protocol data.</p></li>
+</ul>
+<section id="callbacks">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Callbacks</a><a class="headerlink" href="#callbacks" title="Permalink to this heading">#</a></h3>
+<p>Create a callback object implementing:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sdv::ipc::IDataReceiveCallback</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sdv::ipc::IConnectEventCallback</span></code></p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MyReceiver</span>
+<span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">ipc</span><span class="o">::</span><span class="n">IDataReceiveCallback</span>
+<span class="w">  </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">ipc</span><span class="o">::</span><span class="n">IConnectEventCallback</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">  </span><span class="c1">// Implement the required methods here:</span>
+<span class="w">  </span><span class="c1">// - connection events (connected/disconnected/errors)</span>
+<span class="w">  </span><span class="c1">// - receive callbacks (incoming payload)</span>
+<span class="p">};</span>
+
+<span class="n">MyReceiver</span><span class="w"> </span><span class="n">receiver</span><span class="p">;</span>
+<span class="n">client</span><span class="o">-&gt;</span><span class="n">AsyncConnect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">receiver</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="sending-data">
+<h3><a class="toc-backref" href="#id15" role="doc-backlink">Sending data</a><a class="headerlink" href="#sending-data" title="Permalink to this heading">#</a></h3>
+<p>Assuming your <code class="docutils literal notranslate"><span class="pre">IInterfaceAccess*</span></code> also exposes <code class="docutils literal notranslate"><span class="pre">IDataSend</span></code>:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">sender</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">ipc</span><span class="o">::</span><span class="n">IDataSend</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+
+<span class="n">sdv</span><span class="o">::</span><span class="n">sequence</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">pointer</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">payload</span><span class="p">;</span>
+<span class="c1">// Fill payload chunks as needed...</span>
+<span class="n">sender</span><span class="o">-&gt;</span><span class="n">SendData</span><span class="p">(</span><span class="n">payload</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="disconnect-and-cleanup">
+<h2><a class="toc-backref" href="#id16" role="doc-backlink">Disconnect and cleanup</a><a class="headerlink" href="#disconnect-and-cleanup" title="Permalink to this heading">#</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">-&gt;</span><span class="n">Disconnect</span><span class="p">();</span>
+
+<span class="c1">// Delete only if ownership is yours.</span>
+<span class="c1">// If returned pointer is owned by the manager, do not delete it.</span>
+<span class="c1">// delete client;</span>
+</pre></div>
+</div>
+</section>
+<section id="sequence-diagrams">
+<h2><a class="toc-backref" href="#id17" role="doc-backlink">Sequence diagrams</a><a class="headerlink" href="#sequence-diagrams" title="Permalink to this heading">#</a></h2>
+<section id="plain-uds-winsock-flow">
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">Plain UDS/WinSock flow</a><a class="headerlink" href="#plain-uds-winsock-flow" title="Permalink to this heading">#</a></h3>
+<pre  class="mermaid">
+        sequenceDiagram
+  autonumber
+
+  participant AppS as Application (Server)
+  participant CM as Channel Manager
+  participant SConn as Socket Connection (Server)
+  participant OS as OS Socket Endpoint
+  participant CConn as Socket Connection (Client)
+  participant AppC as Application (Client)
+
+  AppS-&gt;&gt;CM: CreateEndpoint(IpcChannel, Path)
+  CM-&gt;&gt;SConn: create(), bind(), listen()
+  SConn-&gt;&gt;OS: create socket endpoint
+
+  AppC-&gt;&gt;CM: Access(proto=uds, role=client, path)
+  CM-&gt;&gt;CConn: create(), connect()
+  CConn-&gt;&gt;OS: connect()
+
+  OS--&gt;&gt;SConn: accept()
+  note over SConn,CConn: Connection established
+
+  AppS-&gt;&gt;SConn: AsyncConnect(callbacks)
+  AppC-&gt;&gt;CConn: AsyncConnect(callbacks)
+
+  AppS-&gt;&gt;SConn: SendData(payload)
+  SConn--&gt;&gt;CConn: data stream
+  CConn--&gt;&gt;AppC: ReceiveData(callback)
+
+  AppC-&gt;&gt;CConn: Disconnect()
+  AppS-&gt;&gt;SConn: Disconnect()
+    </pre></section>
+<section id="tunnel-flow-wrapping-base-transport">
+<h3><a class="toc-backref" href="#id19" role="doc-backlink">Tunnel flow (wrapping base transport)</a><a class="headerlink" href="#tunnel-flow-wrapping-base-transport" title="Permalink to this heading">#</a></h3>
+<pre  class="mermaid">
+        sequenceDiagram
+  autonumber
+
+  participant AppS as Application (Server)
+  participant TCM as Tunnel Channel Manager
+  participant TConnS as Tunnel Connection (Server)
+  participant BaseS as Base Socket Conn (Server)
+  participant OS as OS Socket Endpoint
+  participant BaseC as Base Socket Conn (Client)
+  participant TConnC as Tunnel Connection (Client)
+  participant AppC as Application (Client)
+
+  AppS-&gt;&gt;TCM: CreateEndpoint(IpcChannel, Path)
+  TCM-&gt;&gt;TConnS: create tunnel endpoint
+  TConnS-&gt;&gt;BaseS: create(), bind(), listen()
+  BaseS-&gt;&gt;OS: create socket endpoint
+
+  AppC-&gt;&gt;TCM: Access(proto=tunnel, role=client, path)
+  TCM-&gt;&gt;TConnC: create tunnel client
+  TConnC-&gt;&gt;BaseC: create(), connect()
+  BaseC-&gt;&gt;OS: connect()
+
+  OS--&gt;&gt;BaseS: accept()
+  note over TConnS,TConnC: Tunnel wraps base connection
+
+  AppS-&gt;&gt;TConnS: AsyncConnect(callbacks)
+  AppC-&gt;&gt;TConnC: AsyncConnect(callbacks)
+
+  AppS-&gt;&gt;TConnS: SendData(payload)
+  TConnS-&gt;&gt;BaseS: add tunnel header
+  BaseS--&gt;&gt;BaseC: header + payload
+  BaseC-&gt;&gt;TConnC: unwrap tunnel header
+  TConnC--&gt;&gt;AppC: ReceiveData(payload)
+
+  AppC-&gt;&gt;TConnC: Disconnect()
+  AppS-&gt;&gt;TConnS: Disconnect()
+    </pre></section>
+</section>
+<section id="design-notes-and-key-takeaways">
+<h2><a class="toc-backref" href="#id20" role="doc-backlink">Design notes and key takeaways</a><a class="headerlink" href="#design-notes-and-key-takeaways" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The design is modular: <strong>channel manager</strong> → <strong>transport connection</strong> → optional <strong>tunnel wrapper</strong>.</p></li>
+<li><p>Both plain and tunneled IPC share the same external interface patterns:
+<code class="docutils literal notranslate"><span class="pre">CreateEndpoint/Access</span></code> + <code class="docutils literal notranslate"><span class="pre">AsyncConnect</span></code> + <code class="docutils literal notranslate"><span class="pre">SendData</span></code> + callbacks.</p></li>
+<li><p>Tunnel connections wrap the base transport and can support future <strong>logical multiplexing</strong>
+beyond today’s 1:1 mapping.</p></li>
+<li><p>Client/server code can stay agnostic to OS and transport by coding to the SDV interfaces.</p></li>
+<li><p>Components are replaceable and testable in isolation due to interface layering.</p></li>
+</ul>
+</section>
+<section id="troubleshooting">
+<h2><a class="toc-backref" href="#id21" role="doc-backlink">Troubleshooting</a><a class="headerlink" href="#troubleshooting" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Bind fails / address in use</strong>
+* Linux UDS: remove stale <code class="docutils literal notranslate"><span class="pre">*.sock</span></code> file before starting the server.
+* Windows: ensure the port/endpoint is free.</p></li>
+<li><p><strong>No callbacks fired</strong>
+* Ensure <code class="docutils literal notranslate"><span class="pre">AsyncConnect()</span></code> is called on both sides and the callback object remains alive.</p></li>
+<li><p><strong>SendData succeeds but peer receives nothing</strong>
+* Verify you are using the same <code class="docutils literal notranslate"><span class="pre">proto</span></code> and the same <code class="docutils literal notranslate"><span class="pre">path</span></code> on both ends.
+* In tunnel mode, ensure both sides use <code class="docutils literal notranslate"><span class="pre">proto=tunnel</span></code> (do not mix).</p></li>
+<li><p><strong>Cleanup issues</strong>
+* Ownership rules: only <code class="docutils literal notranslate"><span class="pre">delete</span></code> the returned pointer if your integration explicitly transfers ownership to the caller.</p></li>
+</ul>
+</section>
+<section id="appendix-minimal-end-to-end-skeleton-linux-uds">
+<h2><a class="toc-backref" href="#id22" role="doc-backlink">Appendix: Minimal end-to-end skeleton (Linux UDS)</a><a class="headerlink" href="#appendix-minimal-end-to-end-skeleton-linux-uds" title="Permalink to this heading">#</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// server.cpp</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sdv_services/uds_unix_sockets/channel_mgnt.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;interfaces/ipc.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">CUnixDomainSocketsChannelMgnt</span><span class="w"> </span><span class="n">mgr</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">auto</span><span class="w"> </span><span class="n">ep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mgr</span><span class="p">.</span><span class="n">CreateEndpoint</span><span class="p">(</span><span class="sa">R</span><span class="s">&quot;</span><span class="dl">(</span>
+<span class="s">    [IpcChannel]</span>
+<span class="s">    Name = &quot;DEMO&quot;</span>
+<span class="s">    Path = &quot;/tmp/sdv/demo.sock&quot;</span>
+<span class="s">  </span><span class="dl">)</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Provide callbacks and run your event loop...</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// client.cpp</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sdv_services/uds_unix_sockets/channel_mgnt.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;interfaces/ipc.h&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">CUnixDomainSocketsChannelMgnt</span><span class="w"> </span><span class="n">mgr</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">auto</span><span class="o">*</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mgr</span><span class="p">.</span><span class="n">Access</span><span class="p">(</span><span class="s">&quot;proto=uds;role=client;path=/tmp/sdv/demo.sock;&quot;</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// client-&gt;AsyncConnect(...);</span>
+<span class="w">  </span><span class="c1">// static_cast&lt;IDataSend*&gt;(client)-&gt;SendData(...);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="under_the_hood.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">A view under the hood</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="main_goals.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Key Features</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🚀 Start here</div>
+      <a class="sidebar-link" data-target="vapi_doc/entry.html">Overview</a>
+      <a class="sidebar-link" data-target="vapi_doc/learn_the_concepts.html">Learn the concepts</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🛠 Build & Run</div>
+      <a class="sidebar-link" data-target="vapi_doc/get_started.html">Set up your environment</a>
+      <a class="sidebar-link" data-target="vapi_doc/get_something_running.html">Run your first example</a>
+      <a class="sidebar-link" data-target="vapi_doc/project_guide.html">Understand the project structure</a>
+      <!-- <a class="sidebar-link" data-target="vapi_doc/build_services.html">Develop services</a> -->
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🧩 Support</div>
+      <a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a>
+      <a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q &amp; A</a>
+      <a class="sidebar-link" data-target="vapi_pages/team.html">Team</a>
+      <a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">⚙ Utilities</div>
+      <a class="sidebar-link" data-target="genindex.html" target="_blank" rel="noopener">Index</a>
+      <a class="sidebar-link" data-target="search.html" target="_blank" rel="noopener">Search</a>
+    </li>
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const links = document.querySelectorAll(".sidebar-link");
+  const path = window.location.pathname;
+
+  const htmlIndex = path.lastIndexOf("/html/");
+  const base = htmlIndex >= 0 ? path.substring(0, htmlIndex + 6) : "/";
+
+  const current = path.substring(base.length).replace(/^\//, "");
+
+  links.forEach(link => {
+    const target = link.getAttribute("data-target");
+    if (!target) return;
+
+    link.setAttribute("href", base + target);
+
+    if (target === current) {
+      link.classList.add("active");
+    }
+  });
+});
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

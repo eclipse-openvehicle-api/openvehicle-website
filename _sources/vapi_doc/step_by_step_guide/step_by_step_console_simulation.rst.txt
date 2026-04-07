@@ -1,4 +1,4 @@
-.. _vapi-step_by_step_console_simulation:
+﻿.. _vapi-step_by_step_console_simulation:
 
 Step-by-Step: Console & Simulation Data for Wiper Example
 =========================================================
@@ -577,7 +577,7 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 			if (hStdIn != INVALID_HANDLE_VALUE)
 				SetConsoleMode(hStdIn, m_dwConsoleInMode);
 		#elif defined __unix__
-			// Return the previous file status flags.
+			// Return the previous file state flags.
 			fcntl(STDIN_FILENO, F_SETFL, m_iFileStatus);
 
 			// Return to previous terminal state
@@ -1092,7 +1092,7 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 			DWORD                m_dwConsoleInMode = 0u;             ///< The console mode before switching on ANSI support.
 		#elif defined __unix__
 			struct termios       m_sTermAttr{};                      ///< The terminal attributes before disabling echo.
-			int                  m_iFileStatus = 0;                  ///< The file status flags for STDIN.
+			int                  m_iFileStatus = 0;                  ///< The file state flags for STDIN.
 		#else
 		#error The OS is not supported!
 		#endif
@@ -1300,4 +1300,5 @@ To understand the full execution flow, check :ref:`diag-main-sequence`.
    - Try to implement a complex service for your example.
 
    Keep experimenting - the more you play with it, the better you'll understand it!
+
 

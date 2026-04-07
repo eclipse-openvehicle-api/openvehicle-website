@@ -1,0 +1,410 @@
+.. _ipc_uds_and_tunnel:
+
+IPC Channels (UDS/WinSock) and Tunnel Transport
+===============================================
+
+This page describes how to use the SDV IPC socket-based channels in two modes:
+
+* **Plain socket channel** (``proto=uds`` on Linux, WinSock on Windows)
+* **Tunnel channel** (``proto=tunnel``) built on top of the base socket transport
+
+The application code interacts only with SDV interfaces (``IInterfaceAccess*`` and related
+``IDataSend``, ``IDataReceiveCallback``, ``IConnectEventCallback``), while channel managers
+create and manage the underlying connections.
+
+.. contents::
+   :local:
+   :depth: 2
+
+
+Overview
+--------
+
+Two top-level channel managers are exposed:
+
+* **Plain sockets channel manager**
+  * Linux: ``CUnixDomainSocketsChannelMgnt``
+  * Windows: ``CSocketsChannelMgnt``
+  * Provides base socket channel management for non-tunneled IPC.
+
+* **Tunnel channel manager**
+  * Linux: ``CUnixTunnelChannelMgnt``
+  * Windows: ``CSocketsTunnelChannelMgnt``
+  * Wraps the base transport with a tunnel header and enables future multiplexing.
+
+At runtime you typically do:
+
+1. **Server** creates an endpoint via ``CreateEndpoint()``.
+2. **Client** connects via ``Access("proto=...;role=client;path=...;")``.
+3. Both sides call **``AsyncConnect()``** to register callback interfaces.
+4. Data is sent via **``IDataSend::SendData()``** and delivered through receive callbacks.
+5. Cleanup via **``Disconnect()``** (and deleting objects only if you own them).
+
+
+Headers and namespaces
+----------------------
+
+Include the channel manager header that matches your intended transport:
+
+.. code-block:: c++
+
+   #include <interfaces/ipc.h>
+
+   // Plain (Linux UDS):
+   #include <sdv_services/uds_unix_sockets/channel_mgnt.h>
+
+   // Tunnel (Linux tunnel):
+   // #include <sdv_services/uds_unix_tunnel/channel_mgnt.h>
+
+   // Windows equivalents (names may differ by platform packaging):
+   // #include <sdv_services/winsock_sockets/channel_mgnt.h>
+   // #include <sdv_services/winsock_tunnel/channel_mgnt.h>
+
+
+Architecture (Layering)
+-----------------------
+
+Plain vs Tunnel is an implementation detail hidden behind the channel managers and SDV
+interfaces.
+
+.. mermaid::
+
+   flowchart TB
+
+     subgraph CM[Channel Managers]
+       UCM[Plain Sockets Channel Manager]
+       TCM[Tunnel Channel Manager]
+     end
+
+     subgraph TL[Transport Layer]
+       BASE[Base Socket Connection]
+     end
+
+     subgraph TUN[Tunnel Layer]
+       TCONN[Tunnel Connection]
+     end
+
+     subgraph API[Process API]
+       IA[InterfaceAccess]
+       USER[User Code]
+     end
+
+     UCM --> BASE
+     TCM --> TCONN
+     TCONN -.-> BASE
+     BASE --> IA
+     TCONN --> IA
+     IA --> USER
+
+
+If you prefer embedding your existing images instead of Mermaid, store them in your
+documentation tree and reference them like this:
+
+.. code-block:: rst
+
+   .. figure:: _static/ipc/architecture.png
+      :alt: IPC architecture layering
+      :align: center
+      :width: 90%
+
+      Channel managers, transport layer, and tunnel wrapping.
+
+
+Linux: Plain UDS channel (proto=uds)
+------------------------------------
+
+Creating a server endpoint
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+On Linux, the plain socket mode typically binds to a filesystem path (Unix Domain Socket).
+
+.. code-block:: c++
+
+   CUnixDomainSocketsChannelMgnt udsManager;
+
+   sdv::ipc::SChannelEndpoint ep = udsManager.CreateEndpoint(R"(
+       [IpcChannel]
+       Name = "MY_ENDPOINT"
+       Path = "/tmp/sdv/my_endpoint.sock"
+   )");
+
+**Notes**
+* Ensure the parent directory exists (e.g., ``/tmp/sdv``).
+* If a stale socket file exists from a previous run, remove it before binding.
+
+
+Connecting as a client
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: c++
+
+   sdv::IInterfaceAccess* client =
+       udsManager.Access("proto=uds;role=client;path=/tmp/sdv/my_endpoint.sock;");
+
+
+Linux: Tunnel channel (proto=tunnel)
+------------------------------------
+
+The tunnel mode uses the same underlying socket transport but adds a small tunnel header
+to each message (for channel identification and future multiplexing).
+
+Creating a server endpoint
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: c++
+
+   CUnixTunnelChannelMgnt tunnelManager;
+
+   sdv::ipc::SChannelEndpoint tunnelEp = tunnelManager.CreateEndpoint(R"(
+       [IpcChannel]
+       Name = "MY_TUNNEL"
+       Path = "/tmp/sdv/my_tunnel.sock"
+   )");
+
+
+Connecting as a client
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: c++
+
+   sdv::IInterfaceAccess* tunnelClient =
+       tunnelManager.Access("proto=tunnel;role=client;path=/tmp/sdv/my_tunnel.sock;");
+
+
+Windows: Plain sockets and tunnel (WinSock-based)
+-------------------------------------------------
+
+On Windows, the transport is WinSock (not filesystem-based UDS). The same conceptual flow
+applies:
+
+* Plain sockets manager: ``CSocketsChannelMgnt``
+* Tunnel manager: ``CSocketsTunnelChannelMgnt``
+
+The connection string keeps the same format:
+
+* Plain: ``proto=uds;role=client;path=...;`` (the *proto label* may remain ``uds`` for API
+  compatibility even if the underlying transport is WinSock — follow your project’s convention)
+* Tunnel: ``proto=tunnel;role=client;path=...;``
+
+The meaning of ``path=...`` on Windows is **implementation-defined** (commonly a host/port
+or similar endpoint). Check the platform-specific manager documentation/comments.
+
+Example skeleton:
+
+.. code-block:: c++
+
+   // Plain (Windows)
+   CSocketsChannelMgnt sockManager;
+   auto* client = sockManager.Access("proto=uds;role=client;path=127.0.0.1:5555;");
+
+   // Tunnel (Windows)
+   CSocketsTunnelChannelMgnt tunnelManager;
+   auto* tclient = tunnelManager.Access("proto=tunnel;role=client;path=127.0.0.1:5556;");
+
+
+Data exchange (common to UDS and Tunnel)
+----------------------------------------
+
+You interact only through SDV interfaces:
+
+* Call ``AsyncConnect()`` to provide callback interfaces (receive + status).
+* Use ``IDataSend::SendData()`` to send SDV protocol data.
+
+Callbacks
+~~~~~~~~~
+
+Create a callback object implementing:
+
+* ``sdv::ipc::IDataReceiveCallback``
+* ``sdv::ipc::IConnectEventCallback``
+
+.. code-block:: c++
+
+   class MyReceiver
+     : public sdv::ipc::IDataReceiveCallback
+     , public sdv::ipc::IConnectEventCallback
+   {
+   public:
+     // Implement the required methods here:
+     // - connection events (connected/disconnected/errors)
+     // - receive callbacks (incoming payload)
+   };
+
+   MyReceiver receiver;
+   client->AsyncConnect(&receiver);
+
+Sending data
+~~~~~~~~~~~~
+
+Assuming your ``IInterfaceAccess*`` also exposes ``IDataSend``:
+
+.. code-block:: c++
+
+   auto* sender = static_cast<sdv::ipc::IDataSend*>(client);
+
+   sdv::sequence<sdv::pointer<uint8_t>> payload;
+   // Fill payload chunks as needed...
+   sender->SendData(payload);
+
+
+Disconnect and cleanup
+----------------------
+
+.. code-block:: c++
+
+   client->Disconnect();
+
+   // Delete only if ownership is yours.
+   // If returned pointer is owned by the manager, do not delete it.
+   // delete client;
+
+
+Sequence diagrams
+-----------------
+
+Plain UDS/WinSock flow
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. mermaid::
+
+   sequenceDiagram
+     autonumber
+
+     participant AppS as Application (Server)
+     participant CM as Channel Manager
+     participant SConn as Socket Connection (Server)
+     participant OS as OS Socket Endpoint
+     participant CConn as Socket Connection (Client)
+     participant AppC as Application (Client)
+
+     AppS->>CM: CreateEndpoint(IpcChannel, Path)
+     CM->>SConn: create(), bind(), listen()
+     SConn->>OS: create socket endpoint
+
+     AppC->>CM: Access(proto=uds, role=client, path)
+     CM->>CConn: create(), connect()
+     CConn->>OS: connect()
+
+     OS-->>SConn: accept()
+     note over SConn,CConn: Connection established
+
+     AppS->>SConn: AsyncConnect(callbacks)
+     AppC->>CConn: AsyncConnect(callbacks)
+
+     AppS->>SConn: SendData(payload)
+     SConn-->>CConn: data stream
+     CConn-->>AppC: ReceiveData(callback)
+
+     AppC->>CConn: Disconnect()
+     AppS->>SConn: Disconnect()
+
+
+Tunnel flow (wrapping base transport)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. mermaid::
+
+   sequenceDiagram
+     autonumber
+
+     participant AppS as Application (Server)
+     participant TCM as Tunnel Channel Manager
+     participant TConnS as Tunnel Connection (Server)
+     participant BaseS as Base Socket Conn (Server)
+     participant OS as OS Socket Endpoint
+     participant BaseC as Base Socket Conn (Client)
+     participant TConnC as Tunnel Connection (Client)
+     participant AppC as Application (Client)
+
+     AppS->>TCM: CreateEndpoint(IpcChannel, Path)
+     TCM->>TConnS: create tunnel endpoint
+     TConnS->>BaseS: create(), bind(), listen()
+     BaseS->>OS: create socket endpoint
+
+     AppC->>TCM: Access(proto=tunnel, role=client, path)
+     TCM->>TConnC: create tunnel client
+     TConnC->>BaseC: create(), connect()
+     BaseC->>OS: connect()
+
+     OS-->>BaseS: accept()
+     note over TConnS,TConnC: Tunnel wraps base connection
+
+     AppS->>TConnS: AsyncConnect(callbacks)
+     AppC->>TConnC: AsyncConnect(callbacks)
+
+     AppS->>TConnS: SendData(payload)
+     TConnS->>BaseS: add tunnel header
+     BaseS-->>BaseC: header + payload
+     BaseC->>TConnC: unwrap tunnel header
+     TConnC-->>AppC: ReceiveData(payload)
+
+     AppC->>TConnC: Disconnect()
+     AppS->>TConnS: Disconnect()
+
+
+Design notes and key takeaways
+------------------------------
+
+* The design is modular: **channel manager** → **transport connection** → optional **tunnel wrapper**.
+* Both plain and tunneled IPC share the same external interface patterns:
+  ``CreateEndpoint/Access`` + ``AsyncConnect`` + ``SendData`` + callbacks.
+* Tunnel connections wrap the base transport and can support future **logical multiplexing**
+  beyond today’s 1:1 mapping.
+* Client/server code can stay agnostic to OS and transport by coding to the SDV interfaces.
+* Components are replaceable and testable in isolation due to interface layering.
+
+Troubleshooting
+---------------
+
+* **Bind fails / address in use**
+  * Linux UDS: remove stale ``*.sock`` file before starting the server.
+  * Windows: ensure the port/endpoint is free.
+
+* **No callbacks fired**
+  * Ensure ``AsyncConnect()`` is called on both sides and the callback object remains alive.
+
+* **SendData succeeds but peer receives nothing**
+  * Verify you are using the same ``proto`` and the same ``path`` on both ends.
+  * In tunnel mode, ensure both sides use ``proto=tunnel`` (do not mix).
+
+* **Cleanup issues**
+  * Ownership rules: only ``delete`` the returned pointer if your integration explicitly transfers ownership to the caller.
+
+
+Appendix: Minimal end-to-end skeleton (Linux UDS)
+-------------------------------------------------
+
+.. code-block:: c++
+
+   // server.cpp
+   #include <sdv_services/uds_unix_sockets/channel_mgnt.h>
+   #include <interfaces/ipc.h>
+
+   int main() {
+     CUnixDomainSocketsChannelMgnt mgr;
+
+     auto ep = mgr.CreateEndpoint(R"(
+       [IpcChannel]
+       Name = "DEMO"
+       Path = "/tmp/sdv/demo.sock"
+     )");
+
+     // Provide callbacks and run your event loop...
+     return 0;
+   }
+
+.. code-block:: c++
+
+   // client.cpp
+   #include <sdv_services/uds_unix_sockets/channel_mgnt.h>
+   #include <interfaces/ipc.h>
+
+   int main() {
+     CUnixDomainSocketsChannelMgnt mgr;
+
+     auto* client = mgr.Access("proto=uds;role=client;path=/tmp/sdv/demo.sock;");
+
+     // client->AsyncConnect(...);
+     // static_cast<IDataSend*>(client)->SendData(...);
+     return 0;
+   }

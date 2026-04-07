@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/stylesheet.css?v=9c3fb72b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/stylesheet.css?v=0beb5b98" />
     <link rel="stylesheet" type="text/css" href="../../_static/key_features.css?v=1f1425ec" />
     <link rel="stylesheet" type="text/css" href="../../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../../_static/fonts/font.css?v=e743f546" />
@@ -262,7 +262,7 @@
                     </li>
                 
 
-                    <li class="nav-item current active">
+                    <li class="nav-item">
                       <a class="nav-link dropdown-item nav-internal" href="step_by_step_index.html">
                         Step by Step Example
                       </a>
@@ -476,7 +476,7 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item current active">
+                    <li class="nav-item">
                       <a class="nav-link dropdown-item nav-internal" href="step_by_step_index.html">
                         Step by Step Example
                       </a>
@@ -633,7 +633,12 @@ and sensor data. This document explains the structure and logic of the applicati
 </div>
 <section id="application-initialization">
 <h3>Application Initialization<a class="headerlink" href="#application-initialization" title="Permalink to this heading">#</a></h3>
-<p>First, we need the <cite>Initialize()</cite> method, which sets up the runtime environment, loads configuration files, and registers signals.</p>
+<p>First, we need the <cite>Initialize()</cite> method on the application wrapper, which sets up the runtime environment, loads configuration files, and registers signals.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the current framework, this <cite>Initialize()</cite> method belongs to your application helper class (<cite>CWiperControl</cite>).
+Loadable SDV objects such as Complex Services are initialized by the runtime through <cite>sdv::CSdvObject::OnInitialize()</cite> and cleaned up with <cite>OnShutdown()</cite> after their <cite>.toml</cite> configuration is loaded.</p>
+</div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">CWiperControl::Initialize</span><span class="p">()</span>
 <span class="p">{</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialize call started&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
@@ -656,6 +661,7 @@ and sensor data. This document explains the structure and logic of the applicati
 <span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">bResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load dispatch example: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;data_dispatch_wiper.toml&quot;</span><span class="p">);</span>
 <span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load task timer: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;task_timer_wiper.toml&quot;</span><span class="p">);</span>
 <span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load vehicle devices and basic services for wiper: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wiper_vehicle_device_and_basic_service.toml&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load wiper service (complex service): &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;complex_service_wiper.toml&quot;</span><span class="p">);</span>
 
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Ended the load config file&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 
@@ -737,6 +743,7 @@ Example:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="n">bResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load dispatch example: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;data_dispatch_wiper.toml&quot;</span><span class="p">);</span>
 <span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load task timer: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;task_timer_wiper.toml&quot;</span><span class="p">);</span>
 <span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load vehicle devices and basic services for wiper: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wiper_vehicle_device_and_basic_service.toml&quot;</span><span class="p">);</span>
+<span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load wiper service (complex service): &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;complex_service_wiper.toml&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -795,6 +802,8 @@ bool CWiperControl::Initialize()
 
         bool bResult = LoadConfigFile(&quot;Load dispatch example: &quot;, &quot;data_dispatch_wiper.toml&quot;);
         bResult &amp;= LoadConfigFile(&quot;Load task timer: &quot;, &quot;task_timer_wiper.toml&quot;);
+        bResult &amp;= LoadConfigFile(&quot;Load vehicle devices and basic services for wiper: &quot;, &quot;wiper_vehicle_device_and_basic_service.toml&quot;);
+        bResult &amp;= LoadConfigFile(&quot;Load wiper service (complex service): &quot;, &quot;complex_service_wiper.toml&quot;);
 
         std::cout &lt;&lt; &quot;Ended the load config file&quot; &lt;&lt; std::endl;
 
@@ -1533,44 +1542,61 @@ private:
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
-  <h3>Contents</h3>
-  <ul>
-    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
-    <ul>
-        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
-        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
-    </ul>
-    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
-    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
-</ul>
+  
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🚀 Start here</div>
+      <a class="sidebar-link" data-target="vapi_doc/entry.html">Overview</a>
+      <a class="sidebar-link" data-target="vapi_doc/learn_the_concepts.html">Learn the concepts</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🛠 Build & Run</div>
+      <a class="sidebar-link" data-target="vapi_doc/get_started.html">Set up your environment</a>
+      <a class="sidebar-link" data-target="vapi_doc/get_something_running.html">Run your first example</a>
+      <a class="sidebar-link" data-target="vapi_doc/project_guide.html">Understand the project structure</a>
+      <!-- <a class="sidebar-link" data-target="vapi_doc/build_services.html">Develop services</a> -->
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🧩 Support</div>
+      <a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a>
+      <a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q &amp; A</a>
+      <a class="sidebar-link" data-target="vapi_pages/team.html">Team</a>
+      <a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">⚙ Utilities</div>
+      <a class="sidebar-link" data-target="genindex.html" target="_blank" rel="noopener">Index</a>
+      <a class="sidebar-link" data-target="search.html" target="_blank" rel="noopener">Search</a>
+    </li>
+
+
+
+
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const links = document.querySelectorAll(".sidebar-link");
-        const currentPath = window.location.pathname;
+document.addEventListener("DOMContentLoaded", function () {
+  const links = document.querySelectorAll(".sidebar-link");
+  const path = window.location.pathname;
 
-        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
-        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
-        let rootPath = '/';
+  const htmlIndex = path.lastIndexOf("/html/");
+  const base = htmlIndex >= 0 ? path.substring(0, htmlIndex + 6) : "/";
 
-        if (match) {
-            rootPath = match[1];
-            const relPath = currentPath.replace(rootPath, '');
-            const upLevels = relPath.split('/').length - 1;
-            const prefix = '../'.repeat(upLevels);
+  const current = path.substring(base.length).replace(/^\//, "");
 
-            links.forEach(link => {
-                const target = link.getAttribute("data-target");
-                if (target) {
-                    link.setAttribute("href", prefix + target);
-                }
-            });
-        } 
-    });
+  links.forEach(link => {
+    const target = link.getAttribute("data-target");
+    if (!target) return;
+
+    link.setAttribute("href", base + target);
+
+    if (target === current) {
+      link.classList.add("active");
+    }
+  });
+});
 </script>
 </div></div>
               

@@ -1,0 +1,208 @@
+.. _vapi-learn_the_concepts:
+
+Learn the concepts
+==================
+
+You are here to understand **how VAPI thinks**
+before running examples or building services.
+
+
+What this section is about
+--------------------------
+
+.. grid:: 3
+   :gutter: 2
+
+
+   .. grid-item-card:: 🧠 Mental model
+
+      How vehicle functionality is decomposed
+      and reasoned about in VAPI.
+
+      → :doc:`key_building_blocks`
+
+
+   .. grid-item-card:: 🧱 Architecture
+
+      How responsibilities are split at runtime
+      and how components interact.
+
+      → :doc:`component_stack`  
+      → :doc:`architecture`
+
+
+   .. grid-item-card:: 🔁 Lifecycle
+
+      Why VAPI enforces a strict runtime lifecycle.
+
+      → :doc:`under_the_hood`
+
+
+Why this matters
+----------------
+
+.. grid:: 2
+   :gutter: 2
+
+
+   .. grid-item-card:: What can go wrong without the concepts
+
+      - **Services become application logic**
+      - **Configuration leaks into runtime code**
+      - **Signals and events are misused**
+      - **Examples don’t scale to real projects**
+
+
+   .. grid-item-card:: What you gain by understanding them
+
+      - **Clear separation of responsibilities**
+      - **Deterministic startup and testing**
+      - **Clean service composition**
+      - **Easier transition from demo to product**
+
+
+What this section helps you understand
+--------------------------------------
+
+After this section, you should have a clear mental model of:
+
+- **Why VAPI exists** in a Software‑Defined Vehicle context
+- **How vehicle functionality is structured** into devices and services
+- **How data flows at runtime** through signals and events
+- **Why configuration always comes before execution**
+
+
+Core conceptual building blocks
+-------------------------------
+
+
+Each card below answers **one concrete question**.
+
+Clicking a card takes you to a document that explains that topic in detail
+
+They are ordered from **why → what → how**, following the way an SDV developer
+typically builds a mental model.
+
+
+.. grid:: 2
+   :gutter: 2
+
+
+   .. grid-item-card:: Why does Open Vehicle API exist?
+      :link: the_VAPI
+      :link-type: doc
+
+      What problem does VAPI solve in an SDV context?
+
+      Explains the motivation behind VAPI, its role in Software‑Defined Vehicle
+      architectures and how it differs from traditional ECU‑centric approaches.
+
+
+   .. grid-item-card:: Why is VAPI designed this way?
+      :link: main_goals
+      :link-type: doc
+
+      What design goals drive the architecture?
+
+      Describes the core principles such as separation of concerns,
+      simulation‑first development and service composability.
+
+
+   .. grid-item-card:: What are the fundamental building blocks?
+      :link: key_building_blocks
+      :link-type: doc
+
+      Which concepts make up VAPI?
+
+      Defines Vehicle Devices, Basic Services, Complex Services,
+      signals and events, and their responsibilities.
+
+
+   .. grid-item-card:: How are the building blocks structured?
+      :link: component_stack
+      :link-type: doc
+
+      How are responsibilities split at runtime?
+
+      Shows how Vehicle Devices, Services and the SDV executable
+      are stacked and how responsibilities are divided.
+
+
+   .. grid-item-card:: How does everything work together at runtime?
+      :link: architecture
+      :link-type: doc
+
+      How does data flow through the system?
+
+      Explains configuration mode, running mode and how
+      signals and events are dispatched between services.
+
+
+Understanding configuration vs execution
+----------------------------------------
+
+One of the most important ideas in VAPI is the **strict separation between
+configuration and runtime execution**.
+
+- Structure, wiring and deployment decisions are defined **before execution**
+- Service logic is executed only after the system enters *running mode*
+
+This concept is essential for:
+
+- deterministic startup
+- simulation‑first workflows
+- clean separation of concerns
+
+A deeper explanation can be found here:
+
+- Runtime lifecycle and internals: :doc:`under_the_hood`
+
+
+Development perspective
+-----------------------
+
+This section shows how the concepts above are applied in practice
+within a structured development workflow.
+
+It also covers **process and safety-oriented considerations**,
+including alignment with **ISO 26262-oriented development processes**.
+
+
+.. grid:: 1
+
+
+   .. grid-item-card:: Development process
+      :link: development_process
+      :link-type: doc
+
+      How do I develop with VAPI?
+
+      Describes the development process, including
+      ISO 26262 compliance aspects and process enhancements.
+
+
+What you should understand before moving on
+--------------------------------------------
+
+Before continuing, you should be comfortable with the following ideas:
+
+- A *Vehicle Device* abstracts hardware or simulation, never business logic
+- *Basic Services* implement atomic behavior
+- *Complex Services* orchestrate multiple services into vehicle functions
+- Signals represent **state**, events represent **change**
+- Configuration (IDL / TOML) defines structure, not behavior
+- Runtime execution happens only after configuration is complete
+
+
+Where this fits in the journey
+------------------------------
+
+You should read this section **once**, not continuously.
+
+Once the concepts are clear, continue with one of the following paths:
+
+- :doc:`get_something_running`  
+  See the concepts applied in a minimal runnable example.
+
+- :doc:`build_services`  
+  Start implementing your own vehicle services using IDL, TOML and C++.

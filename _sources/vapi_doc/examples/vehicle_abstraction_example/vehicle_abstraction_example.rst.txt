@@ -33,19 +33,19 @@ Vehicle Abstraction Example
    +------------------------+------+----------------------------------+-------------------------+-----------------------+
    | ::system_object        | 1    | System object                    |                         |                       |
    +------------------------+------+----------------------------------+-------------------------+-----------------------+
-   | ::device               | 10   | Device category 10..19           |                         |                       |
+   | ::device               | 10   | Device category 10..19           | ---                     |                       |
    |                        |      |                                  |                         |                       |
    | ::platform_abstraction | 11   |                                  | Platform abstraction    |                       |
    |                        |      |                                  |                         |                       |
    | ::vehicle_bus          | 12   |                                  | Vehicle bus abstraction |                       |
    +------------------------+------+----------------------------------+-------------------------+-----------------------+
-   | ::basic_service        | 20   | Basic service category 20 - 29   |                         |                       |
+   | ::basic_service        | 20   | Basic service category 20 - 29   | ---                     |                       |
    |                        |      |                                  |                         |                       |
    | ::sensor               | 21   |                                  | Sensor object           |                       |
    |                        |      |                                  |                         |                       |
    | ::actuator             | 22   |                                  | Actuator object         |                       |
    +------------------------+------+----------------------------------+-------------------------+-----------------------+
-   | ::complex_service      | 30   | Complex service category 30 - 39 |                         | Runs in isolated mode |
+   | ::complex_service      | 30   | Complex service category 30 - 39 | ---                     | Runs in isolated mode |
    |                        |      |                                  |                         |                       |
    | ::vehicle_function     | 31   |                                  | Vehicle function        | Runs in isolated mode |
    +------------------------+------+----------------------------------+-------------------------+-----------------------+
@@ -64,11 +64,49 @@ See the auto generated code in ``..examples/vehicle_abstraction_example/generate
 
 You will find 2 components: the platform abstraction component in folder ``vd_vehiclespeedkmh`` and the sensor device in folder ``bs_vehiclespeed``.
 
-The auto generated code in ``..examples/vehicle_abstraction_example/generated2`` contains only the second platform abstraction component ``vd_vehiclespeedms``. This component has to convert the input data from m/s to km/h. The output interface is identical to the first component.
+The auto generated code in ``..examples/vehicle_abstraction_example/generated2`` contains instead only the second platform abstraction component ``vd_vehiclespeedms``. This component has to convert the input data from m/s to km/h. The output interface is identical to the first platform abstraction component: **'Vehicle.Speed', km/h, float RX signal**.
 
 .. hint::
 
    Compare the content of ``vehicle_abstraction_example.csv`` and ``vehicle_abstraction_example_ms.csv``
 
+- ``vehicle_abstraction_example.csv``
 
-.. image:: ../../../vapi_media/examples/vehicle_abstraction_example/vehicle_abstraction_overview.png
+.. raw:: html
+
+   <details>
+   <summary>Content of vehicle_abstraction_example.csv</summary>
+
+.. code-block:: text
+
+   ;Class name;Function name;Signal name;vss;Signal direction;type;DBC CAN name includes CAN message name
+   ;;;;;;;
+   VD;VehicleSpeedKmh;Speed;vehicleSpeed;Vehicle.Speed;RX;float;CAN_Input.Speed_General
+   BS;VehicleSpeed;Speed;vehicleSpeed;Vehicle.Speed;RX;float;Vehicle.Speed
+
+.. raw:: html
+
+   </details>
+   
+- ``vehicle_abstraction_example_ms.csv``
+
+.. raw:: html
+
+   <details>
+   <summary>Content of vehicle_abstraction_example_ms.csv (see the additional formular in last column)</summary>
+
+.. code-block:: text
+
+   ;Class name;Function name;Signal name;vss;Signal direction;type;DBC CAN name includes CAN message name;
+   ;;;;;;;;
+   VD;VehicleSpeedMs;Speed;vehicleSpeed;Vehicle.Speed;RX;float;CAN_Input.Speed_General;"float vehicleSpeed = value.get<float>() * 3.6f;"
+
+.. raw:: html
+
+   </details>   
+
+.. raw:: html
+   
+    <br>
+	
+.. image:: ../../../vapi_media/examples/vehicle_abstraction_example/vehicle_abstraction_overview.png   

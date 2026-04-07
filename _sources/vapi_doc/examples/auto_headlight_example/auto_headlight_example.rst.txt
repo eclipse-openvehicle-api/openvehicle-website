@@ -1,4 +1,4 @@
-.. _vapi-auto-headlight-example:
+﻿.. _vapi-auto-headlight-example:
 
 Auto Headlight Example
 ===========================
@@ -10,6 +10,8 @@ Auto Headlight Example
 .. note:: 
    | Example can be found in ``<output-folder>/examples/bin``:
    | auto_headlight_app
+   | Sources are located in ``examples/auto_headlamp_example``
+   
 
 .. toctree::
    :maxdepth: 1
@@ -25,7 +27,7 @@ Auto Headlight Example
    The function should automatically switch on the light when the vehicle drives into a tunnel:
 
    - Two input signals represents the GPS position of the vehicle.
-   - One output signal switches the heeadlight on or off.
+   - One output signal switches the headlight on or off.
    - The function (complex service) has internally a map containing the position of tunnels so it can switch on automatically the light.  
   
 VSS Interfaces
@@ -105,7 +107,7 @@ The algorithm is implemented in the **Auto Headlight Service**, a :term:`Complex
 
 - Complex services run in a isolated process and access basic services via proxy and stub.
 - Updates on vehicle position are received through callbacks from basic services.
-- Headlight status is calculated and written using headlight interfaces, which call the respective basic service and vehicle device interfaces to update the status.
+- Headlight state is calculated and written using headlight interfaces, which call the respective basic service and vehicle device interfaces to update the state.
 
 
 .. uml::
@@ -186,10 +188,8 @@ The algorithm is implemented in the **Auto Headlight Service**, a :term:`Complex
     set separator ::
     class CAutoHeadlightService <<Singleton>>
     {
-      +void Initialize(const sdv::u8string& ssObjectConfig)
-      +sdv::EObjectStatus GetStatus() const
-      +void SetOperationMode(sdv::EOperationMode eMode)
-      +void Shutdown()
+      +bool OnInitialize()
+      +void OnShutdown()
       -void SetCurrentLatitude(float value)
       -void SetCurrentLongitude(float value)
       -bool IsinTunnel() const
@@ -197,7 +197,6 @@ The algorithm is implemented in the **Auto Headlight Service**, a :term:`Complex
       -SGPSBoundBox GetGPSBoundBox() const
       -void ProcessHeadlightBasedOnEgoPosition()
       -bool LoadGPSBounds(const sdv::u8string& rssObjectConfig)
-      -sdv::EObjectStatus m_eStatus
       -volatile float m_fCurrentLatitude       
       -volatile float m_fCurrentLongitude    
       -volatile bool m_bHeadlight           
@@ -216,10 +215,8 @@ The algorithm is implemented in the **Auto Headlight Service**, a :term:`Complex
     class CSdvObjectAccess
     Interface sdv::IObjectControl
     {
-      {abstract} void Initialize(const sdv::u8string& ssObjectConfig)
-      {abstract} EObjectStatus GetStatus() const
-      {abstract} void SetOperationMode(EOperationMode eMode) 
-      {abstract} void Shutdown()
+      {abstract} bool OnInitialize()
+      {abstract} void OnShutdown()
     }
     Interface IAutoheadlightService
     {
@@ -322,8 +319,8 @@ The algorithm is implemented in the **Auto Headlight Service**, a :term:`Complex
 
     CAutoHeadlightAppSimulate ..|>  IVSS_SetCurrentLatitude_Event : Implements
     CAutoHeadlightAppSimulate ..|>  IVSS_SetCurrentLongitude_Event : Implements
-    CAutoHeadlightAppSimulate ..|>  IVSS_WriteCurrentLatitude_Event :Implements
-    CAutoHeadlightAppSimulate ..|>  IVSS_WriteCurrentLongitude_Event :Implements
+    CConsole ..|>  IVSS_WriteCurrentLatitude_Event : Implements
+    CConsole ..|>  IVSS_WriteCurrentLongitude_Event : Implements
     CConsole ..|>  IVSS_SetCurrentLatitude_Event : Implements
     CConsole ..|>  IVSS_SetCurrentLongitude_Event : Implements
    
@@ -502,100 +499,7 @@ The algorithm is implemented in the **Auto Headlight Service**, a :term:`Complex
 
    @enduml
 
-.. uml::
-   :caption: Current latitude vehicle device class diagram
 
-   @startuml
-    set separator ::
-    class CVehicleDeviceCurrentLatitude
-    {
-      +void Initialize(const sdv::u8string& objectConfig)
-      +sdv::EObjectStatus GetStatus() const 
-      +void SetOperationMode(sdv::EOperationMode eMode)
-      +void Shutdown()
-      +void RegisterCurrentLatitudeEvent(vss::Vehicle::Position::CurrentLatitudeDevice::IVSS_WriteCurrentLatitude_Event* event)
-      +void UnregisterCurrentLatitudeEvent(vss::Vehicle::Position::CurrentLatitudeDevice::IVSS_WriteCurrentLatitude_Event* event)
-      +void ExecuteAllCallBacksForFCurrentLatitude(sdv::any_t value);
-      -sdv::core::CSignal m_fCurrentLatitudeSignal                                                        
-      -mutable std::mutex m_fCurrentLatitudeMutexCallbacks                                               
-      -std::set<vss::Vehicle::Position::CurrentLatitudeDevice::IVSS_WriteCurrentLatitude_Event*> m_fCurrentLatitudeCallbacks
-      -std::atomic<sdv::EObjectStatus> m_status 
-    }
 
-    class sdv::CSdvObject
-    {
-      {static} +sdv::sequence<sdv::u8string> GetClassAliasesStatic()
-      {static} +sdv::u8string GetDefaultObjectNameStatic()
-      {static} +bool IsSingletonStatic()
-      {static} +sdv::sequence<sdv::u8string> GetObjectDependenciesStatic()
-    }
-
-    Interface sdv::IObjectControl
-    {
-      {abstract} void Initialize(const sdv::u8string& ssObjectConfig)
-      {abstract} EObjectStatus GetStatus() const
-      {abstract} void SetOperationMode(EOperationMode eMode) 
-      {abstract} void Shutdown()
-    }
-
-    Interface vss::Vehicle::Position::CurrentLatitudeDevice::IVSS_CurrentLatitude
-    {
-      {abstract} void RegisterCurrentLatitudeEvent(IVSS_WriteCurrentLatitude_Event* event) 
-      {abstract} void UnregisterCurrentLatitudeEvent(IVSS_WriteCurrentLatitude_Event* event)
-    }
-
-    CVehicleDeviceCurrentLatitude --|> sdv::CSdvObject : Inherits
-    CVehicleDeviceCurrentLatitude ..|> sdv::IObjectControl : Implements
-    CVehicleDeviceCurrentLatitude ..|> vss::Vehicle::Position::CurrentLatitudeDevice::IVSS_CurrentLatitude : Implements
-
-   @enduml
-
-.. uml::
-   :caption: Current latitude vehicle device class diagram
-
-   @startuml
-    set separator ::
-    class CVehicleDeviceCurrentLongitude
-    {
-      +void Initialize(const sdv::u8string& objectConfig)
-      +sdv::EObjectStatus GetStatus() const 
-      +void SetOperationMode(sdv::EOperationMode eMode)
-      +void Shutdown()
-      +void RegisterCurrentLongitudeEvent(vss::Vehicle::Position::CurrentLongitudeDevice::IVSS_WriteCurrentLongitude_Event* event)
-      +void UnregisterCurrentLongitudeEvent(vss::Vehicle::Position::CurrentLongitudeDevice::IVSS_WriteCurrentLongitude_Event* event)
-      -void ExecuteAllCallBacksForFCurrentLongitude(sdv::any_t value)
-      -sdv::core::CSignal m_fCurrentLongitudeSignal                                                       
-      -mutable std::mutex m_fCurrentLongitudeMutexCallbacks                                                
-      -std::set<vss::Vehicle::Position::CurrentLongitudeDevice::IVSS_WriteCurrentLongitude_Event*> m_fCurrentLongitudeCallbacks 
-      -std::atomic<sdv::EObjectStatus> m_status
-    }
-
-    class sdv::CSdvObject
-    {
-      {static} +sdv::sequence<sdv::u8string> GetClassAliasesStatic()
-      {static} +sdv::u8string GetDefaultObjectNameStatic()
-      {static} +bool IsSingletonStatic()
-      {static} +sdv::sequence<sdv::u8string> GetObjectDependenciesStatic()
-    }
-
-    Interface sdv::IObjectControl
-    {
-      {abstract} void Initialize(const sdv::u8string& ssObjectConfig)
-      {abstract} EObjectStatus GetStatus() const
-      {abstract} void SetOperationMode(EOperationMode eMode) 
-      {abstract} void Shutdown()
-    }
-
-    Interface vss::Vehicle::Position::CurrentLongitudeDevice::IVSS_CurrentLongitude
-    {
-      {abstract} void RegisterCurrentLongitudeEvent(IVSS_WriteCurrentLongitude_Event* event) 
-      {abstract} void UnregisterCurrentLongitudeEvent(IVSS_WriteCurrentLongitude_Event* event)
-    }
-
-    CVehicleDeviceCurrentLongitude --|> sdv::CSdvObject : Inherits
-    CVehicleDeviceCurrentLongitude ..|> sdv::IObjectControl : Implements
-    CVehicleDeviceCurrentLongitude ..|> vss::Vehicle::Position::CurrentLongitudeDevice::IVSS_CurrentLongitude : Implements
-
-   @enduml
 
 

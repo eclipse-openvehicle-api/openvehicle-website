@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/stylesheet.css?v=9c3fb72b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/stylesheet.css?v=0beb5b98" />
     <link rel="stylesheet" type="text/css" href="../../../_static/key_features.css?v=1f1425ec" />
     <link rel="stylesheet" type="text/css" href="../../../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../../../_static/fonts/font.css?v=e743f546" />
@@ -78,7 +78,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Open Trunk Standalone Application" href="open_trunk_standalone_application.html" />
-    <link rel="prev" title="How the two FMUs are build and used" href="../door_service_example/door_demo_fmu.html" />
+    <link rel="prev" title="How the two FMUs are built and used" href="../door_service_example/door_demo_fmu.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -585,7 +585,7 @@ document.write(`
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="../../project_guide.html" class="nav-link">Project Guide</a></li>
+    <li class="breadcrumb-item"><a href="../../project_guide.html" class="nav-link">Understand the project structure</a></li>
     
     
     <li class="breadcrumb-item"><a href="../component_examples.html" class="nav-link">Examples of Open Vehicle API</a></li>
@@ -617,7 +617,7 @@ document.write(`
 <p class="admonition-title">Note</p>
 <div class="line-block">
 <div class="line">Example can be found in <code class="docutils literal notranslate"><span class="pre">&lt;output-folder&gt;/examples/bin</span></code>:</div>
-<div class="line">open_trunk_example &lt;parameter&gt;</div>
+<div class="line">open_trunk_example &lt;instance&gt;</div>
 </div>
 </div>
 <div class="toctree-wrapper compound">
@@ -641,7 +641,7 @@ document.write(`
 <img alt="../../../_images/open_trunk_overview.png" src="../../../_images/open_trunk_overview.png" />
 <figure class="align-default" id="id1">
 <p class="plantuml">
-<img src="../../../_images/plantuml-e0cf5386661ca9d645927c2795028d7170b706b0.svg" alt="&#64;startuml
+<img src="../../../_images/plantuml-f0647eb1ae4e8605b0b29ccdd7a06baf39cfbaa8.svg" alt="&#64;startuml
  set separator ::
  package &quot;Trunk Application executable&quot;
  {
@@ -679,7 +679,6 @@ document.write(`
       -std::string AlignString(const std::string&amp; message, uint32_t desiredLength)
       -mutable std::mutex m_mtxPrintToConsole
       -bool m_bRunning
-      -mutable std::mutex m_mPrintToConsole
       -sdv::core::CSignal m_SignalSpeed
       -float m_SpeedDL
       -float m_SpeedVD
@@ -714,17 +713,14 @@ document.write(`
 </figure>
 <figure class="align-default" id="id2">
 <p class="plantuml">
-<img src="../../../_images/plantuml-cbd2bc7e450374be9bdf13b5f656a81a34d26c26.svg" alt="&#64;startuml
+<img src="../../../_images/plantuml-6150aa0b8cd189c8591c17879da73266a567afaf.svg" alt="&#64;startuml
  set separator ::
    class CTrunkExampleService
    {
-      +{abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
-      +{abstract} sdv::EObjectStatus GetStatus() const
-      +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
-      +{abstract} void Shutdown()
+      +{abstract} bool OnInitialize()
+      +{abstract} void OnShutdown()
       +{abstract} void SetSpeed(float value)
       +{abstract} bool PopTrunk()
-      -sdv::EObjectStatus  m_eStatus
       -float m_Speed
       -vss::Vehicle::Body::TrunkService::IVSS_SetOpen* m_pTrunkSvc
    }
@@ -957,7 +953,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">How the two FMUs are build and used</p>
+        <p class="prev-next-title">How the two FMUs are built and used</p>
       </div>
     </a>
     <a class="right-next"
@@ -977,44 +973,61 @@ document.write(`
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
-  <h3>Contents</h3>
-  <ul>
-    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
-    <ul>
-        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
-        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
-    </ul>
-    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
-    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
-</ul>
+  
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🚀 Start here</div>
+      <a class="sidebar-link" data-target="vapi_doc/entry.html">Overview</a>
+      <a class="sidebar-link" data-target="vapi_doc/learn_the_concepts.html">Learn the concepts</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🛠 Build & Run</div>
+      <a class="sidebar-link" data-target="vapi_doc/get_started.html">Set up your environment</a>
+      <a class="sidebar-link" data-target="vapi_doc/get_something_running.html">Run your first example</a>
+      <a class="sidebar-link" data-target="vapi_doc/project_guide.html">Understand the project structure</a>
+      <!-- <a class="sidebar-link" data-target="vapi_doc/build_services.html">Develop services</a> -->
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🧩 Support</div>
+      <a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a>
+      <a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q &amp; A</a>
+      <a class="sidebar-link" data-target="vapi_pages/team.html">Team</a>
+      <a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">⚙ Utilities</div>
+      <a class="sidebar-link" data-target="genindex.html" target="_blank" rel="noopener">Index</a>
+      <a class="sidebar-link" data-target="search.html" target="_blank" rel="noopener">Search</a>
+    </li>
+
+
+
+
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const links = document.querySelectorAll(".sidebar-link");
-        const currentPath = window.location.pathname;
+document.addEventListener("DOMContentLoaded", function () {
+  const links = document.querySelectorAll(".sidebar-link");
+  const path = window.location.pathname;
 
-        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
-        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
-        let rootPath = '/';
+  const htmlIndex = path.lastIndexOf("/html/");
+  const base = htmlIndex >= 0 ? path.substring(0, htmlIndex + 6) : "/";
 
-        if (match) {
-            rootPath = match[1];
-            const relPath = currentPath.replace(rootPath, '');
-            const upLevels = relPath.split('/').length - 1;
-            const prefix = '../'.repeat(upLevels);
+  const current = path.substring(base.length).replace(/^\//, "");
 
-            links.forEach(link => {
-                const target = link.getAttribute("data-target");
-                if (target) {
-                    link.setAttribute("href", prefix + target);
-                }
-            });
-        } 
-    });
+  links.forEach(link => {
+    const target = link.getAttribute("data-target");
+    if (!target) return;
+
+    link.setAttribute("href", base + target);
+
+    if (target === current) {
+      link.classList.add("active");
+    }
+  });
+});
 </script>
 </div></div>
               

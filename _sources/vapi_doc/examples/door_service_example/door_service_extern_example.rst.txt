@@ -11,12 +11,12 @@ Door Extern Application Example
    
 .. image:: ../../../vapi_media/examples/door_service_example/door_extern_example.png
 
-The door example instance must be running. To start execute:
+The door example instance must already be running. Start it with:
 
 	``sdv_control.exe STARTUP --instance3002``
 	
-Because we run in a separate process we do not have access to the :term:`Data Dispatch Service` and :term:`Vehicle Device` . That's why we cannot display these data.
+Because this app runs in a separate process, it has no direct access to the local :term:`Data Dispatch Service` and :term:`Vehicle Device`. Therefore, those values are not displayed here.
 
-The signals now are coming via CAN bus by using the :term:`VAPI Component` ``can_com_sim.sdv`` from the framework. The :term:`VAPI Component` reads the CAN messages from a text file and sends these messages to the :term:`Data Link` The :term:`Data Link` component is created from a dbc file with the help of the helper tool ``sdv_dbc_util``.
+The signals are provided via CAN simulation by using the :term:`VAPI Component` ``can_com_sim.sdv``. This component reads CAN messages from a text file and forwards them to the :term:`Data Link`. The :term:`Data Link` component is generated from a DBC file with the helper tool ``sdv_dbc_util``.
 
 .. image:: ../../../vapi_media/examples/door_service_example/door_service_extern_example.png

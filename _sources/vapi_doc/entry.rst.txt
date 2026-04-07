@@ -1,109 +1,196 @@
-Welcome to Open Vehicle API
-===========================
+.. _vapi-entry:
 
-Open Vehicle API Documentation:
--------------------------------
+Open Vehicle API (VAPI)
+=======================
 
-About Open Vehicle API:
-~~~~~~~~~~~~~~~~~~~~~~~
+Open Vehicle API (VAPI) provides a structured way to design and run
+**vehicle functions as independent, signal- and event-driven services**
+in a Software Defined Vehicle (SDV).
 
-.. toctree::
-   :maxdepth: 2
+This page gives you the **big picture** and helps you decide
+**where to start**, based on what you want to do next.
 
-   the_VAPI
-   main_goals
-   component_stack
 
-Get started / Installation Steps:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+What problem does VAPI solve?
+-----------------------------
 
-.. toctree::
-   :maxdepth: 2
+Modern Software Defined Vehicle (SDV) systems require vehicle functionality to be
+designed and evolved differently than in traditional ECU-centric architectures.
 
-   get_started
-   project_guide
-   
 
-For Developers
-~~~~~~~~~~~~~~
+.. grid:: 2
+   :gutter: 2
 
-.. toctree::
-   :maxdepth: 2
 
-   for_developers
-   cmake_in_the_project
+   .. grid-item-card:: Requirements of modern SDV systems
 
-Examples / Deep Dive into VAPI:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      Vehicle functionality must be:
 
-.. toctree::
-   :maxdepth: 2
+      - **Modular**  
+        → independent building blocks that can evolve separately  
+		
+        (see :doc:`key_building_blocks`)
 
-   examples/component_examples
-   step_by_step_guide/step_by_step_index
+      - **Testable in simulation**  
+        → logic must run without physical hardware  
+		
+        (see :doc:`simulation`)
 
-Simulation / Testing / FMU:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      - **Decoupled from hardware and deployment**  
+        → behavior should not depend on where or how it is deployed  
+		
+        (see :doc:`component_stack`)
 
-.. toctree::
-   :maxdepth: 2
+      - **Composable into higher‑level vehicle behavior**  
+        → simple features combined into complete vehicle functions  
+		
+        (see :doc:`architecture`)
 
-   simulation   
 
-Further Information:
-~~~~~~~~~~~~~~~~~~~~
+   .. grid-item-card:: How VAPI addresses these requirements
 
-.. toctree::
-   :maxdepth: 2
+      VAPI structures vehicle functionality as **services** with a clear
+      separation of concerns:
 
-   under_the_hood 
-   key_building_blocks  
+      - **Hardware abstraction**  
+        → handled by *Vehicle Devices*  
+		
+        (see :doc:`key_building_blocks`)
 
-Components / Services:
-~~~~~~~~~~~~~~~~~~~~~~
+      - **Business logic**  
+        → implemented in *Basic* and *Complex Services*  
+		
+        (see :doc:`services`)
 
-.. toctree::
-   :maxdepth: 2
+      - **Configuration**  
+        → structure and wiring defined via *IDL* and *TOML*  
+		
+        (see :doc:`under_the_hood`)
 
-   services     
+      - **Runtime execution**  
+        → event‑ and signal‑driven processing with explicit lifecycle  
+		
+        (see :doc:`architecture`)
+
+
+How to use this documentation
+-----------------------------
+
+The documentation follows a **progressive flow**:
+
+1. **Overview** — what VAPI is and how to navigate the docs *(you are here)*
+2. **Concepts** — how VAPI thinks and why it is structured this way
+3. **Run** — see the concepts working in a minimal example
+4. **Build** — implement your own vehicle services
+
+You do not need to read everything at once.
+Choose the path that matches your goal.
+
+
+Choose your entry point
+-----------------------
+
+.. grid:: 2
+   :gutter: 2
+
+
+   .. grid-item-card:: 🧠 Learn the concepts
+      :link: learn_the_concepts
+      :link-type: doc
+
+      Understand **how VAPI thinks** before writing code:
+      services, devices, signals, events and runtime lifecycle.
+
+      This is the conceptual bridge between overview and development.
+
+
+   .. grid-item-card:: 🚀 Get something running
+      :link: get_something_running
+      :link-type: doc
+
+      Run a minimal example to see how configuration,
+      services and runtime execution work together.
+
+
+   .. grid-item-card:: 🧱 Build services
+      :link: build_services
+      :link-type: doc
+
+      Design and implement your own vehicle services:
+      Vehicle Devices, Basic Services and Complex Services.
+
+
+   .. grid-item-card:: 🔬 Advanced & reference
+      :link: advanced_and_reference
+      :link-type: doc
+
+      Simulation, tooling, integration topics
+      and generated reference material.
+
+
+How everything fits together
+----------------------------
+
+At a high level, VAPI works as follows:
+
+- **Vehicle Devices** abstract hardware or simulation
+- **Basic Services** implement atomic vehicle logic
+- **Complex Services** orchestrate multiple services
+- **Signals** represent state, **events** represent change
+- **Configuration** (IDL / TOML) defines structure and wiring
+- **Runtime execution** processes events and dispatches data
+
+VAPI enforces a clear lifecycle:
+configuration happens **before** any service logic is executed.
+This enables deterministic startup, simulation-first workflows
+and clean separation of concerns.
+
+All of these concepts are explained step by step in
+:doc:`learn_the_concepts`.
+
+
+Typical next steps
+------------------
+
+Depending on your goal, continue with one of the following:
+
+- **New to VAPI**  
+  → Start with :doc:`learn_the_concepts`  
+  Learn the mental model before touching code.
+
+- **Want quick feedback**  
+  → Go to :doc:`get_something_running`  
+  Run an example and observe runtime behavior.
+
+- **Ready to build**  
+  → Jump to :doc:`build_services`  
+  Implement your own vehicle functionality.
+
+
+Project scope
+-------------
+
+Open Vehicle API (VAPI) is part of the **shift2sdv initiative**
+and is designed to be **used, explored and adopted**
+by SDV teams building service-based vehicle functionality.
+
+The framework evolves through real usage and feedback,
+and the documentation is structured to support both
+quick onboarding and deeper architectural understanding.
+
 
 .. toctree::
    :hidden:
+   :maxdepth: 1
 
-   q_and_a
-   architecture    
+   learn_the_concepts
+   get_something_running
+   build_services
+   advanced_and_reference
+   architecture
    development_process
+   q_and_a
    TODO
    ../vapi_pages/team
-   ../vapi_pages/contact  
+   ../vapi_pages/contact
    ../vapi_pages/HowTo_rst
-   
-SDV Executable:
-~~~~~~~~~~~~~~~
-
-.. toctree::
-   :maxdepth: 2
-   
-   sdv_tools/sdv_executables  
-
-Glossary:
-~~~~~~~~~
-
-.. toctree::
-   :maxdepth: 2
-
-   glossary
-
-Doxygen Documentation:
-----------------------
-
-.. toctree::
-   :maxdepth: 2
-
-   ../_vapi_code/vapi_code_doc
-
-Indices and tables:
--------------------
-
-* :ref:`genindex`
-* :ref:`search`

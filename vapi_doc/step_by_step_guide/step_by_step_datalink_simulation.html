@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/stylesheet.css?v=9c3fb72b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/stylesheet.css?v=0beb5b98" />
     <link rel="stylesheet" type="text/css" href="../../_static/key_features.css?v=1f1425ec" />
     <link rel="stylesheet" type="text/css" href="../../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../../_static/fonts/font.css?v=e743f546" />
@@ -262,7 +262,7 @@
                     </li>
                 
 
-                    <li class="nav-item current active">
+                    <li class="nav-item">
                       <a class="nav-link dropdown-item nav-internal" href="step_by_step_index.html">
                         Step by Step Example
                       </a>
@@ -476,7 +476,7 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item current active">
+                    <li class="nav-item">
                       <a class="nav-link dropdown-item nav-internal" href="step_by_step_index.html">
                         Step by Step Example
                       </a>
@@ -700,7 +700,7 @@ BO_ 102 CAN_Output_W: 1 wipers
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>The argument <cite>–nodeswipers</cite> must match the node name defined in your DBC file (<a href="#id1"><span class="problematic" id="id2">BU_</span></a> section). In this example, the node name is <strong>wipers</strong>.</p></li>
+<li><p>The argument <cite>–nodeswipers</cite> must match the node name defined in your DBC file (<code class="docutils literal notranslate"><span class="pre">BU_</span></code> section). In this example, the node name is <strong>wipers</strong>.</p></li>
 <li><p>The argument <cite>–dl_lib_namecan_dl_wiper</cite> corresponds to the library name used in <cite>data_link_wiper.toml</cite> under <cite>Path = “can_dl_wiper.sdv”</cite>.</p></li>
 </ul>
 </div>
@@ -733,6 +733,7 @@ Loads the Data Link component generated from the DBC file. This maps CAN message
 <li><p><cite>main()</cite> accepts an argument to select the mode (0 = normal, 1 = CAN simulation).</p></li>
 <li><p>Functions like <cite>PrintHeader()</cite>, <cite>PrepareDataConsumers()</cite>, and <cite>RunUntilBreak()</cite> adapt behavior based on the mode.</p></li>
 </ul>
+<p>The application wrapper still owns this <cite>Initialize()</cite> method. The Complex Service itself is initialized later by the SDV runtime through <cite>OnInitialize()</cite> when <cite>complex_service_wiper.toml</cite> is loaded.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In Basic Service, conversion from numeric values to strings happens automatically using the generated callback based on the CSV definition. However, for Dispatch Service, this conversion must be handled manually in our code. For this reason, we updated <strong>CallbackWiperMode</strong> (our custom callback used when subscribing to the WiperMode signal) to perform the conversion from <cite>0</cite>/<cite>1</cite> to <cite>manual</cite>/<cite>auto</cite>.</p>
@@ -760,13 +761,6 @@ Loads the Data Link component generated from the DBC file. This maps CAN message
 
 <span class="w">    </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load vehicle devices and basic services for wiper: &quot;</span><span class="p">,</span>
 <span class="w">                              </span><span class="s">&quot;wiper_vehicle_device_and_basic_service.toml&quot;</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">exampleMode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">CAN_SIMULATION</span><span class="p">)</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load can com simulation: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;can_com_simulation_wiper.toml&quot;</span><span class="p">);</span>
-<span class="w">        </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load data link: &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;data_link_wiper.toml&quot;</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-
 <span class="w">    </span><span class="n">bResult</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="n">LoadConfigFile</span><span class="p">(</span><span class="s">&quot;Load wiper service (complex service): &quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;complex_service_wiper.toml&quot;</span><span class="p">);</span>
 
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">bResult</span><span class="p">)</span>
@@ -774,7 +768,8 @@ Loads the Data Link component generated from the DBC file. This maps CAN message
 <span class="w">        </span><span class="n">SDV_LOG_ERROR</span><span class="p">(</span><span class="s">&quot;One or more configurations could not be loaded. Cannot continue.&quot;</span><span class="p">);</span>
 <span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">bResult</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -901,44 +896,61 @@ Loads the Data Link component generated from the DBC file. This maps CAN message
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
-  <h3>Contents</h3>
-  <ul>
-    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
-    <ul>
-        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
-        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
-    </ul>
-    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
-    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
-</ul>
+  
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🚀 Start here</div>
+      <a class="sidebar-link" data-target="vapi_doc/entry.html">Overview</a>
+      <a class="sidebar-link" data-target="vapi_doc/learn_the_concepts.html">Learn the concepts</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🛠 Build & Run</div>
+      <a class="sidebar-link" data-target="vapi_doc/get_started.html">Set up your environment</a>
+      <a class="sidebar-link" data-target="vapi_doc/get_something_running.html">Run your first example</a>
+      <a class="sidebar-link" data-target="vapi_doc/project_guide.html">Understand the project structure</a>
+      <!-- <a class="sidebar-link" data-target="vapi_doc/build_services.html">Develop services</a> -->
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🧩 Support</div>
+      <a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a>
+      <a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q &amp; A</a>
+      <a class="sidebar-link" data-target="vapi_pages/team.html">Team</a>
+      <a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">⚙ Utilities</div>
+      <a class="sidebar-link" data-target="genindex.html" target="_blank" rel="noopener">Index</a>
+      <a class="sidebar-link" data-target="search.html" target="_blank" rel="noopener">Search</a>
+    </li>
+
+
+
+
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const links = document.querySelectorAll(".sidebar-link");
-        const currentPath = window.location.pathname;
+document.addEventListener("DOMContentLoaded", function () {
+  const links = document.querySelectorAll(".sidebar-link");
+  const path = window.location.pathname;
 
-        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
-        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
-        let rootPath = '/';
+  const htmlIndex = path.lastIndexOf("/html/");
+  const base = htmlIndex >= 0 ? path.substring(0, htmlIndex + 6) : "/";
 
-        if (match) {
-            rootPath = match[1];
-            const relPath = currentPath.replace(rootPath, '');
-            const upLevels = relPath.split('/').length - 1;
-            const prefix = '../'.repeat(upLevels);
+  const current = path.substring(base.length).replace(/^\//, "");
 
-            links.forEach(link => {
-                const target = link.getAttribute("data-target");
-                if (target) {
-                    link.setAttribute("href", prefix + target);
-                }
-            });
-        } 
-    });
+  links.forEach(link => {
+    const target = link.getAttribute("data-target");
+    if (!target) return;
+
+    link.setAttribute("href", base + target);
+
+    if (target === current) {
+      link.classList.add("active");
+    }
+  });
+});
 </script>
 </div></div>
               

@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/stylesheet.css?v=9c3fb72b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/stylesheet.css?v=0beb5b98" />
     <link rel="stylesheet" type="text/css" href="../../_static/key_features.css?v=1f1425ec" />
     <link rel="stylesheet" type="text/css" href="../../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../../_static/fonts/font.css?v=e743f546" />
@@ -262,7 +262,7 @@
                     </li>
                 
 
-                    <li class="nav-item current active">
+                    <li class="nav-item">
                       <a class="nav-link dropdown-item nav-internal" href="step_by_step_index.html">
                         Step by Step Example
                       </a>
@@ -476,7 +476,7 @@ document.write(`
                     </li>
                 
 
-                    <li class="nav-item current active">
+                    <li class="nav-item">
                       <a class="nav-link dropdown-item nav-internal" href="step_by_step_index.html">
                         Step by Step Example
                       </a>
@@ -699,7 +699,7 @@ interface<span class="w"> </span>IWiperComplexService
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">file</span><span class="w"> </span><span class="p">(</span><span class="s">COPY</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/config/complex_service_wiper.toml</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_BINARY_DIR</span><span class="o">}</span><span class="s">/bin/config</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>In ‘Initialize()’ function from ‘wiper_application.cpp’ we need to load the config file ‘complex_service_wiper.toml’</p>
+<p>In the application initialization flow from ‘wiper_application.cpp’ we need to load the config file ‘complex_service_wiper.toml’. After that configuration is processed, the framework creates the service object and calls <cite>OnInitialize()</cite> automatically.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Important: Load it only after the basic services are initialized!</p>
@@ -715,21 +715,22 @@ interface<span class="w"> </span>IWiperComplexService
 <p>Include the generated header and inherit the required interfaces:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../generated/wiper_service/wipercomplexservice.h&quot;</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">CWiperExampleService</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
-<span class="w">                          </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span>
+<span class="w">   </span><span class="k">class</span><span class="w"> </span><span class="nc">CWiperExampleService</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span>
 <span class="w">                          </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Weather</span><span class="o">::</span><span class="n">RainService</span><span class="o">::</span><span class="n">IVSS_SetDetected_Event</span>
 <span class="w">                          </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Windshield</span><span class="o">::</span><span class="n">Wiper</span><span class="o">::</span><span class="n">ModeService</span><span class="o">::</span><span class="n">IVSS_SetMode_Event</span>
 <span class="w">                          </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Windshield</span><span class="o">::</span><span class="n">Wiper</span><span class="o">::</span><span class="n">RearService</span><span class="o">::</span><span class="n">IVSS_SetIsRearActive</span>
 <span class="w">                          </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Windshield</span><span class="o">::</span><span class="n">Wiper</span><span class="o">::</span><span class="n">FrontService</span><span class="o">::</span><span class="n">IVSS_SetIsFrontActive</span>
 <span class="w">                          </span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IWiperComplexService</span>
 <span class="p">{</span>
+<span class="w">      </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">OnInitialize</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">      </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnShutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
 <span class="w">    </span><span class="c1">// ...</span>
 <span class="p">};</span>
 </pre></div>
 </div>
 <p>Interface mapping and object declarations are critical for runtime discovery:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
-<span class="w">    </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span><span class="p">)</span>
 <span class="w">    </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Weather</span><span class="o">::</span><span class="n">RainService</span><span class="o">::</span><span class="n">IVSS_SetDetected_Event</span><span class="p">)</span>
 <span class="w">    </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Windshield</span><span class="o">::</span><span class="n">Wiper</span><span class="o">::</span><span class="n">ModeService</span><span class="o">::</span><span class="n">IVSS_SetMode_Event</span><span class="p">)</span>
 <span class="w">    </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">vss</span><span class="o">::</span><span class="n">Vehicle</span><span class="o">::</span><span class="n">Body</span><span class="o">::</span><span class="n">Windshield</span><span class="o">::</span><span class="n">Wiper</span><span class="o">::</span><span class="n">RearService</span><span class="o">::</span><span class="n">IVSS_SetIsRearActive</span><span class="p">)</span>
@@ -737,7 +738,7 @@ interface<span class="w"> </span>IWiperComplexService
 <span class="w">    </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">IWiperComplexService</span><span class="p">)</span>
 <span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
 
-<span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">ComplexService</span><span class="p">)</span>
+<span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">vehicle_function</span><span class="p">)</span>
 <span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Wiper Service&quot;</span><span class="p">)</span>
 <span class="n">DECLARE_OBJECT_SINGLETON</span><span class="p">()</span>
 </pre></div>
@@ -750,10 +751,10 @@ interface<span class="w"> </span>IWiperComplexService
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CWiperExampleService</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The ‘wiper_complex_service.cpp’ file ‘Initialize()’ function to subscribe to Rain and Wiper Mode events and cache interfaces for Front/Rear wipers. Implement <code class="docutils literal notranslate"><span class="pre">TriggerWipersAfterThreshold</span></code> to start/stop wipers based on rain persistence.</p>
+<p>The <cite>wiper_complex_service.cpp</cite> file should implement <cite>OnInitialize()</cite> to subscribe to Rain and Wiper Mode events and cache interfaces for Front/Rear wipers. Implement <code class="docutils literal notranslate"><span class="pre">TriggerWipersAfterThreshold</span></code> to start/stop wipers based on rain persistence.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Implement <cite>Shutdown()</cite> to unregister event handlers and avoid dangling callbacks.</p>
+<p>Implement <cite>OnShutdown()</cite> to unregister event handlers and avoid dangling callbacks.</p>
 </div>
 </section>
 <section id="step-5-build-and-package">
@@ -806,8 +807,8 @@ interface<span class="w"> </span>IWiperComplexService
 <ul class="simple">
 <li><p><strong>Consistency between .toml and code</strong>: Ensure <cite>DECLARE_OBJECT_CLASS_NAME(“Wiper Service”)</cite> matches <cite>Class = “Wiper Service”</cite> in the TOML file.</p></li>
 <li><p><strong>Avoid direct device access</strong>: Complex Services should only consume interfaces from Basic Services, never access Vehicle Devices or Data Dispatch directly.</p></li>
-<li><p><strong>Validate subscriptions</strong>: In <cite>Initialize()</cite>, check that all critical interfaces (Rain, Mode, Front/Rear wipers) are successfully retrieved before setting status to <cite>initialized</cite>.</p></li>
-<li><p><strong>Graceful shutdown</strong>: Unregister all event handlers in <cite>Shutdown()</cite> to prevent dangling callbacks.</p></li>
+<li><p><strong>Validate subscriptions</strong>: In <cite>OnInitialize()</cite>, check that all critical interfaces (Rain, Mode, Front/Rear wipers) are successfully retrieved before returning success.</p></li>
+<li><p><strong>Graceful shutdown</strong>: Unregister all event handlers in <cite>OnShutdown()</cite> to prevent dangling callbacks.</p></li>
 <li><p><strong>Logging</strong>: Use <cite>SDV_LOG_ERROR</cite> or similar macros for troubleshooting when interfaces cannot be resolved.</p></li>
 </ul>
 </section>
@@ -849,44 +850,61 @@ interface<span class="w"> </span>IWiperComplexService
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
-  <h3>Contents</h3>
-  <ul>
-    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
-    <ul>
-        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
-        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
-    </ul>
-    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
-    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
-</ul>
+  
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🚀 Start here</div>
+      <a class="sidebar-link" data-target="vapi_doc/entry.html">Overview</a>
+      <a class="sidebar-link" data-target="vapi_doc/learn_the_concepts.html">Learn the concepts</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🛠 Build & Run</div>
+      <a class="sidebar-link" data-target="vapi_doc/get_started.html">Set up your environment</a>
+      <a class="sidebar-link" data-target="vapi_doc/get_something_running.html">Run your first example</a>
+      <a class="sidebar-link" data-target="vapi_doc/project_guide.html">Understand the project structure</a>
+      <!-- <a class="sidebar-link" data-target="vapi_doc/build_services.html">Develop services</a> -->
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🧩 Support</div>
+      <a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a>
+      <a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q &amp; A</a>
+      <a class="sidebar-link" data-target="vapi_pages/team.html">Team</a>
+      <a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">⚙ Utilities</div>
+      <a class="sidebar-link" data-target="genindex.html" target="_blank" rel="noopener">Index</a>
+      <a class="sidebar-link" data-target="search.html" target="_blank" rel="noopener">Search</a>
+    </li>
+
+
+
+
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const links = document.querySelectorAll(".sidebar-link");
-        const currentPath = window.location.pathname;
+document.addEventListener("DOMContentLoaded", function () {
+  const links = document.querySelectorAll(".sidebar-link");
+  const path = window.location.pathname;
 
-        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
-        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
-        let rootPath = '/';
+  const htmlIndex = path.lastIndexOf("/html/");
+  const base = htmlIndex >= 0 ? path.substring(0, htmlIndex + 6) : "/";
 
-        if (match) {
-            rootPath = match[1];
-            const relPath = currentPath.replace(rootPath, '');
-            const upLevels = relPath.split('/').length - 1;
-            const prefix = '../'.repeat(upLevels);
+  const current = path.substring(base.length).replace(/^\//, "");
 
-            links.forEach(link => {
-                const target = link.getAttribute("data-target");
-                if (target) {
-                    link.setAttribute("href", prefix + target);
-                }
-            });
-        } 
-    });
+  links.forEach(link => {
+    const target = link.getAttribute("data-target");
+    if (!target) return;
+
+    link.setAttribute("href", base + target);
+
+    if (target === current) {
+      link.classList.add("active");
+    }
+  });
+});
 </script>
 </div></div>
               

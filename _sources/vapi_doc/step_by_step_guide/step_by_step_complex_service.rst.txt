@@ -1,4 +1,4 @@
-.. _vapi-step_by_step_complex_service:
+﻿.. _vapi-step_by_step_complex_service:
 
 Step-by-Step: Complex Service implementation
 =============================================
@@ -111,7 +111,7 @@ Create a .toml file for the Complex Service in the 'wiper_example/config' folder
 
 	file (COPY ${PROJECT_SOURCE_DIR}/config/complex_service_wiper.toml DESTINATION ${CMAKE_BINARY_DIR}/bin/config)
 
-In 'Initialize()' function from 'wiper_application.cpp' we need to load the config file 'complex_service_wiper.toml'
+In the application initialization flow from 'wiper_application.cpp' we need to load the config file 'complex_service_wiper.toml'. After that configuration is processed, the framework creates the service object and calls `OnInitialize()` automatically.
 
 .. warning::
 
@@ -129,14 +129,16 @@ Include the generated header and inherit the required interfaces:
 
    #include "../generated/wiper_service/wipercomplexservice.h"
 
-   class CWiperExampleService : public sdv::CSdvObject
-                             , public sdv::IObjectControl
+      class CWiperExampleService : public sdv::CSdvObject
                              , public vss::Vehicle::Body::Weather::RainService::IVSS_SetDetected_Event
                              , public vss::Vehicle::Body::Windshield::Wiper::ModeService::IVSS_SetMode_Event
                              , public vss::Vehicle::Body::Windshield::Wiper::RearService::IVSS_SetIsRearActive
                              , public vss::Vehicle::Body::Windshield::Wiper::FrontService::IVSS_SetIsFrontActive
                              , public IWiperComplexService
    {
+         virtual bool OnInitialize() override;
+         virtual void OnShutdown() override;
+
        // ...
    };
 
@@ -145,7 +147,6 @@ Interface mapping and object declarations are critical for runtime discovery:
 .. code-block:: cpp
 
    BEGIN_SDV_INTERFACE_MAP()
-       SDV_INTERFACE_ENTRY(sdv::IObjectControl)
        SDV_INTERFACE_ENTRY(vss::Vehicle::Body::Weather::RainService::IVSS_SetDetected_Event)
        SDV_INTERFACE_ENTRY(vss::Vehicle::Body::Windshield::Wiper::ModeService::IVSS_SetMode_Event)
        SDV_INTERFACE_ENTRY(vss::Vehicle::Body::Windshield::Wiper::RearService::IVSS_SetIsRearActive)
@@ -153,7 +154,7 @@ Interface mapping and object declarations are critical for runtime discovery:
        SDV_INTERFACE_ENTRY(IWiperComplexService)
    END_SDV_INTERFACE_MAP()
 
-   DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::ComplexService)
+   DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::vehicle_function)
    DECLARE_OBJECT_CLASS_NAME("Wiper Service")
    DECLARE_OBJECT_SINGLETON()
 
@@ -168,11 +169,11 @@ Declare the object as a SDV object:
 
    DEFINE_SDV_OBJECT(CWiperExampleService)
 
-The 'wiper_complex_service.cpp' file 'Initialize()' function to subscribe to Rain and Wiper Mode events and cache interfaces for Front/Rear wipers. Implement ``TriggerWipersAfterThreshold`` to start/stop wipers based on rain persistence.
+The `wiper_complex_service.cpp` file should implement `OnInitialize()` to subscribe to Rain and Wiper Mode events and cache interfaces for Front/Rear wipers. Implement ``TriggerWipersAfterThreshold`` to start/stop wipers based on rain persistence.
 
 .. tip::
 
-	Implement `Shutdown()` to unregister event handlers and avoid dangling callbacks.
+   Implement `OnShutdown()` to unregister event handlers and avoid dangling callbacks.
 	
 Step 5: Build and package
 -------------------------
@@ -227,6 +228,7 @@ Tips & Best Practices
 ----------------------
 * **Consistency between .toml and code**: Ensure `DECLARE_OBJECT_CLASS_NAME("Wiper Service")` matches `Class = "Wiper Service"` in the TOML file.
 * **Avoid direct device access**: Complex Services should only consume interfaces from Basic Services, never access Vehicle Devices or Data Dispatch directly.
-* **Validate subscriptions**: In `Initialize()`, check that all critical interfaces (Rain, Mode, Front/Rear wipers) are successfully retrieved before setting status to `initialized`.
-* **Graceful shutdown**: Unregister all event handlers in `Shutdown()` to prevent dangling callbacks.
+* **Validate subscriptions**: In `OnInitialize()`, check that all critical interfaces (Rain, Mode, Front/Rear wipers) are successfully retrieved before returning success.
+* **Graceful shutdown**: Unregister all event handlers in `OnShutdown()` to prevent dangling callbacks.
 * **Logging**: Use `SDV_LOG_ERROR` or similar macros for troubleshooting when interfaces cannot be resolved.
+
