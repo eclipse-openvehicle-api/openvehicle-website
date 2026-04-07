@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/stylesheet.css?v=9c3fb72b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/stylesheet.css?v=0beb5b98" />
     <link rel="stylesheet" type="text/css" href="../../../_static/key_features.css?v=1f1425ec" />
     <link rel="stylesheet" type="text/css" href="../../../_static/secondary_sidebar.css?v=c3f504d0" />
     <link rel="stylesheet" type="text/css" href="../../../_static/fonts/font.css?v=e743f546" />
@@ -585,7 +585,7 @@ document.write(`
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="../../project_guide.html" class="nav-link">Project Guide</a></li>
+    <li class="breadcrumb-item"><a href="../../project_guide.html" class="nav-link">Understand the project structure</a></li>
     
     
     <li class="breadcrumb-item"><a href="../component_examples.html" class="nav-link">Examples of Open Vehicle API</a></li>
@@ -664,7 +664,8 @@ Therefore one component needs to convert the data, the other component can pass 
 <p>12</p>
 </td>
 <td><p>Device category 10..19</p></td>
-<td><p>Platform abstraction</p>
+<td><p>—</p>
+<p>Platform abstraction</p>
 <p>Vehicle bus abstraction</p>
 </td>
 <td></td>
@@ -678,7 +679,8 @@ Therefore one component needs to convert the data, the other component can pass 
 <p>22</p>
 </td>
 <td><p>Basic service category 20 - 29</p></td>
-<td><p>Sensor object</p>
+<td><p>—</p>
+<p>Sensor object</p>
 <p>Actuator object</p>
 </td>
 <td></td>
@@ -690,7 +692,9 @@ Therefore one component needs to convert the data, the other component can pass 
 <p>31</p>
 </td>
 <td><p>Complex service category 30 - 39</p></td>
-<td><p>Vehicle function</p></td>
+<td><p>—</p>
+<p>Vehicle function</p>
+</td>
 <td><p>Runs in isolated mode</p>
 <p>Runs in isolated mode</p>
 </td>
@@ -727,12 +731,31 @@ Therefore one component needs to convert the data, the other component can pass 
 </div>
 <p>See the auto generated code in <code class="docutils literal notranslate"><span class="pre">..examples/vehicle_abstraction_example/generated</span></code></p>
 <p>You will find 2 components: the platform abstraction component in folder <code class="docutils literal notranslate"><span class="pre">vd_vehiclespeedkmh</span></code> and the sensor device in folder <code class="docutils literal notranslate"><span class="pre">bs_vehiclespeed</span></code>.</p>
-<p>The auto generated code in <code class="docutils literal notranslate"><span class="pre">..examples/vehicle_abstraction_example/generated2</span></code> contains only the second platform abstraction component <code class="docutils literal notranslate"><span class="pre">vd_vehiclespeedms</span></code>. This component has to convert the input data from m/s to km/h. The output interface is identical to the first component.</p>
+<p>The auto generated code in <code class="docutils literal notranslate"><span class="pre">..examples/vehicle_abstraction_example/generated2</span></code> contains instead only the second platform abstraction component <code class="docutils literal notranslate"><span class="pre">vd_vehiclespeedms</span></code>. This component has to convert the input data from m/s to km/h. The output interface is identical to the first platform abstraction component: <strong>‘Vehicle.Speed’, km/h, float RX signal</strong>.</p>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
 <p>Compare the content of <code class="docutils literal notranslate"><span class="pre">vehicle_abstraction_example.csv</span></code> and <code class="docutils literal notranslate"><span class="pre">vehicle_abstraction_example_ms.csv</span></code></p>
 </div>
-<img alt="../../../_images/vehicle_abstraction_overview.png" src="../../../_images/vehicle_abstraction_overview.png" />
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicle_abstraction_example.csv</span></code></p></li>
+</ul>
+<details>
+<summary>Content of vehicle_abstraction_example.csv</summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>;Class name;Function name;Signal name;vss;Signal direction;type;DBC CAN name includes CAN message name
+;;;;;;;
+VD;VehicleSpeedKmh;Speed;vehicleSpeed;Vehicle.Speed;RX;float;CAN_Input.Speed_General
+BS;VehicleSpeed;Speed;vehicleSpeed;Vehicle.Speed;RX;float;Vehicle.Speed
+</pre></div>
+</div>
+</details><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicle_abstraction_example_ms.csv</span></code></p></li>
+</ul>
+<details>
+<summary>Content of vehicle_abstraction_example_ms.csv (see the additional formular in last column)</summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>;Class name;Function name;Signal name;vss;Signal direction;type;DBC CAN name includes CAN message name;
+;;;;;;;;
+VD;VehicleSpeedMs;Speed;vehicleSpeed;Vehicle.Speed;RX;float;CAN_Input.Speed_General;&quot;float vehicleSpeed = value.get&lt;float&gt;() * 3.6f;&quot;
+</pre></div>
+</div>
+</details><br><img alt="../../../_images/vehicle_abstraction_overview.png" src="../../../_images/vehicle_abstraction_overview.png" />
 </section>
 
 
@@ -771,44 +794,61 @@ Therefore one component needs to convert the data, the other component can pass 
             
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
-  <h3>Contents</h3>
-  <ul>
-    <li><a class="sidebar-link"     href="vapi_doc/glossary.html"      data-target="vapi_doc/glossary.html">Glossary</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/get_started.html"   data-target="vapi_doc/get_started.html">Requirements / Get started</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/project_guide.html" data-target="vapi_doc/project_guide.html">Project Guide</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/q_and_a.html"       data-target="vapi_doc/q_and_a.html">Q & A</a></li>
-    <li><a class="sidebar-link"     href="vapi_doc/entry.html"         data-target="vapi_doc/entry.html">Documentation</a></li>
-    <ul>
-        <li><a class="sidebar-link" href="genindex.html" data-target="genindex.html" target="_blank">Index</a></li>
-        <li><a class="sidebar-link" href="search.html"   data-target="search.html"   target="_blank">Search</a></li>
-    </ul>
-    <li><a class="sidebar-link"     href="vapi_pages/team.html"    data-target="vapi_pages/team.html">Team</a></li>
-    <li><a class="sidebar-link"     href="vapi_pages/contact.html" data-target="vapi_pages/contact.html">Contact</a></li>
-</ul>
+  
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🚀 Start here</div>
+      <a class="sidebar-link" data-target="vapi_doc/entry.html">Overview</a>
+      <a class="sidebar-link" data-target="vapi_doc/learn_the_concepts.html">Learn the concepts</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🛠 Build & Run</div>
+      <a class="sidebar-link" data-target="vapi_doc/get_started.html">Set up your environment</a>
+      <a class="sidebar-link" data-target="vapi_doc/get_something_running.html">Run your first example</a>
+      <a class="sidebar-link" data-target="vapi_doc/project_guide.html">Understand the project structure</a>
+      <!-- <a class="sidebar-link" data-target="vapi_doc/build_services.html">Develop services</a> -->
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🧩 Support</div>
+      <a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a>
+      <a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q &amp; A</a>
+      <a class="sidebar-link" data-target="vapi_pages/team.html">Team</a>
+      <a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">⚙ Utilities</div>
+      <a class="sidebar-link" data-target="genindex.html" target="_blank" rel="noopener">Index</a>
+      <a class="sidebar-link" data-target="search.html" target="_blank" rel="noopener">Search</a>
+    </li>
+
+
+
+
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const links = document.querySelectorAll(".sidebar-link");
-        const currentPath = window.location.pathname;
+document.addEventListener("DOMContentLoaded", function () {
+  const links = document.querySelectorAll(".sidebar-link");
+  const path = window.location.pathname;
 
-        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
-        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
-        let rootPath = '/';
+  const htmlIndex = path.lastIndexOf("/html/");
+  const base = htmlIndex >= 0 ? path.substring(0, htmlIndex + 6) : "/";
 
-        if (match) {
-            rootPath = match[1];
-            const relPath = currentPath.replace(rootPath, '');
-            const upLevels = relPath.split('/').length - 1;
-            const prefix = '../'.repeat(upLevels);
+  const current = path.substring(base.length).replace(/^\//, "");
 
-            links.forEach(link => {
-                const target = link.getAttribute("data-target");
-                if (target) {
-                    link.setAttribute("href", prefix + target);
-                }
-            });
-        } 
-    });
+  links.forEach(link => {
+    const target = link.getAttribute("data-target");
+    if (!target) return;
+
+    link.setAttribute("href", base + target);
+
+    if (target === current) {
+      link.classList.add("active");
+    }
+  });
+});
 </script>
 </div></div>
               

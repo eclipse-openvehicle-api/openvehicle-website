@@ -8,7 +8,7 @@ Open Trunk Example
 
 .. note:: 
    | Example can be found in ``<output-folder>/examples/bin``:
-   | open_trunk_example <parameter>
+   | open_trunk_example <instance>
 
 .. toctree::
    :maxdepth: 1
@@ -70,7 +70,6 @@ Open Trunk Example
          -std::string AlignString(const std::string& message, uint32_t desiredLength)
          -mutable std::mutex m_mtxPrintToConsole                
          -bool m_bRunning                 
-         -mutable std::mutex m_mPrintToConsole                
          -sdv::core::CSignal m_SignalSpeed                      
          -float m_SpeedDL                   
          -float m_SpeedVD                   
@@ -110,13 +109,10 @@ Open Trunk Example
     set separator ::
       class CTrunkExampleService 
       {
-         +{abstract} void Initialize(const sdv::u8string& ssObjectConfig) 
-         +{abstract} sdv::EObjectStatus GetStatus() const
-         +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
-         +{abstract} void Shutdown()
+         +{abstract} bool OnInitialize()
+         +{abstract} void OnShutdown()
          +{abstract} void SetSpeed(float value)
          +{abstract} bool PopTrunk()
-         -sdv::EObjectStatus  m_eStatus
          -float m_Speed
          -vss::Vehicle::Body::TrunkService::IVSS_SetOpen* m_pTrunkSvc
       }

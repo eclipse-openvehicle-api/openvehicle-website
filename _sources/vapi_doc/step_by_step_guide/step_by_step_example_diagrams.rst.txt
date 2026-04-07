@@ -247,11 +247,9 @@ CWiperExampleService — Class Diagram
    skinparam packageStyle rectangle
 
    package sdv {
-     interface IObjectControl {
-       +void Initialize(const sdv::u8string& ssObjectConfig)
-       +void Shutdown()
-       +sdv::EObjectStatus GetStatus() const
-       +void SetOperationMode(sdv::EOperationMode eMode)
+     abstract class CSdvObject {
+       +{abstract} bool OnInitialize()
+       +{abstract} void OnShutdown()
      }
    }
 
@@ -288,10 +286,8 @@ CWiperExampleService — Class Diagram
    class CWiperExampleService {
      +CWiperExampleService()
      +~CWiperExampleService()
-     +void Initialize(const sdv::u8string& ssObjectConfig)
-     +void Shutdown()
-     +sdv::EObjectStatus GetStatus() const
-     +void SetOperationMode(sdv::EOperationMode eMode)
+     +bool OnInitialize()
+     +void OnShutdown()
      +void SetMode(const sdv::string& value)
      +void SetDetected(bool value)
      +bool SetIsRearActive(bool value)
@@ -300,7 +296,6 @@ CWiperExampleService — Class Diagram
      -bool TriggerWipersAfterThreshold()
      -void ActivateWipers(bool active)
 
-     -sdv::EObjectStatus m_eStatus
      -bool m_IsRainDetected
      -bool m_WiperFrontIsActive
      -bool m_WiperRearIsActive
@@ -313,7 +308,7 @@ CWiperExampleService — Class Diagram
      -std::chrono::steady_clock::time_point m_LastRainStopped
    }
 
-   CWiperExampleService ..|> sdv::IObjectControl
+   CWiperExampleService ..|> sdv::CSdvObject
    CWiperExampleService ..|> vss::Vehicle::Body::Weather::RainService::IVSS_SetDetected_Event
    CWiperExampleService ..|> vss::Vehicle::Body::Windshield::Wiper::ModeService::IVSS_SetMode_Event
    CWiperExampleService ..|> vss::Vehicle::Body::Windshield::Wiper::RearService::IVSS_SetIsRearActive
@@ -418,7 +413,8 @@ Main Flow — Sequence Diagram (Full Overflow)
    deactivate WC
 
    ' Complex service init
-   main -> CS : Initialize(config)
+   WC -> WC : LoadConfigFile("complex_service_wiper.toml")
+   AC -> CS : OnInitialize()
    activate CS
    CS -> CS : Register VSS interfaces\n(rain detected / wiper mode\n+ rear/front active)
    note right of CS
@@ -513,7 +509,7 @@ Main Flow — Sequence Diagram (Full Overflow)
      - Clears TX/RX handles
    end note
 
-   main -> CS : Shutdown()
+   AC -> CS : OnShutdown()
    note right of CS
      Complex Service:
      - Unregisters callbacks

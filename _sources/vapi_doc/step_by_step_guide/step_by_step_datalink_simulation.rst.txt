@@ -105,7 +105,7 @@ Use `sdv_dbc_util` to generate the CAN Data Link component and include the gener
 
 .. note::
 
-   - The argument `--nodeswipers` must match the node name defined in your DBC file (BU_ section). In this example, the node name is **wipers**.
+   - The argument `--nodeswipers` must match the node name defined in your DBC file (``BU_`` section). In this example, the node name is **wipers**.
    - The argument `--dl_lib_namecan_dl_wiper` corresponds to the library name used in `data_link_wiper.toml` under `Path = "can_dl_wiper.sdv"`.
 
 Step 4: Update CMakeLists.txt
@@ -141,6 +141,8 @@ Before, the code only supported `NO_CAN_SIMULATION` mode and did not use `exampl
 - `main()` accepts an argument to select the mode (0 = normal, 1 = CAN simulation).
 - Functions like `PrintHeader()`, `PrepareDataConsumers()`, and `RunUntilBreak()` adapt behavior based on the mode.
 
+The application wrapper still owns this `Initialize()` method. The Complex Service itself is initialized later by the SDV runtime through `OnInitialize()` when `complex_service_wiper.toml` is loaded.
+
 .. note::
 
    In Basic Service, conversion from numeric values to strings happens automatically using the generated callback based on the CSV definition. However, for Dispatch Service, this conversion must be handled manually in our code. For this reason, we updated **CallbackWiperMode** (our custom callback used when subscribing to the WiperMode signal) to perform the conversion from `0`/`1` to `manual`/`auto`.
@@ -171,13 +173,6 @@ The `Initialize()` will look something like this:
 
        bResult &= LoadConfigFile("Load vehicle devices and basic services for wiper: ",
                                  "wiper_vehicle_device_and_basic_service.toml");
-       }
-       else if (exampleMode == CAN_SIMULATION)
-       {
-           bResult &= LoadConfigFile("Load can com simulation: ", "can_com_simulation_wiper.toml");
-           bResult &= LoadConfigFile("Load data link: ", "data_link_wiper.toml");
-       }
-
        bResult &= LoadConfigFile("Load wiper service (complex service): ", "complex_service_wiper.toml");
 
        if (!bResult)
@@ -185,7 +180,8 @@ The `Initialize()` will look something like this:
            SDV_LOG_ERROR("One or more configurations could not be loaded. Cannot continue.");
            return false;
        }
-       return bResult;
+
+         return true;
    }
 
 .. note::

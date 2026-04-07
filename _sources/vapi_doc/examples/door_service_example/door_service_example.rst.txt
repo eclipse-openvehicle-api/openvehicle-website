@@ -1,4 +1,4 @@
-.. _vapi-door_service_example:
+﻿.. _vapi-door_service_example:
 
 Door Service Example
 ====================
@@ -22,7 +22,7 @@ Door Service Example
    
    The function should automatically lock the doors a few seconds after all doors have been closed:
 
-   - one or more signals, depending on the number of doors, are input signals. The signals represents the status of a single door (opened or closed).
+   - one or more signals, depending on the number of doors, are input signals. The signals represents the state of a single door (opened or closed).
    - The same number of signals are output signals. These signals will lock the doors.
    - The function (complex service) must work independently from the number of doors.  
    - After all doors are closed, a 'timer' should be started so that after some seconds the doors are locked. If no door is reopened of course.  
@@ -32,6 +32,8 @@ Door Service Example
    
 .. image:: ../../../vapi_media/examples/door_service_example/door_service_example.png
 
+.. note:: The concrete VSS interface names in this example are generated code artifacts. The implementation in ``examples/door_demo_example`` uses ``Vehicle::Body::Door::Axle::_01/_02`` naming.
+
 .. uml::
    :caption: Door complex service class diagram
 
@@ -39,10 +41,8 @@ Door Service Example
     set separator ::
       class CDoorsExampleService 
       {
-         +void Initialize(const sdv::u8string& ssObjectConfig) override;
-         +sdv::EObjectStatus GetStatus() const 
-         +void SetOperationMode(sdv::EOperationMode eMode)
-         +void Shutdown() 
+         +bool OnInitialize() override
+         +void OnShutdown() override
          +void SetIsOpenL1(bool value)
          +void SetIsOpenR1(bool value) 
          +void SetIsOpenL2(bool value) 
@@ -51,16 +51,15 @@ Door Service Example
          -void AreAllDoorsClosed()  
          -void LockDoorsIfAllDoorsAreClosed()
          -void LockDoors(const bool lock) const
-         -sdv::EObjectStatus  m_eStatus = sdv::EObjectStatus::initialization_pending
          -bool	m_bFrontLeftDoorIsOpen 
          -bool	m_bFrontRightDoorIsOpen 
          -bool	m_bRearLeftDoorIsOpen 
          -bool	m_bRearRightDoorIsOpen 
          -bool m_bAllDoorsAreLocked   
-         -vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetLock* m_pFrontLeftDoorSvc 
-         -vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetLock* m_pFrontRightDoorSvc
-         -vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetLock* m_pRearLeftDoorSvc  
-         -vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetLock* m_pRearRightDoorSvc
+         -vss::Vehicle::Body::Door::Axle::_01::LeftService::IVSS_SetLock* m_pFrontLeftDoorSvc 
+         -vss::Vehicle::Body::Door::Axle::_01::RightService::IVSS_SetLock* m_pFrontRightDoorSvc
+         -vss::Vehicle::Body::Door::Axle::_02::LeftService::IVSS_SetLock* m_pRearLeftDoorSvc  
+         -vss::Vehicle::Body::Door::Axle::_02::RightService::IVSS_SetLock* m_pRearRightDoorSvc
          -LockDoorsThread m_doorsThread  
          -uint32_t m_Interval   
       }
@@ -86,22 +85,22 @@ Door Service Example
          {abstract} bool GetDoorsStatus()
       }
  
-      Interface vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetIsOpen_Event
+      Interface vss::Vehicle::Body::Door::Axle::_01::LeftService::IVSS_SetIsOpenL1_Event
       {
          {abstract} void SetIsOpenL1(bool value) 
       }
 
-      Interface vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetIsOpen_Event
+      Interface vss::Vehicle::Body::Door::Axle::_02::LeftService::IVSS_SetIsOpenL2_Event
       {
          {abstract} void SetIsOpenL2(bool value) 
       }
 
-      Interface vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetIsOpen_Event
+      Interface vss::Vehicle::Body::Door::Axle::_01::RightService::IVSS_SetIsOpenR1_Event
       {
          {abstract} void SetIsOpenR1(bool value) 
       }
      
-      Interface vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetIsOpen_Event
+      Interface vss::Vehicle::Body::Door::Axle::_02::RightService::IVSS_SetIsOpenR2_Event
       {
          {abstract} void SetIsOpenR2(bool value) 
       }
@@ -109,10 +108,10 @@ Door Service Example
       CDoorsExampleService --|> sdv::CSdvObject : Inherits
       CDoorsExampleService --|> sdv::IObjectControl
       CDoorsExampleService ..|> IDoorService
-      CDoorsExampleService ..|> vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetIsOpen_Event : Implements
-      CDoorsExampleService ..|> vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetIsOpen_Event : Implements
-      CDoorsExampleService ..|> vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetIsOpen_Event : Implements
-      CDoorsExampleService ..|> vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetIsOpen_Event : Implements
+      CDoorsExampleService ..|> vss::Vehicle::Body::Door::Axle::_01::LeftService::IVSS_SetIsOpenL1_Event : Implements
+      CDoorsExampleService ..|> vss::Vehicle::Body::Door::Axle::_01::RightService::IVSS_SetIsOpenR1_Event : Implements
+      CDoorsExampleService ..|> vss::Vehicle::Body::Door::Axle::_02::LeftService::IVSS_SetIsOpenL2_Event : Implements
+      CDoorsExampleService ..|> vss::Vehicle::Body::Door::Axle::_02::RightService::IVSS_SetIsOpenR2_Event : Implements
 
     @enduml
 
@@ -195,7 +194,6 @@ Door Service Example
          -bool                m_bThreadStarted           
          -bool                m_bRunning                
          -bool                m_isExternalApp           
-         -mutable std::mutex  m_mPrintToConsole                  
          -std::thread         m_threadReadTxSignals              
          -sdv::core::CSignal  m_SignalFrontLeftDoorIsOpen       
          -sdv::core::CSignal  m_SignalFrontRightDoorIsOpen       
@@ -223,36 +221,36 @@ Door Service Example
       } 
      }
 
-      Interface vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetIsOpen_Event
+      Interface vss::Vehicle::Body::Door::Axle::_01::LeftService::IVSS_SetIsOpenL1_Event
       {
          {abstract} void SetIsOpenL1(bool value) 
       }
 
-      Interface vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetIsOpen_Event
+      Interface vss::Vehicle::Body::Door::Axle::_02::LeftService::IVSS_SetIsOpenL2_Event
       {
          {abstract} void SetIsOpenL2(bool value) 
       }
 
-      Interface vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetIsOpen_Event
+      Interface vss::Vehicle::Body::Door::Axle::_01::RightService::IVSS_SetIsOpenR1_Event
       {
          {abstract} void SetIsOpenR1(bool value) 
       }
      
-      Interface vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetIsOpen_Event
+      Interface vss::Vehicle::Body::Door::Axle::_02::RightService::IVSS_SetIsOpenR2_Event
       {
          {abstract} void SetIsOpenR2(bool value) 
       }
 
-      Interface vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteIsOpen_Event
+      Interface vss::Vehicle::Body::Door::Axle::_01::LeftDevice::IVSS_WriteIsOpen_Event
       {
          {abstract}  void WriteIsOpen(bool value)
       }
 
-     CConsole ..|> vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteIsOpen_Event : Implements
-     CConsole ..|> vss::Vehicle::Chassis::Door::Axle01::LeftService::IVSS_SetIsOpen_Event : Implements
-     CConsole ..|> vss::Vehicle::Chassis::Door::Axle01::RightService::IVSS_SetIsOpen_Event : Implements
-     CConsole ..|> vss::Vehicle::Chassis::Door::Axle02::LeftService::IVSS_SetIsOpen_Event : Implements
-     CConsole ..|> vss::Vehicle::Chassis::Door::Axle02::RightService::IVSS_SetIsOpen_Event : Implements
+     CConsole ..|> vss::Vehicle::Body::Door::Axle::_01::LeftDevice::IVSS_WriteIsOpen_Event : Implements
+     CConsole ..|> vss::Vehicle::Body::Door::Axle::_01::LeftService::IVSS_SetIsOpenL1_Event : Implements
+     CConsole ..|> vss::Vehicle::Body::Door::Axle::_01::RightService::IVSS_SetIsOpenR1_Event : Implements
+     CConsole ..|> vss::Vehicle::Body::Door::Axle::_02::LeftService::IVSS_SetIsOpenL2_Event : Implements
+     CConsole ..|> vss::Vehicle::Body::Door::Axle::_02::RightService::IVSS_SetIsOpenR2_Event : Implements
    @enduml
 
 .. uml::

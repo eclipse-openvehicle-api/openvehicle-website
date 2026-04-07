@@ -39,7 +39,12 @@ To complete these steps, you need to create three source files:
 Application Initialization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-First, we need the `Initialize()` method, which sets up the runtime environment, loads configuration files, and registers signals.
+First, we need the `Initialize()` method on the application wrapper, which sets up the runtime environment, loads configuration files, and registers signals.
+
+.. note::
+
+	In the current framework, this `Initialize()` method belongs to your application helper class (`CWiperControl`).
+	Loadable SDV objects such as Complex Services are initialized by the runtime through `sdv::CSdvObject::OnInitialize()` and cleaned up with `OnShutdown()` after their `.toml` configuration is loaded.
 
 .. code-block:: cpp
 
@@ -65,6 +70,7 @@ First, we need the `Initialize()` method, which sets up the runtime environment,
 		bool bResult = LoadConfigFile("Load dispatch example: ", "data_dispatch_wiper.toml");
 		bResult &= LoadConfigFile("Load task timer: ", "task_timer_wiper.toml");
 		bResult &= LoadConfigFile("Load vehicle devices and basic services for wiper: ", "wiper_vehicle_device_and_basic_service.toml");
+		bResult &= LoadConfigFile("Load wiper service (complex service): ", "complex_service_wiper.toml");
 
 		std::cout << "Ended the load config file" << std::endl;
 
@@ -155,7 +161,8 @@ And it is called in the `Initialize()` function for each .toml file.
 	
 	bool bResult = LoadConfigFile("Load dispatch example: ", "data_dispatch_wiper.toml");
 	bResult &= LoadConfigFile("Load task timer: ", "task_timer_wiper.toml");
-	bResult &= LoadConfigFile("Load vehicle devices and basic services for wiper: ", "wiper_vehicle_device_and_basic_service.toml");	
+	bResult &= LoadConfigFile("Load vehicle devices and basic services for wiper: ", "wiper_vehicle_device_and_basic_service.toml");
+	bResult &= LoadConfigFile("Load wiper service (complex service): ", "complex_service_wiper.toml");
 
 
 .. Tip::
@@ -219,6 +226,8 @@ And it is called in the `Initialize()` function for each .toml file.
 
 			bool bResult = LoadConfigFile("Load dispatch example: ", "data_dispatch_wiper.toml");
 			bResult &= LoadConfigFile("Load task timer: ", "task_timer_wiper.toml");
+			bResult &= LoadConfigFile("Load vehicle devices and basic services for wiper: ", "wiper_vehicle_device_and_basic_service.toml");
+			bResult &= LoadConfigFile("Load wiper service (complex service): ", "complex_service_wiper.toml");
 
 			std::cout << "Ended the load config file" << std::endl;
 

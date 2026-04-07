@@ -1,4 +1,4 @@
-.. _vapi-tasktimer:
+﻿.. _vapi-tasktimer:
 
 Timer Services
 ==============
@@ -30,7 +30,7 @@ Following is a code snippet of a SDV object, which implements ITaskExecute and s
     class DemoTimerComponent : public sdv::CSdvObject, public sdv::IObjectControl, public sdv::core::ITaskExecute
     {
     public:
-        DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::Device)
+        DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::vehicle_bus)
         DECLARE_OBJECT_CLASS_NAME("Timer_Example")
 
         void Initialize() override
@@ -49,13 +49,13 @@ Following is a code snippet of a SDV object, which implements ITaskExecute and s
                 // timestamp while executing the task.
                 m_pTimer = taskTimerIfc->CreateTimer(500, this);
 
-                //updating the object status to running.
+                //updating the object state to running.
                 m_status = sdv::EObjectStatus::running;
             }
             else
             {
                 // If not initialized properly prints the error message to the console and update the
-                // object status to the initialization_failure.
+                // object state to the initialization_failure.
                 std::cout << "Initialization failure: Cannot access task timer interface" << std::endl;
                 m_status = sdv::EObjectStatus::initialization_failure;
             }
@@ -104,5 +104,6 @@ To synchronize the simulation with the :term:`VAPI Framework`: the simulation ti
 
 		std::this_thread::sleep_for(sleepDuration);
 	}
+
 
 
