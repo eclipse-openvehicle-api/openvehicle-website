@@ -662,8 +662,8 @@ document.write(`
 <li><p><a class="reference internal" href="function_installation__manifest_8h_1a6361e0bc21128a065302c1edb9f456af.html#exhale-function-installation-manifest-8h-1a6361e0bc21128a065302c1edb9f456af"><span class="std std-ref">Function operator&gt;(sdv::installation::SPackageVersion, sdv::installation::SPackageVersion)</span></a></p></li>
 <li><p><a class="reference internal" href="function_installation__manifest_8h_1af52d64256e142b98b5c02bdba0b90460.html#exhale-function-installation-manifest-8h-1af52d64256e142b98b5c02bdba0b90460"><span class="std std-ref">Function operator&gt;=(sdv::installation::SPackageVersion, sdv::installation::SPackageVersion)</span></a></p></li>
 <li><p><a class="reference internal" href="function_installation__manifest_8h_1a6e45130a9332b90727d57649de2e7c5d.html#exhale-function-installation-manifest-8h-1a6e45130a9332b90727d57649de2e7c5d"><span class="std std-ref">Function RefersToRelativeParent</span></a></p></li>
-<li><p><a class="reference internal" href="function_installation__manifest_8h_1a4b72a8d9a2bfd8d3fd0cf127145c1f26.html#exhale-function-installation-manifest-8h-1a4b72a8d9a2bfd8d3fd0cf127145c1f26"><span class="std std-ref">Function TOML2ClassInfo(const std::string&amp;, size_t)</span></a></p></li>
 <li><p><a class="reference internal" href="function_installation__manifest_8h_1a4341b3a3cfe0dcf9313d4abbb00bd405.html#exhale-function-installation-manifest-8h-1a4341b3a3cfe0dcf9313d4abbb00bd405"><span class="std std-ref">Function TOML2ClassInfo(const std::shared_ptr&lt;toml_parser::CNodeCollection&gt;&amp;, size_t)</span></a></p></li>
+<li><p><a class="reference internal" href="function_installation__manifest_8h_1a4b72a8d9a2bfd8d3fd0cf127145c1f26.html#exhale-function-installation-manifest-8h-1a4b72a8d9a2bfd8d3fd0cf127145c1f26"><span class="std std-ref">Function TOML2ClassInfo(const std::string&amp;, size_t)</span></a></p></li>
 </ul>
 </section>
 </section>
@@ -721,26 +721,28 @@ document.write(`
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const links = document.querySelectorAll(".sidebar-link");
-  const path = window.location.pathname;
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
 
-  const htmlIndex = path.lastIndexOf("/html/");
-  const base = htmlIndex >= 0 ? path.substring(0, htmlIndex + 6) : "/";
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
 
-  const current = path.substring(base.length).replace(/^\//, "");
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
 
-  links.forEach(link => {
-    const target = link.getAttribute("data-target");
-    if (!target) return;
-
-    link.setAttribute("href", base + target);
-
-    if (target === current) {
-      link.classList.add("active");
-    }
-  });
-});
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
+        } 
+    });
 </script>
 </div></div>
               

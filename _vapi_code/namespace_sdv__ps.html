@@ -635,8 +635,8 @@ document.write(`
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1ps_1a994137688c692fe3c25ffd9c707f4dc6.html#exhale-enum-namespacesdv-1-1ps-1a994137688c692fe3c25ffd9c707f4dc6"><span class="std std-ref">Enum ECallResult</span></a></p></li>
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1ps_1ab865f4af1cc82fab95e1f235e8ad8ec5.html#exhale-enum-namespacesdv-1-1ps-1ab865f4af1cc82fab95e1f235e8ad8ec5"><span class="std std-ref">Enum EMarshallDataInterpret</span></a></p></li>
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1ps_1a6b3a1976180c5342946ab9a5a5728764.html#exhale-enum-namespacesdv-1-1ps-1a6b3a1976180c5342946ab9a5a5728764"><span class="std std-ref">Enum EMarshallDataInterpret</span></a></p></li>
-<li><p><a class="reference internal" href="enum_namespacesdv_1_1ps_1ad427b38409f5ab8199410b0a08036e12.html#exhale-enum-namespacesdv-1-1ps-1ad427b38409f5ab8199410b0a08036e12"><span class="std std-ref">Enum EMarshallFlags</span></a></p></li>
 <li><p><a class="reference internal" href="enum_namespacesdv_1_1ps_1a9f446a0ec4d110c63cf099c99306c657.html#exhale-enum-namespacesdv-1-1ps-1a9f446a0ec4d110c63cf099c99306c657"><span class="std std-ref">Enum EMarshallFlags</span></a></p></li>
+<li><p><a class="reference internal" href="enum_namespacesdv_1_1ps_1ad427b38409f5ab8199410b0a08036e12.html#exhale-enum-namespacesdv-1-1ps-1ad427b38409f5ab8199410b0a08036e12"><span class="std std-ref">Enum EMarshallFlags</span></a></p></li>
 </ul>
 </section>
 <section id="functions">
@@ -706,26 +706,28 @@ document.write(`
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const links = document.querySelectorAll(".sidebar-link");
-  const path = window.location.pathname;
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
 
-  const htmlIndex = path.lastIndexOf("/html/");
-  const base = htmlIndex >= 0 ? path.substring(0, htmlIndex + 6) : "/";
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
 
-  const current = path.substring(base.length).replace(/^\//, "");
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
 
-  links.forEach(link => {
-    const target = link.getAttribute("data-target");
-    if (!target) return;
-
-    link.setAttribute("href", base + target);
-
-    if (target === current) {
-      link.classList.add("active");
-    }
-  });
-});
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
+        } 
+    });
 </script>
 </div></div>
               

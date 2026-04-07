@@ -967,26 +967,28 @@ document.write(`
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const links = document.querySelectorAll(".sidebar-link");
-  const path = window.location.pathname;
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
 
-  const htmlIndex = path.lastIndexOf("/html/");
-  const base = htmlIndex >= 0 ? path.substring(0, htmlIndex + 6) : "/";
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
 
-  const current = path.substring(base.length).replace(/^\//, "");
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
 
-  links.forEach(link => {
-    const target = link.getAttribute("data-target");
-    if (!target) return;
-
-    link.setAttribute("href", base + target);
-
-    if (target === current) {
-      link.classList.add("active");
-    }
-  });
-});
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
+        } 
+    });
 </script>
 </div></div>
               

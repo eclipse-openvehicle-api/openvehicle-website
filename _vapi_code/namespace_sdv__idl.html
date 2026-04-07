@@ -657,8 +657,8 @@ document.write(`
 <li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a4aeef0626e9e3f7b2e64dc66cc4097be.html#exhale-function-namespacesdv-1-1idl-1a4aeef0626e9e3f7b2e64dc66cc4097be"><span class="std std-ref">Function sdv::idl::ForwardDeclaration</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1ae078f7d1c7e3777a76866f95008373eb.html#exhale-function-namespacesdv-1-1idl-1ae078f7d1c7e3777a76866f95008373eb"><span class="std std-ref">Function sdv::idl::GetArrayDimensions</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a373bcef871853575a8dd0eaaa61bea9b.html#exhale-function-namespacesdv-1-1idl-1a373bcef871853575a8dd0eaaa61bea9b"><span class="std std-ref">Function sdv::idl::GetAssignment</span></a></p></li>
-<li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a7f1183c4012d9790d7cb44e7efb15106.html#exhale-function-namespacesdv-1-1idl-1a7f1183c4012d9790d7cb44e7efb15106"><span class="std std-ref">Function sdv::idl::GetBaseType(EDeclType&amp;, IInterfaceAccess *&amp;)</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a53f4ad7ab7d2b3575337012bd64b4e76.html#exhale-function-namespacesdv-1-1idl-1a53f4ad7ab7d2b3575337012bd64b4e76"><span class="std std-ref">Function sdv::idl::GetBaseType()</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a7f1183c4012d9790d7cb44e7efb15106.html#exhale-function-namespacesdv-1-1idl-1a7f1183c4012d9790d7cb44e7efb15106"><span class="std std-ref">Function sdv::idl::GetBaseType(EDeclType&amp;, IInterfaceAccess *&amp;)</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a22f85b8bd5e8903063d86638abbc93f4.html#exhale-function-namespacesdv-1-1idl-1a22f85b8bd5e8903063d86638abbc93f4"><span class="std std-ref">Function sdv::idl::GetChildren</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a8642eeefabc341a184387ae054608ec2.html#exhale-function-namespacesdv-1-1idl-1a8642eeefabc341a184387ae054608ec2"><span class="std std-ref">Function sdv::idl::GetComments</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a9e42af5f7b3c342bdfefa77244b2da5b.html#exhale-function-namespacesdv-1-1idl-1a9e42af5f7b3c342bdfefa77244b2da5b"><span class="std std-ref">Function sdv::idl::GetContent</span></a></p></li>
@@ -785,26 +785,28 @@ document.write(`
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const links = document.querySelectorAll(".sidebar-link");
-  const path = window.location.pathname;
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
 
-  const htmlIndex = path.lastIndexOf("/html/");
-  const base = htmlIndex >= 0 ? path.substring(0, htmlIndex + 6) : "/";
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
 
-  const current = path.substring(base.length).replace(/^\//, "");
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
 
-  links.forEach(link => {
-    const target = link.getAttribute("data-target");
-    if (!target) return;
-
-    link.setAttribute("href", base + target);
-
-    if (target === current) {
-      link.classList.add("active");
-    }
-  });
-});
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
+        } 
+    });
 </script>
 </div></div>
               

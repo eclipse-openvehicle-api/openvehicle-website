@@ -660,8 +660,8 @@ document.write(`
 <li><p><a class="reference internal" href="function_namespacetoml__parser_1a96885926947c68d7bf4e9058c688ad48.html#exhale-function-namespacetoml-parser-1a96885926947c68d7bf4e9058c688ad48"><span class="std std-ref">Function toml_parser::HexadecimalToDecimal</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacetoml__parser_1ad1e768ddb3dbac948a49d243c65c9982.html#exhale-function-namespacetoml-parser-1ad1e768ddb3dbac948a49d243c65c9982"><span class="std std-ref">Function toml_parser::OctalToDecimal</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacetoml__parser_1ab0afde82eb1f7fba472880d6fe6cb1b9.html#exhale-function-namespacetoml-parser-1ab0afde82eb1f7fba472880d6fe6cb1b9"><span class="std std-ref">Function toml_parser::QuoteText</span></a></p></li>
-<li><p><a class="reference internal" href="function_namespacetoml__parser_1a57cb117b7836b08342af45ae6a194fe3.html#exhale-function-namespacetoml-parser-1a57cb117b7836b08342af45ae6a194fe3"><span class="std std-ref">Function toml_parser::SplitNodeKey(const std::string&amp;)</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacetoml__parser_1a14c1be4b8a0ee5e6de767081d78217d4.html#exhale-function-namespacetoml-parser-1a14c1be4b8a0ee5e6de767081d78217d4"><span class="std std-ref">Function toml_parser::SplitNodeKey(const CTokenRange&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacetoml__parser_1a57cb117b7836b08342af45ae6a194fe3.html#exhale-function-namespacetoml-parser-1a57cb117b7836b08342af45ae6a194fe3"><span class="std std-ref">Function toml_parser::SplitNodeKey(const std::string&amp;)</span></a></p></li>
 </ul>
 </section>
 </section>
@@ -719,26 +719,28 @@ document.write(`
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const links = document.querySelectorAll(".sidebar-link");
-  const path = window.location.pathname;
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll(".sidebar-link");
+        const currentPath = window.location.pathname;
 
-  const htmlIndex = path.lastIndexOf("/html/");
-  const base = htmlIndex >= 0 ? path.substring(0, htmlIndex + 6) : "/";
+        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
+        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
+        let rootPath = '/';
 
-  const current = path.substring(base.length).replace(/^\//, "");
+        if (match) {
+            rootPath = match[1];
+            const relPath = currentPath.replace(rootPath, '');
+            const upLevels = relPath.split('/').length - 1;
+            const prefix = '../'.repeat(upLevels);
 
-  links.forEach(link => {
-    const target = link.getAttribute("data-target");
-    if (!target) return;
-
-    link.setAttribute("href", base + target);
-
-    if (target === current) {
-      link.classList.add("active");
-    }
-  });
-});
+            links.forEach(link => {
+                const target = link.getAttribute("data-target");
+                if (target) {
+                    link.setAttribute("href", prefix + target);
+                }
+            });
+        } 
+    });
 </script>
 </div></div>
               
