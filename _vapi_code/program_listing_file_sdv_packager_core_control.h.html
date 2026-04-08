@@ -308,6 +308,13 @@
                       </a>
                     </li>
                 
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/entry.html">
+                        Overview
+                      </a>
+                    </li>
+                
                 </ul>
             </li>
             
@@ -519,6 +526,13 @@ document.write(`
                     <li class="nav-item">
                       <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
                         Glossary
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/entry.html">
+                        Overview
                       </a>
                     </li>
                 
@@ -748,33 +762,50 @@ document.write(`
       <a class="sidebar-link" data-target="search.html" target="_blank" rel="noopener">Search</a>
     </li>
 
-
-
-
-
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const links = document.querySelectorAll(".sidebar-link");
-        const currentPath = window.location.pathname;
+document.addEventListener("DOMContentLoaded", function () {
+  const links = document.querySelectorAll(".sidebar-link[data-target]");
+  const url = new URL(window.location.href);
 
-        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
-        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
-        let rootPath = '/';
+  // 1) Determine site root by trimming known subfolders if present
+  const markers = ["/vapi_doc/", "/vapi_pages/", "/_static/", "/_vapi_code/"];
+  let rootPath = null;
 
-        if (match) {
-            rootPath = match[1];
-            const relPath = currentPath.replace(rootPath, '');
-            const upLevels = relPath.split('/').length - 1;
-            const prefix = '../'.repeat(upLevels);
+  for (const m of markers) {
+    const idx = url.pathname.indexOf(m);
+    if (idx !== -1) {
+      rootPath = url.pathname.substring(0, idx + 1); // keep trailing "/"
+      break;
+    }
+  }
 
-            links.forEach(link => {
-                const target = link.getAttribute("data-target");
-                if (target) {
-                    link.setAttribute("href", prefix + target);
-                }
-            });
-        } 
-    });
+  // If no marker found (e.g., index.html in root), use current directory as root
+  if (!rootPath) {
+    rootPath = url.pathname.substring(0, url.pathname.lastIndexOf("/") + 1);
+  }
+
+  // Build a base URL that points to the site root
+  const baseUrl = new URL(window.location.href);
+  baseUrl.pathname = rootPath;
+  baseUrl.search = "";
+  baseUrl.hash = "";
+
+  // 2) Set hrefs correctly relative to site root
+  links.forEach(a => {
+    let target = a.getAttribute("data-target") || "";
+    target = target.replace(/^\/+/, ""); // never allow absolute "/vapi_doc/..." (breaks on file://)
+
+    const resolved = new URL(target, baseUrl);
+    a.href = resolved.href;
+  });
+
+  // 3) Active highlight (optional)
+  const currentPath = url.pathname;
+  links.forEach(a => {
+    const t = (a.getAttribute("data-target") || "").replace(/^\/+/, "");
+    a.classList.toggle("active", currentPath.endsWith("/" + t) || currentPath.endsWith(t));
+  });
+});
 </script>
 </div></div>
               
