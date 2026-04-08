@@ -308,6 +308,13 @@
                       </a>
                     </li>
                 
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/entry.html">
+                        Overview
+                      </a>
+                    </li>
+                
                 </ul>
             </li>
             
@@ -522,6 +529,13 @@ document.write(`
                       </a>
                     </li>
                 
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/entry.html">
+                        Overview
+                      </a>
+                    </li>
+                
                 </ul>
             </li>
             
@@ -692,8 +706,8 @@ document.write(`
 <li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a4aeef0626e9e3f7b2e64dc66cc4097be.html#exhale-function-namespacesdv-1-1idl-1a4aeef0626e9e3f7b2e64dc66cc4097be"><span class="std std-ref">Function sdv::idl::ForwardDeclaration</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1ae078f7d1c7e3777a76866f95008373eb.html#exhale-function-namespacesdv-1-1idl-1ae078f7d1c7e3777a76866f95008373eb"><span class="std std-ref">Function sdv::idl::GetArrayDimensions</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a373bcef871853575a8dd0eaaa61bea9b.html#exhale-function-namespacesdv-1-1idl-1a373bcef871853575a8dd0eaaa61bea9b"><span class="std std-ref">Function sdv::idl::GetAssignment</span></a></p></li>
-<li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a53f4ad7ab7d2b3575337012bd64b4e76.html#exhale-function-namespacesdv-1-1idl-1a53f4ad7ab7d2b3575337012bd64b4e76"><span class="std std-ref">Function sdv::idl::GetBaseType()</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a7f1183c4012d9790d7cb44e7efb15106.html#exhale-function-namespacesdv-1-1idl-1a7f1183c4012d9790d7cb44e7efb15106"><span class="std std-ref">Function sdv::idl::GetBaseType(EDeclType&amp;, IInterfaceAccess *&amp;)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a53f4ad7ab7d2b3575337012bd64b4e76.html#exhale-function-namespacesdv-1-1idl-1a53f4ad7ab7d2b3575337012bd64b4e76"><span class="std std-ref">Function sdv::idl::GetBaseType()</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a22f85b8bd5e8903063d86638abbc93f4.html#exhale-function-namespacesdv-1-1idl-1a22f85b8bd5e8903063d86638abbc93f4"><span class="std std-ref">Function sdv::idl::GetChildren</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a8642eeefabc341a184387ae054608ec2.html#exhale-function-namespacesdv-1-1idl-1a8642eeefabc341a184387ae054608ec2"><span class="std std-ref">Function sdv::idl::GetComments</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1idl_1a9e42af5f7b3c342bdfefa77244b2da5b.html#exhale-function-namespacesdv-1-1idl-1a9e42af5f7b3c342bdfefa77244b2da5b"><span class="std std-ref">Function sdv::idl::GetContent</span></a></p></li>
@@ -842,33 +856,50 @@ document.write(`
       <a class="sidebar-link" data-target="search.html" target="_blank" rel="noopener">Search</a>
     </li>
 
-
-
-
-
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const links = document.querySelectorAll(".sidebar-link");
-        const currentPath = window.location.pathname;
+document.addEventListener("DOMContentLoaded", function () {
+  const links = document.querySelectorAll(".sidebar-link[data-target]");
+  const url = new URL(window.location.href);
 
-        // Match the path up to the parent of 'vapi_doc' or 'vapi_pages' or '_static' or '_vapi_cod'
-        const match = currentPath.match(/^(.*\/)(vapi_doc|vapi_pages|_static|_vapi_code)\//);
-        let rootPath = '/';
+  // 1) Determine site root by trimming known subfolders if present
+  const markers = ["/vapi_doc/", "/vapi_pages/", "/_static/", "/_vapi_code/"];
+  let rootPath = null;
 
-        if (match) {
-            rootPath = match[1];
-            const relPath = currentPath.replace(rootPath, '');
-            const upLevels = relPath.split('/').length - 1;
-            const prefix = '../'.repeat(upLevels);
+  for (const m of markers) {
+    const idx = url.pathname.indexOf(m);
+    if (idx !== -1) {
+      rootPath = url.pathname.substring(0, idx + 1); // keep trailing "/"
+      break;
+    }
+  }
 
-            links.forEach(link => {
-                const target = link.getAttribute("data-target");
-                if (target) {
-                    link.setAttribute("href", prefix + target);
-                }
-            });
-        } 
-    });
+  // If no marker found (e.g., index.html in root), use current directory as root
+  if (!rootPath) {
+    rootPath = url.pathname.substring(0, url.pathname.lastIndexOf("/") + 1);
+  }
+
+  // Build a base URL that points to the site root
+  const baseUrl = new URL(window.location.href);
+  baseUrl.pathname = rootPath;
+  baseUrl.search = "";
+  baseUrl.hash = "";
+
+  // 2) Set hrefs correctly relative to site root
+  links.forEach(a => {
+    let target = a.getAttribute("data-target") || "";
+    target = target.replace(/^\/+/, ""); // never allow absolute "/vapi_doc/..." (breaks on file://)
+
+    const resolved = new URL(target, baseUrl);
+    a.href = resolved.href;
+  });
+
+  // 3) Active highlight (optional)
+  const currentPath = url.pathname;
+  links.forEach(a => {
+    const t = (a.getAttribute("data-target") || "").replace(/^\/+/, "");
+    a.classList.toggle("active", currentPath.endsWith("/" + t) || currentPath.endsWith(t));
+  });
+});
 </script>
 </div></div>
               
