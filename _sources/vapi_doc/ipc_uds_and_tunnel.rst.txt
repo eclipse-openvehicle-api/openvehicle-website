@@ -12,6 +12,14 @@ The application code interacts only with SDV interfaces (``IInterfaceAccess*`` a
 ``IDataSend``, ``IDataReceiveCallback``, ``IConnectEventCallback``), while channel managers
 create and manage the underlying connections.
 
+.. important::
+
+  This guide covers **both Linux and Windows**.
+
+  In typical SDV deployments, Linux (often RHEL-based targets) is the primary runtime,
+  so examples and recommendations are Linux-first. Windows remains relevant for local
+  development, integration, and troubleshooting workflows.
+
 .. contents::
    :local:
    :depth: 2
@@ -56,9 +64,22 @@ Include the channel manager header that matches your intended transport:
    // Tunnel (Linux tunnel):
    // #include <sdv_services/uds_unix_tunnel/channel_mgnt.h>
 
-   // Windows equivalents (names may differ by platform packaging):
-   // #include <sdv_services/winsock_sockets/channel_mgnt.h>
-   // #include <sdv_services/winsock_tunnel/channel_mgnt.h>
+   // Windows equivalents:
+   // #include <sdv_services/uds_win_sockets/channel_mgnt.h>
+   // #include <sdv_services/uds_win_tunnel/channel_mgnt.h>
+
+
+Recommended usage in practice
+-----------------------------
+
+Use the same API flow on both platforms, with this platform emphasis:
+
+* **Linux first (production-like SDV runtime):**
+  validate deployment behavior, UDS paths, and service lifecycle under target-like conditions.
+* **Windows second (developer workstation):**
+  use for faster local iteration, debugging, and integration checks.
+
+This keeps behavior aligned while still supporting day-to-day productivity.
 
 
 Architecture (Layering)
@@ -95,19 +116,6 @@ interfaces.
      BASE --> IA
      TCONN --> IA
      IA --> USER
-
-
-If you prefer embedding your existing images instead of Mermaid, store them in your
-documentation tree and reference them like this:
-
-.. code-block:: rst
-
-   .. figure:: _static/ipc/architecture.png
-      :alt: IPC architecture layering
-      :align: center
-      :width: 90%
-
-      Channel managers, transport layer, and tunnel wrapping.
 
 
 Linux: Plain UDS channel (proto=uds)
@@ -188,6 +196,11 @@ The connection string keeps the same format:
 
 The meaning of ``path=...`` on Windows is **implementation-defined** (commonly a host/port
 or similar endpoint). Check the platform-specific manager documentation/comments.
+
+.. note::
+
+  Prefer validating final communication behavior on Linux targets,
+  because that is typically the deployment environment for SDV runtime workloads.
 
 Example skeleton:
 
