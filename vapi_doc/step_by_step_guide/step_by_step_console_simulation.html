@@ -764,13 +764,13 @@ In my case, for the Wiper example, I want to visualize the Data Dispatch service
 <section id="step-6-print-initial-values">
 <h3>Step 6: Print Initial Values<a class="headerlink" href="#step-6-print-initial-values" title="Link to this heading">#</a></h3>
 <p>After registration, we can show the current state in the console:</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">//Data link</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Data link</span>
 <span class="n">PrintText</span><span class="p">(</span><span class="n">g_dsWiperModeEvent</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Wiper mode: .............   &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m_WiperMode</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;      &quot;</span><span class="p">);</span>
 <span class="n">PrintValue</span><span class="p">(</span><span class="n">g_dsWeatherRain</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Weather: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_IsRainDetected</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">m_IsRainDetected</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Raining&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Clear/dry&quot;</span><span class="p">));</span>
 <span class="n">PrintValue</span><span class="p">(</span><span class="n">g_dsWiperFrontActive</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Front Wiper: &quot;</span><span class="p">,</span><span class="w">  </span><span class="n">m_WiperFrontIsActive</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">m_WiperFrontIsActive</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Active&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Inactive&quot;</span><span class="p">));</span>
 <span class="n">PrintValue</span><span class="p">(</span><span class="n">g_dsWiperRearActive</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Rear Wiper: &quot;</span><span class="p">,</span><span class="w">  </span><span class="n">m_WiperRearIsActive</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">m_WiperRearIsActive</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Active&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Inactive&quot;</span><span class="p">));</span>
 
-<span class="c1">//Basic service signals</span>
+<span class="c1">// Basic service signals</span>
 <span class="n">PrintText</span><span class="p">(</span><span class="n">g_bsWiperModeEvent</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Wiper mode: .............   &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">m_WiperMode</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;      &quot;</span><span class="p">);</span>
 <span class="n">PrintValue</span><span class="p">(</span><span class="n">g_bsWeatherRain</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Weather: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_IsRainDetected</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">m_IsRainDetected</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Raining&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Clear/dry&quot;</span><span class="p">));</span>
 <span class="n">PrintValue</span><span class="p">(</span><span class="n">g_bsWiperFrontActive</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Front Wiper: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_WiperFrontIsActive</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">m_WiperFrontIsActive</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">&quot;Active&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;Inactive&quot;</span><span class="p">));</span>
@@ -837,7 +837,7 @@ This allows you to simulate your implementation by sending inputs directly from 
 <span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="sc">&#39;W&#39;</span><span class="p">:</span>
 <span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bAutoMode</span><span class="p">)</span>
 <span class="w">                </span><span class="p">{</span>
-<span class="w">                    </span><span class="c1">//Changed manually -&gt; moved to manual mode</span>
+<span class="w">                    </span><span class="c1">// Changed manually -&gt; moved to manual mode</span>
 <span class="w">                    </span><span class="n">m_signalWiperMode</span><span class="p">.</span><span class="n">Write</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;manual&quot;</span><span class="p">);</span>
 <span class="w">                    </span><span class="n">bAutoMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
 <span class="w">                </span><span class="p">}</span>
@@ -1229,18 +1229,18 @@ void CConsole::ResetSignals()
 
 void CConsole::UpdateTxData()
 {
-        //Basic service signals
+        // Basic service signals
         PrintValue(g_bsWiperFrontActive, &quot;Front Wiper: &quot;, m_WiperFrontIsActive, (m_WiperFrontIsActive ? &quot;Active&quot; : &quot;Inactive&quot;));
         PrintValue(g_bsWiperRearActive, &quot;Rear Wiper: &quot;, m_WiperRearIsActive, (m_WiperRearIsActive ? &quot;Active&quot; : &quot;Inactive&quot;));
 }
 
 void CConsole::InitData()
 {
-        //Data link
+        // Data link
         PrintText(g_dsWiperModeEvent, &quot;Wiper mode: .............   &quot; + m_WiperMode + &quot;      &quot;);
         PrintValue(g_dsWeatherRain, &quot;Weather: &quot;, m_IsRainDetected, (m_IsRainDetected ? &quot;Raining&quot; : &quot;Clear/dry&quot;));
 
-        //Basic service signals
+        // Basic service signals
         PrintText(g_bsWiperModeEvent, &quot;Wiper mode: .............   &quot; + m_WiperMode + &quot;      &quot;);
         PrintValue(g_bsWeatherRain, &quot;Weather: &quot;, m_IsRainDetected, (m_IsRainDetected ? &quot;Raining&quot; : &quot;Clear/dry&quot;));
         PrintValue(g_bsWiperFrontActive, &quot;Front Wiper: &quot;, m_WiperFrontIsActive, (m_WiperFrontIsActive ? &quot;Active&quot; : &quot;Inactive&quot;));
@@ -1341,7 +1341,7 @@ void CConsole::RunUntilBreak()
                 case &#39;W&#39;:
                         if (bAutoMode)
                         {
-                                //Changed manually -&gt; moved to manual mode
+                                // Changed manually -&gt; moved to manual mode
                                 m_signalWiperMode.Write&lt;std::string&gt;(&quot;manual&quot;);
                                 bAutoMode = false;
                         }
@@ -1559,7 +1559,6 @@ private:
         template &lt;typename TValue&gt;
         void PrintValue(SConsolePos sPos, const std::string&amp; rssName, TValue tValue, const std::string&amp; rssStatus);
 
-        //sdv::core::CDispatchService m_dispatch;
         sdv::app::CAppControl           m_appcontrol;
 
         mutable std::mutex   m_mtxPrintToConsole;                ///&lt; Mutex to print complete message
@@ -1837,6 +1836,7 @@ endif()
 
     <li class="sidebar-section">
       <div class="sidebar-title">🧱 Develop & Advanced</div>
+      <a class="sidebar-link" data-target="vapi_doc/sdv_tools/sdv_executables.html">Tools & executables</a>      
       <a class="sidebar-link" data-target="vapi_doc/build_services.html">Develop services</a>
       <a class="sidebar-link" data-target="vapi_doc/advanced_and_reference.html">Advanced &amp; reference</a>
     </li>
