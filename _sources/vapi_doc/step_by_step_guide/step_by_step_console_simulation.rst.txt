@@ -230,13 +230,13 @@ After registration, we can show the current state in the console:
 
 .. code-block:: cpp
 
-    //Data link
+    // Data link
     PrintText(g_dsWiperModeEvent, "Wiper mode: .............   " + m_WiperMode + "      ");
     PrintValue(g_dsWeatherRain, "Weather: ", m_IsRainDetected, (m_IsRainDetected ? "Raining" : "Clear/dry"));
     PrintValue(g_dsWiperFrontActive, "Front Wiper: ",  m_WiperFrontIsActive, (m_WiperFrontIsActive ? "Active" : "Inactive"));
     PrintValue(g_dsWiperRearActive, "Rear Wiper: ",  m_WiperRearIsActive, (m_WiperRearIsActive ? "Active" : "Inactive"));
 
-    //Basic service signals
+    // Basic service signals
     PrintText(g_bsWiperModeEvent, "Wiper mode: .............   " + m_WiperMode + "      ");
     PrintValue(g_bsWeatherRain, "Weather: ", m_IsRainDetected, (m_IsRainDetected ? "Raining" : "Clear/dry"));
     PrintValue(g_bsWiperFrontActive, "Front Wiper: ", m_WiperFrontIsActive, (m_WiperFrontIsActive ? "Active" : "Inactive"));
@@ -306,7 +306,7 @@ This allows you to simulate your implementation by sending inputs directly from 
                 case 'W':
                     if (bAutoMode)
                     {
-                        //Changed manually -> moved to manual mode
+                        // Changed manually -> moved to manual mode
                         m_signalWiperMode.Write<std::string>("manual");
                         bAutoMode = false;
                     }
@@ -731,18 +731,18 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 
 		void CConsole::UpdateTxData()
 		{
-			//Basic service signals
+			// Basic service signals
 			PrintValue(g_bsWiperFrontActive, "Front Wiper: ", m_WiperFrontIsActive, (m_WiperFrontIsActive ? "Active" : "Inactive"));
 			PrintValue(g_bsWiperRearActive, "Rear Wiper: ", m_WiperRearIsActive, (m_WiperRearIsActive ? "Active" : "Inactive"));
 		}
 
 		void CConsole::InitData()
 		{
-			//Data link
+			// Data link
 			PrintText(g_dsWiperModeEvent, "Wiper mode: .............   " + m_WiperMode + "      ");
 			PrintValue(g_dsWeatherRain, "Weather: ", m_IsRainDetected, (m_IsRainDetected ? "Raining" : "Clear/dry"));
 
-			//Basic service signals
+			// Basic service signals
 			PrintText(g_bsWiperModeEvent, "Wiper mode: .............   " + m_WiperMode + "      ");
 			PrintValue(g_bsWeatherRain, "Weather: ", m_IsRainDetected, (m_IsRainDetected ? "Raining" : "Clear/dry"));
 			PrintValue(g_bsWiperFrontActive, "Front Wiper: ", m_WiperFrontIsActive, (m_WiperFrontIsActive ? "Active" : "Inactive"));
@@ -843,7 +843,7 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 				case 'W':
 					if (bAutoMode)
 					{
-						//Changed manually -> moved to manual mode
+						// Changed manually -> moved to manual mode
 						m_signalWiperMode.Write<std::string>("manual");
 						bAutoMode = false;
 					}
@@ -1065,7 +1065,6 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 			template <typename TValue>
 			void PrintValue(SConsolePos sPos, const std::string& rssName, TValue tValue, const std::string& rssStatus);
 
-			//sdv::core::CDispatchService m_dispatch;
 			sdv::app::CAppControl           m_appcontrol;  
 
 			mutable std::mutex   m_mtxPrintToConsole;                ///< Mutex to print complete message

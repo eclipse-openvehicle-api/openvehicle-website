@@ -31,11 +31,13 @@ Overview
 Two top-level channel managers are exposed:
 
 * **Plain sockets channel manager**
+
   * Linux: ``CUnixDomainSocketsChannelMgnt``
   * Windows: ``CSocketsChannelMgnt``
   * Provides base socket channel management for non-tunneled IPC.
 
 * **Tunnel channel manager**
+
   * Linux: ``CUnixTunnelChannelMgnt``
   * Windows: ``CSocketsTunnelChannelMgnt``
   * Wraps the base transport with a tunnel header and enables future multiplexing.
@@ -44,9 +46,9 @@ At runtime you typically do:
 
 1. **Server** creates an endpoint via ``CreateEndpoint()``.
 2. **Client** connects via ``Access("proto=...;role=client;path=...;")``.
-3. Both sides call **``AsyncConnect()``** to register callback interfaces.
-4. Data is sent via **``IDataSend::SendData()``** and delivered through receive callbacks.
-5. Cleanup via **``Disconnect()``** (and deleting objects only if you own them).
+3. Both sides call **AsyncConnect()** to register callback interfaces.
+4. Data is sent via ``IDataSend::SendData()`` and delivered through receive callbacks.
+5. Cleanup via **Disconnect()** (and deleting objects only if you own them).
 
 
 Headers and namespaces
@@ -62,11 +64,11 @@ Include the channel manager header that matches your intended transport:
    #include <sdv_services/uds_unix_sockets/channel_mgnt.h>
 
    // Tunnel (Linux tunnel):
-   // #include <sdv_services/uds_unix_tunnel/channel_mgnt.h>
+   #include <sdv_services/uds_unix_tunnel/channel_mgnt.h>
 
    // Windows equivalents:
-   // #include <sdv_services/uds_win_sockets/channel_mgnt.h>
-   // #include <sdv_services/uds_win_tunnel/channel_mgnt.h>
+   #include <sdv_services/uds_win_sockets/channel_mgnt.h>
+   #include <sdv_services/uds_win_tunnel/channel_mgnt.h>
 
 
 Recommended usage in practice

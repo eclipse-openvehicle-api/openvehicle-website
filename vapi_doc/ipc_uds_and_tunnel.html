@@ -1089,22 +1089,28 @@ development, integration, and troubleshooting workflows.</p>
 <h2><a class="toc-backref" href="#id3" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>Two top-level channel managers are exposed:</p>
 <ul class="simple">
-<li><p><strong>Plain sockets channel manager</strong>
-* Linux: <code class="docutils literal notranslate"><span class="pre">CUnixDomainSocketsChannelMgnt</span></code>
-* Windows: <code class="docutils literal notranslate"><span class="pre">CSocketsChannelMgnt</span></code>
-* Provides base socket channel management for non-tunneled IPC.</p></li>
-<li><p><strong>Tunnel channel manager</strong>
-* Linux: <code class="docutils literal notranslate"><span class="pre">CUnixTunnelChannelMgnt</span></code>
-* Windows: <code class="docutils literal notranslate"><span class="pre">CSocketsTunnelChannelMgnt</span></code>
-* Wraps the base transport with a tunnel header and enables future multiplexing.</p></li>
+<li><p><strong>Plain sockets channel manager</strong></p>
+<ul>
+<li><p>Linux: <code class="docutils literal notranslate"><span class="pre">CUnixDomainSocketsChannelMgnt</span></code></p></li>
+<li><p>Windows: <code class="docutils literal notranslate"><span class="pre">CSocketsChannelMgnt</span></code></p></li>
+<li><p>Provides base socket channel management for non-tunneled IPC.</p></li>
+</ul>
+</li>
+<li><p><strong>Tunnel channel manager</strong></p>
+<ul>
+<li><p>Linux: <code class="docutils literal notranslate"><span class="pre">CUnixTunnelChannelMgnt</span></code></p></li>
+<li><p>Windows: <code class="docutils literal notranslate"><span class="pre">CSocketsTunnelChannelMgnt</span></code></p></li>
+<li><p>Wraps the base transport with a tunnel header and enables future multiplexing.</p></li>
+</ul>
+</li>
 </ul>
 <p>At runtime you typically do:</p>
 <ol class="arabic simple">
 <li><p><strong>Server</strong> creates an endpoint via <code class="docutils literal notranslate"><span class="pre">CreateEndpoint()</span></code>.</p></li>
 <li><p><strong>Client</strong> connects via <code class="docutils literal notranslate"><span class="pre">Access(&quot;proto=...;role=client;path=...;&quot;)</span></code>.</p></li>
-<li><p>Both sides call <strong>``AsyncConnect()``</strong> to register callback interfaces.</p></li>
-<li><p>Data is sent via <strong>``IDataSend::SendData()``</strong> and delivered through receive callbacks.</p></li>
-<li><p>Cleanup via <strong>``Disconnect()``</strong> (and deleting objects only if you own them).</p></li>
+<li><p>Both sides call <strong>AsyncConnect()</strong> to register callback interfaces.</p></li>
+<li><p>Data is sent via <code class="docutils literal notranslate"><span class="pre">IDataSend::SendData()</span></code> and delivered through receive callbacks.</p></li>
+<li><p>Cleanup via <strong>Disconnect()</strong> (and deleting objects only if you own them).</p></li>
 </ol>
 </section>
 <section id="headers-and-namespaces">
@@ -1116,11 +1122,11 @@ development, integration, and troubleshooting workflows.</p>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sdv_services/uds_unix_sockets/channel_mgnt.h&gt;</span>
 
 <span class="c1">// Tunnel (Linux tunnel):</span>
-<span class="c1">// #include &lt;sdv_services/uds_unix_tunnel/channel_mgnt.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sdv_services/uds_unix_tunnel/channel_mgnt.h&gt;</span>
 
 <span class="c1">// Windows equivalents:</span>
-<span class="c1">// #include &lt;sdv_services/uds_win_sockets/channel_mgnt.h&gt;</span>
-<span class="c1">// #include &lt;sdv_services/uds_win_tunnel/channel_mgnt.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sdv_services/uds_win_sockets/channel_mgnt.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sdv_services/uds_win_tunnel/channel_mgnt.h&gt;</span>
 </pre></div>
 </div>
 </section>
@@ -1497,6 +1503,7 @@ beyond today’s 1:1 mapping.</p></li>
 
     <li class="sidebar-section">
       <div class="sidebar-title">🧱 Develop & Advanced</div>
+      <a class="sidebar-link" data-target="vapi_doc/sdv_tools/sdv_executables.html">Tools & executables</a>      
       <a class="sidebar-link" data-target="vapi_doc/build_services.html">Develop services</a>
       <a class="sidebar-link" data-target="vapi_doc/advanced_and_reference.html">Advanced &amp; reference</a>
     </li>
