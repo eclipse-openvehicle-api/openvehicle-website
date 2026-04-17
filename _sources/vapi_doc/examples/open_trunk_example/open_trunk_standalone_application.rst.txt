@@ -9,65 +9,65 @@ Open Trunk Standalone Application
 
 .. note:: 
    
-   - The :term:`Complex Service` will run in its own process, therefore we need the :term:`Proxy` & :term:`Stub` code of the :term:`Interface` of the :term:`Basic Service`.
-   - In the :term:`Standalone Application` we have access to all :term:`Interface` s including the signals in in the dispatch service.
-   - As the :term:`Complex Service` should prevent the opening of the trunk it can be seen as an ASIL A component.  
+   - The devices and components run in the same process, therefore no need of the :term:`Proxy` & :term:`Stub` code to access the :term:`Interface` s.
+   - In the :term:`Standalone Application` we has access to all :term:`Interface` s including the signals in in the dispatch service.
+
+.. Attention:: The :term:`Basic Service` responsible to open the trunk must check the speed of the vehicle. In case the vehicle is moving the request must be denied.
+  
+The auto generated code, the result of the ``sdv_vss_utility``, can be used except for this basic service. Therefore the folder ``bs_vehicletrunk`` is copied and the code is enhanced to check the vehicle speed.
+
+Add the speed RX signal interface to the header:
+
+.. code-block:: cpp
+
+   #include "../generated/vss_files/vss_vehiclespeed_bs_rx.h"
+
+   class CBasicServiceVehicleTrunk
+   , public vss::Vehicle::SpeedService::IVSS_SetSpeed_Event
+
+	 BEGIN_SDV_INTERFACE_MAP()
+        SDV_INTERFACE_ENTRY(vss::Vehicle::SpeedService::IVSS_SetSpeed_Event)		
+	 END_SDV_INTERFACE_MAP()
+
+   /**
+    * @brief Set vehicleSpeed signal
+    * @param[in] value vehicle speed in km/h
+    */
+   virtual void SetSpeed(float value) override;	
+
+   private:
+        float m_Speed = 1.0;   ///< Speed, start with representing a moveing vehicle.
 
 
-Demonstration of Open Trunk Example Code
-----------------------------------------
+When this is added we can get the vehicle speed in our cpp file:
 
-To simplify the code of this example we did not include the code processing the TX signal as it is not important here. The TX signals are included in all other examples. This example should visualize only a safety aspect and introduce the view about :term:`Mixed-Criticality` .
+.. code-block:: cpp
 
-**Initialization**
-   - When user runs the executable  ./open_trunk_example 0 , then the application will run as standalone application.
-   - At first, it will check whether the SDV_FRAMEWORK_RUNTIME environment variable exists or not. 
-     If it was not set, then we need to set it manually by giving the location of framework headerfiles and binaries. 
+    CBasicServiceVehicleTrunk::CBasicServiceVehicleTrunk()
+    {
+        // Request the basic service for speed. 
+        auto pSpeedSvc = sdv::core::GetObject("Vehicle.Speed_Service").GetInterface<vss::Vehicle::SpeedService::IVSS_GetSpeed>();
+        if (pSpeedSvc)
+        {
+            // Register speed change event handler.
+            pSpeedSvc->RegisterOnSignalChangeOfVehicleSpeed(static_cast<vss::Vehicle::SpeedService::IVSS_SetSpeed_Event*> (this));
+        }
+    }
 
-     .. image:: ../../../vapi_media/examples/open_trunk_example/environment_set.png
+    void CBasicServiceVehicleTrunk::SetSpeed(float value)
+    {
+        m_Speed = value;
+    }
 
-   - From the given application configuration, the core services will be loaded in order to start the application.
+    bool CBasicServiceVehicleTrunk::SetOpen(bool value)
+    {
+        if (m_Speed)
+            return false;
+        return m_ptrOpen->WriteOpen(value);
+    }
 
-     .. image:: ../../../vapi_media/examples/open_trunk_example/startup_app.png
+Now add this code to the project build and exclude the other auto generated code.
 
-   - Now, we need to set to config mode for loading the required configuration files. 
-
-     .. image:: ../../../vapi_media/examples/open_trunk_example/set_config.png
-
-**Data communication**
-   - The Vehicle Speed (Rx) signal will be subscribed via Data Dispatch Service, so when there is a change in signal value,
-     the callback function will be called. 
-
-     .. image:: ../../../vapi_media/examples/open_trunk_example/data_dispatch.png
-
-   - Register the event in Vehicle Device on signal change.
-
-     .. image:: ../../../vapi_media/examples/open_trunk_example/vehicle_device_rx.png
-
-   - Register callback function in Basic Service for signal change update.
-
-     .. image:: ../../../vapi_media/examples/open_trunk_example/basic_service_rx.png
-
-   - Get the interfaces of Basic Service and Complex Service for opening the trunk.
-
-     .. image:: ../../../vapi_media/examples/open_trunk_example/get_interfaces.png
-
-   - Now, we will set to running mode in which we can no longer load any more config files later. 
-
-     .. image:: ../../../vapi_media/examples/open_trunk_example/set_running.png
-
-     .. image:: ../../../vapi_media/examples/open_trunk_example/data_flow_diag.png
-
-**Shutdown**
-   - Unregister the signals and events from the Basic and Complex services.
-
-     .. image:: ../../../vapi_media/examples/open_trunk_example/unregister_events.png
-
-   - Shutdown the application.
-   
-     .. image:: ../../../vapi_media/examples/open_trunk_example/shutdown_app.png
-   
-.. image:: ../../../vapi_media/examples/open_trunk_example/open_trunk_screenshot_0.png
 
 The Speed signal is coming via CAN bus by using the :term:`VAPI Component` ``can_com_sim.sdv`` from the framework. The :term:`VAPI Component` reads the CAN messages from a text file and sends these messages to the :term:`Data Link` The :term:`Data Link` component is created from a dbc file with the help of the helper tool ``sdv_dbc_util``.
 
@@ -75,4 +75,4 @@ The Speed signal is coming via CAN bus by using the :term:`VAPI Component` ``can
 
 .. image:: ../../../vapi_media/examples/open_trunk_example/open_trunk_example.png
 
-
+.. Attention:: While the standalone application has access to the :term:`Vehicle Device` a :term:`Complex Service` has not. A :term:`Complex Service` will run in its own isolated process.

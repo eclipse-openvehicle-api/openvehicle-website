@@ -1,6 +1,6 @@
 /* stylesheet.css */
 /* Import secondary sidebar styles */
-@import url('secondary-sidebar.css');
+@import url('secondary_sidebar.css');
 
 /* Define custom colors for light and dark themes */
 
@@ -355,10 +355,13 @@ img { max-width: 100%; height: auto; }
 
   /* Hide the desktop fixed sidebar on mobile */
   .bd-sidebar-secondary {
-    position: absolute;
-    right: 0;
+    position: fixed;
     top: 0;
-    width: 260px;        /* small mobile drawer width */
+    right: 0;
+    left: auto !important;
+    margin: 0 !important;
+    width: min(88vw, 320px);
+    max-width: 88vw;
     height: 100vh;
     background: var(--sidebar-background-color);
     transform: translateX(100%);   /* hidden by default */
@@ -371,6 +374,24 @@ img { max-width: 100%; height: auto; }
   body.show-secondary-sidebar .bd-sidebar-secondary {
     transform: translateX(0);
   }
+
+    /* Keep sidebar content full width inside the drawer. */
+    .bd-sidebar-secondary > * {
+        width: 100%;
+        max-width: none;
+    }
+
+    /* Drop desktop spacing rules that cause horizontal panning on phones. */
+    .bd-main {
+        margin-right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    html,
+    body {
+        overflow-x: hidden;
+    }
 }
 
 
@@ -400,7 +421,7 @@ img { max-width: 100%; height: auto; }
 /* === Sidebar custom styles === */
 
 /* Base */
-.sidebar {
+.sidebar-menu {
   list-style: none;
   padding-left: 0;
   margin: 0;
@@ -439,5 +460,29 @@ img { max-width: 100%; height: auto; }
 /* Active page */
 .sidebar-link.active {
   font-weight: 600;
+}
+
+/* Final mobile guard: keep secondary sidebar hidden until toggled open. */
+@media (max-width: 1023px) {
+    body:not(.show-secondary-sidebar) .bd-sidebar-secondary {
+        transform: translateX(100%) !important;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    body.show-secondary-sidebar .bd-sidebar-secondary {
+        transform: translateX(0) !important;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    .bd-sidebar-secondary .sidebar-menu {
+        display: block;
+        width: 100%;
+    }
+
+    .bd-sidebar-secondary .sidebar-title {
+        display: block;
+    }
 }
 
