@@ -4,7 +4,7 @@ Open Trunk Example
 ==================
 
 
-.. attention:: Purpose: Demonstration safety topic, demonstration :term:`Mixed-Criticality` and why we need two instances: safety and non-safety instance.
+.. attention:: Purpose: Opening the trunk is a safety‑critical operation and must be protected. Access shall be denied when the vehicle is in motion.
 
 .. note:: 
    | Example can be found in ``<output-folder>/examples/bin``:
@@ -23,9 +23,7 @@ Open Trunk Example
 
    - Required: TX signal to open the trunk, RX signal representing the speed of the vehicle.  
    - Convert the speed value from ``m/s`` to ``km/h``. This represents the vehicle abstraction when the input signal unit does not match the standardized interface definition.
-   - A complex service offers an interface to open the trunk.
-   - Before the command is forwarded to the basic service the vehicle speed is checked and denied accordingly to prevent the opening of the trunk.
-   - Therefore the complex service can be seen as an ASIL A component.  
+   - The basic service which offers the interface to open the trunk must deny the access when the vehicle is in motion.  
    
 .. image:: ../../../vapi_media/examples/open_trunk_example/open_trunk_overview.png
 
@@ -101,56 +99,6 @@ Open Trunk Example
 
 
 
-
-.. uml::
-   :caption: Trunk Complex service class diagram
-
-   @startuml
-    set separator ::
-      class CTrunkExampleService 
-      {
-         +{abstract} bool OnInitialize()
-         +{abstract} void OnShutdown()
-         +{abstract} void SetSpeed(float value)
-         +{abstract} bool PopTrunk()
-         -float m_Speed
-         -vss::Vehicle::Body::TrunkService::IVSS_SetOpen* m_pTrunkSvc
-      }
-
-      
-      class sdv::CSdvObject
-      {
-         {static} +sdv::sequence<sdv::u8string> GetClassAliasesStatic()
-         {static} +sdv::u8string GetDefaultObjectNameStatic()
-         {static} +bool IsSingletonStatic()
-         {static} +sdv::sequence<sdv::u8string> GetObjectDependenciesStatic()
-      }
-
-      Interface sdv::IObjectControl
-      {
-         {abstract} void Initialize(const sdv::u8string& ssObjectConfig)
-         {abstract} EObjectStatus GetStatus() const
-         {abstract} void SetOperationMode(EOperationMode eMode) 
-         {abstract} void Shutdown()
-      }
-
-      Interface vss::Vehicle::SpeedService::IVSS_SetSpeed_Event
-      {
-         {abstract} void SetSpeed(float value)
-      }
-
-      Interface ITrunkKitService
-      {
-         {abstract} bool PopTrunk()
-      }
-
-      CTrunkExampleService --|> sdv::CSdvObject : Inherits 
-      CTrunkExampleService ..|> sdv::IObjectControl : Implements
-      CTrunkExampleService ..|> vss::Vehicle::SpeedService::IVSS_SetSpeed_Event : Implements
-      CTrunkExampleService ..|> ITrunkKitService : Implements
-
-   @enduml
-
 .. uml::
    :caption: Vehicle Trunk basic service class diagram
 
@@ -158,7 +106,9 @@ Open Trunk Example
     set separator ::
       class CBasicServiceVehicleTrunk
       {
+         +{abstract} void SetSpeed(float value)
          {abstract} bool SetOpen(bool value)
+         +{abstract} RegisterOnSignalChangeOfVehicleSpeed(vss::Vehicle::SpeedService::IVSS_SetSpeed_Event* callback)         
          -vss::Vehicle::Body::TrunkDevice::IVSS_WriteOpen* m_ptrOpen
       }     
 
@@ -174,6 +124,11 @@ Open Trunk Example
       {
          {abstract} bool SetOpen(bool value)
       }
+
+      Interface vss::Vehicle::SpeedService::IVSS_SetSpeed_Event
+      {
+         {abstract} void SetSpeed(float value)
+      }     
 
       CBasicServiceVehicleTrunk --|> sdv::CSdvObject : Inherits 
       CBasicServiceVehicleTrunk ..|> vss::Vehicle::Body::TrunkService::IVSS_SetOpen : Implements

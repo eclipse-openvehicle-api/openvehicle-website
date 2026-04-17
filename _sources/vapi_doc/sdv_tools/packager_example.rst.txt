@@ -1,0 +1,57 @@
+.. _vapi-sdv_packager_example:
+
+sdv_packager example
+=====================
+
+First go to the example output folder. The following commands are meant to be executed from this folder.
+
+``<OUTPUT_FOLDER>examples\bin``
+
+First create/install the platform abstraction:
+
+.. note:: platform config - containing all the components needed to interact with the OS, middleware, vehicle bus, Ethernet.
+
+In this example the platform abstraction contains the signal source, the door_example_receiver.asc file which contains the CAN signals. We will use the ``can_com_sim.sdv`` component from the framework itself to read the CAN signals.
+The required ``platform.toml`` is in the example sub folder ``new_instance``. We will install this toml file with the parameter ``CONFIGURE``. The new instance id for the instance is also required.
+	
+   - ``..\..\bin\sdv_packager CONFIGURE new_instance\platform.toml --instance9999 --platform_config``
+
+After executing this command there will be a new subfolder ``9999`` below ``<OUTPUT_FOLDER>examples\bin``. This is already the new instance which can be started and stopped with the following commands:
+
+   - ``..\..\bin\sdv_control STARTUP --instance9999``
+   - ``..\..\bin\sdv_control SHUTDOWN --instance9999``
+
+Then we want to create packages which can be installed later. The first package will be the signal abstraction which contains also the data link component from the open trunk example.
+
+.. note:: vehicle interface   - containing the vehicle bus interpretation components like data link based on DBC and devices for their abstraction.
+
+The parameter is ``PACK``, we set a name for this package, include all binaries for this package and the location where this package should be created.
+
+  - ``..\..\bin\sdv_packager PACK MyDevices can_dl_doors.sdv doors_vd_frontdoorleft_rx.sdv doors_vd_frontdoorright_rx.sdv doors_vd_reardoorleft_rx.sdv doors_vd_reardoorright_rx.sdv -Onew_instance``
+
+Similar to that we create the package for the vehicle abstraction. The vehicle abstraction offers the interfaces which can be used by the vehicle functions.
+
+.. note:: vehicle abstraction - containing the vehicle abstraction services
+
+We just set a different name, include again all binaries and create the package in the same location.
+
+  - ``..\..\bin\sdv_packager PACK MyServices doors_proxystub.sdv doors_bs_frontdoorleft_rx.sdv doors_bs_frontdoorright_rx.sdv doors_bs_reardoorleft_rx.sdv doors_bs_reardoorright_rx.sdv -Onew_instance`` 
+
+Finally we want to create the package which contains the vehicle function.
+
+.. note:: The application / vehicle function can be added to the system (or being removed from the system) at runtime.
+
+Again, set a different name, include all binaries and create the package in the same location.
+
+  - ``..\..\bin\sdv_packager PACK MyFunctions doors_complex_service.sdv doors_service_proxystub.sdv -Onew_instance``
+
+After the packages are created we can install these packages in the new instance ``9999`` one by one:
+
+  - ``..\..\bin\sdv_packager INSTALL new_instance\MyDevices.sdv_package   --instance9999 --interface_config --overwrite``
+  - ``..\..\bin\sdv_packager INSTALL new_instance\MyServices.sdv_package  --instance9999 --abstract_config  --overwrite``
+  - ``..\..\bin\sdv_packager INSTALL new_instance\MyFunctions.sdv_package --instance9999 --user_config      --overwrite``
+
+Now this new instance must be started using sdv_control and the command ``STARTUP``. When the new instance is running the application can connect itself to this new instance:
+
+   - ``..\..\bin\sdv_control STARTUP --instance9999``
+   - ``door_external_app.exe 9999``

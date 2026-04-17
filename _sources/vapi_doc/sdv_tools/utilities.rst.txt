@@ -253,6 +253,27 @@ These files define and implement the ``CDataLink`` class, which serves as the in
 Includes logic for initializing CAN interfaces, registering message receivers, handling incoming CAN messages, and managing signal dispatching.  
 The header file declares the structure and interfaces, while the source file provides the operational logic for initialization, shutdown, and message handling.
 
+If the **can_dl.sdv** ism loaded for the first time the best is to visualize the created signals:
+
+.. code-block:: cpp
+   
+    sdv::core::CDispatchService dispatch;
+    auto signals = dispatch.GetRegisteredSignals();
+    for (auto signal :signals)
+    {
+        if (signal.eType == sdv::core::ESignalDirection::sigdir_rx)
+        {
+            std::cout << "Registered Rx Signal: " << signal.ssName.c_str() << std::endl;
+        }
+    }
+    for (auto signal :signals)
+    {
+        if (signal.eType != sdv::core::ESignalDirection::sigdir_rx)
+        {
+            std::cout << "Registered Tx Signal: " << signal.ssName.c_str() << std::endl;
+        }
+    }
+
 **fmu_<your_FMU_name>**  
 
 .. seealso:: :ref:`Simulation / Testing / FMU <vapi-simulation>`.
