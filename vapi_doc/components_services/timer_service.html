@@ -806,13 +806,13 @@ When managing multiple tasks, it is recommended to use smart pointers for storag
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;interfaces/timer.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/component_impl.h&gt;</span>
 
-<span class="n">class</span><span class="w"> </span><span class="n">DemoTimerComponent</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span><span class="p">,</span><span class="w"> </span><span class="n">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectControl</span><span class="p">,</span><span class="w"> </span><span class="n">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">ITaskExecute</span>
+<span class="n">class</span><span class="w"> </span><span class="n">DemoTimerComponent</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span><span class="p">,</span><span class="w"> </span><span class="n">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">ITaskExecute</span>
 <span class="p">{</span>
 <span class="n">public</span><span class="o">:</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">vehicle_bus</span><span class="p">)</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;Timer_Example&quot;</span><span class="p">)</span>
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">Initialize</span><span class="p">()</span><span class="w"> </span><span class="n">override</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">OnInitialize</span><span class="p">()</span><span class="w"> </span><span class="n">override</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initializing...&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="w">        </span><span class="c1">// Getting the platform abstraction interface access pointer via GetObject.</span>
@@ -828,16 +828,16 @@ When managing multiple tasks, it is recommended to use smart pointers for storag
 <span class="w">            </span><span class="c1">// timestamp while executing the task.</span>
 <span class="w">            </span><span class="n">m_pTimer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">taskTimerIfc</span><span class="o">-&gt;</span><span class="n">CreateTimer</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="n">this</span><span class="p">);</span>
 
-<span class="w">            </span><span class="c1">// updating the object state to running.</span>
-<span class="w">            </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">running</span><span class="p">;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">        </span><span class="k">else</span>
 <span class="w">        </span><span class="p">{</span>
 <span class="w">            </span><span class="c1">// If not initialized properly prints the error message to the console and update the</span>
 <span class="w">            </span><span class="c1">// object state to the initialization_failure.</span>
 <span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Initialization failure: Cannot access task timer interface&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">            </span><span class="n">m_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectStatus</span><span class="o">::</span><span class="n">initialization_failure</span><span class="p">;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;;</span>
 <span class="w">        </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
 
 <span class="w">    </span><span class="cm">/**</span>
 <span class="cm">    * @brief Execute function contains the task to be executed in provided period.</span>

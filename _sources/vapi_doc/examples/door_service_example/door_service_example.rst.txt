@@ -72,14 +72,6 @@ Door Service Example
          {static} +sdv::sequence<sdv::u8string> GetObjectDependenciesStatic()
       }
 
-      Interface sdv::IObjectControl
-      {
-         {abstract} void Initialize(const sdv::u8string& ssObjectConfig)
-         {abstract} EObjectStatus GetStatus() const
-         {abstract} void SetOperationMode(EOperationMode eMode) 
-         {abstract} void Shutdown()
-      }
-
       Interface IDoorService
       {
          {abstract} bool GetDoorsStatus()
@@ -106,7 +98,6 @@ Door Service Example
       }
 
       CDoorsExampleService --|> sdv::CSdvObject : Inherits
-      CDoorsExampleService --|> sdv::IObjectControl
       CDoorsExampleService ..|> IDoorService
       CDoorsExampleService ..|> vss::Vehicle::Body::Door::Axle::_01::LeftService::IVSS_SetIsOpenL1_Event : Implements
       CDoorsExampleService ..|> vss::Vehicle::Body::Door::Axle::_01::RightService::IVSS_SetIsOpenR1_Event : Implements
@@ -309,11 +300,7 @@ Door Service Example
     set separator ::
       class CVehicleDeviceFrontDoorLeft 
       {
-         +{abstract} void Initialize(const sdv::u8string& objectConfig)
-         +{abstract} sdv::EObjectStatus GetStatus() const 
-         +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
-         +{abstract} void Shutdown() 
-         +{abstract} bool WriteLock(bool value) 	
+         +{abstract} bool OnInitialize()
          +{abstract} void RegisterIsOpenEvent(vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteIsOpen_Event* event)
          +{abstract} void UnregisterIsOpenEvent(vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteIsOpen_Event* event)
          -void ExecuteAllCallBacksForLeftDoorIsOpen01(sdv::any_t value)
@@ -321,7 +308,6 @@ Door Service Example
          -sdv::core::CSignal m_leftDoorIsOpen01Signal                                        
          -mutable std::mutex m_leftDoorIsOpen01MutexCallbacks                                
          -std::set<vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteIsOpen_Event*> m_leftDoorIsOpen01Callbacks
-         -std::atomic<sdv::EObjectStatus> m_status
       }
       
       class sdv::CSdvObject
@@ -330,14 +316,6 @@ Door Service Example
          {static} +sdv::u8string GetDefaultObjectNameStatic()
          {static} +bool IsSingletonStatic()
          {static} +sdv::sequence<sdv::u8string> GetObjectDependenciesStatic()
-      }
-
-      Interface sdv::IObjectControl
-      {
-         {abstract} void Initialize(const sdv::u8string& ssObjectConfig)
-         {abstract} EObjectStatus GetStatus() const
-         {abstract} void SetOperationMode(EOperationMode eMode) 
-         {abstract} void Shutdown()
       }
 
       Interface vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_IsOpen
@@ -352,7 +330,6 @@ Door Service Example
       }
 
       CVehicleDeviceFrontDoorLeft --|> sdv::CSdvObject : Inherits
-      CVehicleDeviceFrontDoorLeft ..|> sdv::IObjectControl : Implements
       CVehicleDeviceFrontDoorLeft ..|> vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_IsOpen : Implements
       CVehicleDeviceFrontDoorLeft ..|> vss::Vehicle::Chassis::Door::Axle01::LeftDevice::IVSS_WriteLock : Implements
     @enduml
@@ -421,9 +398,7 @@ Door Service Example
     set separator ::
       class CVehicleDeviceFrontDoorRight 
       {
-         +{abstract} void Initialize(const sdv::u8string& objectConfig)
-         +{abstract} sdv::EObjectStatus GetStatus() const 
-         +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
+         +{abstract} bool OnInitialize()
          +{abstract} void Shutdown() 
          +{abstract} bool WriteLock(bool value) 	
          +{abstract} void RegisterIsOpenEvent(vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_WriteIsOpen_Event* event)
@@ -433,7 +408,6 @@ Door Service Example
          -sdv::core::CSignal m_rightDoorIsOpen01Signal                                              
          -mutable std::mutex m_rightDoorIsOpen01MutexCallbacks                                      
          -std::set<vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_WriteIsOpen_Event*> m_rightDoorIsOpen01Callbacks
-         -std::atomic<sdv::EObjectStatus> m_status
       }
       
       class sdv::CSdvObject
@@ -442,14 +416,6 @@ Door Service Example
          {static} +sdv::u8string GetDefaultObjectNameStatic()
          {static} +bool IsSingletonStatic()
          {static} +sdv::sequence<sdv::u8string> GetObjectDependenciesStatic()
-      }
-
-      Interface sdv::IObjectControl
-      {
-         {abstract} void Initialize(const sdv::u8string& ssObjectConfig)
-         {abstract} EObjectStatus GetStatus() const
-         {abstract} void SetOperationMode(EOperationMode eMode) 
-         {abstract} void Shutdown()
       }
 
       Interface vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_IsOpen
@@ -464,7 +430,6 @@ Door Service Example
       }
 
       CVehicleDeviceFrontDoorRight --|> sdv::CSdvObject : Inherits
-      CVehicleDeviceFrontDoorRight ..|> sdv::IObjectControl : Implements
       CVehicleDeviceFrontDoorRight ..|> vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_IsOpen : Implements
       CVehicleDeviceFrontDoorRight ..|> vss::Vehicle::Chassis::Door::Axle01::RightDevice::IVSS_WriteLock : Implements
     @enduml
@@ -533,9 +498,7 @@ Door Service Example
     set separator ::
       class CVehicleDeviceRearDoorLeft 
       {
-         +{abstract} void Initialize(const sdv::u8string& objectConfig)
-         +{abstract} sdv::EObjectStatus GetStatus() const 
-         +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
+         +{abstract} bool OnInitialize()
          +{abstract} void Shutdown() 
          +{abstract} bool WriteLock(bool value) 	
          +{abstract} void RegisterIsOpenEvent(vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_WriteIsOpen_Event* event)
@@ -545,7 +508,6 @@ Door Service Example
          -sdv::core::CSignal m_leftDoorIsOpen02Signal                                              
          -mutable std::mutex m_leftDoorIsOpen02MutexCallbacks                                      
          -std::set<vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_WriteIsOpen_Event*> m_leftDoorIsOpen02Callbacks
-         -std::atomic<sdv::EObjectStatus> m_status
       }
       
       class sdv::CSdvObject
@@ -554,14 +516,6 @@ Door Service Example
          {static} +sdv::u8string GetDefaultObjectNameStatic()
          {static} +bool IsSingletonStatic()
          {static} +sdv::sequence<sdv::u8string> GetObjectDependenciesStatic()
-      }
-
-      Interface sdv::IObjectControl
-      {
-         {abstract} void Initialize(const sdv::u8string& ssObjectConfig)
-         {abstract} EObjectStatus GetStatus() const
-         {abstract} void SetOperationMode(EOperationMode eMode) 
-         {abstract} void Shutdown()
       }
 
       Interface vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_IsOpen
@@ -576,7 +530,6 @@ Door Service Example
       }
 
       CVehicleDeviceRearDoorLeft --|> sdv::CSdvObject : Inherits
-      CVehicleDeviceRearDoorLeft ..|> sdv::IObjectControl : Implements
       CVehicleDeviceRearDoorLeft ..|> vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_IsOpen : Implements
       CVehicleDeviceRearDoorLeft ..|> vss::Vehicle::Chassis::Door::Axle02::LeftDevice::IVSS_WriteLock	: Implements
     @enduml
@@ -646,9 +599,7 @@ Door Service Example
     set separator ::
       class CVehicleDeviceRearDoorRight 
       {
-         +{abstract} void Initialize(const sdv::u8string& objectConfig)
-         +{abstract} sdv::EObjectStatus GetStatus() const 
-         +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
+         +{abstract} bool OnInitialize()
          +{abstract} void Shutdown() 
          +{abstract} bool WriteLock(bool value) 	
          +{abstract} void RegisterIsOpenEvent(vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_WriteIsOpen_Event* event)
@@ -658,7 +609,6 @@ Door Service Example
          -sdv::core::CSignal m_rightDoorIsOpen02Signal                                              
          -mutable std::mutex m_rightDoorIsOpen02MutexCallbacks                                      
          -std::set<vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_WriteIsOpen_Event*> m_rightDoorIsOpen02Callbacks
-         -std::atomic<sdv::EObjectStatus> m_status
       }
       
       class sdv::CSdvObject
@@ -667,14 +617,6 @@ Door Service Example
          {static} +sdv::u8string GetDefaultObjectNameStatic()
          {static} +bool IsSingletonStatic()
          {static} +sdv::sequence<sdv::u8string> GetObjectDependenciesStatic()
-      }
-
-      Interface sdv::IObjectControl
-      {
-         {abstract} void Initialize(const sdv::u8string& ssObjectConfig)
-         {abstract} EObjectStatus GetStatus() const
-         {abstract} void SetOperationMode(EOperationMode eMode) 
-         {abstract} void Shutdown()
       }
 
       Interface vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_IsOpen
@@ -689,7 +631,6 @@ Door Service Example
       }
 
       CVehicleDeviceRearDoorRight --|> sdv::CSdvObject : Inherits
-      CVehicleDeviceRearDoorRight ..|> sdv::IObjectControl : Implements
       CVehicleDeviceRearDoorRight ..|> vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_IsOpen : Implements
       CVehicleDeviceRearDoorRight ..|> vss::Vehicle::Chassis::Door::Axle02::RightDevice::IVSS_WriteLock : Implements
     @enduml

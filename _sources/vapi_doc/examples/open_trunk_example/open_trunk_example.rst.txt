@@ -19,11 +19,12 @@ Open Trunk Example
 
 .. hint:: 
    
-   The :term:`Vehicle Function` will open the trunk. This should be blocked when the vehicle is moving:
+   The :term:`Vehicle Function` will open the trunk. This must be safety-protected when the vehicle is moving:
 
    - Required: TX signal to open the trunk, RX signal representing the speed of the vehicle.  
    - Convert the speed value from ``m/s`` to ``km/h``. This represents the vehicle abstraction when the input signal unit does not match the standardized interface definition.
-   - The basic service which offers the interface to open the trunk must deny the access when the vehicle is in motion.  
+   - The basic service which offers the interface to open the trunk must deny opening when the vehicle is in motion.
+   - If the trunk is already open and vehicle speed changes to a value greater than ``0 km/h``, the trunk must be closed automatically.  
    
 .. image:: ../../../vapi_media/examples/open_trunk_example/open_trunk_overview.png
 
@@ -189,9 +190,7 @@ Open Trunk Example
     set separator ::
       class CVehicleDeviceVehicleSpeed
       {
-         +{abstract} void Initialize(const sdv::u8string& objectConfig)
-         +{abstract} sdv::EObjectStatus GetStatus() const
-         +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
+         +{abstract} bool OnInitialize()
          +{abstract} void Shutdown()
          +{abstract} void RegisterSpeedEvent(vss::Vehicle::SpeedDevice::IVSS_WriteSpeed_Event* event)
          +{abstract} void UnregisterSpeedEvent(vss::Vehicle::SpeedDevice::IVSS_WriteSpeed_Event* event)
@@ -199,7 +198,6 @@ Open Trunk Example
          -sdv::core::CSignal m_vehicleSpeedSignal                                                        
          -mutable std::mutex m_vehicleSpeedMutexCallbacks                                               
          -std::set<vss::Vehicle::SpeedDevice::IVSS_WriteSpeed_Event*> m_vehicleSpeedCallbacks 
-         -std::atomic<sdv::EObjectStatus> m_status
       }
       
       class sdv::CSdvObject
@@ -209,14 +207,6 @@ Open Trunk Example
          {static} +bool IsSingletonStatic()
          {static} +sdv::sequence<sdv::u8string> GetObjectDependenciesStatic()
       }
-      
-      Interface sdv::IObjectControl
-      {
-         {abstract} void Initialize(const sdv::u8string& ssObjectConfig)
-         {abstract} EObjectStatus GetStatus() const
-         {abstract} void SetOperationMode(EOperationMode eMode) 
-         {abstract} void Shutdown()
-      }
 
       Interface vss::Vehicle::SpeedDevice::IVSS_Speed
       {
@@ -225,7 +215,6 @@ Open Trunk Example
       }
 
       CVehicleDeviceVehicleSpeed --|> sdv::CSdvObject : Inherits 
-      CVehicleDeviceVehicleSpeed ..|> sdv::IObjectControl : Implements
       CVehicleDeviceVehicleSpeed ..|> vss::Vehicle::SpeedDevice::IVSS_Speed : Implements
    @enduml
 
@@ -236,13 +225,10 @@ Open Trunk Example
     set separator ::
       class CVehicleDeviceVehicleTrunk
       {
-         +{abstract} void Initialize(const sdv::u8string& objectConfig)
-         +{abstract} sdv::EObjectStatus GetStatus() const
-         +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
+         +{abstract} bool OnInitialize()
          +{abstract} void Shutdown()
          +{abstract} bool WriteOpen(bool value)
          -sdv::core::CSignal m_trunk
-         -std::atomic<sdv::EObjectStatus> m_status
       }
       
       class sdv::CSdvObject
@@ -252,14 +238,6 @@ Open Trunk Example
          {static} +bool IsSingletonStatic()
          {static} +sdv::sequence<sdv::u8string> GetObjectDependenciesStatic()
       }
-      
-      Interface sdv::IObjectControl
-      {
-         {abstract} void Initialize(const sdv::u8string& ssObjectConfig)
-         {abstract} EObjectStatus GetStatus() const
-         {abstract} void SetOperationMode(EOperationMode eMode) 
-         {abstract} void Shutdown()
-      }
 
       Interface vss::Vehicle::Body::TrunkDevice::IVSS_WriteOpen
       {
@@ -267,6 +245,5 @@ Open Trunk Example
       }
 
       CVehicleDeviceVehicleTrunk --|> sdv::CSdvObject : Inherits 
-      CVehicleDeviceVehicleTrunk ..|> sdv::IObjectControl : Implements
       CVehicleDeviceVehicleTrunk ..|> vss::Vehicle::Body::TrunkDevice::IVSS_WriteOpen : Implements
    @enduml

@@ -212,12 +212,6 @@ The algorithm is implemented in the **Auto Headlight Service**, a :term:`Complex
       {static} +sdv::sequence<sdv::u8string> GetObjectDependenciesStatic()
 
     }
-    class CSdvObjectAccess
-    Interface sdv::IObjectControl
-    {
-      {abstract} bool OnInitialize()
-      {abstract} void OnShutdown()
-    }
     Interface IAutoheadlightService
     {
       struct SGPSBoundBox
@@ -234,7 +228,6 @@ The algorithm is implemented in the **Auto Headlight Service**, a :term:`Complex
       virtual void SetCurrentLongitude(float value)
     }
 
-    CAutoHeadlightService ..|> IObjectControl : Implements
     CAutoHeadlightService ..|> IAutoheadlightService : Implements
     CAutoHeadlightService ..|> IVSS_SetCurrentLatitude_Event : Implements
     CAutoHeadlightService ..|> IVSS_SetCurrentLongitude_Event : Implements
@@ -463,13 +456,10 @@ The algorithm is implemented in the **Auto Headlight Service**, a :term:`Complex
     set separator ::
     class CVehicleDeviceHeadLightLowBeam
     {
-      +void Initialize(const sdv::u8string& objectConfig)
-      +sdv::EObjectStatus GetStatus() const 
-      +void SetOperationMode(sdv::EOperationMode eMode)
+      +void OnInitialize()
       +void Shutdown() 
       +bool WriteHeadLightLowBeam(bool value) 
       -sdv::core::CSignal m_bHeadLightLowBeam
-      -std::atomic<sdv::EObjectStatus> m_status
     }
 
     class sdv::CSdvObject
@@ -480,21 +470,12 @@ The algorithm is implemented in the **Auto Headlight Service**, a :term:`Complex
       {static} +sdv::sequence<sdv::u8string> GetObjectDependenciesStatic()
     }
 
-    Interface sdv::IObjectControl
-    {
-      {abstract} void Initialize(const sdv::u8string& ssObjectConfig)
-      {abstract} EObjectStatus GetStatus() const
-      {abstract} void SetOperationMode(EOperationMode eMode) 
-      {abstract} void Shutdown()
-    }
-
     Interface vss::Vehicle::Body::Light::Front::LowBeamDevice::IVSS_WriteHeadLightLowBeam
     {
       {abstract} bool WriteHeadLightLowBeam(bool value)
     }
 
     CVehicleDeviceHeadLightLowBeam --|> sdv::CSdvObject : Inherits
-    CVehicleDeviceHeadLightLowBeam ..|> sdv::IObjectControl : Implements
     CVehicleDeviceHeadLightLowBeam ..|> vss::Vehicle::Body::Light::Front::LowBeamDevice::IVSS_WriteHeadLightLowBeam : Implements
 
    @enduml

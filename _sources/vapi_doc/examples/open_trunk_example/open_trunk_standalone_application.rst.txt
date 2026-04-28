@@ -12,7 +12,9 @@ Open Trunk Standalone Application
    - The devices and components run in the same process, therefore no need of the :term:`Proxy` & :term:`Stub` code to access the :term:`Interface` s.
    - In the :term:`Standalone Application` we has access to all :term:`Interface` s including the signals in in the dispatch service.
 
-.. Attention:: The :term:`Basic Service` responsible to open the trunk must check the speed of the vehicle. In case the vehicle is moving the request must be denied.
+.. Attention:: The :term:`Basic Service` responsible to open the trunk must check the speed of the vehicle. In case the vehicle is moving, opening must be denied and an already open trunk must be closed automatically.
+   
+.. image:: ../../../vapi_media/examples/open_trunk_example/open_trunk_screenshot_0.png
   
 The auto generated code, the result of the ``sdv_vss_utility``, can be used except for this basic service. Therefore the folder ``bs_vehicletrunk`` is copied and the code is enhanced to check the vehicle speed.
 
@@ -54,16 +56,18 @@ When this is added we can get the vehicle speed in our cpp file:
         }
     }
 
+    bool CBasicServiceVehicleTrunk::SetOpen(bool value)
+    {
+        if (value && (m_Speed > 0.0F))
+            return false;
+        return m_ptrOpen->WriteOpen(value);
+    }
+
     void CBasicServiceVehicleTrunk::SetSpeed(float value)
     {
         m_Speed = value;
-    }
-
-    bool CBasicServiceVehicleTrunk::SetOpen(bool value)
-    {
-        if (m_Speed)
-            return false;
-        return m_ptrOpen->WriteOpen(value);
+        if (m_Speed > 0.0F)
+            (void)m_ptrOpen->WriteOpen(false);
     }
 
 Now add this code to the project build and exclude the other auto generated code.
