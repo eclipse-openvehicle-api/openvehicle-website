@@ -970,7 +970,7 @@ deactivate CS
 </figure>
 <figure class="align-default" id="id2">
 <p class="plantuml">
-<img src="../../../_images/plantuml-2c5e7da9b57f884a8e2088a533d8e634c337a3f7.svg" alt="&#64;startuml
+<img src="../../../_images/plantuml-4ae117f5846eeccf55dc07b12c955cf76af61465.svg" alt="&#64;startuml
  set separator ::
  class CAutoHeadlightService &lt;&lt;Singleton&gt;&gt;
  {
@@ -998,12 +998,6 @@ deactivate CS
    {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
 
  }
- class CSdvObjectAccess
- Interface sdv::IObjectControl
- {
-   {abstract} bool OnInitialize()
-   {abstract} void OnShutdown()
- }
  Interface IAutoheadlightService
  {
    struct SGPSBoundBox
@@ -1020,7 +1014,6 @@ deactivate CS
    virtual void SetCurrentLongitude(float value)
  }
 
- CAutoHeadlightService ..|&gt; IObjectControl : Implements
  CAutoHeadlightService ..|&gt; IAutoheadlightService : Implements
  CAutoHeadlightService ..|&gt; IVSS_SetCurrentLatitude_Event : Implements
  CAutoHeadlightService ..|&gt; IVSS_SetCurrentLongitude_Event : Implements
@@ -1253,17 +1246,14 @@ deactivate CS
 </figure>
 <figure class="align-default" id="id7">
 <p class="plantuml">
-<img src="../../../_images/plantuml-9264958db9fa4f0860d1a5813d97fc7f3927ee7f.svg" alt="&#64;startuml
+<img src="../../../_images/plantuml-d34e41591288f9e901340c0e770b28194ab79db3.svg" alt="&#64;startuml
  set separator ::
  class CVehicleDeviceHeadLightLowBeam
  {
-   +void Initialize(const sdv::u8string&amp; objectConfig)
-   +sdv::EObjectStatus GetStatus() const
-   +void SetOperationMode(sdv::EOperationMode eMode)
+   +void OnInitialize()
    +void Shutdown()
    +bool WriteHeadLightLowBeam(bool value)
    -sdv::core::CSignal m_bHeadLightLowBeam
-   -std::atomic&lt;sdv::EObjectStatus&gt; m_status
  }
 
  class sdv::CSdvObject
@@ -1274,21 +1264,12 @@ deactivate CS
    {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
  }
 
- Interface sdv::IObjectControl
- {
-   {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
-   {abstract} EObjectStatus GetStatus() const
-   {abstract} void SetOperationMode(EOperationMode eMode)
-   {abstract} void Shutdown()
- }
-
  Interface vss::Vehicle::Body::Light::Front::LowBeamDevice::IVSS_WriteHeadLightLowBeam
  {
    {abstract} bool WriteHeadLightLowBeam(bool value)
  }
 
  CVehicleDeviceHeadLightLowBeam --|&gt; sdv::CSdvObject : Inherits
- CVehicleDeviceHeadLightLowBeam ..|&gt; sdv::IObjectControl : Implements
  CVehicleDeviceHeadLightLowBeam ..|&gt; vss::Vehicle::Body::Light::Front::LowBeamDevice::IVSS_WriteHeadLightLowBeam : Implements
 
 &#64;enduml"/></p>

@@ -812,8 +812,9 @@
 </div>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>The <a class="reference internal" href="../../glossary.html#term-Basic-Service"><span class="xref std std-term">Basic Service</span></a> responsible to open the trunk must check the speed of the vehicle. In case the vehicle is moving the request must be denied.</p>
+<p>The <a class="reference internal" href="../../glossary.html#term-Basic-Service"><span class="xref std std-term">Basic Service</span></a> responsible to open the trunk must check the speed of the vehicle. In case the vehicle is moving, opening must be denied and an already open trunk must be closed automatically.</p>
 </div>
+<img alt="../../../_images/open_trunk_screenshot_0.png" src="../../../_images/open_trunk_screenshot_0.png" />
 <p>The auto generated code, the result of the <code class="docutils literal notranslate"><span class="pre">sdv_vss_utility</span></code>, can be used except for this basic service. Therefore the folder <code class="docutils literal notranslate"><span class="pre">bs_vehicletrunk</span></code> is copied and the code is enhanced to check the vehicle speed.</p>
 <p>Add the speed RX signal interface to the header:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../generated/vss_files/vss_vehiclespeed_bs_rx.h&quot;</span>
@@ -847,16 +848,18 @@
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 
+<span class="kt">bool</span><span class="w"> </span><span class="n">CBasicServiceVehicleTrunk</span><span class="o">::</span><span class="n">SetOpen</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">m_Speed</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.0F</span><span class="p">))</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">m_ptrOpen</span><span class="o">-&gt;</span><span class="n">WriteOpen</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<span class="p">}</span>
+
 <span class="kt">void</span><span class="w"> </span><span class="n">CBasicServiceVehicleTrunk</span><span class="o">::</span><span class="n">SetSpeed</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">value</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="n">m_Speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="kt">bool</span><span class="w"> </span><span class="n">CBasicServiceVehicleTrunk</span><span class="o">::</span><span class="n">SetOpen</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">value</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_Speed</span><span class="p">)</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">m_ptrOpen</span><span class="o">-&gt;</span><span class="n">WriteOpen</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_Speed</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.0F</span><span class="p">)</span>
+<span class="w">        </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">m_ptrOpen</span><span class="o">-&gt;</span><span class="n">WriteOpen</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>

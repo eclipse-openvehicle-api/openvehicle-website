@@ -813,11 +813,12 @@
 </div>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
-<p>The <a class="reference internal" href="../../glossary.html#term-Vehicle-Function"><span class="xref std std-term">Vehicle Function</span></a> will open the trunk. This should be blocked when the vehicle is moving:</p>
+<p>The <a class="reference internal" href="../../glossary.html#term-Vehicle-Function"><span class="xref std std-term">Vehicle Function</span></a> will open the trunk. This must be safety-protected when the vehicle is moving:</p>
 <ul class="simple">
 <li><p>Required: TX signal to open the trunk, RX signal representing the speed of the vehicle.</p></li>
 <li><p>Convert the speed value from <code class="docutils literal notranslate"><span class="pre">m/s</span></code> to <code class="docutils literal notranslate"><span class="pre">km/h</span></code>. This represents the vehicle abstraction when the input signal unit does not match the standardized interface definition.</p></li>
-<li><p>The basic service which offers the interface to open the trunk must deny the access when the vehicle is in motion.</p></li>
+<li><p>The basic service which offers the interface to open the trunk must deny opening when the vehicle is in motion.</p></li>
+<li><p>If the trunk is already open and vehicle speed changes to a value greater than <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">km/h</span></code>, the trunk must be closed automatically.</p></li>
 </ul>
 </div>
 <img alt="../../../_images/open_trunk_overview.png" src="../../../_images/open_trunk_overview.png" />
@@ -982,13 +983,11 @@
 </figure>
 <figure class="align-default" id="id4">
 <p class="plantuml">
-<img src="../../../_images/plantuml-9d035118e1682a6c50ec225b4de96771348450e7.svg" alt="&#64;startuml
+<img src="../../../_images/plantuml-1cb0e78929a914499963182bc1f1b2fe488277f3.svg" alt="&#64;startuml
  set separator ::
    class CVehicleDeviceVehicleSpeed
    {
-      +{abstract} void Initialize(const sdv::u8string&amp; objectConfig)
-      +{abstract} sdv::EObjectStatus GetStatus() const
-      +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
+      +{abstract} bool OnInitialize()
       +{abstract} void Shutdown()
       +{abstract} void RegisterSpeedEvent(vss::Vehicle::SpeedDevice::IVSS_WriteSpeed_Event* event)
       +{abstract} void UnregisterSpeedEvent(vss::Vehicle::SpeedDevice::IVSS_WriteSpeed_Event* event)
@@ -996,7 +995,6 @@
       -sdv::core::CSignal m_vehicleSpeedSignal
       -mutable std::mutex m_vehicleSpeedMutexCallbacks
       -std::set&lt;vss::Vehicle::SpeedDevice::IVSS_WriteSpeed_Event*&gt; m_vehicleSpeedCallbacks
-      -std::atomic&lt;sdv::EObjectStatus&gt; m_status
    }
 
    class sdv::CSdvObject
@@ -1005,14 +1003,6 @@
       {static} +sdv::u8string GetDefaultObjectNameStatic()
       {static} +bool IsSingletonStatic()
       {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
-   }
-
-   Interface sdv::IObjectControl
-   {
-      {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
-      {abstract} EObjectStatus GetStatus() const
-      {abstract} void SetOperationMode(EOperationMode eMode)
-      {abstract} void Shutdown()
    }
 
    Interface vss::Vehicle::SpeedDevice::IVSS_Speed
@@ -1022,7 +1012,6 @@
    }
 
    CVehicleDeviceVehicleSpeed --|&gt; sdv::CSdvObject : Inherits
-   CVehicleDeviceVehicleSpeed ..|&gt; sdv::IObjectControl : Implements
    CVehicleDeviceVehicleSpeed ..|&gt; vss::Vehicle::SpeedDevice::IVSS_Speed : Implements
 &#64;enduml"/></p>
 <figcaption>
@@ -1031,17 +1020,14 @@
 </figure>
 <figure class="align-default" id="id5">
 <p class="plantuml">
-<img src="../../../_images/plantuml-297af344482cf2a257da019491455b98d1c21e03.svg" alt="&#64;startuml
+<img src="../../../_images/plantuml-2d1e5b98e53c33cfb189151fc751357e3ad56dfd.svg" alt="&#64;startuml
  set separator ::
    class CVehicleDeviceVehicleTrunk
    {
-      +{abstract} void Initialize(const sdv::u8string&amp; objectConfig)
-      +{abstract} sdv::EObjectStatus GetStatus() const
-      +{abstract} void SetOperationMode(sdv::EOperationMode eMode)
+      +{abstract} bool OnInitialize()
       +{abstract} void Shutdown()
       +{abstract} bool WriteOpen(bool value)
       -sdv::core::CSignal m_trunk
-      -std::atomic&lt;sdv::EObjectStatus&gt; m_status
    }
 
    class sdv::CSdvObject
@@ -1052,21 +1038,12 @@
       {static} +sdv::sequence&lt;sdv::u8string&gt; GetObjectDependenciesStatic()
    }
 
-   Interface sdv::IObjectControl
-   {
-      {abstract} void Initialize(const sdv::u8string&amp; ssObjectConfig)
-      {abstract} EObjectStatus GetStatus() const
-      {abstract} void SetOperationMode(EOperationMode eMode)
-      {abstract} void Shutdown()
-   }
-
    Interface vss::Vehicle::Body::TrunkDevice::IVSS_WriteOpen
    {
       {abstract} bool WriteOpen(bool value)
    }
 
    CVehicleDeviceVehicleTrunk --|&gt; sdv::CSdvObject : Inherits
-   CVehicleDeviceVehicleTrunk ..|&gt; sdv::IObjectControl : Implements
    CVehicleDeviceVehicleTrunk ..|&gt; vss::Vehicle::Body::TrunkDevice::IVSS_WriteOpen : Implements
 &#64;enduml"/></p>
 <figcaption>
