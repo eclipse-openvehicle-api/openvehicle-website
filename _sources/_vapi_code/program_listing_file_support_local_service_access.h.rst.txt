@@ -30,10 +30,17 @@ Program Listing for File local_service_access.h
    #include "../interfaces/log.h"
    #include "../interfaces/repository.h"
    #include "../interfaces/com.h"
+   #include "../interfaces/app.h"
+   #include "../interfaces/param.h"
+   #include "../interfaces/permission.h"
    #include "interface_ptr.h"
+   #include <thread>
+   #include <utility>
+   #include <functional>
    #include <sstream>
    #include <utility>
-   
+   #include <string>
+   #include <stdexcept>
    #ifdef __GNUC__
    // Needed for getpid()
    #include <unistd.h>
@@ -50,17 +57,21 @@ Program Listing for File local_service_access.h
    
            inline TInterfaceAccessPtr GetObject(const std::string& rssObjectName)
            {
-               if (!GetCore()) return nullptr;
+               if (!GetCore())
+                   return nullptr;
                IObjectAccess* pRepository = GetCore<IObjectAccess>();
-               if (!pRepository) return nullptr;
+               if (!pRepository)
+                   return nullptr;
                return pRepository->GetObject(rssObjectName);
            }
    
            inline TInterfaceAccessPtr GetObject(TObjectID tObjectID)
            {
-               if (!GetCore()) return nullptr;
+               if (!GetCore())
+                   return nullptr;
                IObjectAccess* pRepository = GetCore<IObjectAccess>();
-               if (!pRepository) return nullptr;
+               if (!pRepository)
+                   return nullptr;
                return pRepository->GetObjectByID(tObjectID);
            }
    #else
@@ -86,11 +97,13 @@ Program Listing for File local_service_access.h
            {
                ILogger* pLogger = GetCore() ? GetCore<ILogger>() : nullptr;
    #ifdef _WIN32
-               if (pLogger) pLogger->Log(eSeverity, rssSrcFile, uiSrcLine, _getpid(), "", rssMessage);
+               if (pLogger)
+                   pLogger->Log(eSeverity, rssSrcFile, uiSrcLine, _getpid(), "", rssMessage);
    #elif defined __unix__
-               if (pLogger) pLogger->Log(eSeverity, rssSrcFile, uiSrcLine, getpid(), "", rssMessage);
+               if (pLogger)
+                   pLogger->Log(eSeverity, rssSrcFile, uiSrcLine, getpid(), "", rssMessage);
    #else
-   #error The OS is currently not supported!
+       #error The OS is currently not supported!
    #endif
            }
    
@@ -110,15 +123,15 @@ Program Listing for File local_service_access.h
    
            namespace internal
            {
-               template <typename ...Args>
-               inline void CSDVLogImpl(ELogSeverity eSeverity, const char* szSrcFile, uint32_t uiSrcLine, Args&& ...args)
+               template <typename... Args>
+               inline void CSDVLogImpl(ELogSeverity eSeverity, const char* szSrcFile, uint32_t uiSrcLine, Args&&... args)
                {
                    std::ostringstream stream;
                    (stream << ... << std::forward<Args>(args));
    
                    Log(eSeverity, szSrcFile ? szSrcFile : "", uiSrcLine, stream.str().c_str());
                }
-           }
+           } // namespace internal
    
            inline TObjectPtr CreateUtility(const std::string& rssUtilityName, const std::string& rssUtilityConfig = std::string())
            {
@@ -127,87 +140,472 @@ Program Listing for File local_service_access.h
                if (!pUtilityCreate) return nullptr;
                return pUtilityCreate->CreateUtility(rssUtilityName, rssUtilityConfig);
            }
-       } // namespace core
    
+           inline any_t GetParameter(const IParameters* pParameters, const std::string& rssParamName, bool bNoExcept = true)
+           {
+               if (!pParameters)
+               {
+                   if (bNoExcept) return {};
+                   throw std::runtime_error("The object doesn't expose IParameters interface.");
+               }
+               any_t any = pParameters->GetParam(rssParamName);
+               if (any.empty())
+               {
+                   if (bNoExcept) return {};
+                   throw std::runtime_error("The parameter could not be found.");
+               }
+               return any;
+           }
+   
+           inline any_t GetParameter(const TInterfaceAccessPtr& rptrObject, const std::string& rssParamName, bool bNoExcept = true)
+           {
+               const IParameters* pParameters = rptrObject.GetInterface<IParameters>();
+               if (!pParameters)
+               {
+                   if (bNoExcept) return {};
+                   throw std::runtime_error("The object doesn't expose IParameters interface.");
+               }
+               return GetParameter(pParameters, rssParamName, bNoExcept);
+           }
+   
+           inline any_t GetParameter(const std::string& rssObjectName, const std::string& rssParamName, bool bNoExcept = true)
+           {
+               TInterfaceAccessPtr ptrObject = GetObject(rssObjectName);
+               if (!ptrObject)
+               {
+                   if (bNoExcept) return {};
+                   throw std::runtime_error("An object with the name '" + rssObjectName + "' could not be found.");
+               }
+               return GetParameter(ptrObject, rssParamName, bNoExcept);
+           }
+   
+           inline std::string GetParameterExpand(const std::string& rssObjectName, const std::string& rssParamName, bool bNoExcept = true)
+           {
+               TInterfaceAccessPtr ptrObject = GetObject(rssObjectName);
+               if (!ptrObject)
+               {
+                   if (bNoExcept) return {};
+                   throw std::runtime_error("An object with the name '" + rssObjectName + "' could not be found.");
+               }
+   
+               const IParameters* pParameters = ptrObject.GetInterface<IParameters>();
+               if (!pParameters)
+               {
+                   if (bNoExcept) return {};
+                   throw std::runtime_error("The object doesn't expose IParameters interface.");
+               }
+               any_t any = pParameters->GetParam(rssParamName);
+               if (any.empty())
+               {
+                   if (bNoExcept) return {};
+                   throw std::runtime_error("The parameter could not be found.");
+               }
+   
+               SParamInfo sParamInfo = pParameters->GetParamInfo(rssParamName);
+               if (sParamInfo.get_switch() == EParamType::enum_param)
+               {
+                   for (const SLabelInfo::SLabel& rsLabel : sParamInfo.uExtInfo.sEnumInfo.seqLabels)
+                   {
+                       if (rsLabel.anyValue == any)
+                           return rsLabel.ssLabel;
+                   }
+               }
+               if (sParamInfo.get_switch() == EParamType::bitmask_param)
+               {
+                   uint64_t uiValue = static_cast<uint64_t>(any);
+                   std::stringstream sstreamValue;
+                   for (const SLabelInfo::SLabel& rsLabel : sParamInfo.uExtInfo.sBitmaskInfo.seqLabels)
+                   {
+                       uint64_t uiValueLabel = static_cast<uint64_t>(rsLabel.anyValue);
+                       if (uiValue & uiValueLabel)
+                       {
+                           if (sstreamValue.rdbuf()->in_avail()) // Has characters
+                               sstreamValue << "|";
+                           sstreamValue << rsLabel.ssLabel;
+                           uiValue = uiValue & ~uiValueLabel;
+                       }
+                   }
+                   if (uiValue)    // Not all bits have labels
+                   {
+                       if (sstreamValue.rdbuf()->in_avail()) // Has characters
+                           sstreamValue << "|";
+                       sstreamValue << uiValue;
+                   }
+                   return sstreamValue.str();
+               }
+               return any;
+           }
+   
+           namespace internal
+           {
+               inline std::string TrimWhitespace(const std::string& rssText)
+               {
+                   size_t nFirst = rssText.find_first_not_of(" \t\r\n");
+                   if (nFirst == std::string::npos) return "";
+                   size_t nLast = rssText.find_last_not_of(" \t\r\n");
+                   return rssText.substr(nFirst, (nLast - nFirst + 1));
+               }
+   
+               inline bool ContainsValidVariable(const std::string& rssText)
+               {
+                   size_t nLength = rssText.length();
+                   size_t nIndex  = 0;
+   
+                   while (nIndex < nLength)
+                   {
+                       if (rssText[nIndex] == '\\')
+                       {
+                           // Skip the escape and the escaped character
+                           nIndex += 2;
+                       }
+                       else if (rssText[nIndex] == '$')
+                       {
+                           // Check if it forms the start of a token sequence '$( '
+                           if (nIndex + 1 < nLength && rssText[nIndex + 1] == '(')
+                           {
+                               size_t nClose = rssText.find(')', nIndex + 2);
+                               if (nClose != std::string::npos)
+                               {
+                                   // Found a valid structural candidate
+                                   return true;
+                               }
+                           }
+                           nIndex++;
+                       }
+                       else
+                       {
+                           nIndex++;
+                       }
+                   }
+                   return false;
+               }
+           } // namespace internal
+           
+           inline std::string ResolveText(const std::string& rssText, bool bRecursive = true, bool bNoExcept = true)
+           {
+               std::string ssCurrentText = rssText;
+               bool bMayHaveMoreVariables = true;
+   
+               while (bMayHaveMoreVariables)
+               {
+                   bMayHaveMoreVariables = false;
+                   std::string ssResult = "";
+                   ssResult.reserve(ssCurrentText.length()); // Pre-allocate memory for performance
+   
+                   size_t nLength = ssCurrentText.length();
+                   size_t nIndex  = 0;
+   
+                   while (nIndex < nLength)
+                   {
+                       char cCurrent = ssCurrentText[nIndex];
+   
+                       // Handle backslash escape sequences
+                       if (cCurrent == '\\')
+                       {
+                           // Check if the next character is a '$'
+                           if (nIndex + 1 < nLength && ssCurrentText[nIndex + 1] == '$')
+                           {
+                               ssResult.push_back('$'); // Strip the escape character, keep the literal '$'
+                               nIndex += 2;
+                           }
+                           else
+                           {
+                               ssResult.push_back('\\'); // Preserve other backslashes for paths
+                               nIndex++;
+                           }
+                       }
+                       // Identify potential variables
+                       else if (cCurrent == '$')
+                       {
+                           // extension 2: Only throw an error or treat as a variable if it is
+                           // explicitly part of a dynamic sequence tracking towards a '$(...)' match.
+                           if (nIndex + 1 >= nLength || ssCurrentText[nIndex + 1] != '(')
+                           {
+                               // It is a loose literal '$' (like currency). Keep it and do not throw.
+                               ssResult.push_back('$');
+                               nIndex++;
+                               continue;
+                           }
+   
+                           size_t nVarStart = nIndex + 2; // Position right after "$("
+                           size_t nVarEnd   = ssCurrentText.find(')', nVarStart);
+   
+                           // Validate that a matching closing parenthesis exists
+                           if (nVarEnd == std::string::npos)
+                           {
+                               if (!bNoExcept)
+                                   throw std::runtime_error(
+                                       "Format error: Missing closing parenthesis ')' for variable starting at index "
+                                       + std::to_string(nIndex));
+                               return "";
+                           }
+   
+                           // Extract the inner payload block
+                           std::string sVariableContent = ssCurrentText.substr(nVarStart, nVarEnd - nVarStart);
+                           size_t nColonPos = sVariableContent.find(':');
+   
+                           // Validate that the delimiter ':' separates object and parameter names
+                           if (nColonPos == std::string::npos)
+                           {
+                               if (!bNoExcept)
+                                   throw std::runtime_error("Format error: Variable content '" + sVariableContent
+                                                            + "' lacks an 'object:param' colon separator");
+                               return "";
+                           }
+   
+                           // Extract and clean whitespace before/after tokens, preserving inner spaces
+                           std::string sObjName   = internal::TrimWhitespace(sVariableContent.substr(0, nColonPos));
+                           std::string sParamName = internal::TrimWhitespace(sVariableContent.substr(nColonPos + 1));
+   
+                           // Request the parameter.
+                           std::string ssValue = GetParameterExpand(sObjName, sParamName, bNoExcept);
+   
+                           // Add the parameter to the string
+                           ssResult.append(ssValue);
+   
+                           nIndex = nVarEnd + 1; // Move parsing index past the ')'
+                       }
+                       else
+                       {
+                           ssResult.push_back(cCurrent);
+                           nIndex++;
+                       }
+                   }
+   
+                   ssCurrentText = ssResult;
+   
+                   // Exit immediately if recursive resolution was disabled
+                   if (!bRecursive) break;
+   
+                   // extension 2: Intelligently analyze if a recursive processing loop is required
+                   if (internal::ContainsValidVariable(ssCurrentText))
+                       bMayHaveMoreVariables = true;
+               }
+   
+               return ssCurrentText;
+           }
+   
+           inline EAccessPermission GetCurrentAccessPermission()
+           {
+               IPermissionControl* pPermissionControl = GetCore<IPermissionControl>();
+               if (!pPermissionControl)
+                   return EAccessPermission::not_set;
+               return pPermissionControl->GetCurrentPermission();
+           }
+   
+           inline TPermissionTransferID TransferCurrentPermission()
+           {
+               IPermissionControl* pPermissionControl = GetCore<IPermissionControl>();
+               if (!pPermissionControl) return 0u;
+               return pPermissionControl->TransferCurrentPermission();
+           }
+   
+           class CAccessPermission
+           {
+               // Friend functions
+               friend CAccessPermission RestrictAccessPermission(EAccessPermission);
+               friend CAccessPermission SetAccessPermission(TPermissionTransferID);
+   
+           public:
+               CAccessPermission() = default;
+   
+           private:
+               CAccessPermission(TPermissionID tPermissionID) : m_tPermissionID(tPermissionID)
+               {}
+   
+           public:
+               CAccessPermission(const CAccessPermission& rPermission) = delete;
+   
+               CAccessPermission(CAccessPermission&& rPermission) : m_tPermissionID(rPermission.m_tPermissionID)
+               {
+                   rPermission.m_tPermissionID = 0u;
+               }
+   
+               ~CAccessPermission()
+               {
+                   Release();
+               }
+   
+               CAccessPermission& operator=(const CAccessPermission& rPermission) = delete;
+   
+               CAccessPermission& operator=(CAccessPermission&& rPermission)
+               {
+                   m_tPermissionID = rPermission.m_tPermissionID;
+                   rPermission.m_tPermissionID = 0u;
+                   return *this;
+               }
+   
+               operator bool() const
+               {
+                   return m_tPermissionID ? true : false;
+               }
+   
+               bool IsValid() const
+               {
+                   return m_tPermissionID ? true : false;
+               }
+   
+               void Release()
+               {
+                   if (!m_tPermissionID) return;
+                   IPermissionControl* pPermissionControl = GetCore<IPermissionControl>();
+                   if (!pPermissionControl) return;
+                   pPermissionControl->ReleaseAccessPermission(m_tPermissionID);
+                   m_tPermissionID = 0u;
+               }
+   
+           private:
+               TPermissionID   m_tPermissionID = 0u;       
+           };
+   
+           inline CAccessPermission RestrictAccessPermission(EAccessPermission ePermission)
+           {
+               IPermissionControl* pPermissionControl = GetCore<IPermissionControl>();
+               if (!pPermissionControl) return {};
+               return pPermissionControl->RestrictAccessPermission(ePermission);
+           }
+   
+           inline CAccessPermission SetAccessPermission(TPermissionTransferID tTransferID)
+           {
+               IPermissionControl* pPermissionControl = GetCore<IPermissionControl>();
+               if (!pPermissionControl) return {};
+               return pPermissionControl->SetAccessPermission(tTransferID);
+           }
+   
+           class secure_thread : public std::thread
+           {
+           public:
+               secure_thread() = default;
+   
+               secure_thread(const secure_thread& rthread) = delete;
+   
+               secure_thread(secure_thread&& rthread) : std::thread(static_cast<std::thread&&>(rthread))
+               {}
+   
+               template <class F, class... Args>
+               explicit secure_thread(F&& f, Args&&... args)
+               {
+                   static_cast<std::thread&>(*this) = std::thread(
+                       [](TPermissionTransferID tTransferID, auto&& function, auto&&... arguments)
+                       {
+                           CAccessPermission permission = SetAccessPermission(tTransferID);
+                           std::invoke(std::forward<decltype(function)>(function), std::forward<decltype(arguments)>(arguments)...);
+                       }, TransferCurrentPermission(), std::forward<F>(f), std::forward<Args>(args)...);
+               }
+   
+               secure_thread& operator=(secure_thread&& rthread)
+               {
+                   static_cast<std::thread&>(*this) = static_cast<std::thread&&>(rthread);
+                   return *this;
+               }
+           };
+       } // namespace core
+   }// namespace sdv
+   
+   inline bool operator<(sdv::core::EAccessPermission e1, sdv::core::EAccessPermission e2) { return static_cast<int32_t>(e1) < static_cast<int32_t>(e2); }
+   inline bool operator<=(sdv::core::EAccessPermission e1, sdv::core::EAccessPermission e2) { return static_cast<int32_t>(e1) <= static_cast<int32_t>(e2); }
+   inline bool operator>(sdv::core::EAccessPermission e1, sdv::core::EAccessPermission e2) { return static_cast<int32_t>(e1) > static_cast<int32_t>(e2); }
+   inline bool operator>=(sdv::core::EAccessPermission e1, sdv::core::EAccessPermission e2) { return static_cast<int32_t>(e1) >= static_cast<int32_t>(e2); }
+   namespace sdv
+   {
        namespace app
        {
-           inline any_t GetAppAttribute(const std::string& rssAttribute)
+           inline any_t GetAppSettingsAttribute(const std::string& rssAttribute)
            {
-               const IAttributes* ptrAppAttributes = core::GetObject<IAttributes>("AppControlService");
-               if (!ptrAppAttributes) return {};
-               return ptrAppAttributes->Get(rssAttribute);
+               const IParameters* pParameters = core::GetObject<IParameters>("AppSettingsService");
+               if (!pParameters) return {};
+               return pParameters->GetParam(rssAttribute);
            }
    
            inline bool ConsoleIsSilent()
            {
-               return GetAppAttribute("console.info_level") == "silent";
+               return GetAppSettingsAttribute("Console.Reporting") == "Silent";
            }
    
            inline bool ConsoleIsVerbose()
            {
-               return GetAppAttribute("console.info_level") == "verbose";
+               return GetAppSettingsAttribute("Console.Reporting") == "Verbose";
            }
    
            inline uint32_t GetAppInstanceID()
            {
-               return GetAppAttribute("app.instance_id");
+               return GetAppSettingsAttribute("Application.Instance");
            }
        } // namespace app
    
        namespace com
        {
-           inline TObjectPtr ConnectToLocalServerRepository(uint32_t uiInstanceID = 0, size_t nRetries = 30)
+           inline TObjectPtr ConnectToLocalServerRepository(size_t nRetries = 30)
            {
-               com::IClientConnect* pClientConnect = core::GetObject<com::IClientConnect>("ConnectionService");
-               if (!pClientConnect)
+               // This function works with main, external and maintenance applications.
+               const app::IAppContext* pAppContext = core::GetCore<app::IAppContext>();
+               if (!pAppContext) return {};
+               switch (pAppContext->GetContextType())
                {
-                   if (!app::ConsoleIsSilent())
-                       std::cerr << "ERROR: Could not access the connection service." << std::endl;
+               case app::EAppContext::main:
+               case app::EAppContext::external:
+               case app::EAppContext::maintenance:
+                   break;
+               default:
                    return {};
                }
    
-               // Connect the client to the server and return the server repository interface.
-               std::string ssConnectString = R"code([Client]
-   Type = "Local"
-   )code";
-               if (uiInstanceID)
-                   ssConnectString += "Instance = " + std::to_string(uiInstanceID) + R"code(
-   )code";
+               const sdv::app::IAppConnections* pConnections = core::GetObject<sdv::app::IAppConnections>("AppSettingsService");
+               if (!pConnections) return {};
+               std::string ssConnectionConfig = pConnections->GetConnectionConfig("Default");
+               if (ssConnectionConfig.empty()) return {};
+   
+               sdv::core::IRepositoryControl* pRepository = core::GetObject<sdv::core::IRepositoryControl>("RepositoryService");
+               if (!pRepository) return {};
+               auto tConnectSvcID = pRepository->CreateObject("ClientConnectService", "ClientDefault", ssConnectionConfig);
+               if (!tConnectSvcID) return {};
+   
+               sdv::TInterfaceAccessPtr ptrConnectSvc = core::GetObject(tConnectSvcID);
+               sdv::com::IClientConnect* pClientConnect = ptrConnectSvc.GetInterface<sdv::com::IClientConnect>();
+               if (!pClientConnect)
+               {
+                   pRepository->DestroyObject("ClientDefault");
+                   return {};
+               }
+   
                try
                {
                    // Try to connect (30 times with 1 second in between).
                    size_t nCnt = 0;
-                   sdv::TObjectPtr ptrRepository;
-                   while (!ptrRepository && nCnt < nRetries)
+                   sdv::TObjectPtr ptrRemoteRepo;
+                   while (!ptrRemoteRepo && nCnt < std::max(nRetries, static_cast<size_t>(3u)))
                    {
                        nCnt++;
-                       ptrRepository = pClientConnect->Connect(ssConnectString);
-                       if (!ptrRepository)
-                           std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+                       if (pClientConnect->IsConnected() || pClientConnect->Connect())
+                       {
+                           ptrRemoteRepo = pClientConnect->GetRemoteRepository();
+                           break;
+                       }
+                       std::this_thread::sleep_for(std::chrono::milliseconds(1000));
                    }
    
                    // Return the result
-                   return ptrRepository;
+                   return ptrRemoteRepo;
                }
                catch (const XAccessDenied& /*rExcept*/)
                {
                    if (!app::ConsoleIsSilent())
                        std::cout << "Access denied trying to connect to a local repository with server instance ID#" <<
-                           (uiInstanceID?uiInstanceID : app::GetAppInstanceID()) << "." << std::endl;
+                           app::GetAppInstanceID() << "." << std::endl;
                    return {};
                }
                catch (const XNotFound& /*rExcept*/)
                {
                    if (!app::ConsoleIsSilent())
                        std::cout << "Local repository with server instance ID#" <<
-                           (uiInstanceID?uiInstanceID : app::GetAppInstanceID()) << " not found." << std::endl;
+                           app::GetAppInstanceID() << " not found." << std::endl;
                    return {};
                }
                catch (const XInvalidState& rExcept)
                {
                    if (!app::ConsoleIsSilent())
                        std::cout << "The local repository with server instance ID#" <<
-                           (uiInstanceID?uiInstanceID : app::GetAppInstanceID()) << " is in an invalid state: " << rExcept.what() <<
+                           app::GetAppInstanceID() << " is in an invalid state: " << rExcept.what() <<
                            std::endl;
                    return {};
                }
@@ -215,12 +613,11 @@ Program Listing for File local_service_access.h
                {
                    if (!app::ConsoleIsSilent())
                        std::cout << "Timeout occurred trying to connect to a local repository with server instance ID#" <<
-                           (uiInstanceID?uiInstanceID : app::GetAppInstanceID()) << "." << std::endl;
+                           app::GetAppInstanceID() << "." << std::endl;
                    return {};
                }
            }
-   
-       } // namespace core
+       } // namespace com
    } // namespace sdv
    
    #endif // !defined LOCAL_SERVICE_ACCESS_H

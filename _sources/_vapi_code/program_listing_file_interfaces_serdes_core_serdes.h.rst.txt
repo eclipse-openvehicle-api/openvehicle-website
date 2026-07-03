@@ -11,8 +11,8 @@ Program Listing for File core_serdes.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__CORE_SERDES_H__20260428_100219_910__
-   #define __IDL_GENERATED__CORE_SERDES_H__20260428_100219_910__
+   #ifndef __IDL_GENERATED__CORE_SERDES_H__20260703_131934_775__
+   #define __IDL_GENERATED__CORE_SERDES_H__20260703_131934_775__
    
    // Includes...
    #include <cstdint>
@@ -303,6 +303,43 @@ Program Listing for File core_serdes.h
        };
    
        template <>
+       class CSerdes<sdv::SObjectInfo>
+       {
+       public:
+           static void CalcSize(const sdv::SObjectInfo& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of SObjectInfo
+               sdv::ser_size(rVar.tObjectID, rnSize);
+               sdv::ser_size(rVar.sClassInfo, rnSize);
+               sdv::ser_size(rVar.ssName, rnSize);
+               sdv::ser_size(rVar.ssConfig, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::SObjectInfo& rVar)
+           {
+               // Serializing members of SObjectInfo
+               rSerializer << rVar.tObjectID;
+               rSerializer << rVar.sClassInfo;
+               rSerializer << rVar.ssName;
+               rSerializer << rVar.ssConfig;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::SObjectInfo& rVar)
+           {
+               // Deserializing members of SObjectInfo
+               rDeserializer >> rVar.tObjectID;
+               rDeserializer >> rVar.sClassInfo;
+               rDeserializer >> rVar.ssName;
+               rDeserializer >> rVar.ssConfig;
+               return rDeserializer;
+           }
+       };
+   
+       template <>
        class CSerdes<sdv::IObjectControl*>
        {
        public:
@@ -460,90 +497,7 @@ Program Listing for File core_serdes.h
                return rDeserializer;
            }
        };
-   
-       template <>
-       class CSerdes<sdv::EAttributeFlags>
-       {
-       public:
-           static void CalcSize(const sdv::EAttributeFlags& rVar, size_t& rnSize)
-           {
-   
-               // Calculating the size of EAttributeFlags
-               sdv::ser_size(static_cast<uint32_t>(rVar), rnSize);
-           }
-   
-           template <sdv::EEndian eTargetEndianess, typename TCRC>
-           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::EAttributeFlags& rVar)
-           {
-               // Serializing members of EAttributeFlags
-               rSerializer << static_cast<uint32_t>(rVar);
-               return rSerializer;
-           }
-   
-           template <sdv::EEndian eSourceEndianess, typename TCRC>
-           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::EAttributeFlags& rVar)
-           {
-               // Deserializing members of EAttributeFlags
-               uint32_t base = 0;
-               rDeserializer >> base;
-               rVar = static_cast<sdv::EAttributeFlags>(base);
-               return rDeserializer;
-           }
-       };
-   
-       template <>
-       class CSerdes<sdv::IAttributes*>
-       {
-       public:
-           static void CalcSize([[maybe_unused]] sdv::IAttributes* pInterface, size_t& rnSize)
-           {
-               sdv::ser_size(sdv::interface_id(), rnSize);
-               sdv::ser_size(sdv::ps::TMarshallID(), rnSize);
-           }
-   
-           template <sdv::EEndian eTargetEndianess, typename TCRC>
-           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, sdv::IAttributes* pInterface)
-           {
-               // Get interface to the component isolation service.
-               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
-               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
-               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
-               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
-   
-               // Serialize the interface ID first
-               rSerializer << sdv::GetInterfaceId<sdv::IAttributes>();
-   
-               // Create and serialize a stub object for the interface.
-               sdv::ps::TMarshallID tStubID = pMarshallAccess->GetStub(pInterface);
-               rSerializer << tStubID;
-   
-               return rSerializer;
-           }
-   
-           template <sdv::EEndian eSourceEndianess, typename TCRC>
-           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::IAttributes*& rpInterface)
-           {
-               // Get interface to the component isolation service.
-               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
-               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
-               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
-               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
-   
-               // Get the interface ID
-               sdv::interface_id id = 0;
-               rDeserializer >> id;
-   
-               // Get the stub ID
-               sdv::ps::TMarshallID tStubID{};
-               rDeserializer >> tStubID;
-   
-               // Create the proxy
-               rpInterface = pMarshallAccess->GetProxy(tStubID, id).get<sdv::IAttributes>();
-   
-               return rDeserializer;
-           }
-       };
    } // serdes namespace
    #include "mem_serdes.h"
    
-   #endif // !defined(__IDL_GENERATED__CORE_SERDES_H__20260428_100219_911__)
+   #endif // !defined(__IDL_GENERATED__CORE_SERDES_H__20260703_131934_776__)

@@ -175,7 +175,7 @@ Program Listing for File param_impl.h
            {
            public:
                template <typename... TInfoConstruct>
-               CParamValue(TVar& rtVar, bool bLockable, bool bAutoDirty, TInfoConstruct... tConstruct);
+               CParamValue(TVar& rtVar, bool bReadOnly, bool bLockable, bool bAutoDirty, TInfoConstruct... tConstruct);
    
                virtual bool Set(const any_t& ranyValue) override;
    
@@ -482,7 +482,7 @@ Program Listing for File param_impl.h
                }                                                                                                                      \
                std::vector<std::shared_ptr<sdv::CSdvParamInfo>> vecParamInfo;                                                         \
                [[maybe_unused]] uint32_t uiFlags = 0;                                                                                 \
-               [[maybe_unused]] std::string ssGroup;                                                                               \
+               [[maybe_unused]] std::string ssGroup;                                                                                  \
                [[maybe_unused]] bool bLockable = false;
    
    #define END_SDV_PARAM_MAP()                                                                                                        \
@@ -542,8 +542,9 @@ Program Listing for File param_impl.h
        }                                                                                                                              \
        else                                                                                                                           \
        {                                                                                                                              \
-           std::shared_ptr<sdv::CSdvParamInfo> ptrParamInfo = pObject->RegisterParameter(pObject->var, bLockable, true, name_string,  \
-               default_val, unit_string, ssGroup, description_string, uiFlags);                                                       \
+           std::shared_ptr<sdv::CSdvParamInfo> ptrParamInfo = pObject->RegisterParameter(pObject->var,                                \
+               uiFlags & static_cast<uint32_t>(::sdv::EParamFlags::read_only), bLockable, true,  name_string,  default_val,           \
+               unit_string, ssGroup, description_string, uiFlags);                                                                    \
            if (ptrParamInfo) vecParamInfo.push_back(std::move(ptrParamInfo));                                                         \
        }
    
@@ -568,8 +569,9 @@ Program Listing for File param_impl.h
            }                                                                                                                          \
            else                                                                                                                       \
            {                                                                                                                          \
-               std::shared_ptr<sdv::CSdvParamInfo> ptrParamInfo = pObject->RegisterParameter(pObject->var, bLockable, true,           \
-                   name_string, default_val, anyLower, prLowLimit.second != sdv::internal::ELimitType::up_to_limit, anyUpper,         \
+               std::shared_ptr<sdv::CSdvParamInfo> ptrParamInfo = pObject->RegisterParameter(pObject->var,                            \
+                   uiFlags & static_cast<uint32_t>(::sdv::EParamFlags::read_only), bLockable, true, name_string, default_val,         \
+                   anyLower, prLowLimit.second != sdv::internal::ELimitType::up_to_limit, anyUpper,                                   \
                    prHighLimit.second != sdv::internal::ELimitType::up_to_limit, unit_string, ssGroup, description_string,            \
                    uiFlags);                                                                                                          \
                if (ptrParamInfo)vecParamInfo.push_back(std::move(ptrParamInfo));                                                      \
@@ -589,8 +591,9 @@ Program Listing for File param_impl.h
        }                                                                                                                              \
        else                                                                                                                           \
        {                                                                                                                              \
-           std::shared_ptr<sdv::CSdvParamInfo> ptrParamInfo = pObject->RegisterParameter(pObject->var, bLockable, true, name_string,  \
-               default_val, pattern_string, unit_string, ssGroup, description_string, uiFlags);                                       \
+           std::shared_ptr<sdv::CSdvParamInfo> ptrParamInfo = pObject->RegisterParameter(pObject->var,                                \
+               uiFlags & static_cast<uint32_t>(::sdv::EParamFlags::read_only), bLockable, true, name_string, default_val,             \
+               pattern_string, unit_string, ssGroup, description_string, uiFlags);                                                    \
            if (ptrParamInfo) vecParamInfo.push_back(std::move(ptrParamInfo));                                                         \
        }
    
@@ -607,8 +610,9 @@ Program Listing for File param_impl.h
        }                                                                                                                              \
        else                                                                                                                           \
        {                                                                                                                              \
-           std::shared_ptr<sdv::CSdvParamInfo> ptrParamInfo = pObject->RegisterParameter(pObject->var, bLockable, true, name_string,  \
-               default_val, sdv::internal::GetLabelMapHelper().GetLabelMap<TEnum>(), ssGroup, description_string, uiFlags);           \
+           std::shared_ptr<sdv::CSdvParamInfo> ptrParamInfo = pObject->RegisterParameter(pObject->var,                                \
+               uiFlags & static_cast<uint32_t>(::sdv::EParamFlags::read_only), bLockable, true, name_string, default_val,             \
+               sdv::internal::GetLabelMapHelper().GetLabelMap<TEnum>(), ssGroup, description_string, uiFlags);                        \
            if (ptrParamInfo) vecParamInfo.push_back(std::move(ptrParamInfo));                                                         \
        }
    
@@ -623,11 +627,12 @@ Program Listing for File param_impl.h
            std::vector<std::shared_ptr<sdv::CSdvParamInfo>> vecParamInfoMember;                                                       \
            if constexpr (bStatic)                                                                                                     \
            {                                                                                                                          \
-               vecParamInfoMember = sdv::internal::SMemberMap<decltype(member)>::BuildStatic();                                       \
+               vecParamInfoMember = sdv::internal::SMemberMap<std::decay_t<decltype(member)>>::BuildStatic();                         \
            }                                                                                                                          \
            else                                                                                                                       \
            {                                                                                                                          \
-               auto ptrMemberMap = std::make_shared<sdv::internal::SMemberMap<decltype(member)>>(pObject->member, pObject);           \
+               auto ptrMemberMap =                                                                                                    \
+                   std::make_shared<sdv::internal::SMemberMap<std::decay_t<decltype(member)>>>(pObject->member, pObject);             \
                if (ptrMemberMap)                                                                                                      \
                {                                                                                                                      \
                    ptrMemberMap->BuildMap();                                                                                          \
@@ -676,7 +681,8 @@ Program Listing for File param_impl.h
    
        protected:
            template <typename TVar, typename... TConstruct>
-           std::shared_ptr<CSdvParamInfo> RegisterParameter(TVar& rtVar, bool bLockable, bool bAutoDirty, TConstruct... tConstruct);
+           std::shared_ptr<CSdvParamInfo> RegisterParameter(TVar& rtVar, bool bReadOnly, bool bLockable, bool bAutoDirty,
+               TConstruct... tConstruct);
    
            void RegisterMemberMap(const std::shared_ptr<internal::SMemberMapAccess>& rptrMember);
    

@@ -1,0 +1,156 @@
+
+.. _program_listing_file_core_permission_control.h:
+
+Program Listing for File permission_control.h
+=============================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_permission_control.h>` (``core\permission_control.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
+   #ifndef PERMISSION_CONTROL_H
+   #define PERMISSION_CONTROL_H
+   
+   #include <interfaces/permission.h>
+   #include <list>
+   #include <support/component_impl.h>
+   
+   #include "../../global/unique_id.h"
+   
+   // Forward declaration
+   class CPermissionControl;
+   
+   using TPermissionStack = std::list<sdv::core::EAccessPermission>;
+   
+   class CAccessPermission
+   {
+   private:
+       friend CPermissionControl;
+   
+       CAccessPermission(CPermissionControl& rPermissionControl, sdv::core::EAccessPermission ePermission);
+   
+   public:
+       ~CAccessPermission();
+   
+       CAccessPermission(const CAccessPermission& rPermission);
+   
+       CAccessPermission(CAccessPermission&& rPermission);
+   
+       CAccessPermission& operator=(const CAccessPermission& rPermission);
+   
+       CAccessPermission& operator=(CAccessPermission&& rPermission);
+   
+       sdv::core::EAccessPermission Permission() const;
+   
+   private:
+       CPermissionControl& m_rPermissionControl;   
+       sdv::core::EAccessPermission m_ePermission; 
+   };
+   
+   class CPermissionControl : public sdv::IInterfaceAccess, public sdv::core::IPermissionControl
+   {
+   public:
+       friend CAccessPermission;
+   
+       CPermissionControl() = default;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_ENTRY(sdv::core::IPermissionControl)
+       END_SDV_INTERFACE_MAP()
+   
+       virtual sdv::core::TPermissionID RestrictAccessPermission(/*in*/ sdv::core::EAccessPermission ePermission) override;
+   
+       virtual bool ReleaseAccessPermission(/*in*/ sdv::core::TPermissionID tPermissionID) override;
+   
+       virtual sdv::core::TPermissionTransferID TransferCurrentPermission() override;
+   
+       virtual sdv::core::TPermissionID SetAccessPermission(/*in*/ sdv::core::TPermissionTransferID tTransferID) override;
+   
+       virtual sdv::core::EAccessPermission GetCurrentPermission() const override;
+   
+       CAccessPermission CreatePermissionObject(sdv::core::EAccessPermission ePermission);
+   
+   private:
+       void IncrementPermissionCount(sdv::core::EAccessPermission ePermission);
+   
+       void DecrementPermissionCount(sdv::core::EAccessPermission ePermission);
+   
+       CUniqueID<uint64_t> m_idgen; 
+   
+   #if defined __GNUC__ && defined _WIN32
+       // https://dev.azure.com/SW4ZF/AZP-431_DivDI_Vehicle_API/_workitems/edit/610009
+       // In MINGW GCC implementation of thread_local, there is an issue with complex classes being used after the destruction. This
+       // is caused by an architectural bug (https://github.com/msys2/MINGW-packages/issues/2519) causing the emutls (GCC Emulated TLS)
+       // managing the memory allocation to be executed before the __cxa_thread_exit, the thread cleanup callback of Windows.
+       // The solution is to use trivial data only (pointer, reference, integers, etc.). A workaround is implemented to use a reference
+       // of the permission list and map instead of an instance to the list and map.
+   
+       static std::list<std::pair<sdv::core::EAccessPermission, size_t>>& CreatePermissionList()
+       {
+           static std::mutex mtxPermissionLists;
+           static std::list<std::list<std::pair<sdv::core::EAccessPermission, size_t>>> lstPermissionLists;
+           std::unique_lock<std::mutex> lock(mtxPermissionLists);
+           lstPermissionLists.resize(lstPermissionLists.size() + 1);
+           return lstPermissionLists.back();
+       }
+   
+       static thread_local std::list<std::pair<sdv::core::EAccessPermission, size_t>>& m_lstPermissionTracker;
+   
+       static std::map<sdv::core::TPermissionID, CAccessPermission>& CreatePermissionMap()
+       {
+           static std::mutex mtxPermissionMaps;
+           static std::list<std::map<sdv::core::TPermissionID, CAccessPermission>> lstPermissionMaps;
+           std::unique_lock<std::mutex> lock(mtxPermissionMaps);
+           lstPermissionMaps.resize(lstPermissionMaps.size() + 1);
+           return lstPermissionMaps.back();
+       }
+   
+       static thread_local std::map<sdv::core::TPermissionID, CAccessPermission>& m_mapPermissions;
+   #else
+       static thread_local std::list<std::pair<sdv::core::EAccessPermission, size_t>> m_lstPermissionTracker;
+   
+       static thread_local std::map<sdv::core::TPermissionID, CAccessPermission> m_mapPermissions;
+   #endif
+   
+       std::map<sdv::core::TPermissionTransferID, sdv::core::EAccessPermission> m_mapPermissionTransfer;
+   
+       std::mutex m_mtxPermissionTransfer; 
+   };
+   
+   CPermissionControl& GetPermissionControl();
+   
+   class CPermissionControlService : public sdv::CSdvObject
+   {
+   public:
+       CPermissionControlService() = default;
+   
+       // Interface map
+       BEGIN_SDV_INTERFACE_MAP()
+           SDV_INTERFACE_CHAIN_MEMBER(GetPermissionControl())
+       END_SDV_INTERFACE_MAP()
+   
+       // Object declarations
+       DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
+       DECLARE_OBJECT_CLASS_NAME("PermissionControlService")
+       DECLARE_OBJECT_SINGLETON()
+   };
+   
+   DEFINE_SDV_OBJECT(CPermissionControlService)
+   
+   #endif // !defined PERMISSION_CONTROL_H

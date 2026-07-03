@@ -149,9 +149,9 @@ Program Listing for File debug_log.h
    
            struct SLogMsg
            {
-               std::thread::id id; 
-               size_t nDepth;      
-               std::string ssMsg;  
+               std::thread::id     id;         
+               size_t              nDepth;     
+               std::string         ssMsg;      
            };
    
            void LogMsg(std::ofstream& rfstream, const SLogMsg& rsMsg)
@@ -229,7 +229,7 @@ Program Listing for File debug_log.h
    
            std::filesystem::path       m_pathLogFile;          
    #if DECOUPLED_DEBUG_LOG != 0
-           std::mutex m_mtxLogger;                             
+           std::mutex                  m_mtxLogger;            
            std::thread                 m_threadLogger;         
            std::atomic_bool            m_bShutdown = false;    
            std::queue<SLogMsg>         m_queueLogger;          

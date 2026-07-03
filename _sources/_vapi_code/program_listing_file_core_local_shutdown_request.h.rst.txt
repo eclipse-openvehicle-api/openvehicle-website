@@ -67,6 +67,8 @@ Program Listing for File local_shutdown_request.h
            CloseHandle(hEvent);
            return true;
        }
+       else
+           std::cerr << "ERROR: Shutdown event handle is not available: " << m_ssSignalName << std::endl;
    #elif defined __unix__
        sem_t* pSemaphore = sem_open(m_ssSignalName.c_str(), 0);
        if (pSemaphore && pSemaphore != SEM_FAILED)

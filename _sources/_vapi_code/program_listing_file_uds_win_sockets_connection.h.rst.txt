@@ -39,6 +39,8 @@ Program Listing for File connection.h
    #include <vector>
    #include <cstdint>
    #include <cstddef>
+   #include <functional>
+   #include <string>
    
    #ifdef _WIN32
    #   include <WinSock2.h>
@@ -60,16 +62,19 @@ Program Listing for File connection.h
        uint32_t msgEnd           = 0; 
    };
    
-   class CWinsockConnection
-       : public sdv::IInterfaceAccess
-       , public sdv::ipc::IDataSend
-       , public sdv::ipc::IConnect
-       , public sdv::IObjectDestroy
+   class CWinsockConnection :
+       //public sdv::CSharedLifetimeControlImpl<CWinsockConnection>, public sdv::ipc::IDataSend, public sdv::ipc::IConnect
+       public sdv::IInterfaceAccess,
+       public sdv::ipc::IDataSend,
+       public sdv::ipc::IConnect,
+       public sdv::IObjectDestroy
    {
    public:
        CWinsockConnection();
    
        CWinsockConnection(unsigned long long preconfiguredSocket, bool acceptConnectionRequired);
+   
+       explicit CWinsockConnection(const std::string& udsPath);
    
        virtual ~CWinsockConnection();
    
@@ -77,6 +82,7 @@ Program Listing for File connection.h
            SDV_INTERFACE_ENTRY(sdv::ipc::IDataSend)
            SDV_INTERFACE_ENTRY(sdv::ipc::IConnect)
            SDV_INTERFACE_ENTRY(sdv::IObjectDestroy)
+           //SDV_INTERFACE_CHAIN_BASE(sdv::CSharedLifetimeControlImpl<CWinsockConnection>)
        END_SDV_INTERFACE_MAP()
    
        bool SendData(/*inout*/ sdv::sequence<sdv::pointer<uint8_t>>& seqData) override;
@@ -97,23 +103,27 @@ Program Listing for File connection.h
    
        void DestroyObject() override;
    
+       void SetWatchDogRemoveCallback(std::function<void(const void*)> callback);
+   
    private:
    
        std::mutex              m_MtxConnect;
        std::condition_variable m_CvConnect;
-       std::thread                             m_ReceiveThread;                
-       std::thread                             m_ConnectThread;
+       sdv::core::secure_thread                m_ReceiveThread;            
+       sdv::core::secure_thread                m_ConnectThread;
        std::atomic<bool>                       m_StopReceiveThread{false};     
        std::atomic<bool>                       m_StopConnectThread{false};
        std::atomic<sdv::ipc::EConnectState>    m_ConnectionState;              
        
-       sdv::ipc::IDataReceiveCallback*         m_pReceiver = nullptr;          
-       sdv::ipc::IConnectEventCallback*        m_pEvent = nullptr;             
+       sdv::ipc::IDataReceiveCallback*         m_pReceiver{nullptr};           
+       sdv::ipc::IConnectEventCallback*        m_pMainEvent{nullptr};          
+       sdv::ipc::IConnectEventCallback*        m_pRegisteredEvent{nullptr};
        bool                                    m_AcceptConnectionRequired;     
        mutable std::recursive_mutex            m_SendMutex;                    
    
        SOCKET                                  m_ListenSocket{INVALID_SOCKET};             
        SOCKET                                  m_ConnectionSocket{INVALID_SOCKET};         
+       std::string                             m_UdsPath;                                  
    
        static constexpr uint32_t               m_SendMessageSize{ 1024 };                                  
        static constexpr uint32_t               m_SendBufferSize = sizeof(SMsgHeader) + m_SendMessageSize;  
@@ -122,6 +132,9 @@ Program Listing for File connection.h
        uint32_t                                m_ReceiveBufferLength = sizeof(SMsgHeader);                 
    
        std::atomic<bool> m_CancelWait{false};   
+       std::mutex m_WatchdogMtx;
+       std::function<void(const void*)> m_WatchdogRemoveCallback;
+       std::atomic<bool> m_DestroyObjectCalled{false};
    
        void ConnectWorker();
    

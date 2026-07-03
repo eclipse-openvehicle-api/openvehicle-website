@@ -793,8 +793,9 @@
 <li><p><a class="reference internal" href="#includes" id="id2">Includes</a></p></li>
 <li><p><a class="reference internal" href="#included-by" id="id3">Included By</a></p></li>
 <li><p><a class="reference internal" href="#namespaces" id="id4">Namespaces</a></p></li>
-<li><p><a class="reference internal" href="#functions" id="id5">Functions</a></p></li>
-<li><p><a class="reference internal" href="#defines" id="id6">Defines</a></p></li>
+<li><p><a class="reference internal" href="#classes" id="id5">Classes</a></p></li>
+<li><p><a class="reference internal" href="#functions" id="id6">Functions</a></p></li>
+<li><p><a class="reference internal" href="#defines" id="id7">Defines</a></p></li>
 </ul>
 </nav>
 <section id="definition-support-local-service-access-h">
@@ -808,12 +809,19 @@
 <section id="includes">
 <h2>Includes<a class="headerlink" href="#includes" title="Link to this heading">#</a></h2>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">../interfaces/app.h</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">../interfaces/com.h</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">../interfaces/core.h</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">../interfaces/log.h</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">../interfaces/param.h</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">../interfaces/permission.h</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">../interfaces/repository.h</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">functional</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">interface_ptr.h</span></code> (<a class="reference internal" href="file_support_interface_ptr.h.html#file-support-interface-ptr-h"><span class="std std-ref">File interface_ptr.h</span></a>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">sstream</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stdexcept</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string</span></code> (<a class="reference internal" href="file_support_string.h.html#file-support-string-h"><span class="std std-ref">File string.h</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">thread</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">utility</span></code></p></li>
 </ul>
 </section>
@@ -822,6 +830,7 @@
 <ul class="simple">
 <li><p><a class="reference internal" href="file_core_module_control.h.html#file-core-module-control-h"><span class="std std-ref">File module_control.h</span></a></p></li>
 <li><p><a class="reference internal" href="file_ipc_shared_mem_connection.h.html#file-ipc-shared-mem-connection-h"><span class="std std-ref">File connection.h</span></a></p></li>
+<li><p><a class="reference internal" href="file_ipc_shared_mem_watchdog.h.html#file-ipc-shared-mem-watchdog-h"><span class="std std-ref">File watchdog.h</span></a></p></li>
 <li><p><a class="reference internal" href="file_interfaces_serdes_app_serdes.h.html#file-interfaces-serdes-app-serdes-h"><span class="std std-ref">File app_serdes.h</span></a></p></li>
 <li><p><a class="reference internal" href="file_interfaces_serdes_core_serdes.h.html#file-interfaces-serdes-core-serdes-h"><span class="std std-ref">File core_serdes.h</span></a></p></li>
 <li><p><a class="reference internal" href="file_interfaces_serdes_core_types_serdes.h.html#file-interfaces-serdes-core-types-serdes-h"><span class="std std-ref">File core_types_serdes.h</span></a></p></li>
@@ -831,6 +840,7 @@
 <li><p><a class="reference internal" href="file_interfaces_serdes_com_serdes.h.html#file-interfaces-serdes-com-serdes-h"><span class="std std-ref">File com_serdes.h</span></a></p></li>
 <li><p><a class="reference internal" href="file_interfaces_serdes_core_ps_serdes.h.html#file-interfaces-serdes-core-ps-serdes-h"><span class="std std-ref">File core_ps_serdes.h</span></a></p></li>
 <li><p><a class="reference internal" href="file_interfaces_serdes_process_serdes.h.html#file-interfaces-serdes-process-serdes-h"><span class="std std-ref">File process_serdes.h</span></a></p></li>
+<li><p><a class="reference internal" href="file_interfaces_serdes_permission_serdes.h.html#file-interfaces-serdes-permission-serdes-h"><span class="std std-ref">File permission_serdes.h</span></a></p></li>
 <li><p><a class="reference internal" href="file_interfaces_serdes_config_serdes.h.html#file-interfaces-serdes-config-serdes-h"><span class="std std-ref">File config_serdes.h</span></a></p></li>
 <li><p><a class="reference internal" href="file_interfaces_serdes_core_idl_serdes.h.html#file-interfaces-serdes-core-idl-serdes-h"><span class="std std-ref">File core_idl_serdes.h</span></a></p></li>
 <li><p><a class="reference internal" href="file_interfaces_serdes_dispatch_serdes.h.html#file-interfaces-serdes-dispatch-serdes-h"><span class="std std-ref">File dispatch_serdes.h</span></a></p></li>
@@ -858,19 +868,41 @@
 <li><p><a class="reference internal" href="namespace_sdv__core__internal.html#namespace-sdv-core-internal"><span class="std std-ref">Namespace sdv::core::internal</span></a></p></li>
 </ul>
 </section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="classsdv_1_1core_1_1_c_access_permission.html#exhale-class-classsdv-1-1core-1-1-c-access-permission"><span class="std std-ref">Class CAccessPermission</span></a></p></li>
+<li><p><a class="reference internal" href="classsdv_1_1core_1_1secure__thread.html#exhale-class-classsdv-1-1core-1-1secure-thread"><span class="std std-ref">Class secure_thread</span></a></p></li>
+</ul>
+</section>
 <section id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
 <ul class="simple">
+<li><p><a class="reference internal" href="function_local__service__access_8h_1ae116678b457ef9670d969957ba8b16a9.html#exhale-function-local-service-access-8h-1ae116678b457ef9670d969957ba8b16a9"><span class="std std-ref">Function operator&lt;()</span></a></p></li>
+<li><p><a class="reference internal" href="function_local__service__access_8h_1a6844cb0505bc162e27d1f48c7ae10db4.html#exhale-function-local-service-access-8h-1a6844cb0505bc162e27d1f48c7ae10db4"><span class="std std-ref">Function operator&lt;=()</span></a></p></li>
+<li><p><a class="reference internal" href="function_local__service__access_8h_1a73a735fbb5b33e4702f90c5131e49bf0.html#exhale-function-local-service-access-8h-1a73a735fbb5b33e4702f90c5131e49bf0"><span class="std std-ref">Function operator&gt;()</span></a></p></li>
+<li><p><a class="reference internal" href="function_local__service__access_8h_1a51184778ebff2d9d407766cef11515fc.html#exhale-function-local-service-access-8h-1a51184778ebff2d9d407766cef11515fc"><span class="std std-ref">Function operator&gt;=()</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1app_1ad27c58273ff6373465a6ffdbf2f661f3.html#exhale-function-namespacesdv-1-1app-1ad27c58273ff6373465a6ffdbf2f661f3"><span class="std std-ref">Function sdv::app::ConsoleIsSilent</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1app_1a839ae94ff5447fcc746cf06a33b19c67.html#exhale-function-namespacesdv-1-1app-1a839ae94ff5447fcc746cf06a33b19c67"><span class="std std-ref">Function sdv::app::ConsoleIsVerbose</span></a></p></li>
-<li><p><a class="reference internal" href="function_namespacesdv_1_1app_1a99912f9d480680946fe2920ea88b6a9e.html#exhale-function-namespacesdv-1-1app-1a99912f9d480680946fe2920ea88b6a9e"><span class="std std-ref">Function sdv::app::GetAppAttribute</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1app_1adf7ea5b038bdfb07a8c0844c480eb707.html#exhale-function-namespacesdv-1-1app-1adf7ea5b038bdfb07a8c0844c480eb707"><span class="std std-ref">Function sdv::app::GetAppInstanceID</span></a></p></li>
-<li><p><a class="reference internal" href="function_namespacesdv_1_1com_1a1a18252af3a1cb8b6387d3037d216b22.html#exhale-function-namespacesdv-1-1com-1a1a18252af3a1cb8b6387d3037d216b22"><span class="std std-ref">Function sdv::com::ConnectToLocalServerRepository</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1app_1a492c766e0df14e366f097db44948483e.html#exhale-function-namespacesdv-1-1app-1a492c766e0df14e366f097db44948483e"><span class="std std-ref">Function sdv::app::GetAppSettingsAttribute</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1com_1ae63255cdbd17c798f856f380e34d2161.html#exhale-function-namespacesdv-1-1com-1ae63255cdbd17c798f856f380e34d2161"><span class="std std-ref">Function sdv::com::ConnectToLocalServerRepository</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1core_1a52c9ea03c6b6a89e36cd192eef184f5d.html#exhale-function-namespacesdv-1-1core-1a52c9ea03c6b6a89e36cd192eef184f5d"><span class="std std-ref">Function sdv::core::CreateUtility</span></a></p></li>
-<li><p><a class="reference internal" href="function_namespacesdv_1_1core_1ad5e2a725bb7dd477f818dc5a274037b5.html#exhale-function-namespacesdv-1-1core-1ad5e2a725bb7dd477f818dc5a274037b5"><span class="std std-ref">Function sdv::core::GetObject(TObjectID)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1core_1a5f3b04c528a4b7f703628d83b1e730b0.html#exhale-function-namespacesdv-1-1core-1a5f3b04c528a4b7f703628d83b1e730b0"><span class="std std-ref">Function sdv::core::GetCurrentAccessPermission</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1core_1ad8b35bf627a02ac7f8410988fb8786d1.html#exhale-function-namespacesdv-1-1core-1ad8b35bf627a02ac7f8410988fb8786d1"><span class="std std-ref">Function sdv::core::GetObject(const std::string&amp;)</span></a></p></li>
-<li><p><a class="reference internal" href="function_local__service__access_8h_1a24645247e889c2b46314d843522c9602.html#exhale-function-local-service-access-8h-1a24645247e889c2b46314d843522c9602"><span class="std std-ref">Template Function sdv::core::internal::CSDVLogImpl</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1core_1ad5e2a725bb7dd477f818dc5a274037b5.html#exhale-function-namespacesdv-1-1core-1ad5e2a725bb7dd477f818dc5a274037b5"><span class="std std-ref">Function sdv::core::GetObject(TObjectID)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1core_1a63ce5afdb970015bb2f8473e1d155f01.html#exhale-function-namespacesdv-1-1core-1a63ce5afdb970015bb2f8473e1d155f01"><span class="std std-ref">Function sdv::core::GetParameter(const IParameters *, const std::string&amp;, bool)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1core_1a3facadc94a1b2581186a8dae34db5ea3.html#exhale-function-namespacesdv-1-1core-1a3facadc94a1b2581186a8dae34db5ea3"><span class="std std-ref">Function sdv::core::GetParameter(const TInterfaceAccessPtr&amp;, const std::string&amp;, bool)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1core_1a821632cc5bc5368a357234f699378009.html#exhale-function-namespacesdv-1-1core-1a821632cc5bc5368a357234f699378009"><span class="std std-ref">Function sdv::core::GetParameter(const std::string&amp;, const std::string&amp;, bool)</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1core_1af0989aa3c7e38c4fe75391b0102e52db.html#exhale-function-namespacesdv-1-1core-1af0989aa3c7e38c4fe75391b0102e52db"><span class="std std-ref">Function sdv::core::GetParameterExpand</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1core_1_1internal_1a6db143a180b938f90aa2311d562371ec.html#exhale-function-namespacesdv-1-1core-1-1internal-1a6db143a180b938f90aa2311d562371ec"><span class="std std-ref">Function sdv::core::internal::ContainsValidVariable</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1core_1_1internal_1a01fcee74b88ce660d2cb79e365d66fc0.html#exhale-function-namespacesdv-1-1core-1-1internal-1a01fcee74b88ce660d2cb79e365d66fc0"><span class="std std-ref">Template Function sdv::core::internal::CSDVLogImpl</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1core_1_1internal_1a9e7b5f4916fa7ecce23d50e34281f5ec.html#exhale-function-namespacesdv-1-1core-1-1internal-1a9e7b5f4916fa7ecce23d50e34281f5ec"><span class="std std-ref">Function sdv::core::internal::TrimWhitespace</span></a></p></li>
 <li><p><a class="reference internal" href="function_namespacesdv_1_1core_1a82137f6fe2c8f622a84b9654df54f51b.html#exhale-function-namespacesdv-1-1core-1a82137f6fe2c8f622a84b9654df54f51b"><span class="std std-ref">Function sdv::core::Log</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1core_1a6270bb87de9de3a52491bc888f3f9a24.html#exhale-function-namespacesdv-1-1core-1a6270bb87de9de3a52491bc888f3f9a24"><span class="std std-ref">Function sdv::core::ResolveText</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1core_1a9b70debac8fd6dbc8b5c8fdae2e08574.html#exhale-function-namespacesdv-1-1core-1a9b70debac8fd6dbc8b5c8fdae2e08574"><span class="std std-ref">Function sdv::core::RestrictAccessPermission</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1core_1a4d75a65db03a66473e5b2e608e75fa97.html#exhale-function-namespacesdv-1-1core-1a4d75a65db03a66473e5b2e608e75fa97"><span class="std std-ref">Function sdv::core::SetAccessPermission</span></a></p></li>
+<li><p><a class="reference internal" href="function_namespacesdv_1_1core_1a36ad475e37b3b38b9f61b6047b552ed9.html#exhale-function-namespacesdv-1-1core-1a36ad475e37b3b38b9f61b6047b552ed9"><span class="std std-ref">Function sdv::core::TransferCurrentPermission</span></a></p></li>
 </ul>
 </section>
 <section id="defines">

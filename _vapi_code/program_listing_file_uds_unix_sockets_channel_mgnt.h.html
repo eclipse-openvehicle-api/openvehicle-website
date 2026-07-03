@@ -805,6 +805,8 @@
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/component_impl.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;interfaces/ipc.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;watchdog.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;algorithm&gt;</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">CUnixSocketConnection</span><span class="p">;</span>
 
@@ -822,14 +824,16 @@
 
 <span class="w">    </span><span class="c1">// Object declarations</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">system_object</span><span class="p">)</span>
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;UnixDomainSocketsChannelControl&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_ALIAS</span><span class="p">(</span><span class="s">&quot;LocalChannelControl&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="n">DECLARE_DEFAULT_OBJECT_NAME</span><span class="p">(</span><span class="s">&quot;LocalChannelControl&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;UnixSocketsChannelControl&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_ALIAS</span><span class="p">(</span><span class="s">&quot;unix_domain_sockets&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_DEFAULT_OBJECT_NAME</span><span class="p">(</span><span class="s">&quot;unix_domain_sockets&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_SINGLETON</span><span class="p">()</span>
 
 <span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OnInitialize</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
 <span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnShutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnDestroy</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
 <span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">ipc</span><span class="o">::</span><span class="n">SChannelEndpoint</span><span class="w"> </span><span class="nf">CreateEndpoint</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssChannelConfig</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
@@ -839,8 +843,7 @@
 
 <span class="w">    </span><span class="c1">// Helper: choose runtime dir (/run/user/&lt;uid&gt;/sdv) or fallback (/tmp/sdv)</span>
 <span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">MakeUserRuntimeDir</span><span class="p">();</span>
-
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CUnixSocketConnection</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">m_ServerConnections</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CUnixSocketsConnectionWatchDog</span><span class="w"> </span><span class="n">m_watchdog</span><span class="p">;</span>
 
 <span class="p">};</span>
 <span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CUnixDomainSocketsChannelMgnt</span><span class="p">)</span>

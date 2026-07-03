@@ -31,12 +31,12 @@ Program Listing for File client.h
    #include <interfaces/com.h>
    
    // Forward declaration.
-   class CClient;
+   class CClientConnect;
    
    class CRepositoryProxy : public sdv::IInterfaceAccess, public sdv::IObjectDestroy
    {
    public:
-       CRepositoryProxy(CClient& rClient, sdv::com::TConnectionID tConnection, sdv::IInterfaceAccess* pRepositoryProxy);
+       CRepositoryProxy(CClientConnect& rClient, sdv::com::TConnectionID tConnection, sdv::IInterfaceAccess* pRepositoryProxy);
    
        CRepositoryProxy(const CRepositoryProxy& rRepository) = delete;
    
@@ -51,13 +51,15 @@ Program Listing for File client.h
    
        virtual void DestroyObject() override;
    
+       sdv::com::TConnectionID GetConnectionID() const;
+   
    private:
-       CClient&                        m_rClient;                  
+       CClientConnect&                 m_rClient;                  
        sdv::com::TConnectionID         m_tConnection = {};         
        sdv::TInterfaceAccessPtr        m_ptrRepositoryProxy;       
    };
    
-   class CClient : public sdv::CSdvObject, public sdv::com::IClientConnect
+   class CClientConnect : public sdv::CSdvObject, public sdv::com::IClientConnect
    {
    public:
        // Interface map
@@ -67,24 +69,35 @@ Program Listing for File client.h
    
        // Object declaration
        DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
-       DECLARE_OBJECT_CLASS_NAME("ConnectionService")
-       DECLARE_OBJECT_SINGLETON()
+       DECLARE_OBJECT_CLASS_NAME("ClientConnectService")
+       DECLARE_OBJECT_DEPENDENCIES("CommunicationControl")
+   
+       // Parameter map
+       BEGIN_SDV_PARAM_MAP()
+           SDV_PARAM_ENABLE_LOCKING()
+           SDV_PARAM_GROUP("Provider")
+           SDV_PARAM_ENTRY(m_ssProvider, "Name", "", "", "Provider name to create a connection for.")
+       END_SDV_PARAM_MAP()
    
        
        virtual bool OnInitialize() override;
    
        virtual void OnShutdown() override;
    
-       virtual sdv::IInterfaceAccess* Connect(const sdv::u8string& ssConnectString) override;
+       virtual bool Connect() override;
    
-       void Disconnect(sdv::com::TConnectionID tConnectionID);
+       bool Disconnect() override;
+   
+       bool IsConnected() const override;
+   
+       sdv::IInterfaceAccess* GetRemoteRepository() override;
    
    private:
-       std::mutex              m_mtxRepositoryProxies;                             
-       std::map<sdv::com::TConnectionID, CRepositoryProxy> m_mapRepositoryProxies; 
+       mutable std::mutex                  m_mtx;                      
+       sdv::u8string                       m_ssProvider;               
+       std::shared_ptr<CRepositoryProxy>   m_ptrRemoteRepo;            
    };
    
-   DEFINE_SDV_OBJECT(CClient)
-   
+   DEFINE_SDV_OBJECT(CClientConnect)
    
    #endif // !defined CLIENT_H

@@ -853,7 +853,7 @@ module<span class="w"> </span>sdv
 
 <span class="w">            </span>u8string<span class="w"> </span>GetComment(in<span class="w"> </span>ECommentType<span class="w"> </span>eType);
 
-<span class="w">            </span>void<span class="w"> </span>AutomaticFormat();
+<span class="w">            </span>void<span class="w"> </span>AutomaticFormat(in<span class="w"> </span>boolean<span class="w"> </span>bRemoveComments);
 
 <span class="w">            </span>boolean<span class="w"> </span>IsInline()<span class="w"> </span>const;
 
@@ -890,24 +890,24 @@ module<span class="w"> </span>sdv
 
 <span class="w">            </span>boolean<span class="w"> </span>CanMakeStandard()<span class="w"> </span>const;
 
-<span class="w">            </span>boolean<span class="w"> </span>MakeStandard();
+<span class="w">            </span>boolean<span class="w"> </span>MakeStandard(in<span class="w"> </span>boolean<span class="w"> </span>bIncludeChildren);
+<span class="w">        </span>};
+
+<span class="w">        </span>enum<span class="w"> </span>EInsertPreference
+<span class="w">        </span>{
+<span class="w">            </span>prefer_standard<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>,
+<span class="w">            </span>prefer_inline<span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>,
 <span class="w">        </span>};
 
 <span class="w">        </span>interface<span class="w"> </span>INodeCollectionInsert
 <span class="w">        </span>{
-<span class="w">            </span>IInterfaceAccess<span class="w"> </span>InsertValue(in<span class="w"> </span>uint32<span class="w"> </span>uiIndex,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssName,<span class="w"> </span>in<span class="w"> </span>any<span class="w"> </span>anyValue);
+<span class="w">            </span>IInterfaceAccess<span class="w"> </span>InsertValue(in<span class="w"> </span>u8string<span class="w"> </span>ssInsertBefore,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssName,<span class="w"> </span>in<span class="w"> </span>any<span class="w"> </span>anyValue);
 
-<span class="w">            </span>IInterfaceAccess<span class="w"> </span>InsertArray(in<span class="w"> </span>uint32<span class="w"> </span>uiIndex,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssName);
+<span class="w">            </span>IInterfaceAccess<span class="w"> </span>InsertArray(in<span class="w"> </span>u8string<span class="w"> </span>ssInsertBefore,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssName);
 
-<span class="w">            </span>enum<span class="w"> </span>EInsertPreference
-<span class="w">            </span>{
-<span class="w">                </span>prefer_standard<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>,
-<span class="w">                </span>prefer_inline<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>,
-<span class="w">            </span>};
+<span class="w">            </span>IInterfaceAccess<span class="w"> </span>InsertTable(in<span class="w"> </span>u8string<span class="w"> </span>ssInsertBefore,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssName,<span class="w"> </span>in<span class="w"> </span>EInsertPreference<span class="w"> </span>ePreference);
 
-<span class="w">            </span>IInterfaceAccess<span class="w"> </span>InsertTable(in<span class="w"> </span>uint32<span class="w"> </span>uiIndex,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssName,<span class="w"> </span>in<span class="w"> </span>EInsertPreference<span class="w"> </span>ePreference);
-
-<span class="w">            </span>IInterfaceAccess<span class="w"> </span>InsertTableArray(in<span class="w"> </span>uint32<span class="w"> </span>uiIndex,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssName,<span class="w"> </span>in<span class="w"> </span>EInsertPreference<span class="w"> </span>ePreference);
+<span class="w">            </span>IInterfaceAccess<span class="w"> </span>InsertTableArray(in<span class="w"> </span>u8string<span class="w"> </span>ssInsertBefore,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssName,<span class="w"> </span>in<span class="w"> </span>EInsertPreference<span class="w"> </span>ePreference);
 
 <span class="w">            </span>enum<span class="w"> </span>EInsertResult<span class="w"> </span><span class="o">:</span><span class="w"> </span>uint32
 <span class="w">            </span>{
@@ -916,7 +916,7 @@ module<span class="w"> </span>sdv
 <span class="w">                </span>insert_success,
 <span class="w">            </span>};
 
-<span class="w">            </span>EInsertResult<span class="w"> </span>InsertTOML(in<span class="w"> </span>uint32<span class="w"> </span>uiIndex,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssTOML,<span class="w"> </span>in<span class="w"> </span>boolean<span class="w"> </span>bRollbackOnFailure);
+<span class="w">            </span>EInsertResult<span class="w"> </span>InsertTOML(in<span class="w"> </span>u8string<span class="w"> </span>ssInsertBefore,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssTOML,<span class="w"> </span>in<span class="w"> </span>boolean<span class="w"> </span>bRollbackOnFailure);
 <span class="w">        </span>};
 
 <span class="w">        </span>interface<span class="w"> </span>ITOMLParser

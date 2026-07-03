@@ -808,6 +808,7 @@
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;atomic&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdint&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;functional&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mutex&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;memory&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thread&gt;</span>
@@ -876,12 +877,17 @@
 
 <span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">GetChannelId</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">m_ChannelId</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SetWatchDogRemoveCallback</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="o">&gt;</span><span class="w"> </span><span class="n">callback</span><span class="p">);</span>
+
 <span class="k">private</span><span class="o">:</span>
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CUnixSocketConnection</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_Transport</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">m_ChannelId</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
 <span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">ipc</span><span class="o">::</span><span class="n">IDataReceiveCallback</span><span class="o">*</span><span class="w"> </span><span class="n">m_pUpperReceiver</span><span class="w"> </span><span class="p">{</span><span class="nb">nullptr</span><span class="p">};</span>
 <span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">ipc</span><span class="o">::</span><span class="n">IConnectEventCallback</span><span class="o">*</span><span class="w"> </span><span class="n">m_pUpperEvent</span><span class="w"> </span><span class="p">{</span><span class="nb">nullptr</span><span class="p">};</span>
 <span class="w">    </span><span class="k">mutable</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">m_CallbackMtx</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">m_WatchdogMtx</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_WatchdogRemoveCallback</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_DestroyObjectCalled</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="p">};</span>
 <span class="p">};</span>
 
 <span class="cp">#endif </span><span class="c1">// UNIX_SOCKET_TUNNEL_CONNECTION_H</span>

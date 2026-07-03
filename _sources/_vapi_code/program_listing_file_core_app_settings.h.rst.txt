@@ -29,24 +29,91 @@ Program Listing for File app_settings.h
    #include <interfaces/app.h>
    #include <support/component_impl.h>
    
-   class CAppSettings : public sdv::IInterfaceAccess, public sdv::app::IAppContext, public sdv::IAttributes
+   class CAppSettings : public sdv::CSdvParamMap, public sdv::IInterfaceAccess, public sdv::app::IAppContext,
+       public sdv::app::IAppSettingsPersist, public sdv::app::IAppConnections
    {
    public:
+       enum class EAppConsoleReporting
+       {
+           silent,  
+           normal,  
+           verbose, 
+       };
+   
        CAppSettings();
    
        ~CAppSettings();
    
+   #ifndef DOXYGEN_IGNORE
        // Interface map
        BEGIN_SDV_INTERFACE_MAP()
            SDV_INTERFACE_ENTRY(sdv::app::IAppContext)
        END_SDV_INTERFACE_MAP()
    
-       
+       // Application mode labels
+       BEGIN_SDV_LABEL_MAP(sdv::app::EAppContext)
+           SDV_LABEL_ENTRY(sdv::app::EAppContext::no_context, "Undefined")
+           SDV_LABEL_ENTRY(sdv::app::EAppContext::standalone, "Standalone")
+           SDV_LABEL_ENTRY(sdv::app::EAppContext::external, "External")
+           SDV_LABEL_ENTRY(sdv::app::EAppContext::isolated, "Isolated")
+           SDV_LABEL_ENTRY(sdv::app::EAppContext::main, "Main")
+           SDV_LABEL_ENTRY(sdv::app::EAppContext::essential, "Essential")
+           SDV_LABEL_ENTRY(sdv::app::EAppContext::maintenance, "Maintenance")
+       END_SDV_LABEL_MAP()
+   
+       // Log severity labels
+       BEGIN_SDV_LABEL_MAP(sdv::core::ELogSeverity)
+           SDV_LABEL_ENTRY(sdv::core::ELogSeverity::trace, "Trace")
+           SDV_LABEL_ENTRY(sdv::core::ELogSeverity::debug, "Debug")
+           SDV_LABEL_ENTRY(sdv::core::ELogSeverity::info, "Info")
+           SDV_LABEL_ENTRY(sdv::core::ELogSeverity::warning, "Warning")
+           SDV_LABEL_ENTRY(sdv::core::ELogSeverity::error, "Error")
+           SDV_LABEL_ENTRY(sdv::core::ELogSeverity::fatal, "Fatal")
+       END_SDV_LABEL_MAP()
+   
+       // Console reporting labels
+       BEGIN_SDV_LABEL_MAP(EAppConsoleReporting)
+           SDV_LABEL_ENTRY(EAppConsoleReporting::normal, "Normal")
+           SDV_LABEL_ENTRY(EAppConsoleReporting::silent, "Silent")
+           SDV_LABEL_ENTRY(EAppConsoleReporting::verbose, "Verbose")
+       END_SDV_LABEL_MAP()
+   
+       // Parameter map
+       BEGIN_SDV_PARAM_MAP()
+           SDV_PARAM_SET_READONLY()
+           SDV_PARAM_GROUP("LogHandler")
+           SDV_PARAM_ENTRY(m_ssLoggerClass, "Class", "", "", "Component class name of a custom logger")
+           SDV_PARAM_ENTRY(m_pathLoggerModule, "Path", "", "", "Component module path of a custom logger")
+           SDV_PARAM_ENTRY(m_ssProgramTag, "Tag", "", "", "Program tag to use instead of the name SDV_LOG_<pid>")
+           SDV_PARAM_ENUM_ENTRY(m_eSeverityFilter, "Filter", sdv::core::ELogSeverity::info,
+               "Lowest severity filter to use when logging (Trace, Debug, Info, Warning, Error, Fatal)")
+           SDV_PARAM_ENUM_ENTRY(m_eSeverityViewFilter, "ViewFilter", sdv::core::ELogSeverity::error,
+               "Lowest severity filter to use when logging (Trace, Debug, Info, Warning, Error, Fatal)")
+   
+           SDV_PARAM_GROUP("Application")
+           SDV_PARAM_ENUM_ENTRY(m_eAppContextType, "Mode", sdv::app::EAppContext::no_context, "Application mode")
+           SDV_PARAM_ENTRY(m_uiInstanceID, "Instance", 0u, "", "System instance ID")
+           SDV_PARAM_ENTRY(m_pathRootDir, "RootDir", "", "", "Location of user component root directory")
+           SDV_PARAM_ENTRY(m_pathInstallDir, "InstallDir", "", "", "Location of user component installations")
+           SDV_PARAM_ENTRY(m_pathPlatformConfig, "PlatformConfig", "", "", "The platform abstraction configuration file")
+           SDV_PARAM_ENTRY(m_pathVehIfcConfig, "VehIfcConfig", "", "", "The vehicle interface configuration file")
+           SDV_PARAM_ENTRY(m_pathVehAbstrConfig, "VehAbstrConfig", "", "", "The vehicle abstraction configuration file")
+           SDV_PARAM_ENTRY(m_pathUserConfig, "AppConfig", "", "", "The application configuration file")
+   
+           SDV_PARAM_GROUP("Console")
+           SDV_PARAM_ENUM_ENTRY(m_eConsoleReporting, "Reporting", EAppConsoleReporting::normal, "Console reporting (Normal, Silent, Verbose)")
+           SDV_PARAM_ENTRY(m_bRedirectMon, "RedirectMon", false, "", "Redirect messages from the monitor onto the console.")
+   
+           SDV_PARAM_GROUP("Communication")
+           SDV_PARAM_ENTRY(m_ssDefaultComProvider, "DefaultProvider", "", "", "Name of the default communication provider")
+       END_SDV_PARAM_MAP()
+   #endif // !defined DOXYGEN_IGNORE
+   
        bool ProcessAppStartupConfig(const sdv::u8string& rssConfig);
    
-       bool LoadSettingsFile();
+       bool LoadSettings() override;
    
-       bool SaveSettingsFile();
+       bool SaveSettings() override;
    
        bool IsMainApplication() const;
    
@@ -60,11 +127,13 @@ Program Listing for File app_settings.h
    
        bool IsExternalApplication() const;
    
+       void SetContextType(sdv::app::EAppContext eContextType);
+   
        sdv::app::EAppContext GetContextType() const override;
    
-       uint32_t GetInstanceID() const override;
+       void SetInstanceID(uint32_t uiID);
    
-       uint32_t GetRetries() const override;
+       uint32_t GetInstanceID() const override;
    
        std::string GetLoggerClass() const;
    
@@ -79,6 +148,14 @@ Program Listing for File app_settings.h
        bool IsConsoleSilent() const;
    
        bool IsConsoleVerbose() const;
+   
+       void SetConsoleReporting(EAppConsoleReporting eReporting);
+   
+       EAppConsoleReporting GetConsoleReporting() const;
+   
+       bool RedirectMonitorToConsole() const;
+   
+       std::filesystem::path GetFrameworkDir() const;
    
        std::filesystem::path GetRootDir() const;
    
@@ -106,37 +183,58 @@ Program Listing for File app_settings.h
    
        bool RemoveUserConfigPath();
    
-       virtual sdv::sequence<sdv::u8string> GetNames() const override;
+       const std::string& GetDefaultComProvider() const;
    
-       virtual sdv::any_t Get(/*in*/ const sdv::u8string& ssAttribute) const override;
+       sdv::sequence<sdv::u8string> GetListeners() const override;
    
-       virtual bool Set(/*in*/ const sdv::u8string& ssAttribute, /*in*/ sdv::any_t anyAttribute) override;
+       sdv::u8string GetListenerConfig(/*in*/ const sdv::u8string& ssName) const override;
    
-       virtual uint32_t GetFlags(/*in*/ const sdv::u8string& ssAttribute) const override;
+       bool AddListenerConfig(/*in*/ const sdv::u8string& ssName, /*in*/ const sdv::u8string& ssConfig) override;
+   
+       bool RemoveListenerConfig(/*in*/ const sdv::u8string& ssName) override;
+   
+       sdv::sequence<sdv::u8string> GetConnections() const override;
+   
+       sdv::u8string GetConnectionConfig(/*in*/ const sdv::u8string& ssName) const override;
+   
+       bool AddConnectionConfig(/*in*/ const sdv::u8string& ssName, /*in*/ const sdv::u8string& ssConfig,
+           /*in*/ const sdv::u8string& ssInsertBefore = std::string()) override;
+   
+       bool RemoveConnectionConfig(/*in*/ const sdv::u8string& ssName) override;
+   
+       uint32_t GetConnectRetries() const override;
    
        void Reset();
    
    private:
-       sdv::app::EAppContext       m_eContextMode = sdv::app::EAppContext::no_context; 
+       std::string DefaultListenerConfig() const;
+   
+       std::string DefaultConnectionConfig() const;
+   
+       sdv::app::EAppContext       m_eAppContextType = sdv::app::EAppContext::no_context; 
        uint32_t                    m_uiInstanceID = 0u;            
-       uint32_t                    m_uiRetries = 0u;               
+       uint32_t                    m_uiConnectRetries = 5u;        
        std::string                 m_ssLoggerClass;                
        std::filesystem::path       m_pathLoggerModule;             
        std::string                 m_ssProgramTag;                 
        sdv::core::ELogSeverity     m_eSeverityFilter = sdv::core::ELogSeverity::info;      
        sdv::core::ELogSeverity     m_eSeverityViewFilter = sdv::core::ELogSeverity::error; 
-       bool                        m_bSilent = false;              
-       bool                        m_bVerbose = false;             
+       EAppConsoleReporting        m_eConsoleReporting = EAppConsoleReporting::normal; 
+       bool                        m_bRedirectMon = false;         
+       std::filesystem::path       m_pathFrameworkDir;             
        std::filesystem::path       m_pathRootDir;                  
        std::filesystem::path       m_pathInstallDir;               
        std::filesystem::path       m_pathPlatformConfig;           
        std::filesystem::path       m_pathVehIfcConfig;             
        std::filesystem::path       m_pathVehAbstrConfig;           
        std::filesystem::path       m_pathUserConfig;               
-       bool                        m_bPlatformConfig = false;      
-       bool                        m_bVehIfcConfig = false;        
-       bool                        m_bVehAbstrConfig = false;      
-       bool                        m_bUserConfig = false;          
+       bool                        m_bUpdatePlatformConfig = false; 
+       bool                        m_bUpdateVehIfcConfig = false;  
+       bool                        m_bUpdateVehAbstrConfig = false; 
+       bool                        m_bUpdateUserConfig = false;    
+       std::map<std::string, std::string> m_mapListeners;          
+       std::vector<std::pair<std::string, std::string>> m_vecConnections; 
+       std::string                 m_ssDefaultComProvider;         
    };
    
    CAppSettings& GetAppSettings();
@@ -148,13 +246,22 @@ Program Listing for File app_settings.h
    
        // Interface map
        BEGIN_SDV_INTERFACE_MAP()
-           SDV_INTERFACE_ENTRY_MEMBER(sdv::IAttributes, GetAppSettings())
+           SDV_INTERFACE_SET_SECTION_CONDITION(GetAppSettings().IsMaintenanceApplication(), 1)
+           SDV_INTERFACE_SECTION(1)
+           SDV_INTERFACE_ENTRY_MEMBER(sdv::app::IAppSettingsPersist, GetAppSettings())
+           SDV_INTERFACE_ENTRY_MEMBER(sdv::app::IAppConnections, GetAppSettings())
+           SDV_INTERFACE_DEFAULT_SECTION()
        END_SDV_INTERFACE_MAP()
    
        // Object declarations
        DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
        DECLARE_OBJECT_CLASS_NAME("AppSettingsService")
        DECLARE_OBJECT_SINGLETON()
+   
+       // Parameter map
+       BEGIN_SDV_PARAM_MAP()
+           SDV_PARAM_CHAIN_MEMBER(GetAppSettings())
+       END_SDV_PARAM_MAP()
    
        
        static CAppSettings& GetAppSettings();

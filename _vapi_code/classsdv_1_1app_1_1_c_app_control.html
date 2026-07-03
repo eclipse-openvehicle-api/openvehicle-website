@@ -1130,12 +1130,39 @@
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv3app11CAppControl15GetAppDirectoryEv">
+<span id="_CPPv3N3sdv3app11CAppControl15GetAppDirectoryEv"></span><span id="_CPPv2N3sdv3app11CAppControl15GetAppDirectoryEv"></span><span id="sdv::app::CAppControl::GetAppDirectory"></span><span class="target" id="classsdv_1_1app_1_1_c_app_control_1a8e8d5cc2e031c57a72763344a8136c36"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetAppDirectory</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3sdv3app11CAppControl15GetAppDirectoryEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Get the absolute path to the currently run executable. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Absolute std::filesystem::path to the currently run executable </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv3app11CAppControl14GetAppFilenameEv">
+<span id="_CPPv3N3sdv3app11CAppControl14GetAppFilenameEv"></span><span id="_CPPv2N3sdv3app11CAppControl14GetAppFilenameEv"></span><span id="sdv::app::CAppControl::GetAppFilename"></span><span class="target" id="classsdv_1_1app_1_1_c_app_control_1a6db10356fb5c372dfd5505d3e159b848"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetAppFilename</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3sdv3app11CAppControl14GetAppFilenameEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Get the filename of the currently run executable. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The filename to the currently run executable </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3sdv3app11CAppControl28GetFrameworkRuntimeDirectoryEv">
 <span id="_CPPv3N3sdv3app11CAppControl28GetFrameworkRuntimeDirectoryEv"></span><span id="_CPPv2N3sdv3app11CAppControl28GetFrameworkRuntimeDirectoryEv"></span><span id="sdv::app::CAppControl::GetFrameworkRuntimeDirectory"></span><span class="target" id="classsdv_1_1app_1_1_c_app_control_1a9db5fa6943a47d5ccde18bc2e67d4b41"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetFrameworkRuntimeDirectory</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3sdv3app11CAppControl28GetFrameworkRuntimeDirectoryEv" title="Link to this definition">#</a><br /></dt>
 <dd><p>Get the SDV_FRAMEWORK_RUNTIME environment variable for this application. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>If the environment variable is empty or if the variable contains a relative path, the path will be enhanced with the application path. </p>
+</div>
+</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Path directing to the SDV V-API Framework directory if available or an empty path if not. </p>
+<dd class="field-odd"><p>Absolute path directing to the SDV Vehicle API Framework directory. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -1146,7 +1173,7 @@
 <dd><p>Set or overwrite the SDV_FRAMEWORK_RUNTIME environment variable for this application. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>rpathDir</strong> – <strong>[in]</strong> Reference of the path directing to the SDV V-API Framework directory. </p>
+<dd class="field-odd"><p><strong>rpathDir</strong> – <strong>[in]</strong> Reference of the path directing to the SDV Vehicle API Framework directory. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -1155,9 +1182,14 @@
 <dt class="sig sig-object cpp" id="_CPPv4N3sdv3app11CAppControl28GetComponentInstallDirectoryEv">
 <span id="_CPPv3N3sdv3app11CAppControl28GetComponentInstallDirectoryEv"></span><span id="_CPPv2N3sdv3app11CAppControl28GetComponentInstallDirectoryEv"></span><span id="sdv::app::CAppControl::GetComponentInstallDirectory"></span><span class="target" id="classsdv_1_1app_1_1_c_app_control_1a78b0b5d4b62a1977a2531c6cf131cd07"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetComponentInstallDirectory</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3sdv3app11CAppControl28GetComponentInstallDirectoryEv" title="Link to this definition">#</a><br /></dt>
 <dd><p>Get the SDV_COMPONENT_INSTALL environment variable for this application. </p>
+<p><div class="remark admonition">
+<p class="admonition-title">Remark</p>
+<p>If the environment variable is empty, the runtime directory is taken. If the variable contains a relative path, the path will be enhanced with the application path. </p>
+</div>
+</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Path directing to the SDV V-API component installation directory if available or an empty path if not. </p>
+<dd class="field-odd"><p>Absolute path directing to the SDV Vehicle API component installation directory. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -1168,7 +1200,7 @@
 <dd><p>Set or overwrite the SDV_COMPONENT_INSTALL environment variable for this application. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>rpathDir</strong> – <strong>[in]</strong> Reference of the path directing to the SDV V-API component installation directory. </p>
+<dd class="field-odd"><p><strong>rpathDir</strong> – <strong>[in]</strong> Reference of the path directing to the SDV Vehicle API component installation directory. </p>
 </dd>
 </dl>
 </dd></dl>

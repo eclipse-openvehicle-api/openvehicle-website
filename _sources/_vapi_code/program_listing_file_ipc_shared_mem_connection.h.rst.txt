@@ -154,7 +154,7 @@ Program Listing for File connection.h
        sdv::CLifetimeCookie                    m_cookie = sdv::CreateLifetimeCookie(); 
        CSharedMemBufferTx                      m_sender;                       
        CSharedMemBufferRx                      m_receiver;                     
-       std::thread                             m_threadReceive;                
+       sdv::core::secure_thread                m_threadReceive;                
        std::atomic<sdv::ipc::EConnectState>    m_eConnectState = sdv::ipc::EConnectState::uninitialized; 
        sdv::ipc::IDataReceiveCallback*         m_pReceiver = nullptr;          
        std::shared_mutex                       m_mtxEventCallbacks;            
@@ -168,7 +168,7 @@ Program Listing for File connection.h
    #if ENABLE_DECOUPLING > 0
        std::mutex                              m_mtxReceive;                   
        std::queue<sdv::sequence<sdv::pointer<uint8_t>>> m_queueReceive;        
-       std::thread                             m_threadDecoupleReceive;        
+       sdv::core::secure_thread                m_threadDecoupleReceive;        
        std::condition_variable                 m_cvReceiveAvailable;           
        std::condition_variable                 m_cvReceiveProcessed;           
    #endif

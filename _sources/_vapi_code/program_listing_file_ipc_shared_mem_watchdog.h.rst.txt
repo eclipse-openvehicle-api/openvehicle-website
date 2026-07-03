@@ -46,6 +46,7 @@ Program Listing for File watchdog.h
    
    #include <interfaces/process.h>
    #include <support/interface_ptr.h>
+   #include <support/local_service_access.h>
    #include <mutex>
    #include <map>
    #include <memory>
@@ -94,7 +95,7 @@ Program Listing for File watchdog.h
        std::map<sdv::process::TProcessID, uint32_t>            m_mapProcessMonitors;   
        std::condition_variable     m_cvTriggerConnectionDestruction;           
        std::queue<std::shared_ptr<CConnection>> m_queueScheduledConnectionDestructions;     
-       std::thread                 m_threadScheduledConnectionDestructions;    
+       sdv::core::secure_thread    m_threadScheduledConnectionDestructions;    
        std::atomic_bool            m_bShutdown = false;                        
    };
    

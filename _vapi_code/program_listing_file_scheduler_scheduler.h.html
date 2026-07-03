@@ -799,8 +799,8 @@
 <span class="cm"> *   Erik Verhoeven - initial API and implementation</span>
 <span class="cm"> ********************************************************************************/</span>
 
-<span class="cp">#ifndef THREAD_POOL_H</span>
-<span class="cp">#define THREAD_POOL_H</span>
+<span class="cp">#ifndef SCHEDULER_H</span>
+<span class="cp">#define SCHEDULER_H</span>
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thread&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mutex&gt;</span>
@@ -814,19 +814,23 @@
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;atomic&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../flags.h&quot;</span>
 
+<span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EScheduleFlags</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">normal</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">no_queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x2</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TThread</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nMinIdle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nMaxBusy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="o">&gt;</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">CTaskScheduler</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">CTaskScheduler</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">nMinIdle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nMaxBusy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// The thread class must be derived from std::thread.</span>
+<span class="w">    </span><span class="k">static_assert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_base_of_v</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="n">TThread</span><span class="o">&gt;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">CTaskScheduler</span><span class="p">();</span>
 
 <span class="w">    </span><span class="o">~</span><span class="n">CTaskScheduler</span><span class="p">();</span>
-
-<span class="w">    </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EScheduleFlags</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">normal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x0</span><span class="p">,</span>
-<span class="w">        </span><span class="n">priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x1</span><span class="p">,</span>
-<span class="w">        </span><span class="n">no_queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x2</span><span class="p">,</span>
-<span class="w">    </span><span class="p">};</span>
 
 <span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Schedule</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span><span class="n">fnTask</span><span class="p">,</span><span class="w"> </span><span class="n">hlpr</span><span class="o">::</span><span class="n">flags</span><span class="o">&lt;</span><span class="n">EScheduleFlags</span><span class="o">&gt;</span><span class="w"> </span><span class="n">flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EScheduleFlags</span><span class="o">::</span><span class="n">normal</span><span class="p">);</span>
 
@@ -853,7 +857,7 @@
 <span class="w">    </span><span class="k">private</span><span class="o">:</span>
 <span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">ThreadFunc</span><span class="p">();</span>
 
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="w">             </span><span class="n">m_thread</span><span class="p">;</span>
+<span class="w">        </span><span class="n">TThread</span><span class="w">                 </span><span class="n">m_thread</span><span class="p">;</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="kt">atomic_bool</span><span class="w">        </span><span class="n">m_bShutdown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="kt">atomic_bool</span><span class="w">        </span><span class="n">m_bStarted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span><span class="w">   </span><span class="n">m_fnTask</span><span class="p">;</span>
@@ -863,18 +867,21 @@
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">condition_variable</span><span class="w"> </span><span class="n">m_cvExecute</span><span class="p">;</span>
 <span class="w">    </span><span class="p">};</span>
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Execute</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CThread</span><span class="o">&gt;&gt;::</span><span class="n">iterator</span><span class="w"> </span><span class="n">itThread</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span><span class="n">fnTask</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Execute</span><span class="p">(</span><span class="k">typename</span><span class="w"> </span><span class="nc">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CThread</span><span class="o">&gt;&gt;::</span><span class="n">iterator</span><span class="w"> </span><span class="n">itThread</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;</span><span class="w"> </span><span class="n">fnTask</span><span class="p">);</span>
 
 <span class="w">    </span><span class="kt">size_t</span><span class="w">                                  </span><span class="n">m_nMinIdle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">size_t</span><span class="w">                                  </span><span class="n">m_nMaxBusy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">32</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">size_t</span><span class="w">                                  </span><span class="n">m_nMaxThreads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="w">    </span><span class="k">mutable</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w">                      </span><span class="n">m_mtxQueueAccess</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">queue</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CThread</span><span class="o">&gt;&gt;::</span><span class="n">iterator</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_queueIdleThreads</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CThread</span><span class="o">&gt;&gt;</span><span class="w">     </span><span class="n">m_lstThreads</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">queue</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CThread</span><span class="o">&gt;&gt;::</span><span class="n">iterator</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_queueIdleThreads</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CThread</span><span class="o">&gt;&gt;</span><span class="w">     </span><span class="n">m_lstThreads</span><span class="p">;</span>
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">deque</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;&gt;</span><span class="w">       </span><span class="n">m_dequeTasks</span><span class="p">;</span>
 <span class="p">};</span>
 
-<span class="cp">#endif </span><span class="c1">// !defined THREAD_POOL_H</span>
+<span class="c1">// Include the implementation</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;scheduler.inl&quot;</span>
+
+<span class="cp">#endif </span><span class="c1">// !defined SCHEDULER_H</span>
 </pre></div>
 </div>
 </section>

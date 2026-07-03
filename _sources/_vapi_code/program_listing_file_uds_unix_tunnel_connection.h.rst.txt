@@ -32,6 +32,7 @@ Program Listing for File connection.h
    
    #include <atomic>
    #include <cstdint>
+   #include <functional>
    #include <mutex>
    #include <memory>
    #include <thread>
@@ -100,12 +101,17 @@ Program Listing for File connection.h
    
        uint16_t GetChannelId() const noexcept { return m_ChannelId; }
    
+       void SetWatchDogRemoveCallback(std::function<void(const void*)> callback);
+   
    private:
        std::shared_ptr<CUnixSocketConnection> m_Transport;             
        uint16_t m_ChannelId {0};                                       
        sdv::ipc::IDataReceiveCallback* m_pUpperReceiver {nullptr};     
        sdv::ipc::IConnectEventCallback* m_pUpperEvent {nullptr};       
        mutable std::mutex m_CallbackMtx;                               
+       std::mutex m_WatchdogMtx;
+       std::function<void(const void*)> m_WatchdogRemoveCallback;
+       std::atomic<bool> m_DestroyObjectCalled { false };
    };
    
    #endif // UNIX_SOCKET_TUNNEL_CONNECTION_H

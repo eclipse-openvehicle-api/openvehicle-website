@@ -11,8 +11,8 @@ Program Listing for File core.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__CORE_H__20260428_100219_878__
-   #define __IDL_GENERATED__CORE_H__20260428_100219_878__
+   #ifndef __IDL_GENERATED__CORE_H__20260703_131934_495__
+   #define __IDL_GENERATED__CORE_H__20260703_131934_495__
    
    #ifdef _MSC_VER
    // Prevent bogus warnings about uninitialized members during static code analysis.
@@ -53,9 +53,20 @@ Program Listing for File core.h
    template <typename TInterface>
    TInterface* GetInterface()
    {
-       return GetInterface(sdv::GetInterfaceId<TInterface>()).template get<TInterface>();
+       try
+       {
+           return GetInterface(sdv::GetInterfaceId<TInterface>()).template get<TInterface>();
+       } catch (const XSysExcept&)
+       {
+           return nullptr;
+       }
    }
        };
+   
+       namespace core
+       {
+           typedef uint64_t TObjectID;
+       }
    
        enum class EObjectType : uint32_t
        {
@@ -157,11 +168,22 @@ Program Listing for File core.h
            running = 30,
        };
    
+       struct SObjectInfo
+       {
+           core::TObjectID tObjectID;
+   
+           SClassInfo sClassInfo;
+   
+           sdv::u8string ssName;
+   
+           sdv::u8string ssConfig;
+       };
+   
        interface IObjectControl
        {
-           static constexpr ::sdv::interface_id _id = 0x42C63A3374DB3813;
+           static constexpr ::sdv::interface_id _id = 0xBBBA1AA1C8097FB9;
    
-           virtual void Initialize(/*in*/ const sdv::u8string& ssObjectConfig) = 0;
+           virtual void Initialize(/*in*/ const SObjectInfo& sObjectInfo) = 0;
    
            virtual EObjectState GetObjectState() const = 0;
    
@@ -189,24 +211,6 @@ Program Listing for File core.h
    
            virtual uint32_t GetCount() const = 0;
        };
-   
-       enum class EAttributeFlags : uint32_t
-       {
-           read_only = 0x100,
-       };
-   
-       interface IAttributes
-       {
-           static constexpr ::sdv::interface_id _id = 0x57C6485BC65354B3;
-   
-           virtual sdv::sequence<sdv::u8string> GetNames() const = 0;
-   
-           virtual sdv::any_t Get(/*in*/ const sdv::u8string& ssAttribute) const = 0;
-   
-           virtual bool Set(/*in*/ const sdv::u8string& ssAttribute, /*in*/ sdv::any_t anyAttribute) = 0;
-   
-           virtual uint32_t GetFlags(/*in*/ const sdv::u8string& ssAttribute) const = 0;
-       };
    }
    
    extern "C" SDV_SYMBOL_PUBLIC bool HasActiveObjects();
@@ -221,4 +225,4 @@ Program Listing for File core.h
    #pragma warning(pop)
    #endif
    
-   #endif // !defined(__IDL_GENERATED__CORE_H__20260428_100219_882__)
+   #endif // !defined(__IDL_GENERATED__CORE_H__20260703_131934_498__)

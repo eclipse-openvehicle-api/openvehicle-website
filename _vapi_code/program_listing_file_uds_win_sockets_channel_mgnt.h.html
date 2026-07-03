@@ -806,16 +806,14 @@
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/component_impl.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;interfaces/ipc.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;connection.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;watchdog.h&quot;</span>
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;map&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unordered_set&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mutex&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;memory&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;algorithm&gt;</span>
+
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
 
 <span class="cp">#ifdef _WIN32</span>
 <span class="c1">// Winsock headers are required for SOCKET / AF_UNIX / WSAStartup</span>
-<span class="c1">// NOTE: The actual initialization is done via StartUpWinSock()</span>
 <span class="cp">#</span><span class="w">   </span><span class="cp">include</span><span class="w"> </span><span class="cpf">&lt;ws2tcpip.h&gt;</span>
 <span class="cp">#endif</span>
 
@@ -840,33 +838,6 @@
 <span class="w">    </span><span class="n">addrinfo</span><span class="o">*</span><span class="w"> </span><span class="n">AddressInfo</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nb">nullptr</span><span class="w"> </span><span class="p">};</span>
 <span class="p">};</span>
 
-<span class="kr">inline</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">StartUpWinSock</span><span class="p">()</span>
-<span class="p">{</span>
-<span class="cp">#ifdef _WIN32</span>
-<span class="w">    </span><span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">isInitialized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isInitialized</span><span class="p">)</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-<span class="w">    </span><span class="n">WSADATA</span><span class="w"> </span><span class="n">wsaData</span><span class="w"> </span><span class="p">{};</span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WSAStartup</span><span class="p">(</span><span class="n">MAKEWORD</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">wsaData</span><span class="p">);</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">SDV_LOG_ERROR</span><span class="p">(</span><span class="s">&quot;WSAStartup failed with error: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">error</span><span class="p">));</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">else</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">SDV_LOG_INFO</span><span class="p">(</span><span class="s">&quot;WSAStartup initialized&quot;</span><span class="p">);</span>
-<span class="w">        </span><span class="n">isInitialized</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">error</span><span class="p">;</span>
-<span class="cp">#else</span>
-<span class="w">    </span><span class="c1">// Non-Windows: nothing to do. Return success for symmetry</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="cp">#endif</span>
-<span class="p">}</span>
-
 <span class="k">struct</span><span class="w"> </span><span class="nc">SocketConnection</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="n">SOCKET</span><span class="w"> </span><span class="n">From</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">INVALID_SOCKET</span><span class="w"> </span><span class="p">};</span>
@@ -887,8 +858,8 @@
 <span class="w">    </span><span class="c1">// Object declarations</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">system_object</span><span class="p">)</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;WinSocketsChannelControl&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_ALIAS</span><span class="p">(</span><span class="s">&quot;LocalChannelControl&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="n">DECLARE_DEFAULT_OBJECT_NAME</span><span class="p">(</span><span class="s">&quot;LocalChannelControl&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_ALIAS</span><span class="p">(</span><span class="s">&quot;unix_domain_sockets&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_DEFAULT_OBJECT_NAME</span><span class="p">(</span><span class="s">&quot;unix_domain_sockets&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_SINGLETON</span><span class="p">()</span>
 
 <span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">CSocketsChannelMgnt</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
@@ -897,18 +868,14 @@
 
 <span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnShutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnDestroy</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
 <span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">ipc</span><span class="o">::</span><span class="n">SChannelEndpoint</span><span class="w"> </span><span class="nf">CreateEndpoint</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssChannelConfig</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
 <span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="nf">Access</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssConnectString</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnServerClosed</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">udsPath</span><span class="p">,</span><span class="w"> </span><span class="n">CWinsockConnection</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">);</span>
-
 <span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CWinsockConnection</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">m_udsServers</span><span class="p">;</span>
-
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_set</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_udsServerClaimed</span><span class="p">;</span>
-
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">m_udsMtx</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CWinSocketsConnectionWatchDog</span><span class="w"> </span><span class="n">m_watchdog</span><span class="p">;</span>
 <span class="p">};</span>
 
 <span class="c1">// SDV object factory macro</span>

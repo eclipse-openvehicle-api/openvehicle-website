@@ -32,6 +32,8 @@ Program Listing for File component_impl.h
    #include <vector>
    #include <string>
    #include <sstream>
+   #include <atomic>
+   #include <memory>
    
    #include "../interfaces/core_types.h"
    #include "../interfaces/core.h"
@@ -417,7 +419,7 @@ Program Listing for File component_impl.h
            ~CSdvObject() override
            {}
    
-           virtual void Initialize(/*in*/ const u8string& ssObjectConfig) override
+           virtual void Initialize(/*in*/ const SObjectInfo& sObjectInfo) override
            {
                // Not started before or ended completely?
                if (GetObjectState() != EObjectState::initialization_pending && GetObjectState() != EObjectState::destruction_pending)
@@ -432,19 +434,19 @@ Program Listing for File component_impl.h
                // Initialize the parameter map.
                InitParamMap();
    
-               // Copy the configuration
-               m_ssObjectConfig = ssObjectConfig;
+               // Copy the object information
+               m_sSelf = sObjectInfo;
    
                // Prepare initialization
                OnPreInitialize();
    
                // Parse the object configuration if there is any.
-               if (!ssObjectConfig.empty())
+               if (!m_sSelf.ssConfig.empty())
                {
                    try
                    {
                        // Parse the config TOML.
-                       toml::CTOMLParser parser(ssObjectConfig);
+                       toml::CTOMLParser parser(m_sSelf.ssConfig);
                        if (!parser.IsValid())
                        {
                            m_eObjectState = EObjectState::config_error;
@@ -509,6 +511,11 @@ Program Listing for File component_impl.h
                return m_eObjectState;
            }
    
+           const SObjectInfo& Self() const
+           {
+               return m_sSelf;
+           }
+   
            virtual void SetOperationMode(/*in*/ EOperationMode eMode) override
            {
                switch (eMode)
@@ -554,12 +561,8 @@ Program Listing for File component_impl.h
                }
            }
    
-           virtual u8string GetObjectConfig() const override
+           virtual u8string BuildObjectConfig() const
            {
-               // During the initialization, return the stored object configuration.
-               if (m_eObjectState == EObjectState::initializing || m_eObjectState == EObjectState::initialization_pending)
-                   return m_ssObjectConfig;
-   
                // Split path function (splits the group from the parameter names)
                auto fnSplitPath = [](const u8string& rssPath) -> std::pair<u8string, u8string>
                {
@@ -569,13 +572,10 @@ Program Listing for File component_impl.h
                    return std::make_pair(rssPath.substr(0, nPos), rssPath.substr(nPos + 1));
                };
    
-               // Create a new configuration string from the parameters.
-               auto seqParameters = GetParamPaths();
-               if (seqParameters.empty()) return {};
-   
                // Iterate through the list of parameter names and create the TOML entries for it.
+               auto seqParameters = GetParamPaths();
                u8string ssGroup;
-               toml::CTOMLParser parser("");
+               toml::CTOMLParser parser(m_sSelf.ssConfig);
                toml::CNodeCollection table(parser);
                for (auto ssParamPath : seqParameters)
                {
@@ -583,7 +583,7 @@ Program Listing for File component_impl.h
                    auto ptrParam = FindParamObject(ssParamPath);
                    
                    // Read only and temporary parameters are not stored
-                   if ((!ptrParam->Locked() && ptrParam->ReadOnly()) || !ptrParam->Temporary())
+                   if ((!ptrParam->Locked() && ptrParam->ReadOnly()) || ptrParam->Temporary())
                        continue;
    
                    // Get the value
@@ -597,7 +597,9 @@ Program Listing for File component_impl.h
                    // Need to add a group?
                    if (prParam.first != ssGroup)
                    {
-                       table = parser.AddTable(prParam.first);
+                       table = parser.GetDirect(prParam.first);
+                       if (!table)
+                           table = parser.AddTable(prParam.first);
                        ssGroup = prParam.first;
                    }
    
@@ -606,6 +608,16 @@ Program Listing for File component_impl.h
                }
    
                return parser.GetTOML();
+           }
+   
+           virtual u8string GetObjectConfig() const override
+           {
+               // During the initialization, return the stored object configuration.
+               if (m_eObjectState == EObjectState::initializing || m_eObjectState == EObjectState::initialization_pending)
+                   return m_sSelf.ssConfig;
+   
+               
+               return BuildObjectConfig();
            }
    
            virtual void Shutdown() override
@@ -633,7 +645,7 @@ Program Listing for File component_impl.h
            }
    
            void SetObjectIntoRuntimeErrorState()
-           {
+           {   
                if (m_eObjectState == EObjectState::running)
                    m_eObjectState = EObjectState::runtime_error;
            }
@@ -656,6 +668,8 @@ Program Listing for File component_impl.h
    
            virtual void OnShutdown() {}
    
+           virtual void OnDestroy() {}
+   
            BEGIN_SDV_INTERFACE_MAP()
                SDV_INTERFACE_ENTRY(IParameters)
                SDV_INTERFACE_ENTRY(IObjectControl)
@@ -663,7 +677,8 @@ Program Listing for File component_impl.h
    
        private:
            std::atomic<EObjectState>   m_eObjectState = EObjectState::initialization_pending;  
-           std::string                 m_ssObjectConfig;                                       
+           CLifetimeCookie             m_lifetime = CreateLifetimeCookie();                    
+           SObjectInfo                 m_sSelf;                                                
        };
    
        template <class TSdvObject>
@@ -677,6 +692,117 @@ Program Listing for File component_impl.h
                SDV_INTERFACE_CHAIN_BASE(CSdvObject)
                SDV_INTERFACE_CHAIN_BASE(TSdvObject)
            END_SDV_INTERFACE_MAP()
+       };
+   
+       class CLifetimeControlImpl : public virtual IInterfaceAccess, public IObjectLifetime, protected IObjectDestroy
+       {
+       public:
+           CLifetimeControlImpl()
+           {}
+   
+           CLifetimeControlImpl(const CLifetimeControlImpl& rClass) = delete;
+   
+           CLifetimeControlImpl(CLifetimeControlImpl&& rClass) = delete;
+   
+           virtual ~CLifetimeControlImpl()
+           {}
+   
+           // Interface map (IObjectDestroy is not exposed)
+           BEGIN_SDV_INTERFACE_MAP()
+               SDV_INTERFACE_ENTRY(IObjectLifetime)
+           END_SDV_INTERFACE_MAP()
+   
+           CLifetimeControlImpl& operator=(const CLifetimeControlImpl& rClass) = delete;
+   
+           CLifetimeControlImpl& operator=(CLifetimeControlImpl&& rClass) = delete;
+   
+           virtual void Increment() override
+           {
+               m_uiLifetimeCnt++;
+           }
+   
+           virtual bool Decrement() override
+           {
+               if (m_uiLifetimeCnt && !(--m_uiLifetimeCnt))
+               {
+                   DestroyObject();
+                   return true;
+               }
+               return false;
+           }
+   
+           virtual uint32_t GetCount() const override
+           {
+               return m_uiLifetimeCnt;
+           }
+   
+       protected:
+           virtual void DestroyObject() override
+           {
+               delete this;
+           }
+   
+       private:
+           CLifetimeCookie         m_lifetime = CreateLifetimeCookie();    
+           std::atomic_uint32_t    m_uiLifetimeCnt = 1;                    
+       };
+   
+       template <class TClass>
+       class CSharedLifetimeControlImpl : public std::enable_shared_from_this<TClass>, public CLifetimeControlImpl
+       {
+       public:
+           CSharedLifetimeControlImpl()
+           {}
+   
+           CSharedLifetimeControlImpl(const CSharedLifetimeControlImpl& rClass) = delete;
+   
+           CSharedLifetimeControlImpl(CSharedLifetimeControlImpl&& rClass) = delete;
+   
+           virtual ~CSharedLifetimeControlImpl()
+           {
+           }
+   
+           // Interface map (IObjectDestroy is not exposed)
+           BEGIN_SDV_INTERFACE_MAP()
+               SDV_INTERFACE_ENTRY(IObjectLifetime)
+           END_SDV_INTERFACE_MAP()
+   
+           CSharedLifetimeControlImpl& operator=(const CSharedLifetimeControlImpl& rClass) = delete;
+   
+           CSharedLifetimeControlImpl& operator=(CSharedLifetimeControlImpl&& rClass) = delete;
+   
+           virtual void Increment() override
+           {
+               if (!m_uiLifetimeCnt++)
+                   m_ptrLocking = std::enable_shared_from_this<TClass>::shared_from_this();
+           }
+   
+           virtual bool Decrement() override
+           {
+               if (m_uiLifetimeCnt && !(--m_uiLifetimeCnt))
+               {
+                   DestroyObject();
+                   return true;
+               }
+               return false;
+           }
+   
+           virtual uint32_t GetCount() const override
+           {
+               return m_uiLifetimeCnt;
+           }
+   
+       protected:
+           virtual void DestroyObject() override
+           {
+               // Reset the locking; this might delete the class if no other references are present.
+               m_ptrLocking.reset();
+           }
+   
+       private:
+           std::shared_ptr<TClass>     m_ptrLocking;                         
+           CLifetimeCookie             m_lifetime = CreateLifetimeCookie();  
+           std::atomic_uint32_t        m_uiLifetimeCnt = 0;                  
        };
    
        // Object control class implementation //
@@ -769,6 +895,7 @@ Program Listing for File component_impl.h
                    auto objectPtr = std::move(*iter);
                    m_vecActiveObjects.erase(iter);
                    lockObjects.unlock();
+                   objectPtr->OnDestroy();
                    objectPtr = nullptr;
                    if (m_uiActiveObjectCount) --m_uiActiveObjectCount;
                    return;

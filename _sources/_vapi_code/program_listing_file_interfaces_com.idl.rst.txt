@@ -46,7 +46,13 @@ Program Listing for File com.idl
    
            interface IClientConnect
            {
-               IInterfaceAccess Connect(in u8string ssConnectString) raises(XAccessDenied, XNotFound, XInvalidState, XTimeout);
+               boolean Connect() raises(XAccessDenied, XNotFound, XInvalidState, XTimeout);
+   
+               boolean Disconnect() raises(XAccessDenied, XNotFound, XInvalidState, XTimeout);
+   
+               boolean IsConnected() const;
+   
+               IInterfaceAccess GetRemoteRepository();
            };
    
            enum EChannelType : uint32

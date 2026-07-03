@@ -31,8 +31,6 @@ Program Listing for File repository.idl
        module core
        {
    
-           typedef uint64 TObjectID;
-   
            interface IObjectAccess
            {
                IInterfaceAccess GetObject(in u8string ssObjectName);
@@ -97,11 +95,20 @@ Program Listing for File repository.idl
                TObjectID RegisterObject(in IInterfaceAccess pObjectIfc, in u8string ssObjectName);
            };
    
+           interface IObjectDependency
+           {
+               void AddObjectDependency(in u8string ssObjectName, in u8string ssDependsOnObject);
+   
+               void RemoveObjectDependency(in u8string ssObjectName, in u8string ssDependsOnObject);
+           };
+   
+           typedef uint64 TLinkID;
+   
            interface ILinkCoreRepository
            {
-               void LinkCoreRepository(in IInterfaceAccess pCoreRepository);
+               TLinkID LinkCoreRepository(in IInterfaceAccess pCoreRepository);
    
-               void UnlinkCoreRepository();
+               void UnlinkCoreRepository(in TLinkID tLinkID);
            };
    
        }; // module core

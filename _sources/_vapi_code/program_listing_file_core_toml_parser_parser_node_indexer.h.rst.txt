@@ -1,0 +1,113 @@
+
+.. _program_listing_file_core_toml_parser_parser_node_indexer.h:
+
+Program Listing for File parser_node_indexer.h
+==============================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_core_toml_parser_parser_node_indexer.h>` (``core\toml_parser\parser_node_indexer.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   /********************************************************************************
+    * Copyright (c) 2025-2026 ZF Friedrichshafen AG
+    *
+    * This program and the accompanying materials are made available under the
+    * terms of the Apache License Version 2.0 which is available at
+    * https://www.apache.org/licenses/LICENSE-2.0
+    *
+    * SPDX-License-Identifier: Apache-2.0
+    *
+    * Contributors:
+    *   Erik Verhoeven - initial API and implementation
+    ********************************************************************************/
+   
+   #ifndef PARSER_NODE_INDEXER_H
+   #define PARSER_NODE_INDEXER_H
+   
+   #include <list>
+   #include <memory>
+   #include <cstdint>
+   
+   namespace toml_parser
+   {
+       class CNodeIndex;
+       class CNodeIndexer;
+       struct SNodeIndexElement {};
+       using CIndexList = std::list<SNodeIndexElement>;
+       using CIndexListIterator = CIndexList::const_iterator;
+   
+       class CNodeIndex
+       {
+           friend CNodeIndexer;        
+       private:
+           CNodeIndex(CIndexList& rIndexList, CIndexListIterator itPos);
+   
+       public:
+           virtual ~CNodeIndex();
+   
+           CNodeIndex(const CNodeIndex& rIndex);
+   
+           CNodeIndex(CNodeIndex&& rIndex);
+   
+           CNodeIndex& operator=(const CNodeIndex& rIndex);
+   
+           CNodeIndex& operator=(CNodeIndex&& rIndex);
+   
+           bool operator==(const CNodeIndex& rIndex) const;
+   
+           bool operator!=(const CNodeIndex& rIndex) const;
+   
+           bool operator<(const CNodeIndex& rIndex) const;
+   
+           bool operator<=(const CNodeIndex& rIndex) const;
+   
+           bool operator>(const CNodeIndex& rIndex) const;
+   
+           bool operator>=(const CNodeIndex& rIndex) const;
+   
+           operator bool() const;
+   
+           void MoveBefore(const CNodeIndex& rIndex);
+   
+           uint32_t Index() const;
+   
+       private:
+           struct CIteratorWrapper
+           {
+               CIteratorWrapper(CIndexList& rIndexList, CIndexListIterator itPos);
+               
+               ~CIteratorWrapper();
+   
+               uint32_t Index() const;
+   
+               void MoveBeforeIndex(const CIteratorWrapper& ritTarget);
+   
+           private:
+               CIndexList&         m_rIndexList;   
+               CIndexListIterator  m_itPos;        
+           };
+   
+           std::shared_ptr<CIteratorWrapper>   m_ptrPos;   
+       };
+   
+       class CNodeIndexer
+       {
+           friend CNodeIndex;      
+       public:
+   
+           CNodeIndexer();
+   
+           CNodeIndex CreateIndex();
+   
+           CNodeIndex CreateIndex(const CNodeIndex& rInsertBefore);
+   
+           static size_t Count();
+   
+       private:
+           static CIndexList       m_lstIndexList;     
+       };
+   } // namespace toml_parser
+   
+   #endif // !defined PARSER_NODE_INDEXER_H

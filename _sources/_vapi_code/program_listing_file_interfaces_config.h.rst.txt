@@ -11,8 +11,8 @@ Program Listing for File config.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__CONFIG_H__20260428_100219_889__
-   #define __IDL_GENERATED__CONFIG_H__20260428_100219_889__
+   #ifndef __IDL_GENERATED__CONFIG_H__20260703_131934_620__
+   #define __IDL_GENERATED__CONFIG_H__20260703_131934_620__
    
    #ifdef _MSC_VER
    // Prevent bogus warnings about uninitialized members during static code analysis.
@@ -540,6 +540,23 @@ Program Listing for File config.h
                virtual ::sdv::exception_id id() const noexcept override { return _id; }
            };
    
+           except XPackageSizeExceeded : XSysExcept
+           {
+               // _id might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const ::sdv::exception_id _id = 0x7DACD14BA9DCD663;
+   
+               // _description might also be member of the base class. Suppress in static code analysis.
+               // cppcheck-suppress duplInheritedMember
+               inline static const char _description[] = "Maximum package size exceeded.";
+   
+               sdv::u8string ssFileName;
+   
+               virtual const char* what() const noexcept override { return _description; }
+   
+               virtual ::sdv::exception_id id() const noexcept override { return _id; }
+           };
+   
            except XModuleNotFound : XSysExcept
            {
                // _id might also be member of the base class. Suppress in static code analysis.
@@ -701,4 +718,4 @@ Program Listing for File config.h
    #pragma warning(pop)
    #endif
    
-   #endif // !defined(__IDL_GENERATED__CONFIG_H__20260428_100219_897__)
+   #endif // !defined(__IDL_GENERATED__CONFIG_H__20260703_131934_625__)

@@ -57,16 +57,14 @@ Program Listing for File listener.h
    
        // Object declaration
        DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
-       DECLARE_OBJECT_CLASS_NAME("ConnectionListenerService")
+       DECLARE_OBJECT_CLASS_NAME("ListenerConnectService")
+       DECLARE_OBJECT_DEPENDENCIES("CommunicationControl")
    
        // Parameter map
        BEGIN_SDV_PARAM_MAP()
            SDV_PARAM_ENABLE_LOCKING()
-           SDV_PARAM_GROUP("Listener")
-           SDV_PARAM_ENTRY(m_ssType, "Type", "Local", "", "The type of listener \"Local\" or \"Remote\".")
-           SDV_PARAM_ENTRY(m_uiInstanceID, "Instance", 0, "", "The instance ID to listen for.")
-           SDV_PARAM_ENTRY(m_ssInterface, "Interface", "", "", "Interface identification.")
-           SDV_PARAM_ENTRY(m_uiPort, "Port", 0, "", "Port number for connection.")
+           SDV_PARAM_GROUP("Provider")
+           SDV_PARAM_ENTRY(m_ssProvider, "Name", "", "", "Provider name to create a listener for.")
        END_SDV_PARAM_MAP()
    
        
@@ -74,16 +72,12 @@ Program Listing for File listener.h
    
        virtual void OnShutdown() override;
    
-       bool IsLocalListener() const;
+       const sdv::u8string& GetProviderName();
    
    private:
-       sdv::u8string               m_ssType;                   
-       uint32_t                    m_uiInstanceID = 0;         
-       std::string                 m_ssInterface;              
-       uint32_t                    m_uiPort = 0;               
+       sdv::u8string               m_ssProvider;               
        sdv::TObjectPtr             m_ptrConnection;            
        CChannelBroker              m_broker;                   
-       bool                        m_bLocalListener = true;    
        sdv::com::TConnectionID     m_tConnection = {};         
    };
    

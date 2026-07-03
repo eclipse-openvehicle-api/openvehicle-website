@@ -11,8 +11,8 @@ Program Listing for File core_ps_serdes.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__CORE_PS_SERDES_H__20260428_100221_908__
-   #define __IDL_GENERATED__CORE_PS_SERDES_H__20260428_100221_908__
+   #ifndef __IDL_GENERATED__CORE_PS_SERDES_H__20260703_131934_545__
+   #define __IDL_GENERATED__CORE_PS_SERDES_H__20260703_131934_545__
    
    // Includes...
    #include <cstdint>
@@ -24,6 +24,7 @@ Program Listing for File core_ps_serdes.h
    
    #include "core_serdes.h"
    #include "process_serdes.h"
+   #include "permission_serdes.h"
    
    // Serializer / deserializer namespace
    namespace serdes
@@ -367,6 +368,7 @@ Program Listing for File core_ps_serdes.h
                sdv::ser_size(rVar.tProxyID, rnSize);
                sdv::ser_size(rVar.tStubID, rnSize);
                sdv::ser_size(rVar.uiCallIndex, rnSize);
+               sdv::ser_size(rVar.tPermissionID, rnSize);
            }
    
            template <sdv::EEndian eTargetEndianess, typename TCRC>
@@ -379,6 +381,7 @@ Program Listing for File core_ps_serdes.h
                rSerializer << rVar.tProxyID;
                rSerializer << rVar.tStubID;
                rSerializer << rVar.uiCallIndex;
+               rSerializer << rVar.tPermissionID;
                return rSerializer;
            }
    
@@ -392,6 +395,7 @@ Program Listing for File core_ps_serdes.h
                rDeserializer >> rVar.tProxyID;
                rDeserializer >> rVar.tStubID;
                rDeserializer >> rVar.uiCallIndex;
+               rDeserializer >> rVar.tPermissionID;
                return rDeserializer;
            }
        };
@@ -662,4 +666,4 @@ Program Listing for File core_ps_serdes.h
        };
    } // serdes namespace
    
-   #endif // !defined(__IDL_GENERATED__CORE_PS_SERDES_H__20260428_100221_910__)
+   #endif // !defined(__IDL_GENERATED__CORE_PS_SERDES_H__20260703_131934_548__)

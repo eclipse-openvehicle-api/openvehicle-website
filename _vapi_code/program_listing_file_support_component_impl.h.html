@@ -808,6 +808,8 @@
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sstream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;atomic&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;memory&gt;</span>
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../interfaces/core_types.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../interfaces/core.h&quot;</span>
@@ -1193,7 +1195,7 @@
 <span class="w">        </span><span class="o">~</span><span class="n">CSdvObject</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">        </span><span class="p">{}</span>
 
-<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Initialize</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssObjectConfig</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Initialize</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SObjectInfo</span><span class="o">&amp;</span><span class="w"> </span><span class="n">sObjectInfo</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
 <span class="w">        </span><span class="p">{</span>
 <span class="w">            </span><span class="c1">// Not started before or ended completely?</span>
 <span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">GetObjectState</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">EObjectState</span><span class="o">::</span><span class="n">initialization_pending</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">GetObjectState</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">EObjectState</span><span class="o">::</span><span class="n">destruction_pending</span><span class="p">)</span>
@@ -1208,19 +1210,19 @@
 <span class="w">            </span><span class="c1">// Initialize the parameter map.</span>
 <span class="w">            </span><span class="n">InitParamMap</span><span class="p">();</span>
 
-<span class="w">            </span><span class="c1">// Copy the configuration</span>
-<span class="w">            </span><span class="n">m_ssObjectConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ssObjectConfig</span><span class="p">;</span>
+<span class="w">            </span><span class="c1">// Copy the object information</span>
+<span class="w">            </span><span class="n">m_sSelf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sObjectInfo</span><span class="p">;</span>
 
 <span class="w">            </span><span class="c1">// Prepare initialization</span>
 <span class="w">            </span><span class="n">OnPreInitialize</span><span class="p">();</span>
 
 <span class="w">            </span><span class="c1">// Parse the object configuration if there is any.</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ssObjectConfig</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_sSelf</span><span class="p">.</span><span class="n">ssConfig</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
 <span class="w">            </span><span class="p">{</span>
 <span class="w">                </span><span class="k">try</span>
 <span class="w">                </span><span class="p">{</span>
 <span class="w">                    </span><span class="c1">// Parse the config TOML.</span>
-<span class="w">                    </span><span class="n">toml</span><span class="o">::</span><span class="n">CTOMLParser</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">ssObjectConfig</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">toml</span><span class="o">::</span><span class="n">CTOMLParser</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">m_sSelf</span><span class="p">.</span><span class="n">ssConfig</span><span class="p">);</span>
 <span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">parser</span><span class="p">.</span><span class="n">IsValid</span><span class="p">())</span>
 <span class="w">                    </span><span class="p">{</span>
 <span class="w">                        </span><span class="n">m_eObjectState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EObjectState</span><span class="o">::</span><span class="n">config_error</span><span class="p">;</span>
@@ -1285,6 +1287,11 @@
 <span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">m_eObjectState</span><span class="p">;</span>
 <span class="w">        </span><span class="p">}</span>
 
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">SObjectInfo</span><span class="o">&amp;</span><span class="w"> </span><span class="n">Self</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">m_sSelf</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
 <span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">SetOperationMode</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="n">EOperationMode</span><span class="w"> </span><span class="n">eMode</span><span class="p">)</span><span class="w"> </span><span class="k">override</span>
 <span class="w">        </span><span class="p">{</span>
 <span class="w">            </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">eMode</span><span class="p">)</span>
@@ -1330,12 +1337,8 @@
 <span class="w">            </span><span class="p">}</span>
 <span class="w">        </span><span class="p">}</span>
 
-<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">u8string</span><span class="w"> </span><span class="n">GetObjectConfig</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">u8string</span><span class="w"> </span><span class="n">BuildObjectConfig</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="c1">// During the initialization, return the stored object configuration.</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_eObjectState</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EObjectState</span><span class="o">::</span><span class="n">initializing</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">m_eObjectState</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EObjectState</span><span class="o">::</span><span class="n">initialization_pending</span><span class="p">)</span>
-<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">m_ssObjectConfig</span><span class="p">;</span>
-
 <span class="w">            </span><span class="c1">// Split path function (splits the group from the parameter names)</span>
 <span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">fnSplitPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssPath</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">u8string</span><span class="p">,</span><span class="w"> </span><span class="n">u8string</span><span class="o">&gt;</span>
 <span class="w">            </span><span class="p">{</span>
@@ -1345,13 +1348,10 @@
 <span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_pair</span><span class="p">(</span><span class="n">rssPath</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">nPos</span><span class="p">),</span><span class="w"> </span><span class="n">rssPath</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">nPos</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
 <span class="w">            </span><span class="p">};</span>
 
-<span class="w">            </span><span class="c1">// Create a new configuration string from the parameters.</span>
-<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">seqParameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetParamPaths</span><span class="p">();</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">seqParameters</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span>
-
 <span class="w">            </span><span class="c1">// Iterate through the list of parameter names and create the TOML entries for it.</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">seqParameters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GetParamPaths</span><span class="p">();</span>
 <span class="w">            </span><span class="n">u8string</span><span class="w"> </span><span class="n">ssGroup</span><span class="p">;</span>
-<span class="w">            </span><span class="n">toml</span><span class="o">::</span><span class="n">CTOMLParser</span><span class="w"> </span><span class="n">parser</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">toml</span><span class="o">::</span><span class="n">CTOMLParser</span><span class="w"> </span><span class="nf">parser</span><span class="p">(</span><span class="n">m_sSelf</span><span class="p">.</span><span class="n">ssConfig</span><span class="p">);</span>
 <span class="w">            </span><span class="n">toml</span><span class="o">::</span><span class="n">CNodeCollection</span><span class="w"> </span><span class="nf">table</span><span class="p">(</span><span class="n">parser</span><span class="p">);</span>
 <span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="w"> </span><span class="n">ssParamPath</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">seqParameters</span><span class="p">)</span>
 <span class="w">            </span><span class="p">{</span>
@@ -1359,7 +1359,7 @@
 <span class="w">                </span><span class="k">auto</span><span class="w"> </span><span class="n">ptrParam</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FindParamObject</span><span class="p">(</span><span class="n">ssParamPath</span><span class="p">);</span>
 
 <span class="w">                </span><span class="c1">// Read only and temporary parameters are not stored</span>
-<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="o">!</span><span class="n">ptrParam</span><span class="o">-&gt;</span><span class="n">Locked</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ptrParam</span><span class="o">-&gt;</span><span class="n">ReadOnly</span><span class="p">())</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">ptrParam</span><span class="o">-&gt;</span><span class="n">Temporary</span><span class="p">())</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="o">!</span><span class="n">ptrParam</span><span class="o">-&gt;</span><span class="n">Locked</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ptrParam</span><span class="o">-&gt;</span><span class="n">ReadOnly</span><span class="p">())</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">ptrParam</span><span class="o">-&gt;</span><span class="n">Temporary</span><span class="p">())</span>
 <span class="w">                    </span><span class="k">continue</span><span class="p">;</span>
 
 <span class="w">                </span><span class="c1">// Get the value</span>
@@ -1373,7 +1373,9 @@
 <span class="w">                </span><span class="c1">// Need to add a group?</span>
 <span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">prParam</span><span class="p">.</span><span class="n">first</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ssGroup</span><span class="p">)</span>
 <span class="w">                </span><span class="p">{</span>
-<span class="w">                    </span><span class="n">table</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parser</span><span class="p">.</span><span class="n">AddTable</span><span class="p">(</span><span class="n">prParam</span><span class="p">.</span><span class="n">first</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">table</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parser</span><span class="p">.</span><span class="n">GetDirect</span><span class="p">(</span><span class="n">prParam</span><span class="p">.</span><span class="n">first</span><span class="p">);</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">table</span><span class="p">)</span>
+<span class="w">                        </span><span class="n">table</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parser</span><span class="p">.</span><span class="n">AddTable</span><span class="p">(</span><span class="n">prParam</span><span class="p">.</span><span class="n">first</span><span class="p">);</span>
 <span class="w">                    </span><span class="n">ssGroup</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prParam</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
 <span class="w">                </span><span class="p">}</span>
 
@@ -1382,6 +1384,16 @@
 <span class="w">            </span><span class="p">}</span>
 
 <span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">parser</span><span class="p">.</span><span class="n">GetTOML</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">u8string</span><span class="w"> </span><span class="n">GetObjectConfig</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// During the initialization, return the stored object configuration.</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_eObjectState</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EObjectState</span><span class="o">::</span><span class="n">initializing</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">m_eObjectState</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">EObjectState</span><span class="o">::</span><span class="n">initialization_pending</span><span class="p">)</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">m_sSelf</span><span class="p">.</span><span class="n">ssConfig</span><span class="p">;</span>
+
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">BuildObjectConfig</span><span class="p">();</span>
 <span class="w">        </span><span class="p">}</span>
 
 <span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">Shutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
@@ -1432,6 +1444,8 @@
 
 <span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OnShutdown</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
 
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">OnDestroy</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+
 <span class="w">        </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
 <span class="w">            </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">IParameters</span><span class="p">)</span>
 <span class="w">            </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">IObjectControl</span><span class="p">)</span>
@@ -1439,7 +1453,8 @@
 
 <span class="w">    </span><span class="k">private</span><span class="o">:</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="n">EObjectState</span><span class="o">&gt;</span><span class="w">   </span><span class="n">m_eObjectState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EObjectState</span><span class="o">::</span><span class="n">initialization_pending</span><span class="p">;</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">                 </span><span class="n">m_ssObjectConfig</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CLifetimeCookie</span><span class="w">             </span><span class="n">m_lifetime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateLifetimeCookie</span><span class="p">();</span>
+<span class="w">        </span><span class="n">SObjectInfo</span><span class="w">                 </span><span class="n">m_sSelf</span><span class="p">;</span>
 <span class="w">    </span><span class="p">};</span>
 
 <span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TSdvObject</span><span class="o">&gt;</span>
@@ -1453,6 +1468,117 @@
 <span class="w">            </span><span class="n">SDV_INTERFACE_CHAIN_BASE</span><span class="p">(</span><span class="n">CSdvObject</span><span class="p">)</span>
 <span class="w">            </span><span class="n">SDV_INTERFACE_CHAIN_BASE</span><span class="p">(</span><span class="n">TSdvObject</span><span class="p">)</span>
 <span class="w">        </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CLifetimeControlImpl</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">IInterfaceAccess</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">IObjectLifetime</span><span class="p">,</span><span class="w"> </span><span class="k">protected</span><span class="w"> </span><span class="n">IObjectDestroy</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">CLifetimeControlImpl</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{}</span>
+
+<span class="w">        </span><span class="n">CLifetimeControlImpl</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CLifetimeControlImpl</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rClass</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CLifetimeControlImpl</span><span class="p">(</span><span class="n">CLifetimeControlImpl</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">rClass</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">CLifetimeControlImpl</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{}</span>
+
+<span class="w">        </span><span class="c1">// Interface map (IObjectDestroy is not exposed)</span>
+<span class="w">        </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">            </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">IObjectLifetime</span><span class="p">)</span>
+<span class="w">        </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+
+<span class="w">        </span><span class="n">CLifetimeControlImpl</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CLifetimeControlImpl</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rClass</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CLifetimeControlImpl</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">CLifetimeControlImpl</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">rClass</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Increment</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">m_uiLifetimeCnt</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Decrement</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_uiLifetimeCnt</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="p">(</span><span class="o">--</span><span class="n">m_uiLifetimeCnt</span><span class="p">))</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">DestroyObject</span><span class="p">();</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">GetCount</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">m_uiLifetimeCnt</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">protected</span><span class="o">:</span>
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">DestroyObject</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">delete</span><span class="w"> </span><span class="k">this</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="n">CLifetimeCookie</span><span class="w">         </span><span class="n">m_lifetime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateLifetimeCookie</span><span class="p">();</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">atomic_uint32_t</span><span class="w">    </span><span class="n">m_uiLifetimeCnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">TClass</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CSharedLifetimeControlImpl</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">enable_shared_from_this</span><span class="o">&lt;</span><span class="n">TClass</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">CLifetimeControlImpl</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="n">CSharedLifetimeControlImpl</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{}</span>
+
+<span class="w">        </span><span class="n">CSharedLifetimeControlImpl</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CSharedLifetimeControlImpl</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rClass</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CSharedLifetimeControlImpl</span><span class="p">(</span><span class="n">CSharedLifetimeControlImpl</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">rClass</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">CSharedLifetimeControlImpl</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// Interface map (IObjectDestroy is not exposed)</span>
+<span class="w">        </span><span class="n">BEGIN_SDV_INTERFACE_MAP</span><span class="p">()</span>
+<span class="w">            </span><span class="n">SDV_INTERFACE_ENTRY</span><span class="p">(</span><span class="n">IObjectLifetime</span><span class="p">)</span>
+<span class="w">        </span><span class="n">END_SDV_INTERFACE_MAP</span><span class="p">()</span>
+
+<span class="w">        </span><span class="n">CSharedLifetimeControlImpl</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CSharedLifetimeControlImpl</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rClass</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">CSharedLifetimeControlImpl</span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">CSharedLifetimeControlImpl</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">rClass</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Increment</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">m_uiLifetimeCnt</span><span class="o">++</span><span class="p">)</span>
+<span class="w">                </span><span class="n">m_ptrLocking</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">enable_shared_from_this</span><span class="o">&lt;</span><span class="n">TClass</span><span class="o">&gt;::</span><span class="n">shared_from_this</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Decrement</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_uiLifetimeCnt</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="p">(</span><span class="o">--</span><span class="n">m_uiLifetimeCnt</span><span class="p">))</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">DestroyObject</span><span class="p">();</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">GetCount</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">m_uiLifetimeCnt</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">protected</span><span class="o">:</span>
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">DestroyObject</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// Reset the locking; this might delete the class if no other references are present.</span>
+<span class="w">            </span><span class="n">m_ptrLocking</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">TClass</span><span class="o">&gt;</span><span class="w">     </span><span class="n">m_ptrLocking</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CLifetimeCookie</span><span class="w">             </span><span class="n">m_lifetime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CreateLifetimeCookie</span><span class="p">();</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">atomic_uint32_t</span><span class="w">        </span><span class="n">m_uiLifetimeCnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="w">    </span><span class="p">};</span>
 
 <span class="w">    </span><span class="c1">// Object control class implementation //</span>
@@ -1545,6 +1671,7 @@
 <span class="w">                </span><span class="k">auto</span><span class="w"> </span><span class="n">objectPtr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="o">*</span><span class="n">iter</span><span class="p">);</span>
 <span class="w">                </span><span class="n">m_vecActiveObjects</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">iter</span><span class="p">);</span>
 <span class="w">                </span><span class="n">lockObjects</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>
+<span class="w">                </span><span class="n">objectPtr</span><span class="o">-&gt;</span><span class="n">OnDestroy</span><span class="p">();</span>
 <span class="w">                </span><span class="n">objectPtr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">;</span>
 <span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_uiActiveObjectCount</span><span class="p">)</span><span class="w"> </span><span class="o">--</span><span class="n">m_uiActiveObjectCount</span><span class="p">;</span>
 <span class="w">                </span><span class="k">return</span><span class="p">;</span>

@@ -30,16 +30,14 @@ Program Listing for File channel_mgnt.h
    #include <support/component_impl.h>
    #include <interfaces/ipc.h>
    #include "connection.h"
+   #include "watchdog.h"
    
-   #include <map>
-   #include <unordered_set>
-   #include <mutex>
-   #include <memory>
+   #include <algorithm>
+   
    #include <string>
    
    #ifdef _WIN32
    // Winsock headers are required for SOCKET / AF_UNIX / WSAStartup
-   // NOTE: The actual initialization is done via StartUpWinSock()
    #   include <ws2tcpip.h>
    #endif
    
@@ -64,33 +62,6 @@ Program Listing for File channel_mgnt.h
        addrinfo* AddressInfo { nullptr };
    };
    
-   inline int StartUpWinSock()
-   {
-   #ifdef _WIN32
-       static bool isInitialized = false;
-       if (isInitialized)
-       {
-           return 0;
-       }
-   
-       WSADATA wsaData {};
-       const int error = WSAStartup(MAKEWORD(2, 2), &wsaData);
-       if (error != 0)
-       {
-           SDV_LOG_ERROR("WSAStartup failed with error: ", std::to_string(error));
-       }
-       else
-       {
-           SDV_LOG_INFO("WSAStartup initialized");
-           isInitialized = true;
-       }
-       return error;
-   #else
-       // Non-Windows: nothing to do. Return success for symmetry
-       return 0;
-   #endif
-   }
-   
    struct SocketConnection
    {
        SOCKET From { INVALID_SOCKET }; 
@@ -111,8 +82,8 @@ Program Listing for File channel_mgnt.h
        // Object declarations
        DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
        DECLARE_OBJECT_CLASS_NAME("WinSocketsChannelControl")
-       DECLARE_OBJECT_CLASS_ALIAS("LocalChannelControl")
-       DECLARE_DEFAULT_OBJECT_NAME("LocalChannelControl")
+       DECLARE_OBJECT_CLASS_ALIAS("unix_domain_sockets")
+       DECLARE_DEFAULT_OBJECT_NAME("unix_domain_sockets")
        DECLARE_OBJECT_SINGLETON()
    
        virtual ~CSocketsChannelMgnt() = default;
@@ -121,18 +92,14 @@ Program Listing for File channel_mgnt.h
    
        virtual void OnShutdown() override;
    
+       virtual void OnDestroy() override;
+   
        sdv::ipc::SChannelEndpoint CreateEndpoint(/*in*/ const sdv::u8string& ssChannelConfig) override;
    
        sdv::IInterfaceAccess* Access(const sdv::u8string& ssConnectString) override;
    
-       void OnServerClosed(const std::string& udsPath, CWinsockConnection* ptr);
-   
    private:
-       std::map<std::string, std::shared_ptr<CWinsockConnection>> m_udsServers;
-   
-       std::unordered_set<std::string> m_udsServerClaimed;
-   
-       std::mutex m_udsMtx;
+       CWinSocketsConnectionWatchDog m_watchdog;
    };
    
    // SDV object factory macro
