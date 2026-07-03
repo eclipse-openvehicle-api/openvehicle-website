@@ -1,0 +1,70 @@
+
+.. _program_listing_file_interfaces_permission.h:
+
+Program Listing for File permission.h
+=====================================
+
+|exhale_lsh| :ref:`Return to documentation for file <file_interfaces_permission.h>` (``interfaces\permission.h``)
+
+.. |exhale_lsh| unicode:: U+021B0 .. UPWARDS ARROW WITH TIP LEFTWARDS
+
+.. code-block:: cpp
+
+   
+   #ifndef __IDL_GENERATED__PERMISSION_H__20260703_131938_375__
+   #define __IDL_GENERATED__PERMISSION_H__20260703_131938_375__
+   
+   #ifdef _MSC_VER
+   // Prevent bogus warnings about uninitialized members during static code analysis.
+   #pragma warning(push)
+   #pragma warning(disable : 26495)
+   #endif
+   
+   // Provide fixed width integer types.
+   #include <cstdint>
+   
+   #include "core.h"
+   
+   namespace sdv
+   {
+       namespace core
+       {
+           typedef uint64_t TPermissionID;
+   
+           typedef uint64_t TPermissionTransferID;
+   
+           enum class EAccessPermission : int32_t
+           {
+               not_set = - 1001,
+   
+               restricted_access = - 1000,
+   
+               remote_access = - 200,
+   
+               local_access = - 100,
+   
+               full_access = 0,
+           };
+   
+           interface IPermissionControl
+           {
+               static constexpr ::sdv::interface_id _id = 0x1CEC937F5DB1A5AB;
+   
+               virtual TPermissionID RestrictAccessPermission(/*in*/ EAccessPermission ePermission) = 0;
+   
+               virtual bool ReleaseAccessPermission(/*in*/ TPermissionID tPermissionID) = 0;
+   
+               virtual TPermissionTransferID TransferCurrentPermission() = 0;
+   
+               virtual TPermissionID SetAccessPermission(/*in*/ TPermissionTransferID tTransferID) = 0;
+   
+               virtual EAccessPermission GetCurrentPermission() const = 0;
+           };
+       }
+   }
+   
+   #ifdef _MSC_VER
+   #pragma warning(pop)
+   #endif
+   
+   #endif // !defined(__IDL_GENERATED__PERMISSION_H__20260703_131938_377__)

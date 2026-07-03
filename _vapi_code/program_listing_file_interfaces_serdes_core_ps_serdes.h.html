@@ -786,8 +786,8 @@
   <section id="program-listing-for-file-core-ps-serdes-h">
 <span id="program-listing-file-interfaces-serdes-core-ps-serdes-h"></span><h1>Program Listing for File core_ps_serdes.h<a class="headerlink" href="#program-listing-for-file-core-ps-serdes-h" title="Link to this heading">#</a></h1>
 <p>↰ <a class="reference internal" href="file_interfaces_serdes_core_ps_serdes.h.html#file-interfaces-serdes-core-ps-serdes-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">interfaces\serdes\core_ps_serdes.h</span></code>)</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef __IDL_GENERATED__CORE_PS_SERDES_H__20260428_100221_908__</span>
-<span class="cp">#define __IDL_GENERATED__CORE_PS_SERDES_H__20260428_100221_908__</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef __IDL_GENERATED__CORE_PS_SERDES_H__20260703_131934_545__</span>
+<span class="cp">#define __IDL_GENERATED__CORE_PS_SERDES_H__20260703_131934_545__</span>
 
 <span class="c1">// Includes...</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdint&gt;</span>
@@ -799,6 +799,7 @@
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;core_serdes.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;process_serdes.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;permission_serdes.h&quot;</span>
 
 <span class="c1">// Serializer / deserializer namespace</span>
 <span class="k">namespace</span><span class="w"> </span><span class="nn">serdes</span>
@@ -1142,6 +1143,7 @@
 <span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">ser_size</span><span class="p">(</span><span class="n">rVar</span><span class="p">.</span><span class="n">tProxyID</span><span class="p">,</span><span class="w"> </span><span class="n">rnSize</span><span class="p">);</span>
 <span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">ser_size</span><span class="p">(</span><span class="n">rVar</span><span class="p">.</span><span class="n">tStubID</span><span class="p">,</span><span class="w"> </span><span class="n">rnSize</span><span class="p">);</span>
 <span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">ser_size</span><span class="p">(</span><span class="n">rVar</span><span class="p">.</span><span class="n">uiCallIndex</span><span class="p">,</span><span class="w"> </span><span class="n">rnSize</span><span class="p">);</span>
+<span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">ser_size</span><span class="p">(</span><span class="n">rVar</span><span class="p">.</span><span class="n">tPermissionID</span><span class="p">,</span><span class="w"> </span><span class="n">rnSize</span><span class="p">);</span>
 <span class="w">        </span><span class="p">}</span>
 
 <span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">EEndian</span><span class="w"> </span><span class="n">eTargetEndianess</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">TCRC</span><span class="o">&gt;</span>
@@ -1154,6 +1156,7 @@
 <span class="w">            </span><span class="n">rSerializer</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">rVar</span><span class="p">.</span><span class="n">tProxyID</span><span class="p">;</span>
 <span class="w">            </span><span class="n">rSerializer</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">rVar</span><span class="p">.</span><span class="n">tStubID</span><span class="p">;</span>
 <span class="w">            </span><span class="n">rSerializer</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">rVar</span><span class="p">.</span><span class="n">uiCallIndex</span><span class="p">;</span>
+<span class="w">            </span><span class="n">rSerializer</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">rVar</span><span class="p">.</span><span class="n">tPermissionID</span><span class="p">;</span>
 <span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">rSerializer</span><span class="p">;</span>
 <span class="w">        </span><span class="p">}</span>
 
@@ -1167,6 +1170,7 @@
 <span class="w">            </span><span class="n">rDeserializer</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">rVar</span><span class="p">.</span><span class="n">tProxyID</span><span class="p">;</span>
 <span class="w">            </span><span class="n">rDeserializer</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">rVar</span><span class="p">.</span><span class="n">tStubID</span><span class="p">;</span>
 <span class="w">            </span><span class="n">rDeserializer</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">rVar</span><span class="p">.</span><span class="n">uiCallIndex</span><span class="p">;</span>
+<span class="w">            </span><span class="n">rDeserializer</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">rVar</span><span class="p">.</span><span class="n">tPermissionID</span><span class="p">;</span>
 <span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">rDeserializer</span><span class="p">;</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">};</span>
@@ -1437,7 +1441,7 @@
 <span class="w">    </span><span class="p">};</span>
 <span class="p">}</span><span class="w"> </span><span class="c1">// serdes namespace</span>
 
-<span class="cp">#endif </span><span class="c1">// !defined(__IDL_GENERATED__CORE_PS_SERDES_H__20260428_100221_910__)</span>
+<span class="cp">#endif </span><span class="c1">// !defined(__IDL_GENERATED__CORE_PS_SERDES_H__20260703_131934_548__)</span>
 </pre></div>
 </div>
 </section>

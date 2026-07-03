@@ -804,18 +804,15 @@
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/component_impl.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;interfaces/ipc.h&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../sdv_services/uds_win_sockets/channel_mgnt.h&quot;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;../sdv_services/uds_win_sockets/connection.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;connection.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;watchdog.h&quot;</span>
 
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mutex&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;algorithm&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;map&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;memory&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;set&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mutex&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
 
 <span class="c1">// Winsock headers are required for SOCKET / AF_UNIX / WSAStartup</span>
-<span class="c1">// NOTE: The actual initialization is done via StartUpWinSock()</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ws2tcpip.h&gt;</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">CWinTunnelConnection</span><span class="p">;</span>
@@ -833,8 +830,8 @@
 
 <span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">system_object</span><span class="p">)</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;WinTunnelChannelControl&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_ALIAS</span><span class="p">(</span><span class="s">&quot;LocalChannelControl&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="n">DECLARE_DEFAULT_OBJECT_NAME</span><span class="p">(</span><span class="s">&quot;LocalChannelControl&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_ALIAS</span><span class="p">(</span><span class="s">&quot;unix_domain_sockets_tunnel&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_DEFAULT_OBJECT_NAME</span><span class="p">(</span><span class="s">&quot;unix_domain_sockets_tunnel&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_SINGLETON</span><span class="p">()</span>
 
 <span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">CSocketsTunnelChannelMgnt</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
@@ -843,16 +840,16 @@
 
 <span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnShutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnDestroy</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
 <span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">ipc</span><span class="o">::</span><span class="n">SChannelEndpoint</span><span class="w"> </span><span class="nf">CreateEndpoint</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">cfgStr</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
 <span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="nf">Access</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">cs</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnServerClosed</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">udsPath</span><span class="p">,</span><span class="w"> </span><span class="n">CWinTunnelConnection</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">);</span>
-
 <span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">m_udsMtx</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CWinTunnelConnection</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">m_udsServers</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">set</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_udsServerClaimed</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CWinTunnelConnectionWatchDog</span><span class="w"> </span><span class="n">m_watchdog</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CWinTunnelConnection</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">m_ptrConnections</span><span class="p">;</span>
+<span class="w">    </span><span class="k">mutable</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">m_ConnectionsMutex</span><span class="p">;</span>
 <span class="p">};</span>
 
 <span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CSocketsTunnelChannelMgnt</span><span class="p">)</span>

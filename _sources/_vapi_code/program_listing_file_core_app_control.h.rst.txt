@@ -30,6 +30,8 @@ Program Listing for File app_control.h
    #include <support/component_impl.h>
    #include <support/interface_ptr.h>
    #include "../../global/tracefifo/trace_fifo.h"
+   #include "permission_control.h"
+   #include <optional>
    
    class CAppControl : public sdv::IInterfaceAccess, public sdv::app::IAppControl, public sdv::app::IAppOperation,
        public sdv::app::IAppShutdownRequest
@@ -68,15 +70,17 @@ Program Listing for File app_control.h
    private:
        void BroadcastOperationState(sdv::app::EAppOperationState eState);
    
-       sdv::app::EAppOperationState        m_eState = sdv::app::EAppOperationState::not_started;  
-       sdv::app::IAppEvent*                m_pEvent = nullptr;         
-       sdv::core::TModuleID                m_tLoggerModuleID = 0;      
-       bool                                m_bEnableAutoSave = false;  
-       bool                                m_bRunLoop = false;         
-       std::filesystem::path               m_pathLockFile;             
-       FILE*                               m_pLockFile = nullptr;      
-       CTraceFifoStdBuffer                 m_fifoTraceStreamBuffer;    
-       bool                                m_bAutoSaveConfig = false;  
+       sdv::app::EAppOperationState    m_eState = sdv::app::EAppOperationState::not_started;  
+       sdv::app::IAppEvent*            m_pEvent = nullptr;         
+       sdv::core::TModuleID            m_tLoggerModuleID = 0;      
+       bool                            m_bEnableAutoSave = false;  
+       bool                            m_bRunLoop = false;         
+       std::filesystem::path           m_pathLockFile;             
+       FILE*                           m_pLockFile = nullptr;      
+       CTraceFifoStdBuffer             m_fifoTraceStreamBuffer;    
+       bool                            m_bAutoSaveConfig = false;  
+       std::vector<std::pair<std::string, sdv::core::TLinkID>> m_vecConnections; 
+       std::optional<CAccessPermission> m_optpermission;           
    };
    
    CAppControl& GetAppControl();

@@ -801,7 +801,7 @@
 <section id="derived-type">
 <h3>Derived Type<a class="headerlink" href="#derived-type" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">CClient</span></code> (<a class="reference internal" href="class_c_client.html#exhale-class-class-c-client"><span class="std std-ref">Class CClient</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">CClientConnect</span></code> (<a class="reference internal" href="class_c_client_connect.html#exhale-class-class-c-client-connect"><span class="std std-ref">Class CClientConnect</span></a>)</p></li>
 </ul>
 </section>
 </section>
@@ -810,66 +810,121 @@
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4N3sdv3com14IClientConnectE">
 <span id="_CPPv3N3sdv3com14IClientConnectE"></span><span id="_CPPv2N3sdv3com14IClientConnectE"></span><span id="sdv::com::IClientConnect"></span><span class="target" id="structsdv_1_1com_1_1_i_client_connect"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IClientConnect</span></span></span><a class="headerlink" href="#_CPPv4N3sdv3com14IClientConnectE" title="Link to this definition">#</a><br /></dt>
-<dd><p>Connect to a remote system. Provided by the ConnectClient utility. </p>
-<p>Subclassed by <a class="reference internal" href="class_c_client.html#class_c_client"><span class="std std-ref">CClient</span></a></p>
+<dd><p>Connect to a remote system. Provided by the Connection service. </p>
+<p>This interface is exposed by the connection client service. The configuration is provided during instantiation of the object and is of the form: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp"># Provider to use for the connection</span>
+<span class="p">[</span><span class="n">Provider</span><span class="p">]</span>
+<span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+
+<span class="cp"># Additional channel information for the client</span>
+<span class="p">[</span><span class="n">IpcChannel</span><span class="p">]</span>
+<span class="n">xyz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+</pre></div>
+</div>
+</p>
+<p>For example for shared memory: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Provider</span><span class="p">]</span>
+<span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;DefaultSharedMemory&quot;</span>
+<span class="p">[</span><span class="n">IpcChannel</span><span class="p">]</span>
+<span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;LISTENER_1234&quot;</span>
+</pre></div>
+</div>
+</p>
+<p>Subclassed by <a class="reference internal" href="class_c_client_connect.html#class_c_client_connect"><span class="std std-ref">CClientConnect</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3sdv3com14IClientConnect7ConnectERKN3sdv8u8stringE">
-<span id="_CPPv3N3sdv3com14IClientConnect7ConnectERKN3sdv8u8stringE"></span><span id="_CPPv2N3sdv3com14IClientConnect7ConnectERKN3sdv8u8stringE"></span><span id="sdv::com::IClientConnect::Connect__sdv::u8stringCR"></span><span class="target" id="structsdv_1_1com_1_1_i_client_connect_1a890687cb1f754ee3508e8520a7711bda"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">Connect</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1a14fa0ffa079b2906ffd654035a1eb146.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ssConnectString</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3sdv3com14IClientConnect7ConnectERKN3sdv8u8stringE" title="Link to this definition">#</a><br /></dt>
-<dd><p>Connect to a remote system using the connection string to contact the system. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv3com14IClientConnect7ConnectEv">
+<span id="_CPPv3N3sdv3com14IClientConnect7ConnectEv"></span><span id="_CPPv2N3sdv3com14IClientConnect7ConnectEv"></span><span id="sdv::com::IClientConnect::Connect"></span><span class="target" id="structsdv_1_1com_1_1_i_client_connect_1a206e3d33dee6efaa29c5e6fb4beff975"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Connect</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3sdv3com14IClientConnect7ConnectEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Connect to a remote system. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether connect was successful. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv3com14IClientConnect10DisconnectEv">
+<span id="_CPPv3N3sdv3com14IClientConnect10DisconnectEv"></span><span id="_CPPv2N3sdv3com14IClientConnect10DisconnectEv"></span><span id="sdv::com::IClientConnect::Disconnect"></span><span class="target" id="structsdv_1_1com_1_1_i_client_connect_1a05965a10f4c6c6ed3e202c177f085922"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Disconnect</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3sdv3com14IClientConnect10DisconnectEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Disconnect from a connected system. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether disconnect was successful. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3sdv3com14IClientConnect11IsConnectedEv">
+<span id="_CPPv3NK3sdv3com14IClientConnect11IsConnectedEv"></span><span id="_CPPv2NK3sdv3com14IClientConnect11IsConnectedEv"></span><span id="sdv::com::IClientConnect::IsConnectedC"></span><span class="target" id="structsdv_1_1com_1_1_i_client_connect_1a0bed92454d1f8ded4667ff893052d0fc"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsConnected</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3sdv3com14IClientConnect11IsConnectedEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>State of the current connection. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether an active connection exists. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv3com14IClientConnect19GetRemoteRepositoryEv">
+<span id="_CPPv3N3sdv3com14IClientConnect19GetRemoteRepositoryEv"></span><span id="_CPPv2N3sdv3com14IClientConnect19GetRemoteRepositoryEv"></span><span id="sdv::com::IClientConnect::GetRemoteRepository"></span><span class="target" id="structsdv_1_1com_1_1_i_client_connect_1adb152dd13ff101e4a7346b5b09506ca1"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetRemoteRepository</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3sdv3com14IClientConnect19GetRemoteRepositoryEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Get the remote repository that is available after connection. </p>
 <p><div class="remark admonition">
 <p class="admonition-title">Remark</p>
-<p>After a successful connection, the ConnectClient utility is not needed any more. </p>
+<p>For main, isolated and external applications, the remote repository will be automatically linked to the local repository. Hence a requests for the repository is not needed. For all other applications, access must be explicitly acquired through this interface. </p>
 </div>
 </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ssConnectString</strong> – <strong>[in]</strong> Optional connection string to use for connection. If not provided, the connection will automatically get the connection ID from the app-control service (default). The connection string for a local connection can be of the form: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Client</span><span class="p">]</span>
-<span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;local&quot;</span>
-<span class="n">Instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1234</span><span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="n">Optional</span><span class="o">:</span><span class="w"> </span><span class="n">only</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">connecting</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">different</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">ID</span><span class="p">.</span>
-</pre></div>
-</div>
- And the following can be used for a remote connection: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Client</span><span class="p">]</span>
-<span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;remote&quot;</span>
-<span class="n">Interface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;127.0.0.1&quot;</span>
-<span class="n">Port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2000</span>
-</pre></div>
-</div>
-</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Returns an interface to the repository of the remote system or a NULL pointer if not found. </p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Interface to the remote repository if a successful connection is established. The interface is valid until disconnect is called or the client connection service is terminated. </p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp">
-<span class="target" id="structsdv_1_1com_1_1_i_client_connect_1ac3ed4b72d107f753d573a2f286b2053f"></span><span class="sig-name descname"><span class="pre">IInterfaceAccess</span> <span class="pre">Connect</span> <span class="pre">(in</span> <span class="pre">u8string</span> <span class="pre">ssConnectString)</span></span></dt>
-<dd><p>Connect to a remote system using the connection string to contact the system. </p>
+<span class="target" id="structsdv_1_1com_1_1_i_client_connect_1a5bc309636bf42060f6bd8dcd2bb39993"></span><span class="n"><span class="pre">boolean</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Connect</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Connect to a remote system. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether connect was successful. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1com_1_1_i_client_connect_1a5054051a367eeb22c8111f458d4ee727"></span><span class="n"><span class="pre">boolean</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Disconnect</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Disconnect from a connected system. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether disconnect was successful. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1com_1_1_i_client_connect_1a290cfd12da94169d101ddc6c05ba5594"></span><span class="n"><span class="pre">boolean</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsConnected</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>State of the current connection. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether an active connection exists. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp">
+<span class="target" id="structsdv_1_1com_1_1_i_client_connect_1ab73b2d341e4ce200c840d25e5c9f651f"></span><a class="reference internal" href="structsdv_1_1_i_interface_access.html#_CPPv4N3sdv16IInterfaceAccessE" title="sdv::IInterfaceAccess"><span class="n"><span class="pre">IInterfaceAccess</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetRemoteRepository</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Get the remote repository that is available after connection. </p>
 <p><div class="remark admonition">
 <p class="admonition-title">Remark</p>
-<p>After a successful connection, the ConnectClient utility is not needed any more. </p>
+<p>For main, isolated and external applications, the remote repository will be automatically linked to the local repository. Hence a requests for the repository is not needed. For all other applications, access must be explicitly acquired through this interface. </p>
 </div>
 </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ssConnectString</strong> – <strong>[in]</strong> Optional connection string to use for connection. If not provided, the connection will automatically get the connection ID from the app-control service (default). The connection string for a local connection can be of the form: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Client</span><span class="p">]</span>
-<span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;local&quot;</span>
-<span class="n">Instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1234</span><span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="n">Optional</span><span class="o">:</span><span class="w"> </span><span class="n">only</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">connecting</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">different</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">ID</span><span class="p">.</span>
-</pre></div>
-</div>
- And the following can be used for a remote connection: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Client</span><span class="p">]</span>
-<span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;remote&quot;</span>
-<span class="n">Interface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;127.0.0.1&quot;</span>
-<span class="n">Port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2000</span>
-</pre></div>
-</div>
-</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Returns an interface to the repository of the remote system or a NULL pointer if not found. </p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Interface to the remote repository if a successful connection is established. The interface is valid until disconnect is called or the client connection service is terminated. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -879,7 +934,7 @@
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3sdv3com14IClientConnect3_idE">
-<span id="_CPPv3N3sdv3com14IClientConnect3_idE"></span><span id="_CPPv2N3sdv3com14IClientConnect3_idE"></span><span id="sdv::com::IClientConnect::_id__sdv::interface_id"></span><span class="target" id="structsdv_1_1com_1_1_i_client_connect_1add0bc52cb7335667e7d448691207c0b2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ade2e90c3525c019671927618b95a907b.html#_CPPv4N3sdv12interface_idE" title="sdv::interface_id"><span class="n"><span class="pre">interface_id</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_id</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x36D212B6251B63DD</span></span><a class="headerlink" href="#_CPPv4N3sdv3com14IClientConnect3_idE" title="Link to this definition">#</a><br /></dt>
+<span id="_CPPv3N3sdv3com14IClientConnect3_idE"></span><span id="_CPPv2N3sdv3com14IClientConnect3_idE"></span><span id="sdv::com::IClientConnect::_id__sdv::interface_id"></span><span class="target" id="structsdv_1_1com_1_1_i_client_connect_1add0bc52cb7335667e7d448691207c0b2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1ade2e90c3525c019671927618b95a907b.html#_CPPv4N3sdv12interface_idE" title="sdv::interface_id"><span class="n"><span class="pre">interface_id</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_id</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0x6A220464A7E5E037</span></span><a class="headerlink" href="#_CPPv4N3sdv3com14IClientConnect3_idE" title="Link to this definition">#</a><br /></dt>
 <dd><p>Interface ID. </p>
 </dd></dl>
 

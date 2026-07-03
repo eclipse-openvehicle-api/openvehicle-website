@@ -807,12 +807,12 @@
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;interfaces/com.h&gt;</span>
 
 <span class="c1">// Forward declaration.</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">CClient</span><span class="p">;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CClientConnect</span><span class="p">;</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">CRepositoryProxy</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IObjectDestroy</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
-<span class="w">    </span><span class="n">CRepositoryProxy</span><span class="p">(</span><span class="n">CClient</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rClient</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">com</span><span class="o">::</span><span class="n">TConnectionID</span><span class="w"> </span><span class="n">tConnection</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="n">pRepositoryProxy</span><span class="p">);</span>
+<span class="w">    </span><span class="n">CRepositoryProxy</span><span class="p">(</span><span class="n">CClientConnect</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rClient</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">com</span><span class="o">::</span><span class="n">TConnectionID</span><span class="w"> </span><span class="n">tConnection</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="n">pRepositoryProxy</span><span class="p">);</span>
 
 <span class="w">    </span><span class="n">CRepositoryProxy</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CRepositoryProxy</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rRepository</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">delete</span><span class="p">;</span>
 
@@ -827,13 +827,15 @@
 
 <span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">DestroyObject</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
+<span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">com</span><span class="o">::</span><span class="n">TConnectionID</span><span class="w"> </span><span class="nf">GetConnectionID</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
 <span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="n">CClient</span><span class="o">&amp;</span><span class="w">                        </span><span class="n">m_rClient</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CClientConnect</span><span class="o">&amp;</span><span class="w">                 </span><span class="n">m_rClient</span><span class="p">;</span>
 <span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">com</span><span class="o">::</span><span class="n">TConnectionID</span><span class="w">         </span><span class="n">m_tConnection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
 <span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">TInterfaceAccessPtr</span><span class="w">        </span><span class="n">m_ptrRepositoryProxy</span><span class="p">;</span>
 <span class="p">};</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">CClient</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">com</span><span class="o">::</span><span class="n">IClientConnect</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CClientConnect</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">CSdvObject</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">com</span><span class="o">::</span><span class="n">IClientConnect</span>
 <span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
 <span class="w">    </span><span class="c1">// Interface map</span>
@@ -843,25 +845,36 @@
 
 <span class="w">    </span><span class="c1">// Object declaration</span>
 <span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_TYPE</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">EObjectType</span><span class="o">::</span><span class="n">system_object</span><span class="p">)</span>
-<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;ConnectionService&quot;</span><span class="p">)</span>
-<span class="w">    </span><span class="n">DECLARE_OBJECT_SINGLETON</span><span class="p">()</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_CLASS_NAME</span><span class="p">(</span><span class="s">&quot;ClientConnectService&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">DECLARE_OBJECT_DEPENDENCIES</span><span class="p">(</span><span class="s">&quot;CommunicationControl&quot;</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c1">// Parameter map</span>
+<span class="w">    </span><span class="n">BEGIN_SDV_PARAM_MAP</span><span class="p">()</span>
+<span class="w">        </span><span class="n">SDV_PARAM_ENABLE_LOCKING</span><span class="p">()</span>
+<span class="w">        </span><span class="n">SDV_PARAM_GROUP</span><span class="p">(</span><span class="s">&quot;Provider&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">SDV_PARAM_ENTRY</span><span class="p">(</span><span class="n">m_ssProvider</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Provider name to create a connection for.&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">END_SDV_PARAM_MAP</span><span class="p">()</span>
 
 
 <span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">OnInitialize</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
 <span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OnShutdown</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
-<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="nf">Connect</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssConnectString</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Connect</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
-<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Disconnect</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">com</span><span class="o">::</span><span class="n">TConnectionID</span><span class="w"> </span><span class="n">tConnectionID</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Disconnect</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsConnected</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="o">*</span><span class="w"> </span><span class="nf">GetRemoteRepository</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
 <span class="k">private</span><span class="o">:</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w">              </span><span class="n">m_mtxRepositoryProxies</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">com</span><span class="o">::</span><span class="n">TConnectionID</span><span class="p">,</span><span class="w"> </span><span class="n">CRepositoryProxy</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_mapRepositoryProxies</span><span class="p">;</span>
+<span class="w">    </span><span class="k">mutable</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w">                  </span><span class="n">m_mtx</span><span class="p">;</span>
+<span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="w">                       </span><span class="n">m_ssProvider</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CRepositoryProxy</span><span class="o">&gt;</span><span class="w">   </span><span class="n">m_ptrRemoteRepo</span><span class="p">;</span>
 <span class="p">};</span>
 
-<span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CClient</span><span class="p">)</span>
-
+<span class="n">DEFINE_SDV_OBJECT</span><span class="p">(</span><span class="n">CClientConnect</span><span class="p">)</span>
 
 <span class="cp">#endif </span><span class="c1">// !defined CLIENT_H</span>
 </pre></div>

@@ -11,8 +11,8 @@ Program Listing for File repository.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__REPOSITORY_H__20260428_100224_157__
-   #define __IDL_GENERATED__REPOSITORY_H__20260428_100224_157__
+   #ifndef __IDL_GENERATED__REPOSITORY_H__20260703_131938_229__
+   #define __IDL_GENERATED__REPOSITORY_H__20260703_131938_229__
    
    #ifdef _MSC_VER
    // Prevent bogus warnings about uninitialized members during static code analysis.
@@ -31,8 +31,6 @@ Program Listing for File repository.h
    {
        namespace core
        {
-           typedef uint64_t TObjectID;
-   
            interface IObjectAccess
            {
                static constexpr ::sdv::interface_id _id = 0x8EEACAB6A9B2D46B;
@@ -113,13 +111,24 @@ Program Listing for File repository.h
                virtual TObjectID RegisterObject(/*in*/ IInterfaceAccess* pObjectIfc, /*in*/ const sdv::u8string& ssObjectName) = 0;
            };
    
+           interface IObjectDependency
+           {
+               static constexpr ::sdv::interface_id _id = 0x0BDC44DF86CE5338;
+   
+               virtual void AddObjectDependency(/*in*/ const sdv::u8string& ssObjectName, /*in*/ const sdv::u8string& ssDependsOnObject) = 0;
+   
+               virtual void RemoveObjectDependency(/*in*/ const sdv::u8string& ssObjectName, /*in*/ const sdv::u8string& ssDependsOnObject) = 0;
+           };
+   
+           typedef uint64_t TLinkID;
+   
            interface ILinkCoreRepository
            {
-               static constexpr ::sdv::interface_id _id = 0xA11C6FF4116D35F1;
+               static constexpr ::sdv::interface_id _id = 0x4C02EA6FBF78C1D3;
    
-               virtual void LinkCoreRepository(/*in*/ IInterfaceAccess* pCoreRepository) = 0;
+               virtual TLinkID LinkCoreRepository(/*in*/ IInterfaceAccess* pCoreRepository) = 0;
    
-               virtual void UnlinkCoreRepository() = 0;
+               virtual void UnlinkCoreRepository(/*in*/ TLinkID tLinkID) = 0;
            };
        }
    }
@@ -128,4 +137,4 @@ Program Listing for File repository.h
    #pragma warning(pop)
    #endif
    
-   #endif // !defined(__IDL_GENERATED__REPOSITORY_H__20260428_100224_159__)
+   #endif // !defined(__IDL_GENERATED__REPOSITORY_H__20260703_131938_233__)

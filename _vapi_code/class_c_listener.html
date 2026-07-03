@@ -811,6 +811,24 @@
 <dt class="sig sig-object cpp" id="_CPPv49CListener">
 <span id="_CPPv39CListener"></span><span id="_CPPv29CListener"></span><span id="CListener"></span><span class="target" id="class_c_listener"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CListener</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="classsdv_1_1_c_sdv_object.html#_CPPv4N3sdv10CSdvObjectE" title="sdv::CSdvObject"><span class="n"><span class="pre">CSdvObject</span></span></a><a class="headerlink" href="#_CPPv49CListener" title="Link to this definition">#</a><br /></dt>
 <dd><p>Listener object. </p>
+<p>the lister is instantiated using the following parameter information <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp"># Provider to use for listening</span>
+<span class="p">[</span><span class="n">Provider</span><span class="p">]</span>
+<span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+
+<span class="cp"># Additional channel information for the listener (needed for unique listener identification)</span>
+<span class="p">[</span><span class="n">IpcChannel</span><span class="p">]</span>
+<span class="n">xyz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+</pre></div>
+</div>
+</p>
+<p>For example for shared memory: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Provider</span><span class="p">]</span>
+<span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;DefaultSharedMemory&quot;</span>
+<span class="p">[</span><span class="n">IpcChannel</span><span class="p">]</span>
+<span class="n">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;LISTENER_1234&quot;</span>
+<span class="n">Size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10240</span>
+</pre></div>
+</div>
+</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -823,18 +841,6 @@
 <dt class="sig sig-object cpp" id="_CPPv4N9CListener12OnInitializeEv">
 <span id="_CPPv3N9CListener12OnInitializeEv"></span><span id="_CPPv2N9CListener12OnInitializeEv"></span><span id="CListener::OnInitialize"></span><span class="target" id="class_c_listener_1a61cb928801e835557c73e79651475733"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">OnInitialize</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N9CListener12OnInitializeEv" title="Link to this definition">#</a><br /></dt>
 <dd><p>Initialization event, called after object configuration was loaded. Overload of <a class="reference internal" href="classsdv_1_1_c_sdv_object.html#classsdv_1_1_c_sdv_object_1ae375437d1673a9e2ac5ca1faf72cabef"><span class="std std-ref">sdv::CSdvObject::OnInitialize</span></a>. </p>
-<p>The object configuration contains the information needed to start the listener. The following configuration is available for the local listener: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Listener</span><span class="p">]</span>
-<span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Local&quot;</span>
-<span class="n">Instance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="n">Normally</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">used</span><span class="p">;</span><span class="w"> </span><span class="n">system</span><span class="w"> </span><span class="n">instance</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="n">automatically</span><span class="p">.</span>
-</pre></div>
-</div>
- And the following is available for a remote listener: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Listener</span><span class="p">]</span>
-<span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Remote&quot;</span>
-<span class="n">Interface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;127.0.0.1&quot;</span>
-<span class="n">Port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2000</span>
-</pre></div>
-</div>
- </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Returns ‘true’ when the initialization was successful, ‘false’ when not. </p>
@@ -849,12 +855,12 @@
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK9CListener15IsLocalListenerEv">
-<span id="_CPPv3NK9CListener15IsLocalListenerEv"></span><span id="_CPPv2NK9CListener15IsLocalListenerEv"></span><span id="CListener::IsLocalListenerC"></span><span class="target" id="class_c_listener_1a25e6fb59ea20b1b9a504245c7bba3a43"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IsLocalListener</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9CListener15IsLocalListenerEv" title="Link to this definition">#</a><br /></dt>
-<dd><p>When set, the listener is configured to be a local listener. Otherwise the listerner is configured as remote listener. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N9CListener15GetProviderNameEv">
+<span id="_CPPv3N9CListener15GetProviderNameEv"></span><span id="_CPPv2N9CListener15GetProviderNameEv"></span><span id="CListener::GetProviderName"></span><span class="target" id="class_c_listener_1a78b10b550c1ea957e04108e2b4f00624"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">sdv</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="typedef_namespacesdv_1a14fa0ffa079b2906ffd654035a1eb146.html#_CPPv4N3sdv8u8stringE" title="sdv::u8string"><span class="n"><span class="pre">u8string</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetProviderName</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9CListener15GetProviderNameEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Get the provider name used by this listener. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Boolean set when local lostener. </p>
+<dd class="field-odd"><p>Reference to the provider name. </p>
 </dd>
 </dl>
 </dd></dl>

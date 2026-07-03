@@ -786,8 +786,8 @@
   <section id="program-listing-for-file-config-serdes-h">
 <span id="program-listing-file-interfaces-serdes-config-serdes-h"></span><h1>Program Listing for File config_serdes.h<a class="headerlink" href="#program-listing-for-file-config-serdes-h" title="Link to this heading">#</a></h1>
 <p>↰ <a class="reference internal" href="file_interfaces_serdes_config_serdes.h.html#file-interfaces-serdes-config-serdes-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">interfaces\serdes\config_serdes.h</span></code>)</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef __IDL_GENERATED__CONFIG_SERDES_H__20260428_100219_948__</span>
-<span class="cp">#define __IDL_GENERATED__CONFIG_SERDES_H__20260428_100219_948__</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef __IDL_GENERATED__CONFIG_SERDES_H__20260703_131934_640__</span>
+<span class="cp">#define __IDL_GENERATED__CONFIG_SERDES_H__20260703_131934_640__</span>
 
 <span class="c1">// Includes...</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdint&gt;</span>
@@ -1619,6 +1619,38 @@
 <span class="w">    </span><span class="p">};</span>
 
 <span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CSerdes</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">installation</span><span class="o">::</span><span class="n">XPackageSizeExceeded</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">CalcSize</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">installation</span><span class="o">::</span><span class="n">XPackageSizeExceeded</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rVar</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rnSize</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+
+<span class="w">            </span><span class="c1">// Calculating the size of XPackageSizeExceeded</span>
+<span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">ser_size</span><span class="p">(</span><span class="n">rVar</span><span class="p">.</span><span class="n">ssFileName</span><span class="p">,</span><span class="w"> </span><span class="n">rnSize</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">EEndian</span><span class="w"> </span><span class="n">eTargetEndianess</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">TCRC</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">serializer</span><span class="o">&lt;</span><span class="n">eTargetEndianess</span><span class="p">,</span><span class="w"> </span><span class="n">TCRC</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">Serialize</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">serializer</span><span class="o">&lt;</span><span class="n">eTargetEndianess</span><span class="p">,</span><span class="w"> </span><span class="n">TCRC</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rSerializer</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">installation</span><span class="o">::</span><span class="n">XPackageSizeExceeded</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rVar</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">rSerializer</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">GetExceptionId</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">installation</span><span class="o">::</span><span class="n">XPackageSizeExceeded</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">            </span><span class="c1">// Serializing members of XPackageSizeExceeded</span>
+<span class="w">            </span><span class="n">rSerializer</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">rVar</span><span class="p">.</span><span class="n">ssFileName</span><span class="p">;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">rSerializer</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">EEndian</span><span class="w"> </span><span class="n">eSourceEndianess</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">TCRC</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">deserializer</span><span class="o">&lt;</span><span class="n">eSourceEndianess</span><span class="p">,</span><span class="w"> </span><span class="n">TCRC</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">Deserialize</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">deserializer</span><span class="o">&lt;</span><span class="n">eSourceEndianess</span><span class="p">,</span><span class="w"> </span><span class="n">TCRC</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rDeserializer</span><span class="p">,</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">installation</span><span class="o">::</span><span class="n">XPackageSizeExceeded</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rVar</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">sdv</span><span class="o">::</span><span class="n">exception_id</span><span class="w"> </span><span class="n">idLocal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0ull</span><span class="p">;</span>
+<span class="w">            </span><span class="n">rDeserializer</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">idLocal</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">idLocal</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">GetExceptionId</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">installation</span><span class="o">::</span><span class="n">XPackageSizeExceeded</span><span class="o">&gt;</span><span class="p">())</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">ps</span><span class="o">::</span><span class="n">XMarshallIntegrity</span><span class="p">{};</span>
+<span class="w">            </span><span class="c1">// Deserializing members of XPackageSizeExceeded</span>
+<span class="w">            </span><span class="n">rDeserializer</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">rVar</span><span class="p">.</span><span class="n">ssFileName</span><span class="p">;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">rDeserializer</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;&gt;</span>
 <span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CSerdes</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">installation</span><span class="o">::</span><span class="n">XModuleNotFound</span><span class="o">&gt;</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">    </span><span class="k">public</span><span class="o">:</span>
@@ -1963,7 +1995,7 @@
 <span class="w">    </span><span class="p">};</span>
 <span class="p">}</span><span class="w"> </span><span class="c1">// serdes namespace</span>
 
-<span class="cp">#endif </span><span class="c1">// !defined(__IDL_GENERATED__CONFIG_SERDES_H__20260428_100219_953__)</span>
+<span class="cp">#endif </span><span class="c1">// !defined(__IDL_GENERATED__CONFIG_SERDES_H__20260703_131934_647__)</span>
 </pre></div>
 </div>
 </section>

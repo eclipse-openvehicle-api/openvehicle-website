@@ -850,8 +850,6 @@ module<span class="w"> </span>sdv
 <span class="w">            </span>EAppContext<span class="w"> </span>GetContextType()<span class="w"> </span>const;
 
 <span class="w">            </span>uint32<span class="w"> </span>GetInstanceID()<span class="w"> </span>const;
-
-<span class="w">            </span>uint32<span class="w"> </span>GetRetries()<span class="w"> </span>const;
 <span class="w">        </span>};
 
 <span class="w">        </span>local<span class="w"> </span>interface<span class="w"> </span>IAppControl
@@ -876,6 +874,34 @@ module<span class="w"> </span>sdv
 <span class="w">        </span>interface<span class="w"> </span>IAppShutdownRequest
 <span class="w">        </span>{
 <span class="w">            </span>void<span class="w"> </span>RequestShutdown()<span class="w"> </span>raises(XAccessDenied,<span class="w"> </span>XInvalidState);
+<span class="w">        </span>};
+
+<span class="w">        </span>interface<span class="w"> </span>IAppSettingsPersist
+<span class="w">        </span>{
+<span class="w">            </span>boolean<span class="w"> </span>LoadSettings();
+
+<span class="w">            </span>boolean<span class="w"> </span>SaveSettings();
+<span class="w">        </span>};
+
+<span class="w">        </span>interface<span class="w"> </span>IAppConnections
+<span class="w">        </span>{
+<span class="w">            </span>sequence<span class="o">&lt;</span>u8string<span class="o">&gt;</span><span class="w"> </span>GetListeners()<span class="w"> </span>const;
+
+<span class="w">            </span>u8string<span class="w"> </span>GetListenerConfig(in<span class="w"> </span>u8string<span class="w"> </span>ssName)<span class="w"> </span>const;
+
+<span class="w">            </span>boolean<span class="w"> </span>AddListenerConfig(in<span class="w"> </span>u8string<span class="w"> </span>ssName,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssConfig);
+
+<span class="w">            </span>boolean<span class="w"> </span>RemoveListenerConfig(in<span class="w"> </span>u8string<span class="w"> </span>ssName);
+
+<span class="w">            </span>sequence<span class="o">&lt;</span>u8string<span class="o">&gt;</span><span class="w"> </span>GetConnections()<span class="w"> </span>const;
+
+<span class="w">            </span>u8string<span class="w"> </span>GetConnectionConfig(in<span class="w"> </span>u8string<span class="w"> </span>ssName)<span class="w"> </span>const;
+
+<span class="w">            </span>boolean<span class="w"> </span>AddConnectionConfig(in<span class="w"> </span>u8string<span class="w"> </span>ssName,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssConfig,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssInsertBefore);
+
+<span class="w">            </span>boolean<span class="w"> </span>RemoveConnectionConfig(in<span class="w"> </span>u8string<span class="w"> </span>ssName);
+
+<span class="w">            </span>uint32<span class="w"> </span>GetConnectRetries()<span class="w"> </span>const;
 <span class="w">        </span>};
 
 <span class="w">    </span>};<span class="w"> </span><span class="o">//</span><span class="w"> </span>module<span class="w"> </span>app

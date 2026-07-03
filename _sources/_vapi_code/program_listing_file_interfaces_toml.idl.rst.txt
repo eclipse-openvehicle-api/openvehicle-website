@@ -77,7 +77,7 @@ Program Listing for File toml.idl
    
                u8string GetComment(in ECommentType eType);
    
-               void AutomaticFormat();
+               void AutomaticFormat(in boolean bRemoveComments);
    
                boolean IsInline() const;
    
@@ -114,24 +114,24 @@ Program Listing for File toml.idl
    
                boolean CanMakeStandard() const;
    
-               boolean MakeStandard();
+               boolean MakeStandard(in boolean bIncludeChildren);
+           };
+   
+           enum EInsertPreference
+           {
+               prefer_standard = 0, 
+               prefer_inline   = 1, 
            };
    
            interface INodeCollectionInsert
            {
-               IInterfaceAccess InsertValue(in uint32 uiIndex, in u8string ssName, in any anyValue);
+               IInterfaceAccess InsertValue(in u8string ssInsertBefore, in u8string ssName, in any anyValue);
    
-               IInterfaceAccess InsertArray(in uint32 uiIndex, in u8string ssName);
+               IInterfaceAccess InsertArray(in u8string ssInsertBefore, in u8string ssName);
    
-               enum EInsertPreference
-               {
-                   prefer_standard = 0,     
-                   prefer_inline = 1,       
-               };
+               IInterfaceAccess InsertTable(in u8string ssInsertBefore, in u8string ssName, in EInsertPreference ePreference);
    
-               IInterfaceAccess InsertTable(in uint32 uiIndex, in u8string ssName, in EInsertPreference ePreference);
-   
-               IInterfaceAccess InsertTableArray(in uint32 uiIndex, in u8string ssName, in EInsertPreference ePreference);
+               IInterfaceAccess InsertTableArray(in u8string ssInsertBefore, in u8string ssName, in EInsertPreference ePreference);
    
                enum EInsertResult : uint32
                {
@@ -140,7 +140,7 @@ Program Listing for File toml.idl
                    insert_success,         
                };
    
-               EInsertResult InsertTOML(in uint32 uiIndex, in u8string ssTOML, in boolean bRollbackOnFailure);
+               EInsertResult InsertTOML(in u8string ssInsertBefore, in u8string ssTOML, in boolean bRollbackOnFailure);
            };
    
            interface ITOMLParser

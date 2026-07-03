@@ -822,6 +822,7 @@
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;interfaces/process.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/interface_ptr.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;support/local_service_access.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;mutex&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;map&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;memory&gt;</span>
@@ -870,7 +871,7 @@
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">process</span><span class="o">::</span><span class="n">TProcessID</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="w">            </span><span class="n">m_mapProcessMonitors</span><span class="p">;</span>
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">condition_variable</span><span class="w">     </span><span class="n">m_cvTriggerConnectionDestruction</span><span class="p">;</span>
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">queue</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CConnection</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">m_queueScheduledConnectionDestructions</span><span class="p">;</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="w">                 </span><span class="n">m_threadScheduledConnectionDestructions</span><span class="p">;</span>
+<span class="w">    </span><span class="n">sdv</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">secure_thread</span><span class="w">    </span><span class="n">m_threadScheduledConnectionDestructions</span><span class="p">;</span>
 <span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="kt">atomic_bool</span><span class="w">            </span><span class="n">m_bShutdown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
 <span class="p">};</span>
 

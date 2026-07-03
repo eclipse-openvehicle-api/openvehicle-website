@@ -905,7 +905,31 @@
 <dd class="field-odd"><p><strong>rssPath</strong> – <strong>[in]</strong> Reference to the path of the node to searched for. </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Returns a shared pointer to the wanted Node if it was found or a node with invalid content if it was not found. </p>
+<dd class="field-even"><p>Returns a shared pointer to the wanted node if it was found or a node with invalid content if it was not found. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11toml_parser6CArray17SmartParentCreateERKNSt6stringEb">
+<span id="_CPPv3N11toml_parser6CArray17SmartParentCreateERKNSt6stringEb"></span><span id="_CPPv2N11toml_parser6CArray17SmartParentCreateERKNSt6stringEb"></span><span id="toml_parser::CArray::SmartParentCreate__ssCR.b"></span><span class="target" id="classtoml__parser_1_1_c_array_1a281a844e051c27edec3cf534c35f306c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classtoml__parser_1_1_c_node_collection.html#_CPPv4N11toml_parser15CNodeCollectionE" title="toml_parser::CNodeCollection"><span class="n"><span class="pre">CNodeCollection</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SmartParentCreate</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rssPath</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bInsertTableArray</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11toml_parser6CArray17SmartParentCreateERKNSt6stringEb" title="Link to this definition">#</a><br /></dt>
+<dd><p>Get or create the parent nodes automotatically from the path. Overload of <a class="reference internal" href="classtoml__parser_1_1_c_node_collection.html#classtoml__parser_1_1_c_node_collection_1af91c3739f94785f2085a75615fb323ed"><span class="std std-ref">CNodeCollection::SmartParentCreate</span></a>. </p>
+<p>Elements of tables can be accessed and traversed by using ‘.’ to separated the parent name from child name. E.g. ‘parent.child’ would access the ‘child’ element of the ‘parent’ table. Elements of arrays can be accessed and traversed by using the index number in brackets. E.g. ‘array[3]’ would access the fourth element of the array ‘array’. These access conventions can also be chained like ‘table.array[2][1].subtable.integerElement’. <dl class="simple">
+<dt><strong>Attention</strong></dt><dd><p>Array indexing starts with 0! </p>
+</dd>
+<dt><strong>Attention</strong></dt><dd><p>For an array, when no indexing or a too large index number is supplied, a new entry will be created and returned. </p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rssPath</strong> – <strong>[in]</strong> The path of the node to searched for. </p></li>
+<li><p><strong>bInsertTableArray</strong> – <strong>[in]</strong> Since a table array consists of an array and a table, this is different than the other insertions that only insert one element. Some special treatment is needed at certain points. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a pair with the shared pointer to the parent node and the leftover name. If the creation could not be done, a NULL pointer is returned. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -952,17 +976,6 @@
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK11toml_parser6CArray15CanMakeStandardEv">
-<span id="_CPPv3NK11toml_parser6CArray15CanMakeStandardEv"></span><span id="_CPPv2NK11toml_parser6CArray15CanMakeStandardEv"></span><span id="toml_parser::CArray::CanMakeStandardC"></span><span class="target" id="classtoml__parser_1_1_c_array_1a76e28e1f331808a024d02dd0c34736a7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CanMakeStandard</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11toml_parser6CArray15CanMakeStandardEv" title="Link to this definition">#</a><br /></dt>
-<dd><p>Can the node convert to a standard definition? Overload of <a class="reference internal" href="structsdv_1_1toml_1_1_i_node_collection_convert.html#structsdv_1_1toml_1_1_i_node_collection_convert_1a5e4cc825cd75535b5175d111769cfd4f"><span class="std std-ref">sdv::toml::INodeCollectionConvert::CanMakeStandard</span></a>. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Returns whether the conversion to standard is possible. Returns ‘true’ when the node is already defined as standard node. </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK11toml_parser6CArray6InlineEv">
 <span id="_CPPv3NK11toml_parser6CArray6InlineEv"></span><span id="_CPPv2NK11toml_parser6CArray6InlineEv"></span><span id="toml_parser::CArray::InlineC"></span><span class="target" id="classtoml__parser_1_1_c_array_1ae0b69960872110dcf7a4158700c361c5"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Inline</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11toml_parser6CArray6InlineEv" title="Link to this definition">#</a><br /></dt>
 <dd><p>The derived class from the node collection can be inline or not. Overload of <a class="reference internal" href="classtoml__parser_1_1_c_node.html#classtoml__parser_1_1_c_node_1aa9efb37280e81f62f0a3ace5c899e6d8"><span class="std std-ref">CNode::Inline</span></a>. </p>
@@ -974,8 +987,8 @@
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N11toml_parser6CArray6InlineEb">
-<span id="_CPPv3N11toml_parser6CArray6InlineEb"></span><span id="_CPPv2N11toml_parser6CArray6InlineEb"></span><span id="toml_parser::CArray::Inline__b"></span><span class="target" id="classtoml__parser_1_1_c_array_1a25bbe09e39f52333345881d129e41473"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Inline</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bInline</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11toml_parser6CArray6InlineEb" title="Link to this definition">#</a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N11toml_parser6CArray6InlineEbb">
+<span id="_CPPv3N11toml_parser6CArray6InlineEbb"></span><span id="_CPPv2N11toml_parser6CArray6InlineEbb"></span><span id="toml_parser::CArray::Inline__b.b"></span><span class="target" id="classtoml__parser_1_1_c_array_1ab215ac9b80db5715881d4fc9466c9d9b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Inline</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bInline</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">bIncludeChildren</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N11toml_parser6CArray6InlineEbb" title="Link to this definition">#</a><br /></dt>
 <dd><p>Allow switching between the inline array and a table array. Overload of <a class="reference internal" href="classtoml__parser_1_1_c_node.html#classtoml__parser_1_1_c_node_1aa9efb37280e81f62f0a3ace5c899e6d8"><span class="std std-ref">CNode::Inline</span></a>. </p>
 <p>Most array definitions are inline. An exception to the rule is a table array, which is allowed to be explicit as well. To switch from inline array to an explicit array, at least one member needs to be present and all members need to be tables. <div class="remark admonition">
 <p class="admonition-title">Remark</p>
@@ -988,10 +1001,24 @@
 </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>bInline</strong> – <strong>[in]</strong> When set, try to switch to inline. Otherwise try to switch to normal. </p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bInline</strong> – <strong>[in]</strong> When set, try to switch to inline. Otherwise try to switch to normal. </p></li>
+<li><p><strong>bIncludeChildren</strong> – <strong>[in]</strong> When set and bInline is not set, applicable child nodes are converted as well (only tables and table-arrays can be defined as standard). Making a node inline is always including the children. </p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Returns whether the switch was successful. A switch to the same type (normal to normal or inline to inline is always successful). When returning false, the switching might not be supported for this type. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK11toml_parser6CArray15CanMakeStandardEv">
+<span id="_CPPv3NK11toml_parser6CArray15CanMakeStandardEv"></span><span id="_CPPv2NK11toml_parser6CArray15CanMakeStandardEv"></span><span id="toml_parser::CArray::CanMakeStandardC"></span><span class="target" id="classtoml__parser_1_1_c_array_1a76e28e1f331808a024d02dd0c34736a7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CanMakeStandard</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK11toml_parser6CArray15CanMakeStandardEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Can the node convert to a standard definition? Overload of <a class="reference internal" href="structsdv_1_1toml_1_1_i_node_collection_convert.html#structsdv_1_1toml_1_1_i_node_collection_convert_1a5e4cc825cd75535b5175d111769cfd4f"><span class="std std-ref">sdv::toml::INodeCollectionConvert::CanMakeStandard</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether the conversion to standard is possible. Returns ‘true’ when the node is already defined as standard node. </p>
 </dd>
 </dl>
 </dd></dl>

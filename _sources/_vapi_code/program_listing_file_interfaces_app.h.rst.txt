@@ -11,8 +11,8 @@ Program Listing for File app.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__APP_H__20260428_100219_881__
-   #define __IDL_GENERATED__APP_H__20260428_100219_881__
+   #ifndef __IDL_GENERATED__APP_H__20260703_131934_628__
+   #define __IDL_GENERATED__APP_H__20260703_131934_628__
    
    #ifdef _MSC_VER
    // Prevent bogus warnings about uninitialized members during static code analysis.
@@ -87,13 +87,11 @@ Program Listing for File app.h
    
            /*local*/ interface IAppContext
            {
-               static constexpr ::sdv::interface_id _id = 0x7D6C84691A3CCB78;
+               static constexpr ::sdv::interface_id _id = 0xEA96ABD32AA9E41C;
    
                virtual EAppContext GetContextType() const = 0;
    
                virtual uint32_t GetInstanceID() const = 0;
-   
-               virtual uint32_t GetRetries() const = 0;
            };
    
            /*local*/ interface IAppControl
@@ -124,6 +122,38 @@ Program Listing for File app.h
    
                virtual void RequestShutdown() = 0;
            };
+   
+           interface IAppSettingsPersist
+           {
+               static constexpr ::sdv::interface_id _id = 0x7644A487A55302E8;
+   
+               virtual bool LoadSettings() = 0;
+   
+               virtual bool SaveSettings() = 0;
+           };
+   
+           interface IAppConnections
+           {
+               static constexpr ::sdv::interface_id _id = 0x275EE38B82B70F14;
+   
+               virtual sdv::sequence<sdv::u8string> GetListeners() const = 0;
+   
+               virtual sdv::u8string GetListenerConfig(/*in*/ const sdv::u8string& ssName) const = 0;
+   
+               virtual bool AddListenerConfig(/*in*/ const sdv::u8string& ssName, /*in*/ const sdv::u8string& ssConfig) = 0;
+   
+               virtual bool RemoveListenerConfig(/*in*/ const sdv::u8string& ssName) = 0;
+   
+               virtual sdv::sequence<sdv::u8string> GetConnections() const = 0;
+   
+               virtual sdv::u8string GetConnectionConfig(/*in*/ const sdv::u8string& ssName) const = 0;
+   
+               virtual bool AddConnectionConfig(/*in*/ const sdv::u8string& ssName, /*in*/ const sdv::u8string& ssConfig, /*in*/ const sdv::u8string& ssInsertBefore) = 0;
+   
+               virtual bool RemoveConnectionConfig(/*in*/ const sdv::u8string& ssName) = 0;
+   
+               virtual uint32_t GetConnectRetries() const = 0;
+           };
        }
    }
    
@@ -131,4 +161,4 @@ Program Listing for File app.h
    #pragma warning(pop)
    #endif
    
-   #endif // !defined(__IDL_GENERATED__APP_H__20260428_100219_884__)
+   #endif // !defined(__IDL_GENERATED__APP_H__20260703_131934_630__)

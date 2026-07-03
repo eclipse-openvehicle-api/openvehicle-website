@@ -76,7 +76,9 @@ Program Listing for File process_control.h
    
        virtual bool Terminate(/*in*/ sdv::process::TProcessID tProcessID) override;
    
-     private:
+       void EnableProcessControlAccessBypass();
+     
+   private:
        void MonitorThread();
    
        struct SProcessHelper
@@ -103,12 +105,13 @@ Program Listing for File process_control.h
    #else
        #error OS is not supported!
    #endif
-       mutable std::mutex            m_mtxProcesses;               
+       mutable std::mutex          m_mtxProcesses;             
        std::map<sdv::process::TProcessID, std::shared_ptr<SProcessHelper>> m_mapProcesses;   
-       uint32_t                      m_uiNextMonCookie = 1;        
+       uint32_t                    m_uiNextMonCookie = 1;      
        std::map<uint32_t, std::shared_ptr<SProcessHelper>> m_mapMonitors; 
-       std::atomic_bool              m_bShutdown = false;          
-       std::thread                   m_threadMonitor;              
+       std::atomic_bool            m_bShutdown = false;        
+       sdv::core::secure_thread    m_threadMonitor;            
+       bool                        m_bEnableBypass = false;    
    };
    DEFINE_SDV_OBJECT(CProcessControl)
    

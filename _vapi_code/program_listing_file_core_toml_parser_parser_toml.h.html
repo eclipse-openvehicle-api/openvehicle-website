@@ -806,17 +806,24 @@
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;lexer_toml.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;parser_node_toml.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;miscellaneous.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;parser_node_indexer.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stack&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;memory&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
 
 <span class="k">namespace</span><span class="w"> </span><span class="nn">toml_parser</span>
 <span class="p">{</span>
+<span class="w">    </span><span class="c1">// Forward declarations</span>
 <span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CNode</span><span class="p">;</span>
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CNodeCollection</span><span class="p">;</span>
 
 <span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CParser</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">IInterfaceAccess</span><span class="p">,</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">toml</span><span class="o">::</span><span class="n">ITOMLParser</span>
 <span class="w">    </span><span class="p">{</span>
 <span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="c1">// Forward declaration</span>
+<span class="w">        </span><span class="k">class</span><span class="w"> </span><span class="nc">CLockRebuild</span><span class="p">;</span>
+<span class="w">        </span><span class="k">friend</span><span class="w"> </span><span class="n">CLockRebuild</span><span class="p">;</span>
+
 <span class="w">        </span><span class="n">CParser</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssString</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">());</span>
 
 <span class="w">        </span><span class="c1">// Interface map</span>
@@ -833,12 +840,39 @@
 
 <span class="w">        </span><span class="n">CLexer</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Lexer</span><span class="p">();</span>
 
+<span class="w">        </span><span class="n">CNodeIndexer</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Indexer</span><span class="p">();</span>
+
 <span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">CNodeCollection</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Root</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 <span class="w">        </span><span class="n">CNodeCollection</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">Root</span><span class="p">();</span>
 <span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">GenerateTOML</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssPrefixKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">())</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 
+<span class="w">        </span><span class="k">class</span><span class="w"> </span><span class="nc">CLockRebuild</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">friend</span><span class="w"> </span><span class="n">CParser</span><span class="p">;</span>
+
+<span class="w">            </span><span class="n">CLockRebuild</span><span class="p">(</span><span class="n">CParser</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rParser</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">public</span><span class="o">:</span>
+<span class="w">            </span><span class="n">CLockRebuild</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">CLockRebuild</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rLockRebuild</span><span class="p">);</span>
+
+<span class="w">            </span><span class="n">CLockRebuild</span><span class="p">(</span><span class="n">CLockRebuild</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">rLockRebuild</span><span class="p">);</span>
+
+<span class="w">            </span><span class="o">~</span><span class="n">CLockRebuild</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">private</span><span class="o">:</span>
+<span class="w">            </span><span class="n">CParser</span><span class="o">&amp;</span><span class="w">    </span><span class="n">m_rParser</span><span class="p">;</span>
+<span class="w">        </span><span class="p">};</span>
+
+<span class="w">        </span><span class="n">CLockRebuild</span><span class="w"> </span><span class="nf">CreateRebuildLockObject</span><span class="p">();</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="nf">RebuildLocked</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
 <span class="w">    </span><span class="k">private</span><span class="o">:</span>
-<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">ProcessTable</span><span class="p">(</span><span class="n">CNodeTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rNodeRange</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">IncrRebuildLockCnt</span><span class="p">();</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">DecrRebuildLockCnt</span><span class="p">();</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessTable</span><span class="p">(</span><span class="n">CNodeTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rNodeRange</span><span class="p">);</span>
 
 <span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">ProcessTableArray</span><span class="p">(</span><span class="n">CNodeTokenRange</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rNodeRange</span><span class="p">);</span>
 
@@ -859,10 +893,12 @@
 <span class="w">            </span><span class="n">inline_table</span>
 <span class="w">        </span><span class="p">};</span>
 
-<span class="w">        </span><span class="n">enum_stack</span><span class="o">&lt;</span><span class="n">EEnvironment</span><span class="p">,</span><span class="w"> </span><span class="n">EEnvironment</span><span class="o">::</span><span class="n">none</span><span class="o">&gt;</span><span class="w">    </span><span class="n">m_stackEnvironment</span><span class="p">;</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CRootTable</span><span class="o">&gt;</span><span class="w">                     </span><span class="n">m_ptrRoot</span><span class="p">;</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CNodeCollection</span><span class="o">&gt;</span><span class="w">                </span><span class="n">m_ptrCurrentCollection</span><span class="p">;</span>
-<span class="w">        </span><span class="n">CLexer</span><span class="w">                                          </span><span class="n">m_lexer</span><span class="p">;</span>
+<span class="w">        </span><span class="n">enum_stack</span><span class="o">&lt;</span><span class="n">EEnvironment</span><span class="p">,</span><span class="w"> </span><span class="n">EEnvironment</span><span class="o">::</span><span class="n">none</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_stackEnvironment</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CRootTable</span><span class="o">&gt;</span><span class="w">             </span><span class="n">m_ptrRoot</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CNodeCollection</span><span class="o">&gt;</span><span class="w">        </span><span class="n">m_ptrCurrentCollection</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CLexer</span><span class="w">                                  </span><span class="n">m_lexer</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CNodeIndexer</span><span class="w">                            </span><span class="n">m_indexer</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w">                                  </span><span class="n">m_nRebuildLockCnt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="w">    </span><span class="p">};</span>
 <span class="p">}</span><span class="w"> </span><span class="c1">// namespace toml_parser</span>
 

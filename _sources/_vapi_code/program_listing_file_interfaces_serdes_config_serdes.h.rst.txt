@@ -11,8 +11,8 @@ Program Listing for File config_serdes.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__CONFIG_SERDES_H__20260428_100219_948__
-   #define __IDL_GENERATED__CONFIG_SERDES_H__20260428_100219_948__
+   #ifndef __IDL_GENERATED__CONFIG_SERDES_H__20260703_131934_640__
+   #define __IDL_GENERATED__CONFIG_SERDES_H__20260703_131934_640__
    
    // Includes...
    #include <cstdint>
@@ -844,6 +844,38 @@ Program Listing for File config_serdes.h
        };
    
        template <>
+       class CSerdes<sdv::installation::XPackageSizeExceeded>
+       {
+       public:
+           static void CalcSize(const sdv::installation::XPackageSizeExceeded& rVar, size_t& rnSize)
+           {
+   
+               // Calculating the size of XPackageSizeExceeded
+               sdv::ser_size(rVar.ssFileName, rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, const sdv::installation::XPackageSizeExceeded& rVar)
+           {
+               rSerializer << sdv::GetExceptionId<sdv::installation::XPackageSizeExceeded>();
+               // Serializing members of XPackageSizeExceeded
+               rSerializer << rVar.ssFileName;
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::installation::XPackageSizeExceeded& rVar)
+           {
+               sdv::exception_id idLocal = 0ull;
+               rDeserializer >> idLocal;
+               if (idLocal != sdv::GetExceptionId<sdv::installation::XPackageSizeExceeded>()) throw sdv::ps::XMarshallIntegrity{};
+               // Deserializing members of XPackageSizeExceeded
+               rDeserializer >> rVar.ssFileName;
+               return rDeserializer;
+           }
+       };
+   
+       template <>
        class CSerdes<sdv::installation::XModuleNotFound>
        {
        public:
@@ -1188,4 +1220,4 @@ Program Listing for File config_serdes.h
        };
    } // serdes namespace
    
-   #endif // !defined(__IDL_GENERATED__CONFIG_SERDES_H__20260428_100219_953__)
+   #endif // !defined(__IDL_GENERATED__CONFIG_SERDES_H__20260703_131934_647__)

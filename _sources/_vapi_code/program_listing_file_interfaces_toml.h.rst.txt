@@ -11,8 +11,8 @@ Program Listing for File toml.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__TOML_H__20260428_100219_881__
-   #define __IDL_GENERATED__TOML_H__20260428_100219_881__
+   #ifndef __IDL_GENERATED__TOML_H__20260703_131934_514__
+   #define __IDL_GENERATED__TOML_H__20260703_131934_514__
    
    #ifdef _MSC_VER
    // Prevent bogus warnings about uninitialized members during static code analysis.
@@ -67,7 +67,7 @@ Program Listing for File toml.h
    
            interface INodeInfo
            {
-               static constexpr ::sdv::interface_id _id = 0xED30713D1895D2EE;
+               static constexpr ::sdv::interface_id _id = 0x0E3C6964D18F7C5D;
    
                virtual sdv::u8string GetName() const = 0;
    
@@ -98,7 +98,7 @@ Program Listing for File toml.h
    
                virtual sdv::u8string GetComment(/*in*/ ECommentType eType) = 0;
    
-               virtual void AutomaticFormat() = 0;
+               virtual void AutomaticFormat(/*in*/ bool bRemoveComments) = 0;
    
                virtual bool IsInline() const = 0;
    
@@ -133,7 +133,7 @@ Program Listing for File toml.h
    
            interface INodeCollectionConvert
            {
-               static constexpr ::sdv::interface_id _id = 0x492F400222DEE199;
+               static constexpr ::sdv::interface_id _id = 0xADDB5053D9126C73;
    
                virtual bool CanMakeInline() const = 0;
    
@@ -141,27 +141,27 @@ Program Listing for File toml.h
    
                virtual bool CanMakeStandard() const = 0;
    
-               virtual bool MakeStandard() = 0;
+               virtual bool MakeStandard(/*in*/ bool bIncludeChildren) = 0;
+           };
+   
+           enum class EInsertPreference : int32_t
+           {
+               prefer_standard = 0,
+   
+               prefer_inline = 1,
            };
    
            interface INodeCollectionInsert
            {
-               static constexpr ::sdv::interface_id _id = 0x3733FA1F6841BE96;
+               static constexpr ::sdv::interface_id _id = 0xE642AE5A724392CD;
    
-               virtual IInterfaceAccess* InsertValue(/*in*/ uint32_t uiIndex, /*in*/ const sdv::u8string& ssName, /*in*/ sdv::any_t anyValue) = 0;
+               virtual IInterfaceAccess* InsertValue(/*in*/ const sdv::u8string& ssInsertBefore, /*in*/ const sdv::u8string& ssName, /*in*/ sdv::any_t anyValue) = 0;
    
-               virtual IInterfaceAccess* InsertArray(/*in*/ uint32_t uiIndex, /*in*/ const sdv::u8string& ssName) = 0;
+               virtual IInterfaceAccess* InsertArray(/*in*/ const sdv::u8string& ssInsertBefore, /*in*/ const sdv::u8string& ssName) = 0;
    
-               enum class EInsertPreference : int32_t
-               {
-                   prefer_standard = 0,
+               virtual IInterfaceAccess* InsertTable(/*in*/ const sdv::u8string& ssInsertBefore, /*in*/ const sdv::u8string& ssName, /*in*/ EInsertPreference ePreference) = 0;
    
-                   prefer_inline = 1,
-               };
-   
-               virtual IInterfaceAccess* InsertTable(/*in*/ uint32_t uiIndex, /*in*/ const sdv::u8string& ssName, /*in*/ EInsertPreference ePreference) = 0;
-   
-               virtual IInterfaceAccess* InsertTableArray(/*in*/ uint32_t uiIndex, /*in*/ const sdv::u8string& ssName, /*in*/ EInsertPreference ePreference) = 0;
+               virtual IInterfaceAccess* InsertTableArray(/*in*/ const sdv::u8string& ssInsertBefore, /*in*/ const sdv::u8string& ssName, /*in*/ EInsertPreference ePreference) = 0;
    
                enum class EInsertResult : uint32_t
                {
@@ -172,7 +172,7 @@ Program Listing for File toml.h
                    insert_success,
                };
    
-               virtual EInsertResult InsertTOML(/*in*/ uint32_t uiIndex, /*in*/ const sdv::u8string& ssTOML, /*in*/ bool bRollbackOnFailure) = 0;
+               virtual EInsertResult InsertTOML(/*in*/ const sdv::u8string& ssInsertBefore, /*in*/ const sdv::u8string& ssTOML, /*in*/ bool bRollbackOnFailure) = 0;
            };
    
            interface ITOMLParser
@@ -188,4 +188,4 @@ Program Listing for File toml.h
    #pragma warning(pop)
    #endif
    
-   #endif // !defined(__IDL_GENERATED__TOML_H__20260428_100219_883__)
+   #endif // !defined(__IDL_GENERATED__TOML_H__20260703_131934_519__)

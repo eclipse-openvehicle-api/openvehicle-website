@@ -11,8 +11,8 @@ Program Listing for File repository_serdes.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__REPOSITORY_SERDES_H__20260428_100224_174__
-   #define __IDL_GENERATED__REPOSITORY_SERDES_H__20260428_100224_174__
+   #ifndef __IDL_GENERATED__REPOSITORY_SERDES_H__20260703_131938_252__
+   #define __IDL_GENERATED__REPOSITORY_SERDES_H__20260703_131938_252__
    
    // Includes...
    #include <cstdint>
@@ -367,6 +367,59 @@ Program Listing for File repository_serdes.h
        };
    
        template <>
+       class CSerdes<sdv::core::IObjectDependency*>
+       {
+       public:
+           static void CalcSize([[maybe_unused]] sdv::core::IObjectDependency* pInterface, size_t& rnSize)
+           {
+               sdv::ser_size(sdv::interface_id(), rnSize);
+               sdv::ser_size(sdv::ps::TMarshallID(), rnSize);
+           }
+   
+           template <sdv::EEndian eTargetEndianess, typename TCRC>
+           static sdv::serializer<eTargetEndianess, TCRC>& Serialize(sdv::serializer<eTargetEndianess, TCRC>& rSerializer, sdv::core::IObjectDependency* pInterface)
+           {
+               // Get interface to the component isolation service.
+               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
+               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
+               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
+               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
+   
+               // Serialize the interface ID first
+               rSerializer << sdv::GetInterfaceId<sdv::core::IObjectDependency>();
+   
+               // Create and serialize a stub object for the interface.
+               sdv::ps::TMarshallID tStubID = pMarshallAccess->GetStub(pInterface);
+               rSerializer << tStubID;
+   
+               return rSerializer;
+           }
+   
+           template <sdv::EEndian eSourceEndianess, typename TCRC>
+           static sdv::deserializer<eSourceEndianess, TCRC>& Deserialize(sdv::deserializer<eSourceEndianess, TCRC>& rDeserializer, sdv::core::IObjectDependency*& rpInterface)
+           {
+               // Get interface to the component isolation service.
+               auto ptrComControl = sdv::core::GetObject("CommunicationControl");
+               if (!ptrComControl) throw sdv::ps::XMarshallNotInitialized{};
+               sdv::ps::IMarshallAccess* pMarshallAccess = ptrComControl.GetInterface<sdv::ps::IMarshallAccess>();
+               if (!pMarshallAccess) throw sdv::ps::XMarshallNotInitialized{};
+   
+               // Get the interface ID
+               sdv::interface_id id = 0;
+               rDeserializer >> id;
+   
+               // Get the stub ID
+               sdv::ps::TMarshallID tStubID{};
+               rDeserializer >> tStubID;
+   
+               // Create the proxy
+               rpInterface = pMarshallAccess->GetProxy(tStubID, id).get<sdv::core::IObjectDependency>();
+   
+               return rDeserializer;
+           }
+       };
+   
+       template <>
        class CSerdes<sdv::core::ILinkCoreRepository*>
        {
        public:
@@ -420,4 +473,4 @@ Program Listing for File repository_serdes.h
        };
    } // serdes namespace
    
-   #endif // !defined(__IDL_GENERATED__REPOSITORY_SERDES_H__20260428_100224_176__)
+   #endif // !defined(__IDL_GENERATED__REPOSITORY_SERDES_H__20260703_131938_254__)

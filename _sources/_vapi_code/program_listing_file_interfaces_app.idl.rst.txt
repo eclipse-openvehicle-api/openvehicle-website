@@ -74,8 +74,6 @@ Program Listing for File app.idl
                EAppContext GetContextType() const;
    
                uint32 GetInstanceID() const;
-   
-               uint32 GetRetries() const;
            };
    
            local interface IAppControl
@@ -100,6 +98,34 @@ Program Listing for File app.idl
            interface IAppShutdownRequest
            {
                void RequestShutdown() raises(XAccessDenied, XInvalidState);
+           };
+   
+           interface IAppSettingsPersist
+           {
+               boolean LoadSettings();
+   
+               boolean SaveSettings();
+           };
+   
+           interface IAppConnections
+           {
+               sequence<u8string> GetListeners() const;
+   
+               u8string GetListenerConfig(in u8string ssName) const;
+   
+               boolean AddListenerConfig(in u8string ssName, in u8string ssConfig);
+   
+               boolean RemoveListenerConfig(in u8string ssName);
+   
+               sequence<u8string> GetConnections() const;
+   
+               u8string GetConnectionConfig(in u8string ssName) const;
+           
+               boolean AddConnectionConfig(in u8string ssName, in u8string ssConfig, in u8string ssInsertBefore);
+   
+               boolean RemoveConnectionConfig(in u8string ssName);
+   
+               uint32 GetConnectRetries() const;
            };
    
        }; // module app

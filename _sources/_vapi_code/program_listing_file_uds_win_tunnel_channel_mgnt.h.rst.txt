@@ -28,18 +28,15 @@ Program Listing for File channel_mgnt.h
    
    #include <support/component_impl.h>
    #include <interfaces/ipc.h>
-   #include "../sdv_services/uds_win_sockets/channel_mgnt.h"              
-   #include "../sdv_services/uds_win_sockets/connection.h"
    #include "connection.h"   
+   #include "watchdog.h"
    
-   #include <mutex>
+   #include <algorithm>
    #include <map>
-   #include <memory>
-   #include <set>
+   #include <mutex>
    #include <string>
    
    // Winsock headers are required for SOCKET / AF_UNIX / WSAStartup
-   // NOTE: The actual initialization is done via StartUpWinSock()
    #include <ws2tcpip.h>
    
    class CWinTunnelConnection;
@@ -57,8 +54,8 @@ Program Listing for File channel_mgnt.h
    
        DECLARE_OBJECT_CLASS_TYPE(sdv::EObjectType::system_object)
        DECLARE_OBJECT_CLASS_NAME("WinTunnelChannelControl")
-       DECLARE_OBJECT_CLASS_ALIAS("LocalChannelControl")
-       DECLARE_DEFAULT_OBJECT_NAME("LocalChannelControl")
+       DECLARE_OBJECT_CLASS_ALIAS("unix_domain_sockets_tunnel")
+       DECLARE_DEFAULT_OBJECT_NAME("unix_domain_sockets_tunnel")
        DECLARE_OBJECT_SINGLETON()
    
        virtual ~CSocketsTunnelChannelMgnt() = default;
@@ -67,16 +64,16 @@ Program Listing for File channel_mgnt.h
    
        virtual void OnShutdown() override;
    
+       virtual void OnDestroy() override;
+   
        sdv::ipc::SChannelEndpoint CreateEndpoint(const sdv::u8string& cfgStr) override;
    
        sdv::IInterfaceAccess* Access(const sdv::u8string& cs) override;
    
-       void OnServerClosed(const std::string& udsPath, CWinTunnelConnection* ptr);
-   
    private:
-       std::mutex m_udsMtx;
-       std::map<std::string, std::shared_ptr<CWinTunnelConnection>> m_udsServers;
-       std::set<std::string> m_udsServerClaimed;
+       CWinTunnelConnectionWatchDog m_watchdog;
+       std::map<const void*, std::shared_ptr<CWinTunnelConnection>> m_ptrConnections;  
+       mutable std::mutex m_ConnectionsMutex;  
    };
    
    DEFINE_SDV_OBJECT(CSocketsTunnelChannelMgnt)

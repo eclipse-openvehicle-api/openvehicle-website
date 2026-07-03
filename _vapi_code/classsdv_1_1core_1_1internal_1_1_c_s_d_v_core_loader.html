@@ -80,7 +80,7 @@
     <script src="../_static/js/sidebar-toggle.js?v=60adb31f"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Template Class crc" href="classsdv_1_1crc.html" />
+    <link rel="next" title="Class secure_thread" href="classsdv_1_1core_1_1secure__thread.html" />
     <link rel="prev" title="Class CMemMgr" href="classsdv_1_1core_1_1internal_1_1_c_mem_mgr.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -802,6 +802,29 @@
 <dt class="sig sig-object cpp" id="_CPPv4N3sdv4core8internal14CSDVCoreLoaderE">
 <span id="_CPPv3N3sdv4core8internal14CSDVCoreLoaderE"></span><span id="_CPPv2N3sdv4core8internal14CSDVCoreLoaderE"></span><span id="sdv::core::internal::CSDVCoreLoader"></span><span class="target" id="classsdv_1_1core_1_1internal_1_1_c_s_d_v_core_loader"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CSDVCoreLoader</span></span></span><a class="headerlink" href="#_CPPv4N3sdv4core8internal14CSDVCoreLoaderE" title="Link to this definition">#</a><br /></dt>
 <dd><p>The SDV core loader. </p>
+<p>The SDV core loader class searches for the core library and does the first startup. The core library uses the following environment variables to identify its location:<ul class="simple">
+<li><p>SDV_FRAMEWORK_RUNTIME directs to the Vehicle API core location.</p></li>
+<li><p>SDV_COMPONENT_INSTALL directs to the location of the component installations.</p></li>
+<li><p>SDV_FRAMEWORK_DEV_TOOLS directs to the location of the development tools used during the build process of SDV components.</p></li>
+<li><p>SDV_FRAMEWORK_DEV_INCLUDE directs to the header file location to allow building components for use with the Vehicle API framework.</p></li>
+</ul>
+</p>
+<p>The SDV core loader supports different core stacks to coexist. For this there is a location procedure for the core systems:<ol class="loweralpha simple">
+<li><p>Check for a “sdv_core_reloc.toml” file that contain one or more paths to the core system. The paths defined in the file override the global environment variables for this application and all child applications.</p></li>
+<li><p>Check for the environment variables. If the SDV_FRAMEWORK_RUNTIM variable is set, it is used to extract all other variables as well, if not set.</p></li>
+<li><p>If no variable is set, use the location of the EXE as core location. This might work in some situations if the path variable has been set properly.</p></li>
+</ol>
+</p>
+<p>If none of the above strategies work, the core cannot be loaded.</p>
+<p>The “sdv_core_reloc.toml” file has the following format: <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">CoreLocation</span><span class="p">]</span>
+<span class="n">Version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="w">                                    </span><span class="err">#</span><span class="w"> </span><span class="n">Version</span><span class="p">;</span><span class="w"> </span><span class="n">currently</span><span class="w"> </span><span class="n">supported</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="mf">1.0</span>
+<span class="n">Runtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&lt;core runtime directory&gt;&quot;</span>
+<span class="n">Install</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&lt;component install directory&gt;&quot;</span><span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="n">Typically</span><span class="w"> </span><span class="n">identical</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">runtime</span><span class="w"> </span><span class="n">directory</span>
+<span class="n">DevTools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&lt;development tools directory&gt;&quot;</span><span class="w">      </span><span class="err">#</span><span class="w"> </span><span class="n">Typically</span><span class="w"> </span><span class="n">identical</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">runtime</span><span class="w"> </span><span class="n">directory</span>
+<span class="n">Include</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&lt;include directory&gt;&quot;</span><span class="w">                  </span><span class="err">#</span><span class="w"> </span><span class="n">Typically</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">include</span><span class="w"> </span><span class="n">subdirectory</span>
+</pre></div>
+</div>
+</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -834,6 +857,53 @@
 <dd><p>Return the core interface. </p>
 </dd></dl>
 
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3sdv4core8internal14CSDVCoreLoader14GetCoreLibPathEv">
+<span id="_CPPv3NK3sdv4core8internal14CSDVCoreLoader14GetCoreLibPathEv"></span><span id="_CPPv2NK3sdv4core8internal14CSDVCoreLoader14GetCoreLibPathEv"></span><span id="sdv::core::internal::CSDVCoreLoader::GetCoreLibPathC"></span><span class="target" id="classsdv_1_1core_1_1internal_1_1_c_s_d_v_core_loader_1a14d9c552d90d80ce459bc4d2f98721c6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetCoreLibPath</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3sdv4core8internal14CSDVCoreLoader14GetCoreLibPathEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Get the path to the core library. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a reference to the path to the core library. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3sdv4core8internal14CSDVCoreLoader9HasLoadedEv">
+<span id="_CPPv3NK3sdv4core8internal14CSDVCoreLoader9HasLoadedEv"></span><span id="_CPPv2NK3sdv4core8internal14CSDVCoreLoader9HasLoadedEv"></span><span id="sdv::core::internal::CSDVCoreLoader::HasLoadedC"></span><span class="target" id="classsdv_1_1core_1_1internal_1_1_c_s_d_v_core_loader_1a4397c755e83608b5304f7f3a954b4117"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HasLoaded</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3sdv4core8internal14CSDVCoreLoader9HasLoadedEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Has loaded successfully? </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns whether loading was successful. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3sdv4core8internal14CSDVCoreLoader11GetErrorMsgEv">
+<span id="_CPPv3NK3sdv4core8internal14CSDVCoreLoader11GetErrorMsgEv"></span><span id="_CPPv2NK3sdv4core8internal14CSDVCoreLoader11GetErrorMsgEv"></span><span id="sdv::core::internal::CSDVCoreLoader::GetErrorMsgC"></span><span class="target" id="classsdv_1_1core_1_1internal_1_1_c_s_d_v_core_loader_1a1fbaeae0dd167272ddc497c55a19dcbd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">GetErrorMsg</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3sdv4core8internal14CSDVCoreLoader11GetErrorMsgEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Get the error message if loading was unsuccessful. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the a reference to the string containing the error message or an empty string if not available. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3sdv4core8internal14CSDVCoreLoader16GetExecDirectoryEv">
+<span id="_CPPv3N3sdv4core8internal14CSDVCoreLoader16GetExecDirectoryEv"></span><span id="_CPPv2N3sdv4core8internal14CSDVCoreLoader16GetExecDirectoryEv"></span><span id="sdv::core::internal::CSDVCoreLoader::GetExecDirectory"></span><span class="target" id="classsdv_1_1core_1_1internal_1_1_c_s_d_v_core_loader_1a392d8cd4c6cb4b8949bef9a3ceadee4f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">filesystem</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GetExecDirectory</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3sdv4core8internal14CSDVCoreLoader16GetExecDirectoryEv" title="Link to this definition">#</a><br /></dt>
+<dd><p>Get the directory of the executable. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path to the directory. </p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </dd></dl>
 
@@ -860,11 +930,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="classsdv_1_1crc.html"
+       href="classsdv_1_1core_1_1secure__thread.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Template Class crc</p>
+        <p class="prev-next-title">Class secure_thread</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

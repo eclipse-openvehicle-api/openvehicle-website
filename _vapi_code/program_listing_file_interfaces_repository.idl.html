@@ -807,8 +807,6 @@ module<span class="w"> </span>sdv
 <span class="w">    </span>module<span class="w"> </span>core
 <span class="w">    </span>{
 
-<span class="w">        </span>typedef<span class="w"> </span>uint64<span class="w"> </span>TObjectID;
-
 <span class="w">        </span>interface<span class="w"> </span>IObjectAccess
 <span class="w">        </span>{
 <span class="w">            </span>IInterfaceAccess<span class="w"> </span>GetObject(in<span class="w"> </span>u8string<span class="w"> </span>ssObjectName);
@@ -873,11 +871,20 @@ module<span class="w"> </span>sdv
 <span class="w">            </span>TObjectID<span class="w"> </span>RegisterObject(in<span class="w"> </span>IInterfaceAccess<span class="w"> </span>pObjectIfc,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssObjectName);
 <span class="w">        </span>};
 
+<span class="w">        </span>interface<span class="w"> </span>IObjectDependency
+<span class="w">        </span>{
+<span class="w">            </span>void<span class="w"> </span>AddObjectDependency(in<span class="w"> </span>u8string<span class="w"> </span>ssObjectName,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssDependsOnObject);
+
+<span class="w">            </span>void<span class="w"> </span>RemoveObjectDependency(in<span class="w"> </span>u8string<span class="w"> </span>ssObjectName,<span class="w"> </span>in<span class="w"> </span>u8string<span class="w"> </span>ssDependsOnObject);
+<span class="w">        </span>};
+
+<span class="w">        </span>typedef<span class="w"> </span>uint64<span class="w"> </span>TLinkID;
+
 <span class="w">        </span>interface<span class="w"> </span>ILinkCoreRepository
 <span class="w">        </span>{
-<span class="w">            </span>void<span class="w"> </span>LinkCoreRepository(in<span class="w"> </span>IInterfaceAccess<span class="w"> </span>pCoreRepository);
+<span class="w">            </span>TLinkID<span class="w"> </span>LinkCoreRepository(in<span class="w"> </span>IInterfaceAccess<span class="w"> </span>pCoreRepository);
 
-<span class="w">            </span>void<span class="w"> </span>UnlinkCoreRepository();
+<span class="w">            </span>void<span class="w"> </span>UnlinkCoreRepository(in<span class="w"> </span>TLinkID<span class="w"> </span>tLinkID);
 <span class="w">        </span>};
 
 <span class="w">    </span>};<span class="w"> </span><span class="o">//</span><span class="w"> </span>module<span class="w"> </span>core

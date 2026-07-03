@@ -98,7 +98,8 @@ Program Listing for File com_channel.h
        sdv::ipc::IDataSend*                m_pDataSend = nullptr;          
        std::mutex                          m_mtxCalls;                     
        std::map<uint64_t, SCallEntry&>     m_mapCalls;                     
-       CTaskScheduler                      m_scheduler;                    
+       CTaskScheduler<sdv::core::secure_thread> m_scheduler;               
+       sdv::core::IPermissionControl*      m_pPermissionControl = nullptr; 
    };
    
    #endif // !defined COM_CHANNEL_H

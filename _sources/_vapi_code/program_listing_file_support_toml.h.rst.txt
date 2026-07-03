@@ -23,12 +23,14 @@ Program Listing for File toml.h
     *   Erik Verhoeven - initial API and implementation
     ********************************************************************************/
    
-   #ifndef SDV_CONFIG_H
-   #define SDV_CONFIG_H
+   #ifndef SDV_TOML_H
+   #define SDV_TOML_H
    
+   #include <charconv>
    #include "../interfaces/toml.h"
    #include "interface_ptr.h"
    #include "local_service_access.h"
+   #include "interface_ptr.h"
    
    namespace sdv::toml
    {
@@ -53,6 +55,10 @@ Program Listing for File toml.h
    
            ENodeType GetType() const;
    
+           uint32_t GetIndex() const;
+   
+           bool IsInline() const;
+   
            std::string GetComment() const;
    
            void SetComment(const std::string& rssComment);
@@ -68,6 +74,8 @@ Program Listing for File toml.h
            bool Delete();
    
            virtual void Clear();
+   
+           void AutomaticFormat(bool bRemoveComments);
    
            sdv::u8string GetTOML() const;
    
@@ -103,23 +111,25 @@ Program Listing for File toml.h
    
            CNode GetDirect(const sdv::u8string& rssNode) const;
    
-           CNode InsertValue(size_t nIndex, const std::string& rssName, const sdv::any_t& ranyValue);
+           std::string GetNodeNameByIndex(size_t nIndex) const;
+   
+           CNode InsertValue(const std::string& rssInsertBefore, const std::string& rssName, const sdv::any_t& ranyValue);
    
            CNode AddValue(const std::string& rssName, const sdv::any_t& ranyValue);
    
-           CNodeCollection InsertArray(size_t nIndex, const std::string& rssName);
+           CNodeCollection InsertArray(const std::string& rssInsertBefore, const std::string& rssName);
    
            CNodeCollection AddArray(const std::string& rssName);
    
-           CNodeCollection InsertTable(size_t nIndex, const std::string& rssName, bool bFavorInline = false);
+           CNodeCollection InsertTable(const std::string& rssInsertBefore, const std::string& rssName, bool bFavorInline = false);
    
            CNodeCollection AddTable(const std::string& rssName, bool bFavorInline = false);
    
-           CNodeCollection InsertTableArray(size_t nIndex, const std::string& rssName, bool bFavorInline = false);
+           CNodeCollection InsertTableArray(const std::string& rssInsertBefore, const std::string& rssName, bool bFavorInline = false);
    
            CNodeCollection AddTableArray(const std::string& rssName, bool bFavorInline = false);
    
-           int InsertTOML(size_t nIndex, const std::string& rssTOML, bool bAllowPartial = false);
+           int InsertTOML(const std::string& rssInsertBefore, const std::string& rssTOML, bool bAllowPartial = false);
    
            int AddTOML(const std::string& rssTOML, bool bAllowPartial = false);
    
@@ -130,9 +140,7 @@ Program Listing for File toml.h
        class CTOMLParser : public CNodeCollection
        {
        public:
-           CTOMLParser() = default;
-   
-           CTOMLParser(const std::string& rssConfig);
+           CTOMLParser(const std::string& rssConfig = "");
    
            bool Process(const std::string& rssConfig);
    
@@ -148,6 +156,30 @@ Program Listing for File toml.h
            TObjectPtr      m_ptrParserUtil;        
            ITOMLParser*    m_pParser = nullptr;    
        };
+   
+       enum class ECompareFlags : uint32_t
+       {
+           compare_ignore_whitespace = 1,  
+           compare_ignore_comments = 2,    
+           compare_ignore_inline = 8,      
+           compare_ignore_all = 255,       
+       };
+   
+       enum class ECompareResult : int32_t
+       {
+           compare_identical = 0,          
+           compare_different = 1,          
+           compare_error = -1              
+       };
+   
+       namespace internal
+       {
+           ECompareResult CompareNodes(CNode& rnode1, CNode& rnode2,
+               uint32_t uiCompareFlags = static_cast<uint32_t>(ECompareFlags::compare_ignore_all));
+       } // namespace internal;
+   
+       ECompareResult Compare(const std::string& rssToml1, const std::string& rssToml2,
+           uint32_t uiCompareFlags = static_cast<uint32_t>(ECompareFlags::compare_ignore_all));
    
        inline CNode::CNode(const TInterfaceAccessPtr& rptrNode)
        {
@@ -194,6 +226,16 @@ Program Listing for File toml.h
        inline ENodeType CNode::GetType() const
        {
            return m_pNodeInfo ? m_pNodeInfo->GetType() : ENodeType::node_invalid;
+       }
+   
+       inline uint32_t CNode::GetIndex() const
+       {
+           return m_pNodeInfo ? m_pNodeInfo->GetIndex() : npos;
+       }
+   
+       inline bool CNode::IsInline() const
+       {
+           return m_pNodeInfo ? m_pNodeInfo->IsInline() : true;
        }
    
        inline std::string CNode::GetComment() const
@@ -262,13 +304,20 @@ Program Listing for File toml.h
        {
            INodeUpdate* pNodeUpdate = m_ptrNode.GetInterface<INodeUpdate>();
            if (!pNodeUpdate) return false;
-           return pNodeUpdate->DeleteNode();
+           bool bRet = pNodeUpdate->DeleteNode();
+           Clear();    // Not valid any more.
+           return bRet;
        }
    
        inline void CNode::Clear()
        {
            m_ptrNode = nullptr;
            m_pNodeInfo = nullptr;
+       }
+   
+       inline void CNode::AutomaticFormat(bool bRemoveComments)
+       {
+           if (m_pNodeInfo) m_pNodeInfo->AutomaticFormat(bRemoveComments);
        }
    
        inline sdv::u8string CNode::GetTOML() const
@@ -340,76 +389,86 @@ Program Listing for File toml.h
            return m_pCollection ? CNode(m_pCollection->GetNodeDirect(rssNode)) : CNode();
        }
    
-       inline CNode CNodeCollection::InsertValue(size_t nIndex, const std::string& rssName, const sdv::any_t& ranyValue)
+       inline std::string CNodeCollection::GetNodeNameByIndex(size_t nIndex) const
+       {
+           if (!m_pCollection) return {};
+           if (nIndex >= m_pCollection->GetCount()) return {};
+           if (GetType() == ENodeType::node_array) return "[" + std::to_string(nIndex) + "]";
+           TInterfaceAccessPtr ptrNode = m_pCollection->GetNode(static_cast<uint32_t>(nIndex));
+           const auto* pAccess = ptrNode.GetInterface<INodeInfo>();
+           if (!pAccess) return {};
+           return pAccess->GetName();
+       }
+   
+       inline CNode CNodeCollection::InsertValue(const std::string& rssInsertBefore, const std::string& rssName,
+           const sdv::any_t& ranyValue)
        {
            INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
            if (!pInsert) return {};
-           return CNode(pInsert->InsertValue(static_cast<uint32_t>(nIndex), rssName, ranyValue));
+           return CNode(pInsert->InsertValue(rssInsertBefore, rssName, ranyValue));
        }
    
        inline CNode CNodeCollection::AddValue(const std::string& rssName, const sdv::any_t& ranyValue)
        {
            INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
            if (!pInsert) return {};
-           return CNode(pInsert->InsertValue(npos, rssName, ranyValue));
+           return CNode(pInsert->InsertValue("", rssName, ranyValue));
        }
    
-       inline CNodeCollection CNodeCollection::InsertArray(size_t nIndex, const std::string& rssName)
+       inline CNodeCollection CNodeCollection::InsertArray(const std::string& rssInsertBefore, const std::string& rssName)
        {
            INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
            if (!pInsert) return {};
-           return CNodeCollection(pInsert->InsertArray(static_cast<uint32_t>(nIndex), rssName));
+           return CNodeCollection(pInsert->InsertArray(rssInsertBefore, rssName));
        }
    
        inline CNodeCollection CNodeCollection::AddArray(const std::string& rssName)
        {
            INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
            if (!pInsert) return {};
-           return CNodeCollection(pInsert->InsertArray(npos, rssName));
+           return CNodeCollection(pInsert->InsertArray("", rssName));
        }
    
-       inline CNodeCollection CNodeCollection::InsertTable(size_t nIndex, const std::string& rssName, bool bFavorInline /*= false*/)
+       inline CNodeCollection CNodeCollection::InsertTable(const std::string& rssInsertBefore, const std::string& rssName,
+           bool bFavorInline /*= false*/)
        {
            INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
            if (!pInsert) return {};
-           return CNodeCollection(pInsert->InsertTable(static_cast<uint32_t>(nIndex), rssName,
-               bFavorInline ? INodeCollectionInsert::EInsertPreference::prefer_inline :
-                   INodeCollectionInsert::EInsertPreference::prefer_standard));
+           return CNodeCollection(pInsert->InsertTable(rssInsertBefore, rssName, bFavorInline ? EInsertPreference::prefer_inline :
+                   EInsertPreference::prefer_standard));
        }
    
        inline CNodeCollection CNodeCollection::AddTable(const std::string& rssName, bool bFavorInline /*= false*/)
        {
            INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
            if (!pInsert) return {};
-           return CNodeCollection(pInsert->InsertTable(npos, rssName,
-               bFavorInline ? INodeCollectionInsert::EInsertPreference::prefer_inline :
-                   INodeCollectionInsert::EInsertPreference::prefer_standard));
+           return CNodeCollection(pInsert->InsertTable("", rssName, bFavorInline ? EInsertPreference::prefer_inline :
+                   EInsertPreference::prefer_standard));
        }
    
-       inline CNodeCollection CNodeCollection::InsertTableArray(size_t nIndex, const std::string& rssName,
+       inline CNodeCollection CNodeCollection::InsertTableArray(const std::string& rssInsertBefore, const std::string& rssName,
            bool bFavorInline /*= false*/)
        {
            INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
            if (!pInsert) return {};
-           return CNodeCollection(pInsert->InsertTableArray(static_cast<uint32_t>(nIndex), rssName,
-               bFavorInline ? INodeCollectionInsert::EInsertPreference::prefer_inline :
-                   INodeCollectionInsert::EInsertPreference::prefer_standard));
+           return CNodeCollection(pInsert->InsertTableArray(rssInsertBefore, rssName, bFavorInline ? EInsertPreference::prefer_inline :
+                   EInsertPreference::prefer_standard));
        }
    
        inline CNodeCollection CNodeCollection::AddTableArray(const std::string& rssName, bool bFavorInline /*= false*/)
        {
            INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
            if (!pInsert) return {};
-           return CNodeCollection(pInsert->InsertTableArray(npos, rssName,
-               bFavorInline ? INodeCollectionInsert::EInsertPreference::prefer_inline :
-                   INodeCollectionInsert::EInsertPreference::prefer_standard));
+           return CNodeCollection(pInsert->InsertTableArray("", rssName, bFavorInline ? EInsertPreference::prefer_inline :
+                   EInsertPreference::prefer_standard));
        }
    
-       inline int CNodeCollection::InsertTOML(size_t nIndex, const std::string& rssTOML, bool bAllowPartial /*= false*/)
+       inline int CNodeCollection::InsertTOML(const std::string& rssInsertBefore, const std::string& rssTOML,
+           bool bAllowPartial /*= false*/)
        {
            INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
            if (!pInsert) return 0;
-           INodeCollectionInsert::EInsertResult eRet = pInsert->InsertTOML(static_cast<uint32_t>(nIndex), rssTOML, !bAllowPartial);
+           INodeCollectionInsert::EInsertResult eRet = pInsert->InsertTOML(rssInsertBefore, rssTOML, !bAllowPartial);
            switch (eRet)
            {
            case INodeCollectionInsert::EInsertResult::insert_success:
@@ -426,7 +485,7 @@ Program Listing for File toml.h
        {
            INodeCollectionInsert* pInsert = m_ptrNode.GetInterface<INodeCollectionInsert>();
            if (!pInsert) return 0;
-           INodeCollectionInsert::EInsertResult eRet = pInsert->InsertTOML(npos, rssTOML, !bAllowPartial);
+           INodeCollectionInsert::EInsertResult eRet = pInsert->InsertTOML("", rssTOML, !bAllowPartial);
            switch (eRet)
            {
            case INodeCollectionInsert::EInsertResult::insert_success:
@@ -481,6 +540,59 @@ Program Listing for File toml.h
            m_ptrParserUtil.Clear();
        }
    
+       namespace internal
+       {
+           inline ECompareResult CompareNodes(CNode& rnode1, CNode& rnode2,
+               uint32_t uiCompareFlags /*= static_cast<uint32_t>(ECompareFlags::compare_ignore_all)*/)
+           {
+               if (!rnode1 || !rnode2) return ECompareResult::compare_error;
+   
+               // Format the nodes when ignore whitespace and/or comments
+               bool bIgnoreComments = uiCompareFlags & static_cast<uint32_t>(ECompareFlags::compare_ignore_comments);
+               bool bIgnoreWhitespace = bIgnoreComments ||
+                   (uiCompareFlags & static_cast<uint32_t>(ECompareFlags::compare_ignore_whitespace));
+               if (bIgnoreWhitespace)
+               {
+                   INodeInfo* pNodeInfo1 = rnode1.GetInterface().GetInterface<INodeInfo>();
+                   if (!pNodeInfo1) return ECompareResult::compare_error;
+                   pNodeInfo1->AutomaticFormat(bIgnoreComments);
+                   INodeInfo* pNodeInfo2 = rnode2.GetInterface().GetInterface<INodeInfo>();
+                   if (!pNodeInfo2) return ECompareResult::compare_error;
+                   pNodeInfo2->AutomaticFormat(bIgnoreComments);
+               }
+       
+               // Convert to standard if ignoring inline
+               INodeCollectionConvert* pConvert1 = rnode1.GetInterface().GetInterface<INodeCollectionConvert>();
+               INodeCollectionConvert* pConvert2 = rnode2.GetInterface().GetInterface<INodeCollectionConvert>();
+               if (pConvert1 && pConvert2 && uiCompareFlags & static_cast<uint32_t>(ECompareFlags::compare_ignore_inline))
+               {
+                   // Making inline nodes as standard, might only change the upper node.
+                   // Making standard nodes inline, will have all child nodes be made inline as well, because inline nodes can only
+                   // have inline nodes.
+                   pConvert1->MakeInline();
+                   pConvert2->MakeInline();
+               }
+       
+               // Generate the TOMLs and compare
+               return rnode1.GetTOML() == rnode2.GetTOML() ? ECompareResult::compare_identical : ECompareResult::compare_different;
+           }
+       } // namespace internal
+   
+       inline ECompareResult Compare(const std::string& rssToml1, const std::string& rssToml2,
+           uint32_t uiCompareFlags /*= static_cast<uint32_t>(ECompareFlags::compare_ignore_all)*/)
+       {
+           try
+           {
+               CTOMLParser parser1(rssToml1);
+               CTOMLParser parser2(rssToml2);
+               return internal::CompareNodes(parser1, parser2, uiCompareFlags);
+           }
+           catch (const sdv::toml::XTOMLParseException&)
+           {
+               return ECompareResult::compare_error;
+           }
+       }
+   
    }
    
-   #endif // !defined SDV_CONFIG_H
+   #endif // !defined SDV_TOML_H

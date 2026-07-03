@@ -53,9 +53,20 @@ Program Listing for File core.idl
            template <typename TInterface>
            TInterface* GetInterface()
            {
-               return GetInterface(sdv::GetInterfaceId<TInterface>()).template get<TInterface>();
+               try
+               {
+                   return GetInterface(sdv::GetInterfaceId<TInterface>()).template get<TInterface>();
+               } catch (const XSysExcept&)
+               {
+                   return nullptr;
+               }
            }
    #verbatim_end
+       };
+   
+       module core
+       {
+           typedef uint64 TObjectID;
        };
    
        enum EObjectType : uint32
@@ -126,9 +137,17 @@ Program Listing for File core.idl
            running = 30,                   
        };
    
+       struct SObjectInfo
+       {
+           core::TObjectID     tObjectID;          
+           SClassInfo          sClassInfo;         
+           u8string            ssName;             
+           u8string            ssConfig;           
+       };
+   
        interface IObjectControl
        {
-           void Initialize(in u8string ssObjectConfig);
+           void Initialize(in SObjectInfo sObjectInfo);
    
            EObjectState GetObjectState() const;
    
@@ -152,23 +171,6 @@ Program Listing for File core.idl
    
            uint32 GetCount() const;
        };
-   
-       enum EAttributeFlags : uint32
-       {
-           read_only = 0x100,      
-       };
-   
-       interface IAttributes
-       {
-           sequence<u8string> GetNames() const;
-   
-           any Get(in u8string ssAttribute) const;
-   
-           boolean Set(in u8string ssAttribute, in any anyAttribute);
-   
-           uint32 GetFlags(in u8string ssAttribute) const;
-       };
-   
    }; // module sdv
    
    #verbatim_begin

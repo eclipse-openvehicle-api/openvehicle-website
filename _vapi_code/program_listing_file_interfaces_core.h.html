@@ -786,8 +786,8 @@
   <section id="program-listing-for-file-core-h">
 <span id="program-listing-file-interfaces-core-h"></span><h1>Program Listing for File core.h<a class="headerlink" href="#program-listing-for-file-core-h" title="Link to this heading">#</a></h1>
 <p>↰ <a class="reference internal" href="file_interfaces_core.h.html#file-interfaces-core-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">interfaces\core.h</span></code>)</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef __IDL_GENERATED__CORE_H__20260428_100219_878__</span>
-<span class="cp">#define __IDL_GENERATED__CORE_H__20260428_100219_878__</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef __IDL_GENERATED__CORE_H__20260703_131934_495__</span>
+<span class="cp">#define __IDL_GENERATED__CORE_H__20260703_131934_495__</span>
 
 <span class="cp">#ifdef _MSC_VER</span>
 <span class="c1">// Prevent bogus warnings about uninitialized members during static code analysis.</span>
@@ -828,9 +828,20 @@
 <span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TInterface</span><span class="o">&gt;</span>
 <span class="n">TInterface</span><span class="o">*</span><span class="w"> </span><span class="n">GetInterface</span><span class="p">()</span>
 <span class="p">{</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">GetInterface</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">GetInterfaceId</span><span class="o">&lt;</span><span class="n">TInterface</span><span class="o">&gt;</span><span class="p">()).</span><span class="k">template</span><span class="w"> </span><span class="n">get</span><span class="o">&lt;</span><span class="n">TInterface</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="k">try</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">GetInterface</span><span class="p">(</span><span class="n">sdv</span><span class="o">::</span><span class="n">GetInterfaceId</span><span class="o">&lt;</span><span class="n">TInterface</span><span class="o">&gt;</span><span class="p">()).</span><span class="k">template</span><span class="w"> </span><span class="n">get</span><span class="o">&lt;</span><span class="n">TInterface</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">XSysExcept</span><span class="o">&amp;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 <span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">namespace</span><span class="w"> </span><span class="nn">core</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">typedef</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">TObjectID</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
 
 <span class="w">    </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EObjectType</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint32_t</span>
 <span class="w">    </span><span class="p">{</span>
@@ -932,11 +943,22 @@
 <span class="w">        </span><span class="n">running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span>
 <span class="w">    </span><span class="p">};</span>
 
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">SObjectInfo</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">core</span><span class="o">::</span><span class="n">TObjectID</span><span class="w"> </span><span class="n">tObjectID</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">SClassInfo</span><span class="w"> </span><span class="n">sClassInfo</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="w"> </span><span class="n">ssName</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="w"> </span><span class="n">ssConfig</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
 <span class="w">    </span><span class="n">interface</span><span class="w"> </span><span class="n">IObjectControl</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="o">::</span><span class="n">sdv</span><span class="o">::</span><span class="n">interface_id</span><span class="w"> </span><span class="n">_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x42C63A3374DB3813</span><span class="p">;</span>
+<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="o">::</span><span class="n">sdv</span><span class="o">::</span><span class="n">interface_id</span><span class="w"> </span><span class="n">_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xBBBA1AA1C8097FB9</span><span class="p">;</span>
 
-<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Initialize</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssObjectConfig</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Initialize</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SObjectInfo</span><span class="o">&amp;</span><span class="w"> </span><span class="n">sObjectInfo</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 
 <span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">EObjectState</span><span class="w"> </span><span class="nf">GetObjectState</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 
@@ -964,24 +986,6 @@
 
 <span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">GetCount</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="w">    </span><span class="p">};</span>
-
-<span class="w">    </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EAttributeFlags</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">uint32_t</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">read_only</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x100</span><span class="p">,</span>
-<span class="w">    </span><span class="p">};</span>
-
-<span class="w">    </span><span class="n">interface</span><span class="w"> </span><span class="n">IAttributes</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">static</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="o">::</span><span class="n">sdv</span><span class="o">::</span><span class="n">interface_id</span><span class="w"> </span><span class="n">_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x57C6485BC65354B3</span><span class="p">;</span>
-
-<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">sequence</span><span class="o">&lt;</span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetNames</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-
-<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">any_t</span><span class="w"> </span><span class="nf">Get</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssAttribute</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-
-<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Set</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssAttribute</span><span class="p">,</span><span class="w"> </span><span class="cm">/*in*/</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">any_t</span><span class="w"> </span><span class="n">anyAttribute</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-
-<span class="w">        </span><span class="k">virtual</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">GetFlags</span><span class="p">(</span><span class="cm">/*in*/</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">sdv</span><span class="o">::</span><span class="n">u8string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssAttribute</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="p">};</span>
 <span class="p">}</span>
 
 <span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="n">SDV_SYMBOL_PUBLIC</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">HasActiveObjects</span><span class="p">();</span>
@@ -996,7 +1000,7 @@
 <span class="cp">#pragma warning(pop)</span>
 <span class="cp">#endif</span>
 
-<span class="cp">#endif </span><span class="c1">// !defined(__IDL_GENERATED__CORE_H__20260428_100219_882__)</span>
+<span class="cp">#endif </span><span class="c1">// !defined(__IDL_GENERATED__CORE_H__20260703_131934_498__)</span>
 </pre></div>
 </div>
 </section>

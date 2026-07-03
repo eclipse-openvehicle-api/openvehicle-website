@@ -1,0 +1,1883 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Program Listing for File simple_toml.h &#8212; VAPI 0.1.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/stylesheet.css?v=1fe30f9d" />
+    <link rel="stylesheet" type="text/css" href="../_static/key_features.css?v=1f1425ec" />
+    <link rel="stylesheet" type="text/css" href="../_static/secondary_sidebar.css?v=5edb3464" />
+    <link rel="stylesheet" type="text/css" href="../_static/fonts/font.css?v=e743f546" />
+    <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists\css\tree_view.css?v=a885cde7" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-data-viewer/jsonview.bundle.css?v=f6ef2277" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/libs/html/datatables.min.css?v=4b4fd840" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/needstable.css?v=5e1b6797" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_core.css?v=f5b60a78" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_links.css?v=2150a916" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_style.css?v=92936fa5" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/common_css/need_toggle.css?v=5c6620df" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-needs/modern.css?v=803738c0" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-test-results\common.css?v=9ec2c1d5" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=323e3408"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script src="../_static/collapsible-lists\js\CollapsibleLists.compressed.js?v=73120307"></script>
+    <script src="../_static/collapsible-lists\js\apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/sphinx-data-viewer/jsonview.bundle.js?v=18cd53c5"></script>
+    <script src="../_static/sphinx-data-viewer/jsonview_loader.js?v=f7ff7e7d"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables.min.js?v=8a4aee21"></script>
+    <script src="../_static/sphinx-needs/libs/html/datatables_loader.js?v=a2cae175"></script>
+    <script src="../_static/sphinx-needs/libs/html/sphinx_needs_collapse.js?v=dca66431"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_vapi_code/program_listing_file_support_simple_toml.h';</script>
+    <script src="../_static/js/sidebar-toggle.js?v=60adb31f"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/Open_Vehicle_API_v2_white.jpg" class="logo__image only-light" alt=""/>
+    <img src="../_static/Open_Vehicle_API_v2_blue.jpg" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title"><span style="font-weight: bold; font-size: 1.6em; font-family: ZFPrometo, Sans-serif;">Open Vehicle API</span></p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+    Vision
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+    Key Features
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+    Aspects
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/the_VAPI.html">
+    What is Open Vehicle API
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/main_goals.html">
+    Key Features
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/component_stack.html">
+    Component Stack
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_started.html">
+    Get started… / Installation Steps
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/project_guide.html">
+    Project Guide
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/for_developers.html">
+    For Developers
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/cmake_in_the_project.html">
+    CMake in the Project
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/examples/component_examples.html">
+    Examples of Open Vehicle API
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/step_by_step_guide/step_by_step_index.html">
+    Step by Step Example
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/simulation.html">
+    Simulation / Testing / FMU
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/under_the_hood.html">
+    A view under the hood
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/key_building_blocks.html">
+    Key Building Blocks
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/services.html">
+    Components & Services
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/sdv_executables.html">
+    SDV Executables
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/glossary.html">
+    Glossary
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/entry.html">
+    Overview
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/learn_the_concepts.html">
+    Learn the concepts
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/get_something_running.html">
+    Run your first example
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/build_services.html">
+    Build services
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/advanced_and_reference.html">
+    Advanced & reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/architecture.html">
+    Open Vehicle API Architecture
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/development_process.html">
+    ISO 26262 Compliance and process enhancements
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/q_and_a.html">
+    Q & A
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/TODO.html">
+    TODOs
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packager_example.html">
+    sdv_packager example
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+    Packaging & Installation
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+    System Control
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_doc/sdv_tools/utilities.html">
+    SDV Utilities (Auto Code Generation)
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_pages/team.html">
+    Open Vehicle API team members
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../vapi_pages/contact.html">
+    Contact
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_pages/vision.html">
+    Vision
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_pages/key_features.html">
+    Key Features
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_pages/aspects_of_VAPI.html">
+    Aspects
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/the_VAPI.html">
+    What is Open Vehicle API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/main_goals.html">
+    Key Features
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/component_stack.html">
+    Component Stack
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/get_started.html">
+    Get started… / Installation Steps
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/project_guide.html">
+    Project Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/for_developers.html">
+    For Developers
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/cmake_in_the_project.html">
+    CMake in the Project
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/examples/component_examples.html">
+    Examples of Open Vehicle API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/step_by_step_guide/step_by_step_index.html">
+    Step by Step Example
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/simulation.html">
+    Simulation / Testing / FMU
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/under_the_hood.html">
+    A view under the hood
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/key_building_blocks.html">
+    Key Building Blocks
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/services.html">
+    Components & Services
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/sdv_tools/sdv_executables.html">
+    SDV Executables
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/glossary.html">
+    Glossary
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/entry.html">
+    Overview
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/learn_the_concepts.html">
+    Learn the concepts
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/get_something_running.html">
+    Run your first example
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/build_services.html">
+    Build services
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/advanced_and_reference.html">
+    Advanced & reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/architecture.html">
+    Open Vehicle API Architecture
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/development_process.html">
+    ISO 26262 Compliance and process enhancements
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/q_and_a.html">
+    Q & A
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/TODO.html">
+    TODOs
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/sdv_tools/packager_example.html">
+    sdv_packager example
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/sdv_tools/packaging_and_installation.html">
+    Packaging & Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/sdv_tools/system_control.html">
+    System Control
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_doc/sdv_tools/utilities.html">
+    SDV Utilities (Auto Code Generation)
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_pages/team.html">
+    Open Vehicle API team members
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../vapi_pages/contact.html">
+    Contact
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Program Listing for File simple_toml.h</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="program-listing-for-file-simple-toml-h">
+<span id="program-listing-file-support-simple-toml-h"></span><h1>Program Listing for File simple_toml.h<a class="headerlink" href="#program-listing-for-file-simple-toml-h" title="Link to this heading">#</a></h1>
+<p>↰ <a class="reference internal" href="file_support_simple_toml.h.html#file-support-simple-toml-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">support\simple_toml.h</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#pragma once</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;algorithm&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cctype&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;functional&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;map&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdexcept&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string_view&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;charconv&gt;</span>
+
+<span class="cp">#ifdef __GNUC__</span>
+<span class="c1">// Some GCC compilers return an overflow warning on string_view functions that use npos as a parameter. This is a known issue</span>
+<span class="c1">// described here:</span>
+<span class="c1">// https://stackoverflow.com/questions/79738323/gcc-warning-memcpy-specified-bound-18446744073709551614-exceeds-maximum-objec</span>
+<span class="c1">// Suppress the warning.</span>
+<span class="cp">#pragma GCC diagnostic push</span>
+<span class="cp">#pragma GCC diagnostic ignored &quot;-Wstringop-overflow&quot;</span>
+<span class="cp">#pragma GCC diagnostic ignored &quot;-Walloc-size-larger-than=&quot;</span>
+<span class="cp">#pragma GCC diagnostic ignored &quot;-Wstringop-overread&quot;</span>
+<span class="cp">#endif</span>
+
+<span class="k">namespace</span><span class="w"> </span><span class="nn">sdv</span><span class="o">::</span><span class="nn">toml</span><span class="o">::</span><span class="nn">simple_parser</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">enum</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ENodeType</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">node_unknown</span><span class="p">,</span>
+<span class="w">        </span><span class="n">node_table</span><span class="p">,</span>
+<span class="w">        </span><span class="n">node_array</span><span class="p">,</span>
+<span class="w">        </span><span class="n">node_value</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="c1">// Forward declaration of the main data structure</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">SNode</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">TTableMap</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">SNode</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">TNodeArray</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">SNode</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">SNode</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ENodeType</span><span class="w">       </span><span class="n">eType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_unknown</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">     </span><span class="n">ssKey</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w">     </span><span class="n">ssValueRaw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">TTableMap</span><span class="w">       </span><span class="n">mapTable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">TNodeArray</span><span class="w">      </span><span class="n">vecArray</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">bIsInline</span><span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">bIsExplicitlyHeadered</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">operator</span><span class="w"> </span><span class="kt">bool</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">eType</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_unknown</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">IsValid</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">eType</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_unknown</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">IsTable</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">eType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_table</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">IsArray</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">eType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_array</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">IsValue</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">eType</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_value</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">ENodeType</span><span class="w"> </span><span class="n">GetType</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">eType</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">GetName</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">ssKey</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">GetValue</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">ssValueRaw</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TType</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="n">TType</span><span class="w"> </span><span class="n">GetValue</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">TType</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">ssValueRaw</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">GetValue</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">constexpr</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_integral_v</span><span class="o">&lt;</span><span class="n">TType</span><span class="o">&gt;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">is_floating_point_v</span><span class="o">&lt;</span><span class="n">TType</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">TType</span><span class="w"> </span><span class="n">tValue</span><span class="p">{};</span>
+<span class="w">                </span><span class="k">auto</span><span class="w"> </span><span class="p">[</span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="n">ec</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">from_chars</span><span class="p">(</span><span class="n">ssValueRaw</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="n">ssValueRaw</span><span class="p">.</span><span class="n">data</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ssValueRaw</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span><span class="w"> </span><span class="n">tValue</span><span class="p">);</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">ec</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">errc</span><span class="p">()</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">tValue</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">TType</span><span class="p">{};</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">TType</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">ssValueRaw</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">TTableMap</span><span class="o">&amp;</span><span class="w"> </span><span class="n">GetTable</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">mapTable</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">TNodeArray</span><span class="o">&amp;</span><span class="w"> </span><span class="n">GetArray</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">vecArray</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">SNode</span><span class="w"> </span><span class="n">GetDirect</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="w"> </span><span class="n">svPath</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">SNode</span><span class="w"> </span><span class="n">sNodeEmpty</span><span class="p">;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">reference_wrapper</span><span class="o">&lt;</span><span class="k">const</span><span class="w"> </span><span class="n">SNode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">refCurrentNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="w">            </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Index counter for path segments</span>
+
+<span class="w">            </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">nStart</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">svPath</span><span class="p">.</span><span class="n">size</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// 1. Find the next path segment up to the dot delimiter</span>
+<span class="w">                </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nDot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">svPath</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="sc">&#39;.&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">nStart</span><span class="p">);</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="w"> </span><span class="n">svPart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">svPath</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">nStart</span><span class="p">,</span><span class="w"> </span><span class="n">nDot</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="o">::</span><span class="n">npos</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">nDot</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">nDot</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">nStart</span><span class="p">);</span>
+
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">svPart</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">sNodeEmpty</span><span class="p">;</span>
+
+<span class="w">                </span><span class="c1">// 2. Check if the segment contains array brackets [...] (e.g., &quot;arr_mixed[4]&quot;)</span>
+<span class="w">                </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nOpenBracket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">svPart</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="sc">&#39;[&#39;</span><span class="p">);</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">ssKeyLocal</span><span class="p">(</span><span class="n">svPart</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">nOpenBracket</span><span class="p">));</span>
+
+<span class="w">                </span><span class="c1">// Must be a table node to perform a key lookup</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">refCurrentNode</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">IsTable</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">sNodeEmpty</span><span class="p">;</span>
+
+<span class="w">                </span><span class="k">auto</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">refCurrentNode</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">ssKeyLocal</span><span class="p">);</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">it</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">refCurrentNode</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+<span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="n">sNodeEmpty</span><span class="p">;</span>
+
+<span class="w">                </span><span class="n">refCurrentNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cref</span><span class="p">(</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">);</span>
+
+<span class="w">                </span><span class="c1">// 3. Resolve array indices sequentially (supports multidimensional arrays or inline tables in arrays)</span>
+<span class="w">                </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nBracketPos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nOpenBracket</span><span class="p">;</span>
+<span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">nBracketPos</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nCloseBracket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">svPart</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="sc">&#39;]&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">nBracketPos</span><span class="p">);</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nCloseBracket</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span>
+<span class="w">                        </span><span class="k">return</span><span class="w"> </span><span class="n">sNodeEmpty</span><span class="p">;</span><span class="w"> </span><span class="c1">// Error: Malformed unclosed bracket</span>
+
+<span class="w">                    </span><span class="c1">// Extract and parse the index string substring</span>
+<span class="w">                    </span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="w"> </span><span class="n">svIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">svPart</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">nBracketPos</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">nCloseBracket</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">nBracketPos</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">                    </span><span class="c1">// Ensure the index consists strictly of digits (prevents negative signs or alpha characters)</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">svIndex</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span><span class="w"> </span><span class="o">||</span>
+<span class="w">                        </span><span class="o">!</span><span class="n">std</span><span class="o">::</span><span class="n">all_of</span><span class="p">(</span><span class="n">svIndex</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">svIndex</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="p">[](</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">isdigit</span><span class="p">(</span><span class="n">c</span><span class="p">);</span><span class="w"> </span><span class="p">}))</span>
+<span class="w">                        </span><span class="k">return</span><span class="w"> </span><span class="n">sNodeEmpty</span><span class="p">;</span>
+
+<span class="w">                    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">nIdx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">try</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">nIdx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">stoull</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">svIndex</span><span class="p">)));</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="k">catch</span><span class="w"> </span><span class="p">(...)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="k">return</span><span class="w"> </span><span class="n">sNodeEmpty</span><span class="p">;</span><span class="w"> </span><span class="c1">// Safety catch against integer overflow attacks during parsing</span>
+<span class="w">                    </span><span class="p">}</span>
+
+<span class="w">                    </span><span class="c1">// SNode type verification and strict bounds check (Safety-critical constraint)</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">refCurrentNode</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">IsArray</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">nIdx</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">refCurrentNode</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">vecArray</span><span class="p">.</span><span class="n">size</span><span class="p">())</span>
+<span class="w">                        </span><span class="k">return</span><span class="w"> </span><span class="n">sNodeEmpty</span><span class="p">;</span>
+
+<span class="w">                    </span><span class="c1">// Advance target reference directly into the array index element</span>
+<span class="w">                    </span><span class="n">refCurrentNode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cref</span><span class="p">(</span><span class="n">refCurrentNode</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">vecArray</span><span class="p">[</span><span class="n">nIdx</span><span class="p">]);</span>
+
+<span class="w">                    </span><span class="c1">// Check for a consecutive opening bracket immediately following (multidimensional arrays)</span>
+<span class="w">                    </span><span class="n">nBracketPos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">svPart</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="sc">&#39;[&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">nCloseBracket</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+
+<span class="w">                </span><span class="c1">// Step over the dot delimiter to move onto the next token sequence</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nDot</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="n">nStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nDot</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">refCurrentNode</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">CParser</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">    </span><span class="k">public</span><span class="o">:</span>
+<span class="w">        </span><span class="c1">// cppcheck-suppress passedByValue</span>
+<span class="w">        </span><span class="n">CParser</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="w"> </span><span class="n">svInput</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">m_svSrc</span><span class="p">(</span><span class="n">svInput</span><span class="p">),</span><span class="w"> </span><span class="n">m_nPos</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Parse</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">SNode</span><span class="o">&amp;</span><span class="w"> </span><span class="n">Root</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">m_sRoot</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">private</span><span class="o">:</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="w">    </span><span class="n">m_svSrc</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w">              </span><span class="n">m_nPos</span><span class="p">;</span>
+<span class="w">        </span><span class="n">SNode</span><span class="w">               </span><span class="n">m_sRoot</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m_vecExplicitlyDefinedTables</span><span class="p">;</span>
+
+<span class="w">        </span><span class="n">SNode</span><span class="w"> </span><span class="nf">Parse</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">m_sRoot</span><span class="p">.</span><span class="n">eType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_table</span><span class="p">;</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vCurrentTablePath</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// Only skip inline whitespace and comments, preserve newlines to check line boundaries</span>
+<span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Peek</span><span class="p">();</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\t&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\r&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;#&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\r&#39;</span><span class="p">)</span>
+<span class="w">                            </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="k">else</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">IsEof</span><span class="p">())</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">                </span><span class="kt">char</span><span class="w"> </span><span class="n">cNext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Peek</span><span class="p">();</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cNext</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">Consume</span><span class="p">();</span><span class="w"> </span><span class="c1">// Valid empty line separation</span>
+<span class="w">                    </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cNext</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;[&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">vCurrentTablePath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ParseTableHeader</span><span class="p">();</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">else</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">SNode</span><span class="o">&amp;</span><span class="w"> </span><span class="n">oActiveTable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NavigateToTable</span><span class="p">(</span><span class="n">vCurrentTablePath</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">ParseKeyValue</span><span class="p">(</span><span class="n">oActiveTable</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+
+<span class="w">                </span><span class="c1">// Safety Constraint: A key-value assignment or header MUST be followed immediately</span>
+<span class="w">                </span><span class="c1">// by a newline, a comment, or the end of the file. No trailing gibberish allowed on the same line.</span>
+<span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\t&#39;</span><span class="p">))</span>
+<span class="w">                    </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;#&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\r&#39;</span><span class="p">)</span>
+<span class="w">                        </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\r&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Multiple declarations on a single line are strictly invalid in TOML.&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">m_sRoot</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">SNode</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">NavigateToTable</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rvecPath</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">reference_wrapper</span><span class="o">&lt;</span><span class="n">SNode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">refCurr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_sRoot</span><span class="p">;</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rssSection</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">rvecPath</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// Safe traversal step into the standard node map structure</span>
+<span class="w">                </span><span class="n">refCurr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ref</span><span class="p">(</span><span class="n">refCurr</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">[</span><span class="n">rssSection</span><span class="p">]);</span>
+
+<span class="w">                </span><span class="c1">// Context Redirect: If target is a Table Array, dive into the last active table instance</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">refCurr</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">IsArray</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">refCurr</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">vecArray</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">                    </span><span class="n">refCurr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ref</span><span class="p">(</span><span class="n">refCurr</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">vecArray</span><span class="p">.</span><span class="n">back</span><span class="p">());</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">refCurr</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsEof</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">m_nPos</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">m_svSrc</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="nf">Peek</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">IsEof</span><span class="p">()</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">m_svSrc</span><span class="p">[</span><span class="n">m_nPos</span><span class="p">];</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="nf">Consume</span><span class="p">()</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">IsEof</span><span class="p">()</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">m_svSrc</span><span class="p">[</span><span class="n">m_nPos</span><span class="o">++</span><span class="p">];</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">SkipWhitespaceAndComments</span><span class="p">()</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Peek</span><span class="p">();</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\t&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\r&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;#&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\r&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">else</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">SkipInlineWhitespace</span><span class="p">()</span><span class="w"> </span><span class="k">noexcept</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\t&#39;</span><span class="p">))</span>
+<span class="w">                </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ParseDottedKey</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vecKeys</span><span class="p">;</span><span class="w"> </span><span class="c1">// Vector of strings</span>
+<span class="w">            </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">SkipInlineWhitespace</span><span class="p">();</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span><span class="w"> </span><span class="c1">// String token</span>
+<span class="w">                </span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Peek</span><span class="p">();</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;&quot;&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\&#39;&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="n">ssKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ParseStringNode</span><span class="p">();</span>
+<span class="w">                </span><span class="k">else</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">())</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="kt">char</span><span class="w"> </span><span class="n">bc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Peek</span><span class="p">();</span><span class="w"> </span><span class="c1">// Bare Char</span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">isalnum</span><span class="p">(</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">bc</span><span class="p">))</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">bc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;-&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">bc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;_&#39;</span><span class="p">)</span>
+<span class="w">                        </span><span class="p">{</span>
+<span class="w">                            </span><span class="n">ssKey</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                        </span><span class="p">}</span>
+<span class="w">                        </span><span class="k">else</span>
+<span class="w">                        </span><span class="p">{</span>
+<span class="w">                            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                        </span><span class="p">}</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ssKey</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">                        </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Empty or invalid key sequence.&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="n">vecKeys</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">ssKey</span><span class="p">);</span>
+<span class="w">                </span><span class="n">SkipInlineWhitespace</span><span class="p">();</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;.&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">else</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">vecKeys</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ParseStringNode</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="kt">char</span><span class="w"> </span><span class="n">cQuote</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Consume</span><span class="p">();</span><span class="w"> </span><span class="c1">// Character delimiter</span>
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="n">bIsMultiline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w">     </span><span class="c1">// Boolean flag</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">cQuote</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                </span><span class="c1">// Warning of cppcheck for the condition to be always true. This is not the case due to the Consume function</span>
+<span class="w">                </span><span class="c1">// execution. Suppress warning.</span>
+<span class="w">                </span><span class="c1">// cppcheck-suppress knownConditionTrueFalse</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">cQuote</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                    </span><span class="n">bIsMultiline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">else</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+<span class="w">            </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bIsMultiline</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">cQuote</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_nPos</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">m_svSrc</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">m_svSrc</span><span class="p">[</span><span class="n">m_nPos</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">cQuote</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">m_svSrc</span><span class="p">[</span><span class="n">m_nPos</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">cQuote</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">m_nPos</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">                        </span><span class="k">return</span><span class="w"> </span><span class="n">ssResult</span><span class="p">;</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">bIsMultiline</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">cQuote</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="n">ssResult</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+
+<span class="w">                </span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cQuote</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;&quot;&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\\&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">IsEof</span><span class="p">())</span>
+<span class="w">                        </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Unfinished escape sequence.&quot;</span><span class="p">);</span>
+<span class="w">                    </span><span class="kt">char</span><span class="w"> </span><span class="n">cEsc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Consume</span><span class="p">();</span><span class="w"> </span><span class="c1">// Character escape sequence identifier</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cEsc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;n&#39;</span><span class="p">)</span>
+<span class="w">                        </span><span class="n">ssResult</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cEsc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;t&#39;</span><span class="p">)</span>
+<span class="w">                        </span><span class="n">ssResult</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="sc">&#39;\t&#39;</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cEsc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;r&#39;</span><span class="p">)</span>
+<span class="w">                        </span><span class="n">ssResult</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="sc">&#39;\r&#39;</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cEsc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;&quot;&#39;</span><span class="p">)</span>
+<span class="w">                        </span><span class="n">ssResult</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="sc">&#39;&quot;&#39;</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cEsc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\\&#39;</span><span class="p">)</span>
+<span class="w">                        </span><span class="n">ssResult</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="sc">&#39;\\&#39;</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cEsc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;e&#39;</span><span class="p">)</span>
+<span class="w">                        </span><span class="n">ssResult</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="sc">&#39;\x1b&#39;</span><span class="p">;</span>
+<span class="w">                    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cEsc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;x&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">m_nPos</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">m_svSrc</span><span class="p">.</span><span class="n">size</span><span class="p">())</span>
+<span class="w">                            </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Truncated hex character.&quot;</span><span class="p">);</span>
+<span class="w">                        </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssHex</span><span class="p">{</span><span class="n">Consume</span><span class="p">(),</span><span class="w"> </span><span class="n">Consume</span><span class="p">()};</span>
+<span class="w">                        </span><span class="n">ssResult</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">stoi</span><span class="p">(</span><span class="n">ssHex</span><span class="p">,</span><span class="w"> </span><span class="nb">nullptr</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">));</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bIsMultiline</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">cEsc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">cEsc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\r&#39;</span><span class="p">))</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cEsc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\r&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">)</span>
+<span class="w">                            </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                        </span><span class="n">SkipInlineWhitespace</span><span class="p">();</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">else</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">ssResult</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">c</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Unterminated TOML string sequence detected.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">//std::vector&lt;std::string&gt; ParseTableHeader()</span>
+<span class="w">        </span><span class="c1">//{</span>
+<span class="w">        </span><span class="c1">//    Consume(); // Consume standard structural &#39;[&#39;</span>
+
+<span class="w">        </span><span class="c1">//    bool bIsTableArray = false;</span>
+<span class="w">        </span><span class="c1">//    if (Peek() == &#39;[&#39;)</span>
+<span class="w">        </span><span class="c1">//    {</span>
+<span class="w">        </span><span class="c1">//        Consume();</span>
+<span class="w">        </span><span class="c1">//        bIsTableArray = true;</span>
+<span class="w">        </span><span class="c1">//    }</span>
+
+<span class="w">        </span><span class="c1">//    std::vector&lt;std::string&gt; vecSections = ParseDottedKey();</span>
+<span class="w">        </span><span class="c1">//    SkipInlineWhitespace();</span>
+
+<span class="w">        </span><span class="c1">//    if (bIsTableArray)</span>
+<span class="w">        </span><span class="c1">//    {</span>
+<span class="w">        </span><span class="c1">//        if (Consume() != &#39;]&#39; || Consume() != &#39;]&#39;)</span>
+<span class="w">        </span><span class="c1">//            throw std::runtime_error(&quot;Malformed table array closure.&quot;);</span>
+<span class="w">        </span><span class="c1">//    }</span>
+<span class="w">        </span><span class="c1">//    else</span>
+<span class="w">        </span><span class="c1">//    {</span>
+<span class="w">        </span><span class="c1">//        if (Consume() != &#39;]&#39;)</span>
+<span class="w">        </span><span class="c1">//            throw std::runtime_error(&quot;Malformed table closure.&quot;);</span>
+<span class="w">        </span><span class="c1">//    }</span>
+
+<span class="w">        </span><span class="c1">//    // Generate a unified lookup string for this table path (e.g., &quot;fruit.apple&quot;)</span>
+<span class="w">        </span><span class="c1">//    std::string strFullNormalizedPath = &quot;&quot;;</span>
+<span class="w">        </span><span class="c1">//    for (size_t i = 0; i &lt; vecSections.size(); ++i)</span>
+<span class="w">        </span><span class="c1">//    {</span>
+<span class="w">        </span><span class="c1">//        strFullNormalizedPath += vecSections[i] + (i == vecSections.size() - 1 ? &quot;&quot; : &quot;.&quot;);</span>
+<span class="w">        </span><span class="c1">//    }</span>
+
+<span class="w">        </span><span class="c1">//    // Safety Constraint: Check if this specific exact table header path was already explicitly declared</span>
+<span class="w">        </span><span class="c1">//    if (!bIsTableArray)</span>
+<span class="w">        </span><span class="c1">//    {</span>
+<span class="w">        </span><span class="c1">//        if (std::find(m_vecExplicitlyDefinedTables.begin(), m_vecExplicitlyDefinedTables.end(), strFullNormalizedPath)</span>
+<span class="w">        </span><span class="c1">//            != m_vecExplicitlyDefinedTables.end())</span>
+<span class="w">        </span><span class="c1">//        {</span>
+<span class="w">        </span><span class="c1">//            throw std::runtime_error(&quot;Duplicate table declaration detected: &quot; + strFullNormalizedPath);</span>
+<span class="w">        </span><span class="c1">//        }</span>
+<span class="w">        </span><span class="c1">//        m_vecExplicitlyDefinedTables.push_back(strFullNormalizedPath);</span>
+<span class="w">        </span><span class="c1">//    }</span>
+
+<span class="w">        </span><span class="c1">//    std::reference_wrapper&lt;SNode&gt; refCurrent = m_sRoot;</span>
+<span class="w">        </span><span class="c1">//    for (size_t i = 0; i &lt; vecSections.size() - 1; ++i)</span>
+<span class="w">        </span><span class="c1">//    {</span>
+<span class="w">        </span><span class="c1">//        const auto&amp; ssSection = vecSections[i];</span>
+
+<span class="w">        </span><span class="c1">//        auto it = refCurrent.get().mapTable.find(ssSection);</span>
+<span class="w">        </span><span class="c1">//        if (it != refCurrent.get().mapTable.end())</span>
+<span class="w">        </span><span class="c1">//        {</span>
+<span class="w">        </span><span class="c1">//            if (it-&gt;second.IsValue())</span>
+<span class="w">        </span><span class="c1">//            {</span>
+<span class="w">        </span><span class="c1">//                throw std::runtime_error(&quot;Cannot re-define a scalar key value as an intermediate table structure.&quot;);</span>
+<span class="w">        </span><span class="c1">//            }</span>
+<span class="w">        </span><span class="c1">//            // If it exists but is a literal array (not explicitly headered), collision!</span>
+<span class="w">        </span><span class="c1">//            if (it-&gt;second.IsArray() &amp;&amp; !it-&gt;second.bIsExplicitlyHeadered)</span>
+<span class="w">        </span><span class="c1">//            {</span>
+<span class="w">        </span><span class="c1">//                throw std::runtime_error(&quot;Type collision: Cannot append table elements to a literal array.&quot;);</span>
+<span class="w">        </span><span class="c1">//            }</span>
+<span class="w">        </span><span class="c1">//        }</span>
+<span class="w">        </span><span class="c1">//        else</span>
+<span class="w">        </span><span class="c1">//        {</span>
+<span class="w">        </span><span class="c1">//            SNode sNewNode;</span>
+<span class="w">        </span><span class="c1">//            sNewNode.eType = ENodeType::node_table;</span>
+<span class="w">        </span><span class="c1">//            sNewNode.ssKey = ssSection;</span>
+<span class="w">        </span><span class="c1">//            refCurrent.get().mapTable[ssSection] = sNewNode;</span>
+<span class="w">        </span><span class="c1">//        }</span>
+<span class="w">        </span><span class="c1">//        refCurrent = std::ref(refCurrent.get().mapTable[ssSection]);</span>
+<span class="w">        </span><span class="c1">//        if (refCurrent.get().IsArray() &amp;&amp; !refCurrent.get().vecArray.empty())</span>
+<span class="w">        </span><span class="c1">//        {</span>
+<span class="w">        </span><span class="c1">//            refCurrent = std::ref(refCurrent.get().vecArray.back());</span>
+<span class="w">        </span><span class="c1">//        }</span>
+<span class="w">        </span><span class="c1">//    }</span>
+
+<span class="w">        </span><span class="c1">//    std::string ssFinalSection = vecSections.back();</span>
+<span class="w">        </span><span class="c1">//    auto itFinal = refCurrent.get().mapTable.find(ssFinalSection);</span>
+
+<span class="w">        </span><span class="c1">//    if (itFinal != refCurrent.get().mapTable.end())</span>
+<span class="w">        </span><span class="c1">//    {</span>
+<span class="w">        </span><span class="c1">//        if (itFinal-&gt;second.IsValue())</span>
+<span class="w">        </span><span class="c1">//        {</span>
+<span class="w">        </span><span class="c1">//            throw std::runtime_error(&quot;Conflict: Table header overrides an existing scalar value.&quot;);</span>
+<span class="w">        </span><span class="c1">//        }</span>
+<span class="w">        </span><span class="c1">//        if (bIsTableArray &amp;&amp; itFinal-&gt;second.IsTable())</span>
+<span class="w">        </span><span class="c1">//        {</span>
+<span class="w">        </span><span class="c1">//            throw std::runtime_error(&quot;Type collision: Static table cannot be turned into a table array.&quot;);</span>
+<span class="w">        </span><span class="c1">//        }</span>
+<span class="w">        </span><span class="c1">//        if (!bIsTableArray &amp;&amp; itFinal-&gt;second.IsArray())</span>
+<span class="w">        </span><span class="c1">//        {</span>
+<span class="w">        </span><span class="c1">//            if (itFinal-&gt;second.bIsExplicitlyHeadered)</span>
+<span class="w">        </span><span class="c1">//            {</span>
+<span class="w">        </span><span class="c1">//                throw std::runtime_error(&quot;Type collision: Array of tables cannot be redefined as a standard table.&quot;);</span>
+<span class="w">        </span><span class="c1">//            }</span>
+<span class="w">        </span><span class="c1">//            else</span>
+<span class="w">        </span><span class="c1">//            {</span>
+<span class="w">        </span><span class="c1">//                throw std::runtime_error(&quot;Type collision: Literal array cannot be redefined as a table.&quot;);</span>
+<span class="w">        </span><span class="c1">//            }</span>
+<span class="w">        </span><span class="c1">//        }</span>
+
+<span class="w">        </span><span class="c1">//        // CRITICAL FIX: The invalid exception here was thrown when itFinal-&gt;second.IsTable() was true</span>
+<span class="w">        </span><span class="c1">//        // but it was implicitly created by a sub-key earlier (e.g., fruit.apple).</span>
+<span class="w">        </span><span class="c1">//        // In TOML, a header can safely claim an implicit table, UNLESS it attempts to redefine a value</span>
+<span class="w">        </span><span class="c1">//        // that is an explicit scalar or another explicit table type.</span>
+<span class="w">        </span><span class="c1">//    }</span>
+
+<span class="w">        </span><span class="c1">//    if (bIsTableArray)</span>
+<span class="w">        </span><span class="c1">//    {</span>
+<span class="w">        </span><span class="c1">//        if (refCurrent.get().mapTable.find(ssFinalSection) == refCurrent.get().mapTable.end())</span>
+<span class="w">        </span><span class="c1">//        {</span>
+<span class="w">        </span><span class="c1">//            SNode sNewArrayNode;</span>
+<span class="w">        </span><span class="c1">//            sNewArrayNode.eType = ENodeType::node_array;</span>
+<span class="w">        </span><span class="c1">//            sNewArrayNode.ssKey = ssFinalSection;</span>
+<span class="w">        </span><span class="c1">//            sNewArrayNode.bIsExplicitlyHeadered = true; // Mark as Table Array type</span>
+<span class="w">        </span><span class="c1">//            refCurrent.get().mapTable[ssFinalSection] = sNewArrayNode;</span>
+<span class="w">        </span><span class="c1">//        }</span>
+<span class="w">        </span><span class="c1">//        SNode sNewTableInstance;</span>
+<span class="w">        </span><span class="c1">//        sNewTableInstance.eType = ENodeType::node_table;</span>
+<span class="w">        </span><span class="c1">//        sNewTableInstance.ssKey = ssFinalSection;</span>
+<span class="w">        </span><span class="c1">//        sNewTableInstance.bIsExplicitlyHeadered = true;</span>
+<span class="w">        </span><span class="c1">//        refCurrent.get().mapTable[ssFinalSection].vecArray.push_back(sNewTableInstance);</span>
+<span class="w">        </span><span class="c1">//    }</span>
+<span class="w">        </span><span class="c1">//    else</span>
+<span class="w">        </span><span class="c1">//    {</span>
+<span class="w">        </span><span class="c1">//        if (refCurrent.get().mapTable.find(ssFinalSection) == refCurrent.get().mapTable.end())</span>
+<span class="w">        </span><span class="c1">//        {</span>
+<span class="w">        </span><span class="c1">//            SNode sNewNode;</span>
+<span class="w">        </span><span class="c1">//            sNewNode.eType = ENodeType::node_table;</span>
+<span class="w">        </span><span class="c1">//            sNewNode.ssKey = ssFinalSection;</span>
+<span class="w">        </span><span class="c1">//            sNewNode.bIsExplicitlyHeadered = true;</span>
+<span class="w">        </span><span class="c1">//            refCurrent.get().mapTable[ssFinalSection] = sNewNode;</span>
+<span class="w">        </span><span class="c1">//        }</span>
+<span class="w">        </span><span class="c1">//        else</span>
+<span class="w">        </span><span class="c1">//        {</span>
+<span class="w">        </span><span class="c1">//            refCurrent.get().mapTable[ssFinalSection].bIsExplicitlyHeadered = true;</span>
+<span class="w">        </span><span class="c1">//        }</span>
+<span class="w">        </span><span class="c1">//    }</span>
+
+<span class="w">        </span><span class="c1">//    return vecSections;</span>
+<span class="w">        </span><span class="c1">//}</span>
+<span class="w">        </span><span class="c1">// Evaluates header configurations structural tables or table arrays ([[table.path]])</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ParseTableHeader</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Consume</span><span class="p">();</span><span class="w"> </span><span class="c1">// Consume standard structural &#39;[&#39;</span>
+
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="n">bIsTableArray</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;[&#39;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                </span><span class="n">bIsTableArray</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vecSections</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ParseDottedKey</span><span class="p">();</span>
+<span class="w">            </span><span class="n">SkipInlineWhitespace</span><span class="p">();</span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bIsTableArray</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Consume</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;]&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">Consume</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;]&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Malformed table array closure.&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Consume</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;]&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Malformed table closure.&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">reference_wrapper</span><span class="o">&lt;</span><span class="n">SNode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">refCurrent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m_sRoot</span><span class="p">;</span>
+
+<span class="w">            </span><span class="c1">// 1. Traverse down through intermediate namespaces until the second-to-last token component</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">vecSections</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ssSection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vecSections</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">bIsInline</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Cannot add subtables to an immutable inline table.&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+
+<span class="w">                </span><span class="k">auto</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">ssSection</span><span class="p">);</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">it</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">IsValue</span><span class="p">())</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Cannot re-define a scalar key value as an intermediate table structure.&quot;</span><span class="p">);</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">IsArray</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">bIsExplicitlyHeadered</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Type collision: Cannot append table elements to a literal array.&quot;</span><span class="p">);</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">else</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">SNode</span><span class="w"> </span><span class="n">sNewNode</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">sNewNode</span><span class="p">.</span><span class="n">eType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_table</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">sNewNode</span><span class="p">.</span><span class="n">ssKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ssSection</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">[</span><span class="n">ssSection</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sNewNode</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+
+<span class="w">                </span><span class="c1">// Advance cursor reference</span>
+<span class="w">                </span><span class="n">refCurrent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ref</span><span class="p">(</span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">[</span><span class="n">ssSection</span><span class="p">]);</span>
+
+<span class="w">                </span><span class="c1">// Context Redirect: Always dive into the newest array element block if tracking a structural Table Array</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">IsArray</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">vecArray</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">refCurrent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ref</span><span class="p">(</span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">vecArray</span><span class="p">.</span><span class="n">back</span><span class="p">());</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="c1">// 2. Handle the final explicit destination node leaf signature</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssFinalSection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vecSections</span><span class="p">.</span><span class="n">back</span><span class="p">();</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">itFinal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">ssFinalSection</span><span class="p">);</span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">itFinal</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">itFinal</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">IsValue</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Conflict: Table header overrides an existing scalar value.&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bIsTableArray</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">itFinal</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">IsTable</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Type collision: Static table cannot be turned into a table array.&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">bIsTableArray</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">itFinal</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">IsArray</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">itFinal</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">bIsExplicitlyHeadered</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Type collision: Array of tables cannot be redefined as a standard table.&quot;</span><span class="p">);</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="k">else</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Type collision: Literal array cannot be redefined as a table.&quot;</span><span class="p">);</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+
+<span class="w">                </span><span class="c1">// SAFETY CONSTRAINT REMEDIED:</span>
+<span class="w">                </span><span class="c1">// Only throw duplicate declaration errors if a standard table header is redefined</span>
+<span class="w">                </span><span class="c1">// *explicitly* inside the exact same local scope block wrapper.</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">bIsTableArray</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">itFinal</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">IsTable</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">itFinal</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">bIsExplicitlyHeadered</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Duplicate table declaration detected in this scope: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ssFinalSection</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="c1">// 3. Construct or instantiate the final target node leaf elements safely</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">bIsTableArray</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">ssFinalSection</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">SNode</span><span class="w"> </span><span class="n">sNewArrayNode</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">sNewArrayNode</span><span class="p">.</span><span class="n">eType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_array</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">sNewArrayNode</span><span class="p">.</span><span class="n">ssKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ssFinalSection</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">sNewArrayNode</span><span class="p">.</span><span class="n">bIsExplicitlyHeadered</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">[</span><span class="n">ssFinalSection</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sNewArrayNode</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="n">SNode</span><span class="w"> </span><span class="n">sNewTableInstance</span><span class="p">;</span>
+<span class="w">                </span><span class="n">sNewTableInstance</span><span class="p">.</span><span class="n">eType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_table</span><span class="p">;</span>
+<span class="w">                </span><span class="n">sNewTableInstance</span><span class="p">.</span><span class="n">ssKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ssFinalSection</span><span class="p">;</span>
+<span class="w">                </span><span class="n">sNewTableInstance</span><span class="p">.</span><span class="n">bIsExplicitlyHeadered</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">                </span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">[</span><span class="n">ssFinalSection</span><span class="p">].</span><span class="n">vecArray</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">sNewTableInstance</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">ssFinalSection</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">SNode</span><span class="w"> </span><span class="n">sNewNode</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">sNewNode</span><span class="p">.</span><span class="n">eType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_table</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">sNewNode</span><span class="p">.</span><span class="n">ssKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ssFinalSection</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">sNewNode</span><span class="p">.</span><span class="n">bIsExplicitlyHeadered</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">[</span><span class="n">ssFinalSection</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sNewNode</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">else</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">refCurrent</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">[</span><span class="n">ssFinalSection</span><span class="p">].</span><span class="n">bIsExplicitlyHeadered</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">vecSections</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="n">ParseKeyValue</span><span class="p">(</span><span class="n">SNode</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rsParentTable</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vecKeys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ParseDottedKey</span><span class="p">();</span>
+<span class="w">            </span><span class="n">SkipInlineWhitespace</span><span class="p">();</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Consume</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;=&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Missing valid variable declaration assignment mapping.&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">SkipInlineWhitespace</span><span class="p">();</span>
+
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">reference_wrapper</span><span class="o">&lt;</span><span class="n">SNode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">refTarget</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ref</span><span class="p">(</span><span class="n">rsParentTable</span><span class="p">);</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">vecKeys</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// ONLY block if we are attempting to add elements down through a table that was completed</span>
+<span class="w">                </span><span class="c1">// and locked as an immutable inline structure from an external scope.</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">refTarget</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">bIsInline</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Cannot traverse or append keys through an immutable inline table.&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+
+<span class="w">                </span><span class="k">auto</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">refTarget</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">vecKeys</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">it</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">refTarget</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">IsValue</span><span class="p">())</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Collision: Implied intermediate segment conflicts with an existing scalar.&quot;</span><span class="p">);</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">bIsInline</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Collision: Implied path segment penetrates an immutable inline table.&quot;</span><span class="p">);</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">else</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">SNode</span><span class="w"> </span><span class="n">sNewNode</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">sNewNode</span><span class="p">.</span><span class="n">eType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_table</span><span class="p">;</span>
+<span class="w">                    </span><span class="n">sNewNode</span><span class="p">.</span><span class="n">ssKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vecKeys</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">                    </span><span class="n">refTarget</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">[</span><span class="n">vecKeys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sNewNode</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="n">refTarget</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ref</span><span class="p">(</span><span class="n">refTarget</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">[</span><span class="n">vecKeys</span><span class="p">[</span><span class="n">i</span><span class="p">]]);</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">refTarget</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">IsArray</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">refTarget</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">vecArray</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">refTarget</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">ref</span><span class="p">(</span><span class="n">refTarget</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">vecArray</span><span class="p">.</span><span class="n">back</span><span class="p">());</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ssFinalKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vecKeys</span><span class="p">.</span><span class="n">back</span><span class="p">();</span>
+
+<span class="w">            </span><span class="c1">// Safety Constraint: Check if the final target key value has already been populated in this specific map context</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">refTarget</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">ssFinalKey</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">refTarget</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Duplicate key configuration definition detected: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ssFinalKey</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="n">SNode</span><span class="w"> </span><span class="n">sParsedValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ParseValueNode</span><span class="p">();</span>
+
+<span class="w">            </span><span class="c1">// Safety Constraint: Catch empty data assignment attempts like `key = # comment`</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sParsedValue</span><span class="p">.</span><span class="n">IsValue</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">sParsedValue</span><span class="p">.</span><span class="n">ssValueRaw</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">&quot;Assignments cannot be empty or contain only comment elements.&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="n">sParsedValue</span><span class="p">.</span><span class="n">ssKey</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ssFinalKey</span><span class="p">;</span>
+<span class="w">            </span><span class="n">refTarget</span><span class="p">.</span><span class="n">get</span><span class="p">().</span><span class="n">mapTable</span><span class="p">[</span><span class="n">ssFinalKey</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sParsedValue</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">SNode</span><span class="w"> </span><span class="n">ParseValueNode</span><span class="p">()</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">SkipWhitespaceAndComments</span><span class="p">();</span>
+<span class="w">            </span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Peek</span><span class="p">();</span>
+<span class="w">            </span><span class="n">SNode</span><span class="w"> </span><span class="n">sValue</span><span class="p">;</span>
+
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;&quot;&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;\&#39;&#39;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">sValue</span><span class="p">.</span><span class="n">eType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_value</span><span class="p">;</span>
+<span class="w">                </span><span class="n">sValue</span><span class="p">.</span><span class="n">ssValueRaw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ParseStringNode</span><span class="p">();</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;{&#39;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">sValue</span><span class="p">.</span><span class="n">eType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_table</span><span class="p">;</span>
+<span class="w">                </span><span class="n">Consume</span><span class="p">();</span><span class="w"> </span><span class="c1">// Consume starting &#39;{&#39;</span>
+<span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">SkipWhitespaceAndComments</span><span class="p">();</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;}&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="n">ParseKeyValue</span><span class="p">(</span><span class="n">sValue</span><span class="p">);</span><span class="w"> </span><span class="c1">// Can append safely during the parsing lifecycle phase</span>
+<span class="w">                    </span><span class="n">SkipWhitespaceAndComments</span><span class="p">();</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;,&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;}&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="c1">// CRITICAL FIX: Lock the inline structure to prevent outside modifications</span>
+<span class="w">                </span><span class="c1">// ONLY after it has completely finished parsing and its braces are closed!</span>
+<span class="w">                </span><span class="n">sValue</span><span class="p">.</span><span class="n">bIsInline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;[&#39;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">sValue</span><span class="p">.</span><span class="n">eType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_array</span><span class="p">;</span>
+<span class="w">                </span><span class="n">sValue</span><span class="p">.</span><span class="n">bIsExplicitlyHeadered</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"> </span><span class="c1">// Literal array token</span>
+<span class="w">                </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">())</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">SkipWhitespaceAndComments</span><span class="p">();</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;]&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="n">sValue</span><span class="p">.</span><span class="n">vecArray</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">ParseValueNode</span><span class="p">());</span>
+<span class="w">                    </span><span class="n">SkipWhitespaceAndComments</span><span class="p">();</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;,&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;]&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">sValue</span><span class="p">.</span><span class="n">eType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENodeType</span><span class="o">::</span><span class="n">node_value</span><span class="p">;</span>
+<span class="w">                </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">strRaw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+<span class="w">                </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">IsEof</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\r&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;,&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;}&#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;]&#39;</span>
+<span class="w">                       </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">Peek</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;#&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="kt">char</span><span class="w"> </span><span class="n">rc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Consume</span><span class="p">();</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rc</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39; &#39;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">rc</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\t&#39;</span><span class="p">)</span>
+<span class="w">                        </span><span class="n">strRaw</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">rc</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="n">sValue</span><span class="p">.</span><span class="n">ssValueRaw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strRaw</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">sValue</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// namespace sdv::toml::simple_parser</span>
+
+<span class="cp">#ifdef __GNUC__</span>
+<span class="w">    </span><span class="cp">#pragma GCC diagnostic pop</span>
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="bd-sidebar-secondary">
+  
+<ul class="sidebar-menu">
+    <li class="sidebar-section">
+      <div class="sidebar-title">🚀 Start here</div>
+      <a class="sidebar-link" data-target="vapi_doc/entry.html">Overview</a>
+      <a class="sidebar-link" data-target="vapi_doc/learn_the_concepts.html">Learn the concepts</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🛠 Build & Run</div>
+      <a class="sidebar-link" data-target="vapi_doc/get_started.html">Set up your environment</a>
+      <a class="sidebar-link" data-target="vapi_doc/get_something_running.html">Run your first example</a>
+      <a class="sidebar-link" data-target="vapi_doc/project_guide.html">Understand the project structure</a>
+      <a class="sidebar-link" data-target="vapi_doc/simulation.html">Simulation</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🧱 Develop & Advanced</div>
+      <a class="sidebar-link" data-target="vapi_doc/sdv_tools/sdv_executables.html">Tools & executables</a>      
+      <a class="sidebar-link" data-target="vapi_doc/build_services.html">Develop services</a>
+      <a class="sidebar-link" data-target="vapi_doc/advanced_and_reference.html">Advanced &amp; reference</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">🧩 Support</div>
+      <a class="sidebar-link" data-target="vapi_doc/glossary.html">Glossary</a>
+      <a class="sidebar-link" data-target="vapi_doc/q_and_a.html">Q &amp; A</a>
+      <a class="sidebar-link" data-target="vapi_pages/team.html">Team</a>
+      <a class="sidebar-link" data-target="vapi_pages/contact.html">Contact</a>
+    </li>
+
+    <li class="sidebar-section">
+      <div class="sidebar-title">⚙ Utilities</div>
+      <a class="sidebar-link" data-target="_vapi_code/vapi_code_doc.html">API reference</a>
+      <a class="sidebar-link" data-target="genindex.html" target="_blank" rel="noopener">Index</a>
+      <a class="sidebar-link" data-target="search.html" target="_blank" rel="noopener">Search</a>
+    </li>
+</ul>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const links = document.querySelectorAll(".sidebar-link[data-target]");
+  const url = new URL(window.location.href);
+
+  function normalizePath(pathname) {
+    return pathname
+      .replace(/\\/g, "/")
+      .replace(/\/index\.html$/i, "/")
+      .replace(/\.html$/i, "")
+      .replace(/\/+$/g, "")
+      .toLowerCase();
+  }
+
+  function pageKey(pathname) {
+    const p = normalizePath(pathname);
+    const parts = p.split("/").filter(Boolean);
+    return parts.length ? parts[parts.length - 1] : "index";
+  }
+
+  // Determine site root by trimming known subfolders if present
+  const markers = ["/vapi_doc/", "/vapi_pages/", "/_static/", "/_vapi_code/"];
+  let rootPath = null;
+
+  for (const m of markers) {
+    const idx = url.pathname.indexOf(m);
+    if (idx !== -1) {
+      rootPath = url.pathname.substring(0, idx + 1);
+      break;
+    }
+  }
+
+  // If no marker found (e.g., index.html in root), use current directory as root
+  if (!rootPath) {
+    rootPath = url.pathname.substring(0, url.pathname.lastIndexOf("/") + 1);
+  }
+
+  // Build a base URL that points to the site root
+  const baseUrl = new URL(window.location.href);
+  baseUrl.pathname = rootPath;
+  baseUrl.search = "";
+  baseUrl.hash = "";
+
+  // Set hrefs correctly relative to site root and mark active link.
+  const currentPath = normalizePath(url.pathname);
+  const currentKey = pageKey(url.pathname);
+  let activeCount = 0;
+
+  links.forEach(a => {
+    let target = a.getAttribute("data-target") || "";
+    target = target.replace(/^\/+/, ""); // avoid absolute root paths
+
+    const resolved = new URL(target, baseUrl);
+    a.href = resolved.href;
+
+    const targetPath = normalizePath(resolved.pathname);
+    const targetKey = pageKey(resolved.pathname);
+    const isActive = currentPath === targetPath || currentKey === targetKey;
+
+    a.classList.toggle("active", isActive);
+    a.style.fontWeight = isActive ? "600" : "";
+    if (isActive) {
+      a.setAttribute("aria-current", "page");
+      activeCount += 1;
+    } else {
+      a.removeAttribute("aria-current");
+    }
+  });
+
+  // Fallback: if no exact match, try key-only match.
+  if (activeCount === 0) {
+    links.forEach(a => {
+      const t = (a.getAttribute("data-target") || "").replace(/^\/+/, "");
+      const isActive = pageKey(t) === currentKey;
+      a.classList.toggle("active", isActive);
+      a.style.fontWeight = isActive ? "600" : "";
+      if (isActive) {
+        a.setAttribute("aria-current", "page");
+      } else {
+        a.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  // Highlight section title if any link inside is active.
+  document.querySelectorAll(".sidebar-section").forEach(section => {
+    const hasActive = !!section.querySelector(".sidebar-link.active");
+    section.classList.toggle("active-section", hasActive);
+  });
+});
+</script>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026, Open Vehicle API Team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

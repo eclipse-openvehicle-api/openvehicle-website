@@ -11,8 +11,8 @@ Program Listing for File com.h
 .. code-block:: cpp
 
    
-   #ifndef __IDL_GENERATED__COM_H__20260428_100222_562__
-   #define __IDL_GENERATED__COM_H__20260428_100222_562__
+   #ifndef __IDL_GENERATED__COM_H__20260703_131936_872__
+   #define __IDL_GENERATED__COM_H__20260703_131936_872__
    
    #ifdef _MSC_VER
    // Prevent bogus warnings about uninitialized members during static code analysis.
@@ -52,9 +52,15 @@ Program Listing for File com.h
    
            interface IClientConnect
            {
-               static constexpr ::sdv::interface_id _id = 0x36D212B6251B63DD;
+               static constexpr ::sdv::interface_id _id = 0x6A220464A7E5E037;
    
-               virtual IInterfaceAccess* Connect(/*in*/ const sdv::u8string& ssConnectString) = 0;
+               virtual bool Connect() = 0;
+   
+               virtual bool Disconnect() = 0;
+   
+               virtual bool IsConnected() const = 0;
+   
+               virtual IInterfaceAccess* GetRemoteRepository() = 0;
            };
    
            enum class EChannelType : uint32_t
@@ -87,4 +93,4 @@ Program Listing for File com.h
    #pragma warning(pop)
    #endif
    
-   #endif // !defined(__IDL_GENERATED__COM_H__20260428_100222_563__)
+   #endif // !defined(__IDL_GENERATED__COM_H__20260703_131936_874__)

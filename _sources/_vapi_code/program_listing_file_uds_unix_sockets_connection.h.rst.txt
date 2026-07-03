@@ -34,6 +34,8 @@ Program Listing for File connection.h
    #include <atomic>
    #include <cstdint>
    #include <condition_variable>
+   #include <cstring>
+   #include <functional>
    #include <mutex>
    #include <string>
    #include <thread>
@@ -81,6 +83,8 @@ Program Listing for File connection.h
    
        void DestroyObject() override;
    
+       void SetWatchDogRemoveCallback(std::function<void(const void*)> callback);
+   
        void SetConnectState(sdv::ipc::EConnectState eConnectState);
    
        bool IsServer() const;
@@ -127,19 +131,25 @@ Program Listing for File connection.h
            SMsgHdr GetMsgHdr() const
            {
                if (GetSize() < sizeof(SMsgHdr)) return SMsgHdr{0, EMsgType::connect_term};
-               return *reinterpret_cast<const SMsgHdr*>(GetData());
+               SMsgHdr hdr{};
+               std::memcpy(&hdr, GetData(), sizeof(SMsgHdr));
+               return hdr;
            }
    
            SConnectMsg GetConnectHdr() const
            {
                if (GetSize() < sizeof(SConnectMsg)) return SConnectMsg{};
-               return *reinterpret_cast<const SConnectMsg*>(GetData());
+               SConnectMsg hdr{};
+               std::memcpy(&hdr, GetData(), sizeof(SConnectMsg));
+               return hdr;
            }
    
            SFragmentedMsgHdr GetFragmentedHdr() const
            {
                if (GetSize() < sizeof(SFragmentedMsgHdr)) return SFragmentedMsgHdr{};
-               return *reinterpret_cast<const SFragmentedMsgHdr*>(GetData());
+               SFragmentedMsgHdr hdr{};
+               std::memcpy(&hdr, GetData(), sizeof(SFragmentedMsgHdr));
+               return hdr;
            }
    
            bool IsValid() const
@@ -195,6 +205,10 @@ Program Listing for File connection.h
    
        void ReceiveMessages();
    
+       bool SendConnectMessage(EMsgType type);
+   
+       bool SendControlMessage(EMsgType type);
+   
        void ReceiveSyncRequest(const CMessage& message);
    
        void ReceiveSyncAnswer(const CMessage& message);
@@ -218,6 +232,10 @@ Program Listing for File connection.h
        void StartReceiveThread_Unsafe();
        void StopThreadsAndCloseSockets(bool unlinkPath);
    
+       void WaitForClientEnd();
+   
+       void CloseClientSocketOnly();
+   
    private:
        //Transport state
        int         m_Fd                     { -1 };  
@@ -228,19 +246,24 @@ Program Listing for File connection.h
        //Threads & control
        std::atomic<bool> m_StopReceiveThread { false };
        std::atomic<bool> m_StopConnectThread { false };
-       std::thread       m_ReceiveThread;
-       std::thread       m_ConnectThread;
+       sdv::core::secure_thread               m_ReceiveThread;
+       sdv::core::secure_thread               m_ConnectThread;
    
        //State & synchronization
        std::condition_variable                m_StateCv;
        std::atomic<sdv::ipc::EConnectState>   m_eConnectState { sdv::ipc::EConnectState::uninitialized };
+       std::atomic<bool>                       m_bConnectedOnce { false }; 
        sdv::ipc::IDataReceiveCallback*        m_pReceiver { nullptr };
        sdv::ipc::IConnectEventCallback*       m_pEvent    { nullptr };
        std::mutex                             m_MtxConnect;
-       std::condition_variable                m_CvConnect;
+       std::condition_variable                m_cvConnect;
        std::mutex                             m_StateMtx;  
        std::list<SEventCallback>              m_lstEventCallbacks;  
        std::shared_mutex                      m_mtxEventCallbacks;  
+       std::mutex                             m_WatchdogMtx;
+       std::function<void(const void*)>       m_WatchdogRemoveCallback;
+       std::atomic<bool>                      m_DestroyObjectCalled { false };
+       std::atomic<bool>                      m_CancelWait { false };
    
        //TX synchronization
        std::mutex m_SendMtx;

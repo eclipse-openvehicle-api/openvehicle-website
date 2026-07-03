@@ -23,8 +23,8 @@ Program Listing for File scheduler.h
     *   Erik Verhoeven - initial API and implementation
     ********************************************************************************/
    
-   #ifndef THREAD_POOL_H
-   #define THREAD_POOL_H
+   #ifndef SCHEDULER_H
+   #define SCHEDULER_H
    
    #include <thread>
    #include <mutex>
@@ -38,19 +38,23 @@ Program Listing for File scheduler.h
    #include <atomic>
    #include "../flags.h"
    
+   enum class EScheduleFlags
+   {
+       normal   = 0x0, 
+       priority = 0x1, 
+       no_queue = 0x2, 
+   };
+   
+   template <class TThread = std::thread, size_t nMinIdle = 4, size_t nMaxBusy = 32>
    class CTaskScheduler
    {
    public:
-       CTaskScheduler(size_t nMinIdle = 4, size_t nMaxBusy = 32);
+       // The thread class must be derived from std::thread.
+       static_assert(std::is_base_of_v<std::thread, TThread>);
+   
+       CTaskScheduler();
    
        ~CTaskScheduler();
-   
-       enum class EScheduleFlags
-       {
-           normal = 0x0,   
-           priority = 0x1, 
-           no_queue = 0x2, 
-       };
    
        bool Schedule(std::function<void()> fnTask, hlpr::flags<EScheduleFlags> flags = EScheduleFlags::normal);
    
@@ -77,7 +81,7 @@ Program Listing for File scheduler.h
        private:
            void ThreadFunc();
    
-           std::thread             m_thread;               
+           TThread                 m_thread;               
            std::atomic_bool        m_bShutdown = false;    
            std::atomic_bool        m_bStarted = false;     
            std::function<void()>   m_fnTask;               
@@ -87,15 +91,18 @@ Program Listing for File scheduler.h
            std::condition_variable m_cvExecute;            
        };
    
-       void Execute(std::list<std::shared_ptr<CThread>>::iterator itThread, std::function<void()> fnTask);
+       void Execute(typename std::list<std::shared_ptr<CThread>>::iterator itThread, std::function<void()> fnTask);
    
        size_t                                  m_nMinIdle = 4;         
        size_t                                  m_nMaxBusy = 32;        
        size_t                                  m_nMaxThreads = 0;      
        mutable std::mutex                      m_mtxQueueAccess;       
-       std::queue<std::list<std::shared_ptr<CThread>>::iterator> m_queueIdleThreads; 
-       std::list<std::shared_ptr<CThread>>     m_lstThreads;           
+       std::queue<typename std::list<std::shared_ptr<CThread>>::iterator> m_queueIdleThreads; 
+       std::list<typename std::shared_ptr<CThread>>     m_lstThreads;  
        std::deque<std::function<void()>>       m_dequeTasks;           
    };
    
-   #endif // !defined THREAD_POOL_H
+   // Include the implementation
+   #include "scheduler.inl"
+   
+   #endif // !defined SCHEDULER_H

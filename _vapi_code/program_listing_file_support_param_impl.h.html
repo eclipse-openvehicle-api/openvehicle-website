@@ -951,7 +951,7 @@
 <span class="w">        </span><span class="p">{</span>
 <span class="w">        </span><span class="k">public</span><span class="o">:</span>
 <span class="w">            </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">TInfoConstruct</span><span class="o">&gt;</span>
-<span class="w">            </span><span class="n">CParamValue</span><span class="p">(</span><span class="n">TVar</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rtVar</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bLockable</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bAutoDirty</span><span class="p">,</span><span class="w"> </span><span class="n">TInfoConstruct</span><span class="p">...</span><span class="w"> </span><span class="n">tConstruct</span><span class="p">);</span>
+<span class="w">            </span><span class="n">CParamValue</span><span class="p">(</span><span class="n">TVar</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rtVar</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bReadOnly</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bLockable</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bAutoDirty</span><span class="p">,</span><span class="w"> </span><span class="n">TInfoConstruct</span><span class="p">...</span><span class="w"> </span><span class="n">tConstruct</span><span class="p">);</span>
 
 <span class="w">            </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Set</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">any_t</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ranyValue</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span>
 
@@ -1258,7 +1258,7 @@
 <span class="cp">            }                                                                                                                      \</span>
 <span class="cp">            std::vector&lt;std::shared_ptr&lt;sdv::CSdvParamInfo&gt;&gt; vecParamInfo;                                                         \</span>
 <span class="cp">            [[maybe_unused]] uint32_t uiFlags = 0;                                                                                 \</span>
-<span class="cp">            [[maybe_unused]] std::string ssGroup;                                                                               \</span>
+<span class="cp">            [[maybe_unused]] std::string ssGroup;                                                                                  \</span>
 <span class="cp">            [[maybe_unused]] bool bLockable = false;</span>
 
 <span class="cp">#define END_SDV_PARAM_MAP()                                                                                                        \</span>
@@ -1318,8 +1318,9 @@
 <span class="cp">    }                                                                                                                              \</span>
 <span class="cp">    else                                                                                                                           \</span>
 <span class="cp">    {                                                                                                                              \</span>
-<span class="cp">        std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = pObject-&gt;RegisterParameter(pObject-&gt;var, bLockable, true, name_string,  \</span>
-<span class="cp">            default_val, unit_string, ssGroup, description_string, uiFlags);                                                       \</span>
+<span class="cp">        std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = pObject-&gt;RegisterParameter(pObject-&gt;var,                                \</span>
+<span class="cp">            uiFlags &amp; static_cast&lt;uint32_t&gt;(::sdv::EParamFlags::read_only), bLockable, true,  name_string,  default_val,           \</span>
+<span class="cp">            unit_string, ssGroup, description_string, uiFlags);                                                                    \</span>
 <span class="cp">        if (ptrParamInfo) vecParamInfo.push_back(std::move(ptrParamInfo));                                                         \</span>
 <span class="cp">    }</span>
 
@@ -1344,8 +1345,9 @@
 <span class="cp">        }                                                                                                                          \</span>
 <span class="cp">        else                                                                                                                       \</span>
 <span class="cp">        {                                                                                                                          \</span>
-<span class="cp">            std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = pObject-&gt;RegisterParameter(pObject-&gt;var, bLockable, true,           \</span>
-<span class="cp">                name_string, default_val, anyLower, prLowLimit.second != sdv::internal::ELimitType::up_to_limit, anyUpper,         \</span>
+<span class="cp">            std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = pObject-&gt;RegisterParameter(pObject-&gt;var,                            \</span>
+<span class="cp">                uiFlags &amp; static_cast&lt;uint32_t&gt;(::sdv::EParamFlags::read_only), bLockable, true, name_string, default_val,         \</span>
+<span class="cp">                anyLower, prLowLimit.second != sdv::internal::ELimitType::up_to_limit, anyUpper,                                   \</span>
 <span class="cp">                prHighLimit.second != sdv::internal::ELimitType::up_to_limit, unit_string, ssGroup, description_string,            \</span>
 <span class="cp">                uiFlags);                                                                                                          \</span>
 <span class="cp">            if (ptrParamInfo)vecParamInfo.push_back(std::move(ptrParamInfo));                                                      \</span>
@@ -1365,8 +1367,9 @@
 <span class="cp">    }                                                                                                                              \</span>
 <span class="cp">    else                                                                                                                           \</span>
 <span class="cp">    {                                                                                                                              \</span>
-<span class="cp">        std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = pObject-&gt;RegisterParameter(pObject-&gt;var, bLockable, true, name_string,  \</span>
-<span class="cp">            default_val, pattern_string, unit_string, ssGroup, description_string, uiFlags);                                       \</span>
+<span class="cp">        std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = pObject-&gt;RegisterParameter(pObject-&gt;var,                                \</span>
+<span class="cp">            uiFlags &amp; static_cast&lt;uint32_t&gt;(::sdv::EParamFlags::read_only), bLockable, true, name_string, default_val,             \</span>
+<span class="cp">            pattern_string, unit_string, ssGroup, description_string, uiFlags);                                                    \</span>
 <span class="cp">        if (ptrParamInfo) vecParamInfo.push_back(std::move(ptrParamInfo));                                                         \</span>
 <span class="cp">    }</span>
 
@@ -1383,8 +1386,9 @@
 <span class="cp">    }                                                                                                                              \</span>
 <span class="cp">    else                                                                                                                           \</span>
 <span class="cp">    {                                                                                                                              \</span>
-<span class="cp">        std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = pObject-&gt;RegisterParameter(pObject-&gt;var, bLockable, true, name_string,  \</span>
-<span class="cp">            default_val, sdv::internal::GetLabelMapHelper().GetLabelMap&lt;TEnum&gt;(), ssGroup, description_string, uiFlags);           \</span>
+<span class="cp">        std::shared_ptr&lt;sdv::CSdvParamInfo&gt; ptrParamInfo = pObject-&gt;RegisterParameter(pObject-&gt;var,                                \</span>
+<span class="cp">            uiFlags &amp; static_cast&lt;uint32_t&gt;(::sdv::EParamFlags::read_only), bLockable, true, name_string, default_val,             \</span>
+<span class="cp">            sdv::internal::GetLabelMapHelper().GetLabelMap&lt;TEnum&gt;(), ssGroup, description_string, uiFlags);                        \</span>
 <span class="cp">        if (ptrParamInfo) vecParamInfo.push_back(std::move(ptrParamInfo));                                                         \</span>
 <span class="cp">    }</span>
 
@@ -1399,11 +1403,12 @@
 <span class="cp">        std::vector&lt;std::shared_ptr&lt;sdv::CSdvParamInfo&gt;&gt; vecParamInfoMember;                                                       \</span>
 <span class="cp">        if constexpr (bStatic)                                                                                                     \</span>
 <span class="cp">        {                                                                                                                          \</span>
-<span class="cp">            vecParamInfoMember = sdv::internal::SMemberMap&lt;decltype(member)&gt;::BuildStatic();                                       \</span>
+<span class="cp">            vecParamInfoMember = sdv::internal::SMemberMap&lt;std::decay_t&lt;decltype(member)&gt;&gt;::BuildStatic();                         \</span>
 <span class="cp">        }                                                                                                                          \</span>
 <span class="cp">        else                                                                                                                       \</span>
 <span class="cp">        {                                                                                                                          \</span>
-<span class="cp">            auto ptrMemberMap = std::make_shared&lt;sdv::internal::SMemberMap&lt;decltype(member)&gt;&gt;(pObject-&gt;member, pObject);           \</span>
+<span class="cp">            auto ptrMemberMap =                                                                                                    \</span>
+<span class="cp">                std::make_shared&lt;sdv::internal::SMemberMap&lt;std::decay_t&lt;decltype(member)&gt;&gt;&gt;(pObject-&gt;member, pObject);             \</span>
 <span class="cp">            if (ptrMemberMap)                                                                                                      \</span>
 <span class="cp">            {                                                                                                                      \</span>
 <span class="cp">                ptrMemberMap-&gt;BuildMap();                                                                                          \</span>
@@ -1452,7 +1457,8 @@
 
 <span class="w">    </span><span class="k">protected</span><span class="o">:</span>
 <span class="w">        </span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">TVar</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="p">...</span><span class="w"> </span><span class="n">TConstruct</span><span class="o">&gt;</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CSdvParamInfo</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RegisterParameter</span><span class="p">(</span><span class="n">TVar</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rtVar</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bLockable</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bAutoDirty</span><span class="p">,</span><span class="w"> </span><span class="n">TConstruct</span><span class="p">...</span><span class="w"> </span><span class="n">tConstruct</span><span class="p">);</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CSdvParamInfo</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RegisterParameter</span><span class="p">(</span><span class="n">TVar</span><span class="o">&amp;</span><span class="w"> </span><span class="n">rtVar</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bReadOnly</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bLockable</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">bAutoDirty</span><span class="p">,</span>
+<span class="w">            </span><span class="n">TConstruct</span><span class="p">...</span><span class="w"> </span><span class="n">tConstruct</span><span class="p">);</span>
 
 <span class="w">        </span><span class="kt">void</span><span class="w"> </span><span class="nf">RegisterMemberMap</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">internal</span><span class="o">::</span><span class="n">SMemberMapAccess</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rptrMember</span><span class="p">);</span>
 
