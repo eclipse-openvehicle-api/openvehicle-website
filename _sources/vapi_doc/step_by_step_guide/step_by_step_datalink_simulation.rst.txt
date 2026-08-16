@@ -7,7 +7,7 @@ Step-by-Step: Data Link & CAN Simulation for Wiper Example
 
    **Step Goal**
    
-   In this guide, you will learn how to integrate **CAN Data Link simulation** into the Wiper example using the SDV framework.
+   In this guide, you will learn how to integrate **CAN Data Link simulation** into the Wiper example using the Eclipse Open Vehicle-API framework.
    We will use:
    
    - A **DBC file** to define CAN messages and signals.
@@ -98,15 +98,15 @@ Use `sdv_dbc_util` to generate the CAN Data Link component and include the gener
    message("Create data link for wiper example")
    execute_process(COMMAND ${SDV_DBC_UTIL} "${PROJECT_SOURCE_DIR}/datalink_wiper_example.dbc"
                    "-O${PROJECT_SOURCE_DIR}/generated/"
-                   --nodeswipers --version1.0.0.1 --moduleWiperExampleFMU --dl_lib_namecan_dl_wiper)
+                   --impl_nodeswipers --moduleWiperExampleFMU --data_linkcan_dl_wiper)
 
    message("Include: example component can_dl_wiper")
    add_subdirectory(generated/can_dl)
 
 .. note::
 
-   - The argument `--nodeswipers` must match the node name defined in your DBC file (``BU_`` section). In this example, the node name is **wipers**.
-   - The argument `--dl_lib_namecan_dl_wiper` corresponds to the library name used in `data_link_wiper.toml` under `Path = "can_dl_wiper.sdv"`.
+   - The argument `--impl_nodeswipers` must match the node name defined in your DBC file (``BU_`` section). In this example, the node name is **wipers**.
+   - The argument `--data_linkcan_dl_wiper` corresponds to the library name used in `data_link_wiper.toml` under `Path = "can_dl_wiper.sdv"`.
 
 Step 4: Update CMakeLists.txt
 -----------------------------
@@ -127,11 +127,11 @@ When running in **CAN simulation mode**, the application must load two additiona
   Loads the CAN simulation component (`CAN_Com_Sim`) that replays ASC logs.
 
 - **`data_link_wiper.toml`**  
-  Loads the Data Link component generated from the DBC file. This maps CAN messages to SDV signals.
+  Loads the Data Link component generated from the DBC file. This maps CAN messages to Eclipse Open Vehicle-API signals.
 
 .. note::
 
-   Without these files, the application cannot interpret CAN frames or publish signals to the SDV framework.
+   Without these files, the application cannot interpret CAN frames or publish signals to the Eclipse Open Vehicle-API framework.
 
 **What changed compared to the previous implementation?** 
  
@@ -141,7 +141,7 @@ Before, the code only supported `NO_CAN_SIMULATION` mode and did not use `exampl
 - `main()` accepts an argument to select the mode (0 = normal, 1 = CAN simulation).
 - Functions like `PrintHeader()`, `PrepareDataConsumers()`, and `RunUntilBreak()` adapt behavior based on the mode.
 
-The application wrapper still owns this `Initialize()` method. The Complex Service itself is initialized later by the SDV runtime through `OnInitialize()` when `complex_service_wiper.toml` is loaded.
+The application wrapper still owns this `Initialize()` method. The Complex Service itself is initialized later by the Eclipse Open Vehicle-API runtime through `OnInitialize()` when `complex_service_wiper.toml` is loaded.
 
 .. note::
 

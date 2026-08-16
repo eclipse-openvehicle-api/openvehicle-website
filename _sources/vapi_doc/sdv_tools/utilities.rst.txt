@@ -1,10 +1,10 @@
 
 .. _vapi-utilities_auto_code_generation:
 
-SDV Utilities (Auto Code Generation)
-====================================
+Eclipse Open Vehicle-API Utilities (Auto Code Generation)
+=========================================================
 
-This section describes the tools and processes used to automatically generate code artifacts for Software Defined Vehicle (SDV) systems. These artifacts include CAN datalink components (for the extraction and composition of signals from and to CAN messages), vehicle devices, and basic services, based on standardized signal definitions and vehicle-specific configurations.
+This section describes the tools and processes used to automatically generate code artifacts for Software Defined Vehicle (Eclipse Open Vehicle-API) systems. These artifacts include CAN datalink components (for the extraction and composition of signals from and to CAN messages), vehicle devices, and basic services, based on standardized signal definitions and vehicle-specific configurations.
 
 Quick Summary
 -------------
@@ -96,19 +96,19 @@ Example usage:
 
 .. code-block:: console
 
-   sdv_vss_util your_csv_file.csv -O<generated/> --prefix<your_prefix> --version<1.0.0.1> --enable_components
+   sdv_vss_util your_csv_file.csv -O<generated/> --prefix<your_prefix> --vss_version<1.0.0.1> --enable_components
 
-        -O<string>          = output folder
-        --prefix<string>    = prefix, namespace for the signal names
-        --version<string>   = optional version information
-        --enable_components = optional to generate vehicle devices and basic services
+        -O<string>              = output folder
+        --prefix<string>        = prefix, namespace for the signal names
+        --vss_version<string>   = optional version information
+        --enable_components     = optional to generate vehicle devices and basic services
 
 .. code-block:: console
 
     Output:
 
-    - `generated/vss_files/bs_classname/...`
-    - `generated/vss_files/vd_classname/...`
+    - `generated/vss_csv_files/bs_classname/...`
+    - `generated/vss_csv_files/vd_classname/...`
     - `generated/signal_identifier.h`
     - `generated/summary.txt`
     - `generated/vss_*.idl`
@@ -197,7 +197,7 @@ Example usage:
 
 .. code-block:: console
 
-	sdv_idl_compiler generated/vss_files/VSS_VehicleBodyWeatherRain_bs_rx.idl -O<generated/vss_files/> -I<D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\export> -I<generated/vss_files/> --no_ps
+	sdv_idl_compiler generated/vss_csv_files/VSS_VehicleBodyWeatherRain_bs_rx.idl -O<generated/vss_csv_files/> -I<D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\export> -I<generated/vss_csv_files/> --no_ps
 
         -O<string>            = output folder
         -I<string>            = path to required header files
@@ -232,13 +232,18 @@ Used for:
 
 .. code-block:: console
 
-   sdv_dbc_util your_dbc_file.dbc -Ogenerated/ --nodes<your_nodes_name> --version<1.0.0.1> --module<your_FMU_name> --dl_lib_name<your_can_dl_lib_name>
+   sdv_dbc_util your_dbc_file.dbc -Ogenerated/ --impl_nodes<your_transmitter_node_names> --operate_nodes<your_receiver_node_names> --fmu<your_FMU_name> --vehicle_bus
 
-        -O<string>            = output folder
-        --nodes<string>       = nodes inside the dbc fileto be used
-        --version<string>     = optional version information        
-        --module              = optional, if set code for a FMU will be create
-        --dl_lib_name<string> = data link library nameto be created
+    --impl_nodes<string>[,<string>]]    = Specifies which nodes are implemented by this device.
+    --operate_nodes<string>[,<string>]] = Specifies which nodes are operated by this device.
+    --fmu[<string>]                     = Generate FMU module optionally with supplied identifier (default "BasicModelIdentifier").
+    --model[<string>]                   = Same as --fmu
+    --dl_lib_name[<string>]             = Generate data-link library with optional target location (default "can_dl").
+    --vehiclde_bus[<string>]            = Generate vehicle bus component(s) with optional target location (default "vehicle_bus").
+    --idl[<path>]                       = Generate vehicle bus IDL with
+    --ifc_idx                           = Optional physical interface index used for the communication (default is 0).
+    --ifc_name                          = Optional name of the CAN component to use for the communication (default = "vehicle_bus.idl")
+    -O<path>                            = Output directory.
 
 .. code-block:: console
 
@@ -285,19 +290,25 @@ Summarize Tool Options
 
 .. code-block:: console
 
-    --prefix<string>    = Adds a prefix to signal identifiers.
-    --enable_components = Generates component code in addition to IDL.
-    --version<string>   = Optional version tag.
-    -O<path>            = Required output directory.
+    --prefix<string>        = Adds a prefix to signal identifiers.
+    --enable_components     = Generates component code in addition to IDL.
+    --vss_version<string>   = Optional version tag.
+    -O<path>                = Required output directory.
 
 **sdv_dbc_util** options:
 
 .. code-block:: console
 
-    --dl_lib_name<string>      = Name of the generated datalink library.
-    --nodes<string>[,<string>] = Specifies which nodes to implement.
-    --module<string>           = FMU module identifier.
-    -O<path>                   = Output directory.
+    --impl_nodes<string>[,<string>]]    = Specifies which nodes are implemented by this device.
+    --operate_nodes<string>[,<string>]] = Specifies which nodes are operated by this device.
+    --fmu[<string>]                     = Generate FMU module optionally with supplied identifier (default "BasicModelIdentifier").
+    --model[<string>]                   = Same as --fmu
+    --dl_lib_name[<string>]             = Generate data-link library with optional target location (default "can_dl").
+    --vehiclde_bus[<string>]            = Generate vehicle bus component(s) with optional target location (default "vehicle_bus").
+    --idl[<path>]                       = Generate vehicle bus IDL with
+    --ifc_idx                           = Optional physical interface index used for the communication (default is 0).
+    --ifc_name                          = Optional name of the CAN component to use for the communication (default = "vehicle_bus.idl")
+    -O<path>                            = Output directory.
 
 **sdv_idl_compiler** options:
 

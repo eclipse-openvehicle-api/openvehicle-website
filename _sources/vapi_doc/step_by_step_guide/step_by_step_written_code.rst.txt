@@ -1,14 +1,14 @@
 .. _vapi-step_by_step_written_code:
 
 Step-by-Step: Written Code for Wiper Example
-==================================================
+============================================
 
 
 .. note::
 
    **Step Goal**
    
-   In this guide, you will learn how to write and structure the application code for the Wiper example in the SDV framework.  
+   In this guide, you will learn how to write and structure the application code for the Wiper example in the Eclipse Open Vehicle-API framework.  
    
    You’ll understand how to initialize the application, load configuration files, define and register signals, and build the project using CMake.  
    
@@ -17,7 +17,7 @@ Step-by-Step: Written Code for Wiper Example
 Overview
 --------
 
-This guide documents the manually written code components for the Wiper example in the SDV framework. It complements the auto-generated code by implementing application logic, complex service coordination, and user interaction via console.
+This guide documents the manually written code components for the Wiper example in the Eclipse Open Vehicle-API framework. It complements the auto-generated code by implementing application logic, complex service coordination, and user interaction via console.
 
 The application loads configuration files in TOML format, registers input/output signals, and runs a control loop that reacts to user input
 and sensor data. This document explains the structure and logic of the application, focusing on the most critical components.
@@ -26,7 +26,7 @@ and sensor data. This document explains the structure and logic of the applicati
 Implementation Steps
 --------------------
 
-This section explains the essential steps to initialize and run the Wiper application within the SDV framework.
+This section explains the essential steps to initialize and run the Wiper application within the Eclipse Open Vehicle-API framework.
 
 To complete these steps, you need to create three source files:
 
@@ -37,14 +37,14 @@ To complete these steps, you need to create three source files:
 
 
 Application Initialization
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 First, we need the `Initialize()` method on the application wrapper, which sets up the runtime environment, loads configuration files, and registers signals.
 
 .. note::
 
 	In the current framework, this `Initialize()` method belongs to your application helper class (`CWiperControl`).
-	Loadable SDV objects such as Complex Services are initialized by the runtime through `sdv::CSdvObject::OnInitialize()` and cleaned up with `OnShutdown()` after their `.toml` configuration is loaded.
+	Loadable Eclipse Open Vehicle-API objects such as Complex Services are initialized by the runtime through `sdv::CSdvObject::OnInitialize()` and cleaned up with `OnShutdown()` after their `.toml` configuration is loaded.
 
 .. code-block:: cpp
 
@@ -98,14 +98,14 @@ Example:
 			m_appcontrol.SetFrameworkRuntimeDirectory("../../bin");
 		}
 
-Starting the SDV Application
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Starting the Eclipse Open Vehicle-API Application
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You also need to call the `Startup()` function to start the application control.
 
-The `Startup()` function is a critical step in initializing the SDV application control. It performs several essential tasks:
+The `Startup()` function is a critical step in initializing the Eclipse Open Vehicle-API application control. It performs several essential tasks:
 
-- Starts the SDV runtime and prepares the internal framework services.
+- Starts the Eclipse Open Vehicle-API runtime and prepares the internal framework services.
 - Retrieves the application context, including instance ID and retry settings.
 - Establishes communication with the server repository if the context is external.
 - Links the local and server repositories, enabling access to shared services and data.
@@ -114,7 +114,7 @@ Without calling `Startup()`:
 
 - The application won't be able to load configuration files.
 - Signal registration will fail because the dispatch service won't be initialized.
-- Any interaction with the SDV core (e.g., accessing interfaces or repositories) will be unavailable.
+- Any interaction with the Eclipse Open Vehicle-API core (e.g., accessing interfaces or repositories) will be unavailable.
 
 .. code-block:: cpp
 
@@ -126,7 +126,7 @@ Without calling `Startup()`:
 	m_appcontrol.SetConfigMode(); // we need to switch to configuration mode for any further system changes (e.g. loading components)
 
 Loading Configuration Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 After that, load the required configuration files using `LoadConfigFile()`.
 
@@ -401,11 +401,8 @@ Define the executable with CMake
 
 	.. code-block:: text
 
+			cmake_minimum_required (VERSION 3.20)
 			project(WiperDemoExample)
-
-			# Use new policy for project version settings and default warning level
-			cmake_policy(SET CMP0048 NEW)   # requires CMake 3.14
-			cmake_policy(SET CMP0092 NEW)   # requires CMake 3.15
 
 			set(CMAKE_CXX_STANDARD 17)
 
@@ -427,25 +424,25 @@ Define the executable with CMake
 
 			# Execute sdv_vss_util to create IDL files for devices and basic services.
 			message("Create interface code for devices and basic services of wiper example.")
-			execute_process(COMMAND "${SDV_VSS_UTIL}" "${PROJECT_SOURCE_DIR}/vss_wiper_example.csv" "-O${PROJECT_SOURCE_DIR}/generated/" --prefixwiper --version1.0.0.1 --enable_components)
+			execute_process(COMMAND "${SDV_VSS_UTIL}" "${PROJECT_SOURCE_DIR}/vss_wiper_example.csv" "-O${PROJECT_SOURCE_DIR}/generated/" --prefixwiper --vss_version1.0.0.1 --enable_components)
 
 			# Execute the IDL compiler for the VSS interfaces to digest interface code. Compile with --no_ps as we do not need proxies and stubs as we do not like to expose these interfaces for complex services or applications
 			message("Compiling vss_vehiclebodyweatherrain_vd_tx.idl")
-			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodyweatherrain_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
 			message("Compiling vss_vehiclebodyweatherrain_vd_rx.idl")
-			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodyweatherrain_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
 			message("Compiling vss_vehiclebodywindshieldwiperFront_bs_tx.idl")
-			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwiperfront_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
 			message("Compiling vss_vehiclebodywindshieldwiperfront_vd_tx.idl")
-			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwiperfront_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
 			message("Compiling vss_vehiclebodywindshieldwiperMode_bs_rx.idl")
-			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwipermode_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
 			message("Compiling vss_vehiclebodywindshieldwipermode_vd_rx.idl")
-			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwipermode_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
 			message("Compiling vss_vehiclebodywindshieldwiperrear_bs_tx.idl")
-			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwiperrear_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
 			message("Compiling vss_vehiclebodywindshieldwiperrear_vd_tx.idl")
-			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+			execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwiperrear_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
 
 			#######################################################################################################################################################################
 			##                                                                   vehicle devices and basic services
@@ -455,18 +452,18 @@ Define the executable with CMake
 			# below are the build steps to build the components that were generated.
 
 			message("Include: wiper proxy/stub for vehicle devices and basic services")
-			include_directories(${CMAKE_CURRENT_LIST_DIR}/generated/vss_files)
-			#add_subdirectory(generated/vss_files/ps)
+			include_directories(${CMAKE_CURRENT_LIST_DIR}/generated/vss_csv_files)
+			#add_subdirectory(generated/vss_csv_files/proxystub)
 
-			add_subdirectory(generated/vss_files/bs_frontwiper)
-			add_subdirectory(generated/vss_files/bs_rainsensor)
-			add_subdirectory(generated/vss_files/bs_rearwiper)
-			add_subdirectory(generated/vss_files/bs_wipermode)
+			add_subdirectory(generated/vss_csv_files/bs_frontwiper)
+			add_subdirectory(generated/vss_csv_files/bs_rainsensor)
+			add_subdirectory(generated/vss_csv_files/bs_rearwiper)
+			add_subdirectory(generated/vss_csv_files/bs_wipermode)
 
-			add_subdirectory(generated/vss_files/vd_frontwiper)
-			add_subdirectory(generated/vss_files/vd_rainsensor)
-			add_subdirectory(generated/vss_files/vd_rearwiper)
-			add_subdirectory(generated/vss_files/vd_wipermode)
+			add_subdirectory(generated/vss_csv_files/vd_frontwiper)
+			add_subdirectory(generated/vss_csv_files/vd_rainsensor)
+			add_subdirectory(generated/vss_csv_files/vd_rearwiper)
+			add_subdirectory(generated/vss_csv_files/vd_wipermode)
 
 			######################################################################################################################################################################
 			#                                                                   basic_system wiper application
@@ -529,10 +526,10 @@ Define the executable with CMake
 
 The build should complete successfully, but during runtime you may encounter an error 😢
 
-SDV Logs
-^^^^^^^^
+Eclipse Open Vehicle-API Logs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To see a detailed description of the error, go to `build/.../bin` and check the SDV log file.
+To see a detailed description of the error, go to `build/.../bin` and check the Eclipse Open Vehicle-API log file.
 
 .. code-block:: console
 
@@ -546,52 +543,52 @@ To see a detailed description of the error, go to `build/.../bin` and check the 
 	sep=;
 	Timestamp;Severity;Tag;Message
 	2025.10.21 09:54:20.742377;Info;";"(0): Begin logging..."
-	2025.10.21 09:54:20.742524;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(120): SDV Application start at 2025-10-21 09:54:20 GTB Daylight Time"
-	2025.10.21 09:54:20.742613;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""core_services.sdv"""
-	2025.10.21 09:54:20.939897;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""process_control.sdv"""
-	2025.10.21 09:54:21.263126;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""data_dispatch_service.sdv"""
-	2025.10.21 09:54:21.449191;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""task_timer.sdv"""
-	2025.10.21 09:54:21.564740;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_frontwiper_tx.sdv"""
-	2025.10.21 09:54:21.686766;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_rainsensor_rx.sdv"""
-	2025.10.21 09:54:21.773725;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_rearwiper_tx.sdv"""
-	2025.10.21 09:54:21.875479;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_wipermode_rx.sdv"""
-	2025.10.21 09:54:21.959318;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_frontwiper_tx.sdv"""
-	2025.10.21 09:54:22.051349;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_rainsensor_rx.sdv"""
-	2025.10.21 09:54:22.120009;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_rearwiper_tx.sdv"""
-	2025.10.21 09:54:22.208582;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_wipermode_rx.sdv"""
-	2025.10.21 09:54:22.209309;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_frontwiper\vd_frontwiper.cpp(32): Could not get signal: CAN_Output.FrontWiperActive [CVehicleDevice]"
+	2025.10.21 09:54:20.742524;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(120): Eclipse Open Vehicle-API Application start at 2025-10-21 09:54:20 GTB Daylight Time"
+	2025.10.21 09:54:20.742613;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""core_services.sdv"""
+	2025.10.21 09:54:20.939897;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""process_control.sdv"""
+	2025.10.21 09:54:21.263126;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""data_dispatch_service.sdv"""
+	2025.10.21 09:54:21.449191;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""task_timer.sdv"""
+	2025.10.21 09:54:21.564740;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_vd_frontwiper_tx.sdv"""
+	2025.10.21 09:54:21.686766;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_vd_rainsensor_rx.sdv"""
+	2025.10.21 09:54:21.773725;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_vd_rearwiper_tx.sdv"""
+	2025.10.21 09:54:21.875479;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_vd_wipermode_rx.sdv"""
+	2025.10.21 09:54:21.959318;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_bs_frontwiper_tx.sdv"""
+	2025.10.21 09:54:22.051349;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_bs_rainsensor_rx.sdv"""
+	2025.10.21 09:54:22.120009;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_bs_rearwiper_tx.sdv"""
+	2025.10.21 09:54:22.208582;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_bs_wipermode_rx.sdv"""
+	2025.10.21 09:54:22.209309;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_csv_files\vd_frontwiper\vd_frontwiper.cpp(32): Could not get signal: CAN_Output.FrontWiperActive [CVehicleDevice]"
 	2025.10.21 09:54:22.209724;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Front_Device"
-	2025.10.21 09:54:22.210399;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_rainsensor\vd_rainsensor.cpp(32): Could not get signal: CAN_Input.RainDetected [CVehicleDeviceRainSensor]"
+	2025.10.21 09:54:22.210399;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_csv_files\vd_rainsensor\vd_rainsensor.cpp(32): Could not get signal: CAN_Input.RainDetected [CVehicleDeviceRainSensor]"
 	2025.10.21 09:54:22.210873;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Weather.Rain_Device"
-	2025.10.21 09:54:22.211498;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_rearwiper\vd_rearwiper.cpp(32): Could not get signal: CAN_Output.RearWiperActive [CVehicleDevice]"
+	2025.10.21 09:54:22.211498;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_csv_files\vd_rearwiper\vd_rearwiper.cpp(32): Could not get signal: CAN_Output.RearWiperActive [CVehicleDevice]"
 	2025.10.21 09:54:22.212190;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Rear_Device"
-	2025.10.21 09:54:22.212906;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_wipermode\vd_wipermode.cpp(32): Could not get signal: CAN_Input.WiperMode [CVehicleDeviceWiperMode]"
+	2025.10.21 09:54:22.212906;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_csv_files\vd_wipermode\vd_wipermode.cpp(32): Could not get signal: CAN_Input.WiperMode [CVehicleDeviceWiperMode]"
 	2025.10.21 09:54:22.213216;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Mode_Device"
-	2025.10.21 09:54:22.213658;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\bs_frontwiper\bs_frontwiper.cpp(18): Could not get interface 'IVSS_WriteIsFrontActive': [CBasicServiceFrontWiper]"
+	2025.10.21 09:54:22.213658;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_csv_files\bs_frontwiper\bs_frontwiper.cpp(18): Could not get interface 'IVSS_WriteIsFrontActive': [CBasicServiceFrontWiper]"
 	2025.10.21 09:54:22.214368;Error;";"D:/Repo_VAPI/vapi-cpp-vehicle-api-platform/export/support/component_impl.h(662): Failed to instantiate object of class Vehicle.Body.Windshield.Wiper.Front_Service - exception thrown during construction! "
 	2025.10.21 09:54:22.214764;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Front_Service"
-	2025.10.21 09:54:22.215299;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\bs_rainsensor\bs_rainsensor.cpp(18): Could not get interface 'IVSS_Detected': [CBasicServiceRainSensor]"
+	2025.10.21 09:54:22.215299;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_csv_files\bs_rainsensor\bs_rainsensor.cpp(18): Could not get interface 'IVSS_Detected': [CBasicServiceRainSensor]"
 	2025.10.21 09:54:22.215790;Error;";"D:/Repo_VAPI/vapi-cpp-vehicle-api-platform/export/support/component_impl.h(662): Failed to instantiate object of class Vehicle.Body.Weather.Rain_Service - exception thrown during construction! "
 	2025.10.21 09:54:22.216127;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Weather.Rain_Service"
-	2025.10.21 09:54:22.216481;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\bs_rearwiper\bs_rearwiper.cpp(18): Could not get interface 'IVSS_WriteIsRearActive': [CBasicServiceRearWiper]"
+	2025.10.21 09:54:22.216481;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_csv_files\bs_rearwiper\bs_rearwiper.cpp(18): Could not get interface 'IVSS_WriteIsRearActive': [CBasicServiceRearWiper]"
 	2025.10.21 09:54:22.216836;Error;";"D:/Repo_VAPI/vapi-cpp-vehicle-api-platform/export/support/component_impl.h(662): Failed to instantiate object of class Vehicle.Body.Windshield.Wiper.Rear_Service - exception thrown during construction! "
 	2025.10.21 09:54:22.217160;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Rear_Service"
-	2025.10.21 09:54:22.218443;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\bs_wipermode\bs_wipermode.cpp(18): Could not get interface 'IVSS_Mode': [CBasicServiceWiperMode]"
+	2025.10.21 09:54:22.218443;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_csv_files\bs_wipermode\bs_wipermode.cpp(18): Could not get interface 'IVSS_Mode': [CBasicServiceWiperMode]"
 	2025.10.21 09:54:22.219018;Error;";"D:/Repo_VAPI/vapi-cpp-vehicle-api-platform/export/support/component_impl.h(662): Failed to instantiate object of class Vehicle.Body.Windshield.Wiper.Mode_Service - exception thrown during construction! "
 	2025.10.21 09:54:22.219504;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Mode_Service"
 	2025.10.21 09:54:22.220283;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\wiper_app\wiper_application.cpp(95): One or more configurations could not be loaded. Cannot continue."
-	2025.10.21 09:54:22.261455;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_wipermode_rx.sdv"""
-	2025.10.21 09:54:22.261681;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_rearwiper_tx.sdv"""
-	2025.10.21 09:54:22.261804;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_rainsensor_rx.sdv"""
-	2025.10.21 09:54:22.261911;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_frontwiper_tx.sdv"""
-	2025.10.21 09:54:22.262035;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_wipermode_rx.sdv"""
-	2025.10.21 09:54:22.262149;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_rearwiper_tx.sdv"""
-	2025.10.21 09:54:22.262266;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_rainsensor_rx.sdv"""
-	2025.10.21 09:54:22.262380;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_frontwiper_tx.sdv"""
-	2025.10.21 09:54:22.262602;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""task_timer.sdv"""
-	2025.10.21 09:54:22.262872;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""data_dispatch_service.sdv"""
-	2025.10.21 09:54:22.263158;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""process_control.sdv"""
-	2025.10.21 09:54:22.263244;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(559): SDV Application end at 2025-10-21 09:54:22 GTB Daylight Time"
+	2025.10.21 09:54:22.261455;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_bs_wipermode_rx.sdv"""
+	2025.10.21 09:54:22.261681;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_bs_rearwiper_tx.sdv"""
+	2025.10.21 09:54:22.261804;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_bs_rainsensor_rx.sdv"""
+	2025.10.21 09:54:22.261911;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_bs_frontwiper_tx.sdv"""
+	2025.10.21 09:54:22.262035;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_vd_wipermode_rx.sdv"""
+	2025.10.21 09:54:22.262149;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_vd_rearwiper_tx.sdv"""
+	2025.10.21 09:54:22.262266;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_vd_rainsensor_rx.sdv"""
+	2025.10.21 09:54:22.262380;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_vd_frontwiper_tx.sdv"""
+	2025.10.21 09:54:22.262602;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""task_timer.sdv"""
+	2025.10.21 09:54:22.262872;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""data_dispatch_service.sdv"""
+	2025.10.21 09:54:22.263158;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""process_control.sdv"""
+	2025.10.21 09:54:22.263244;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(559): Eclipse Open Vehicle-API Application end at 2025-10-21 09:54:22 GTB Daylight Time"
 	2025.10.21 09:54:22.263277;Info;";"(0): End logging..."
 
    </pre>
@@ -608,13 +605,13 @@ You will see errors for each signals because the signals were not defined and re
 
 .. code-block:: console
 
-	2025.10.21 09:54:22.209309;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_files\vd_frontwiper\vd_frontwiper.cpp(32): Could not get signal: CAN_Output.FrontWiperActive [CVehicleDevice]"
+	2025.10.21 09:54:22.209309;Error;";"D:\VAPI_Project_Test\tmp_project\wiper_example\generated\vss_csv_files\vd_frontwiper\vd_frontwiper.cpp(32): Could not get signal: CAN_Output.FrontWiperActive [CVehicleDevice]"
 	2025.10.21 09:54:22.209724;Error;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_config.cpp(214): Failed to load component: Vehicle.Body.Windshield.Wiper.Front_Device"
 
 Signal Name Definitions
-^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
 
-To Register the signals first you need to include the generated file `vss_files\signal_identifier.h`.
+To Register the signals first you need to include the generated file `vss_csv_files\signal_identifier.h`.
 
 This file defines the signal names used in the application. It uses conditional inclusion to either import external definitions or define them locally.
 
@@ -627,12 +624,12 @@ Register And Reset Signals
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 After you defined the signals, then you need to register them.
-This function should registers the signals used by the application to communicate with the SDV signal bus.
+This function should registers the signals used by the application to communicate with the Eclipse Open Vehicle-API signal bus.
 
 Why it's important:
 
 - Without signal registration, the application cannot receive sensor input or send control commands.
-- It connects the application to the SDV Dispatch Service, enabling real-time interaction.
+- It connects the application to the Eclipse Open Vehicle-API Dispatch Service, enabling real-time interaction.
 - It defines the communication interface of the application.
 - Reset signal ensures that no lingering signal connections remain after the application exits, which is important for clean shutdown and avoiding memory leaks.
 
@@ -670,7 +667,7 @@ Why it's important:
 
 CDispatchService Class Overview:
 
-The CDispatchService class is a convenience wrapper within the Software Defined Vehicle (SDV) framework that facilitates interaction with the **Data Dispatch Service**. It provides methods to register, publish, and subscribe to signals used for communication between software components.
+The CDispatchService class is a convenience wrapper within the Software Defined Vehicle (Eclipse Open Vehicle-API) framework that facilitates interaction with the **Data Dispatch Service**. It provides methods to register, publish, and subscribe to signals used for communication between software components.
 
 Purpose of RegisterTxSignal and RegisterRxSignal:
 
@@ -743,31 +740,31 @@ Your Build and Execution should be done with success now and you can check the S
 	sep=;
 	Timestamp;Severity;Tag;Message
 	2025.10.21 11:23:25.270052;Info;";"(0): Begin logging..."
-	2025.10.21 11:23:25.270130;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(120): SDV Application start at 2025-10-21 11:23:25 GTB Daylight Time"
-	2025.10.21 11:23:25.270192;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""core_services.sdv"""
-	2025.10.21 11:23:25.457656;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""process_control.sdv"""
-	2025.10.21 11:23:25.748654;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""data_dispatch_service.sdv"""
-	2025.10.21 11:23:25.882185;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""task_timer.sdv"""
-	2025.10.21 11:23:25.970786;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_frontwiper_tx.sdv"""
-	2025.10.21 11:23:26.067877;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_rainsensor_rx.sdv"""
-	2025.10.21 11:23:26.138250;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_rearwiper_tx.sdv"""
-	2025.10.21 11:23:26.219724;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_vd_wipermode_rx.sdv"""
-	2025.10.21 11:23:26.289734;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_frontwiper_tx.sdv"""
-	2025.10.21 11:23:26.357879;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_rainsensor_rx.sdv"""
-	2025.10.21 11:23:26.419689;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_rearwiper_tx.sdv"""
-	2025.10.21 11:23:26.490471;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded SDV module: ""wiper_bs_wipermode_rx.sdv"""
-	2025.10.21 11:23:26.554869;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_wipermode_rx.sdv"""
-	2025.10.21 11:23:26.555302;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_rearwiper_tx.sdv"""
-	2025.10.21 11:23:26.555631;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_rainsensor_rx.sdv"""
-	2025.10.21 11:23:26.555934;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_bs_frontwiper_tx.sdv"""
-	2025.10.21 11:23:26.556240;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_wipermode_rx.sdv"""
-	2025.10.21 11:23:26.556535;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_rearwiper_tx.sdv"""
-	2025.10.21 11:23:26.556834;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_rainsensor_rx.sdv"""
-	2025.10.21 11:23:26.557120;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""wiper_vd_frontwiper_tx.sdv"""
-	2025.10.21 11:23:26.557633;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""task_timer.sdv"""
-	2025.10.21 11:23:26.558005;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""data_dispatch_service.sdv"""
-	2025.10.21 11:23:26.558821;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded SDV module: ""process_control.sdv"""
-	2025.10.21 11:23:26.559089;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(559): SDV Application end at 2025-10-21 11:23:26 GTB Daylight Time"
+	2025.10.21 11:23:25.270130;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(120): Eclipse Open Vehicle-API Application start at 2025-10-21 11:23:25 GTB Daylight Time"
+	2025.10.21 11:23:25.270192;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""core_services.sdv"""
+	2025.10.21 11:23:25.457656;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""process_control.sdv"""
+	2025.10.21 11:23:25.748654;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""data_dispatch_service.sdv"""
+	2025.10.21 11:23:25.882185;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""task_timer.sdv"""
+	2025.10.21 11:23:25.970786;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_vd_frontwiper_tx.sdv"""
+	2025.10.21 11:23:26.067877;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_vd_rainsensor_rx.sdv"""
+	2025.10.21 11:23:26.138250;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_vd_rearwiper_tx.sdv"""
+	2025.10.21 11:23:26.219724;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_vd_wipermode_rx.sdv"""
+	2025.10.21 11:23:26.289734;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_bs_frontwiper_tx.sdv"""
+	2025.10.21 11:23:26.357879;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_bs_rainsensor_rx.sdv"""
+	2025.10.21 11:23:26.419689;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_bs_rearwiper_tx.sdv"""
+	2025.10.21 11:23:26.490471;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(300): Successfully loaded Eclipse Open Vehicle-API module: ""wiper_bs_wipermode_rx.sdv"""
+	2025.10.21 11:23:26.554869;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_bs_wipermode_rx.sdv"""
+	2025.10.21 11:23:26.555302;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_bs_rearwiper_tx.sdv"""
+	2025.10.21 11:23:26.555631;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_bs_rainsensor_rx.sdv"""
+	2025.10.21 11:23:26.555934;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_bs_frontwiper_tx.sdv"""
+	2025.10.21 11:23:26.556240;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_vd_wipermode_rx.sdv"""
+	2025.10.21 11:23:26.556535;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_vd_rearwiper_tx.sdv"""
+	2025.10.21 11:23:26.556834;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_vd_rainsensor_rx.sdv"""
+	2025.10.21 11:23:26.557120;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""wiper_vd_frontwiper_tx.sdv"""
+	2025.10.21 11:23:26.557633;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""task_timer.sdv"""
+	2025.10.21 11:23:26.558005;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""data_dispatch_service.sdv"""
+	2025.10.21 11:23:26.558821;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\module.cpp(349): Successfully unloaded Eclipse Open Vehicle-API module: ""process_control.sdv"""
+	2025.10.21 11:23:26.559089;Info;";"D:\Repo_VAPI\vapi-cpp-vehicle-api-platform\sdv_services\core\app_control.cpp(559): Eclipse Open Vehicle-API Application end at 2025-10-21 11:23:26 GTB Daylight Time"
 	2025.10.21 11:23:26.559199;Info;";"(0): End logging..."
    
    </pre>
@@ -903,7 +900,7 @@ Your Build and Execution should be done with success now and you can check the S
 		#include <support/app_control.h>
 		#include <support/signal_support.h>
 
-		#include "../generated/vss_files/signal_identifier.h"
+		#include "../generated/vss_csv_files/signal_identifier.h"
 
 		/**
 		 * @brief Application Class for the Wiper Example
@@ -980,8 +977,8 @@ To understand the full execution flow, check :ref:`diag-main-sequence`.
    
    After completing this guide, you now know how to:
    
-   - Initialize the SDV application and set the runtime environment.
+   - Initialize the Eclipse Open Vehicle-API application and set the runtime environment.
    - Load TOML configuration files for dispatch, timers, and services.
    - Define signal names and register them for communication.
    - Build and run the application using CMake.
-   - Debug and verify your setup using SDV logs.
+   - Debug and verify your setup using Eclipse Open Vehicle-API logs.

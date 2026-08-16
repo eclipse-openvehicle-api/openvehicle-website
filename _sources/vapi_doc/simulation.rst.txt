@@ -31,13 +31,18 @@ The cmake project for a FMU is created out of a dbc file. The dbc file includes 
 
     Example: 
 
-    sdv_dbc_util datalink_2doors_example.dbc -Ogenerated\\ --nodesdoors --version1.0.0.1 --moduleDoors2ExampleFMU --dl_lib_namecan_dl_example
+    sdv_dbc_util datalink_2doors_example.dbc -Ogenerated\\ --impl_nodesdoors --fmuDoors2ExampleFMU --dl_lib_namecan_dl_example
 
-    -O              output folder 'generated'
-    --nodes         node in the dbc file to be used 'doors'
-    --version       optional version information '1.0.0.1'
-    --module        name of the FMU 'Doors4ExampleFMU'
-    --dl_lib_name   datalink library name 'can_dl_example'
+    --impl_nodes<string>[,<string>]]    = Specifies which nodes are implemented by this device.
+    --operate_nodes<string>[,<string>]] = Specifies which nodes are operated by this device.
+    --fmu[<string>]                     = Generate FMU module optionally with supplied identifier (default "BasicModelIdentifier").
+    --model[<string>]                   = Same as --fmu
+    --dl_lib_name[<string>]             = Generate data-link library with optional target location (default "can_dl").
+    --vehiclde_bus[<string>]            = Generate vehicle bus component(s) with optional target location (default "vehicle_bus").
+    --idl[<path>]                       = Generate vehicle bus IDL with
+    --ifc_idx                           = Optional physical interface index used for the communication (default is 0).
+    --ifc_name                          = Optional name of the CAN component to use for the communication (default = "vehicle_bus.idl")
+    -O<path>                            = Output directory.
 
     Afterwards the following has to be done:
     - required configuration files have to be put into the subfolder
