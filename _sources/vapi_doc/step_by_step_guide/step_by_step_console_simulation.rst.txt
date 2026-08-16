@@ -7,14 +7,14 @@ Step-by-Step: Console & Simulation Data for Wiper Example
 
    **Step Goal**
    
-   In this guide, you will learn how to build a console-based simulation for the Wiper example using the SDV framework.  
+   In this guide, you will learn how to build a console-based simulation for the Wiper example using the Eclipse Open Vehicle-API framework.  
    The goal is to visualize signal behavior in real time and simulate user interactions like switching between Auto and Manual modes, detecting rain, and activating wipers - all from the terminal.  
    By the end, you'll be able to run a fully interactive simulation that reflects signal changes and service responses.
 
 Overview
 --------
 
-This page guides you through building a console-based simulation for the Wiper example using the SDV framework.
+This page guides you through building a console-based simulation for the Wiper example using the Eclipse Open Vehicle-API framework.
 The goal is to visualize signal behavior and simulate interactions such as switching between Auto and Manual modes,
 activating wipers manually, and responding to rain detection, all within a terminal interface.
 
@@ -150,7 +150,7 @@ Let's break it down.
 	
 	sdv::core::CDispatchService dispatch;
 
-This object lets you subscribe to signals and register them for transmission or reception. It's your gateway to the SDV signal bus.
+This object lets you subscribe to signals and register them for transmission or reception. It's your gateway to the Eclipse Open Vehicle-API signal bus.
 
 **Step 5.2: Subscribe to RX Signals**
 
@@ -351,7 +351,7 @@ Step 9: Main function
 
 Now that we have built all the pieces: signal registration, data consumers, console display, and the runtime loop. We need a `main()` function to bring everything together.
 
-Think of `main()` as the conductor of your SDV simulation. It calls each part in the right order so the system starts correctly, runs smoothly, and shuts down cleanly.
+Think of `main()` as the conductor of your Eclipse Open Vehicle-API simulation. It calls each part in the right order so the system starts correctly, runs smoothly, and shuts down cleanly.
 
 Here is how it works:
 
@@ -407,12 +407,12 @@ This structure ensures your simulation behaves predictably and cleanly from star
    After completing this guide, you now know how to:
 
    - Create a console interface to display signal states and user instructions.
-   - Connect to SDV services and devices to retrieve and update signal data.
+   - Connect to Eclipse Open Vehicle-API services and devices to retrieve and update signal data.
    - Register RX and TX signals and handle them with callback functions.
    - Simulate user input to control wiper behavior in Auto and Manual modes.
    - Cleanly reset signals and shut down the application.
 
-   You've successfully built a simulation that helps visualize and test your SDV application logic in a user-friendly way. Awesome job!
+   You've successfully built a simulation that helps visualize and test your Eclipse Open Vehicle-API application logic in a user-friendly way. Awesome job!
 
 Common issues & How to Avoid Them
 ---------------------------------
@@ -490,7 +490,7 @@ Example:
 """""""""""""""""
 After applying the console related modifications, we must ensure that the main application calls the functions in the following order. Each step prepares the environment for the next one:
 
-- Initialize() - Initializes the SDV framework, loads the configuration files, and registers the signals needed by both the application and the console.
+- Initialize() - Initializes the Eclipse Open Vehicle-API framework, loads the configuration files, and registers the signals needed by both the application and the console.
 - PrepareDataConsumers() - Sets up the console-side data consumers so they can subscribe to the registered signals and receive updates.
 - InitData() - Initializes internal console state and prepares initial values before entering the simulation loop.
 - SetRunningMode() - Switches the application into active mode, allowing real-time event processing and signal updates.
@@ -510,7 +510,7 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 	.. code-block:: text
 	
 		#include "console.h"
-		#include "../generated/vss_files/signal_identifier.h"
+		#include "../generated/vss_csv_files/signal_identifier.h"
 
 		#ifdef _WIN32
 		#include <conio.h>      // Needed for _kbhit
@@ -909,10 +909,10 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 
 		#include <fcntl.h>
 
-		#include "../generated/vss_files/vss_vehiclebodyweatherrain_bs_rx.h"
-		#include "../generated/vss_files/vss_vehiclebodywindshieldwiperfront_bs_tx.h"
-		#include "../generated/vss_files/vss_vehiclebodywindshieldwipermode_bs_rx.h"
-		#include "../generated/vss_files/vss_vehiclebodywindshieldwiperrear_bs_tx.h"
+		#include "../generated/vss_csv_files/vss_vehiclebodyweatherrain_bs_rx.h"
+		#include "../generated/vss_csv_files/vss_vehiclebodywindshieldwiperfront_bs_tx.h"
+		#include "../generated/vss_csv_files/vss_vehiclebodywindshieldwipermode_bs_rx.h"
+		#include "../generated/vss_csv_files/vss_vehiclebodywindshieldwiperrear_bs_tx.h"
 
 		#ifdef __unix__
 		#include <termios.h>        // Needed for tcgetattr and fcntl
@@ -1174,11 +1174,8 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 
 	.. code-block:: text
 	
+		cmake_minimum_required (VERSION 3.20)
 		project(WiperDemoExample)
-
-		# Use new policy for project version settings and default warning level
-		cmake_policy(SET CMP0048 NEW)   # requires CMake 3.14
-		cmake_policy(SET CMP0092 NEW)   # requires CMake 3.15
 
 		set(CMAKE_CXX_STANDARD 17)
 
@@ -1200,25 +1197,25 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 
 		# Execute sdv_vss_util to create IDL files for devices and basic services.
 		message("Create interface code for devices and basic services of wiper example.")
-		execute_process(COMMAND "${SDV_VSS_UTIL}" "${PROJECT_SOURCE_DIR}/vss_wiper_example.csv" "-O${PROJECT_SOURCE_DIR}/generated/" --prefixwiper --version1.0.0.1 --enable_components)
+		execute_process(COMMAND "${SDV_VSS_UTIL}" "${PROJECT_SOURCE_DIR}/vss_wiper_example.csv" "-O${PROJECT_SOURCE_DIR}/generated/" --prefixwiper --vss_version1.0.0.1 --enable_components)
 
 		# Execute the IDL compiler for the VSS interfaces to digest interface code. Compile with --no_ps as we do not need proxies and stubs as we do not like to expose these interfaces for complex services or applications
 		message("Compiling vss_vehiclebodyweatherrain_vd_tx.idl")
-		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --ps_lib_namewiper_proxystub)
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodyweatherrain_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --ps_lib_namewiper_proxystub)
 		message("Compiling vss_vehiclebodyweatherrain_vd_rx.idl")
-		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodyweatherrain_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
 		message("Compiling vss_vehiclebodywindshieldwiperFront_bs_tx.idl")
-		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --ps_lib_namewiper_proxystub)
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwiperfront_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --ps_lib_namewiper_proxystub)
 		message("Compiling vss_vehiclebodywindshieldwiperfront_vd_tx.idl")
-		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwiperfront_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
 		message("Compiling vss_vehiclebodywindshieldwiperMode_bs_rx.idl")
-		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --ps_lib_namewiper_proxystub)
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwipermode_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --ps_lib_namewiper_proxystub)
 		message("Compiling vss_vehiclebodywindshieldwipermode_vd_rx.idl")
-		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwipermode_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
 		message("Compiling vss_vehiclebodywindshieldwiperrear_bs_tx.idl")
-		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --ps_lib_namewiper_proxystub)
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwiperrear_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --ps_lib_namewiper_proxystub)
 		message("Compiling vss_vehiclebodywindshieldwiperrear_vd_tx.idl")
-		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+		execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwiperrear_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
 
 		#######################################################################################################################################################################
 		##                                                                   vehicle devices and basic services
@@ -1228,18 +1225,18 @@ After updating the console logic, remember to also update the CMakeLists.txt fil
 		# below are the build steps to build the components that were generated.
 
 		message("Include: wiper proxy/stub for vehicle devices and basic services")
-		include_directories(${CMAKE_CURRENT_LIST_DIR}/generated/vss_files)
-		add_subdirectory(generated/vss_files/ps)
+		include_directories(${CMAKE_CURRENT_LIST_DIR}/generated/vss_csv_files)
+		add_subdirectory(generated/vss_csv_files/proxystub)
 
-		add_subdirectory(generated/vss_files/bs_frontwiper)
-		add_subdirectory(generated/vss_files/bs_rainsensor)
-		add_subdirectory(generated/vss_files/bs_rearwiper)
-		add_subdirectory(generated/vss_files/bs_wipermode)
+		add_subdirectory(generated/vss_csv_files/bs_frontwiper)
+		add_subdirectory(generated/vss_csv_files/bs_rainsensor)
+		add_subdirectory(generated/vss_csv_files/bs_rearwiper)
+		add_subdirectory(generated/vss_csv_files/bs_wipermode)
 
-		add_subdirectory(generated/vss_files/vd_frontwiper)
-		add_subdirectory(generated/vss_files/vd_rainsensor)
-		add_subdirectory(generated/vss_files/vd_rearwiper)
-		add_subdirectory(generated/vss_files/vd_wipermode)
+		add_subdirectory(generated/vss_csv_files/vd_frontwiper)
+		add_subdirectory(generated/vss_csv_files/vd_rainsensor)
+		add_subdirectory(generated/vss_csv_files/vd_rearwiper)
+		add_subdirectory(generated/vss_csv_files/vd_wipermode)
 
 		######################################################################################################################################################################
 		#                                                                   basic_system wiper application

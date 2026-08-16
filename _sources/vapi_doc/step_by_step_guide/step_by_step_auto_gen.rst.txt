@@ -8,7 +8,7 @@ Step-by-Step: Create IDL Interfaces, Vehicle Devices and Basic Services
 
    **Step Goal**
    
-   In this guide, you will learn how to manually generate VSS components, IDL interfaces, and basic services for a vehicle-related example using the SDV framework tools.
+   In this guide, you will learn how to manually generate VSS components, IDL interfaces, and basic services for a vehicle-related example using the Eclipse Open Vehicle-API framework tools.
    
    The goal is to understand each step clearly before automating the process with CMake.  
    
@@ -46,9 +46,8 @@ The content of the CMakeList.txt:
 
 .. code-block:: text
 
+	cmake_minimum_required (VERSION 3.20)
 	project(WiperDemoExample)
-	cmake_policy(SET CMP0048 NEW)
-	cmake_policy(SET CMP0092 NEW)
 	set(CMAKE_CXX_STANDARD 17)
 	set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 	include_directories(${SDV_FRAMEWORK_DEV_INCLUDE})
@@ -108,7 +107,7 @@ The CSV file defines signals, their types, and optional formulas. For example, W
 
 .. code-block:: console
 
-       SDV_VSS_UTIL.exe vss_wiper_example.csv -Ogenerated/ --prefixwiper --version1.0.0.1 --enable_components
+       SDV_VSS_UTIL.exe vss_wiper_example.csv -Ogenerated/ --prefixwiper --vss_version1.0.0.1 --enable_components
 
 Verification:
 '''''''''''''
@@ -122,7 +121,7 @@ After executing the ``sdv_vss_util``, following files will be in the generated f
    <summary> View Folder Output Structure </summary>
    <pre>
    
-   generated/vss_files/
+   generated/vss_csv_files/
    +-- bs_frontwiper/
    |   +-- bs_frontwiper.cpp
    |   +-- bs_frontwiper.h
@@ -185,7 +184,7 @@ The single signal definition (single line) of the front wiper basic service in t
 	/**
 	 * @file BS_FrontWiper.h
 	 * @date 2025-11-26 14:57:56
-	 * File is auto generated from VSS utility
+	 * File is auto generated from VSS-CSV utility
 	 * VSS Version:1.0.0.1
 	 */
 	#ifndef __VSS_GENERATED__BS_FRONTWIPER_H_20251126_145756_462__
@@ -244,7 +243,7 @@ The single signal definition (single line) of the front wiper basic service in t
 	/**
 	 * @file BS_FrontWiper.cpp
 	 * @date 2025-11-26 14:57:56
-	 * File is auto generated from VSS utility
+	 * File is auto generated from VSS-CSV utility
 	 * VSS Version:1.0.0.1
 	 */
 	#include <iostream>
@@ -286,7 +285,7 @@ The single signal definition (single line) of the front wiper basic service in t
 	/**
 	 * @file VSS_VehicleBodyWeatherRain_bs_rx.idl
 	 * @date 2025-10-14 22:10:50
-	 * File is auto generated from VSS utility.
+	 * File is auto generated from VSS-CSV utility.
 	 * VSS Version:1.0.0.1
 	 */
 	#include "interfaces/core.idl"
@@ -356,7 +355,7 @@ The single signal definition (single line) of the front wiper basic service in t
 	 /**
 	 * @file signal_identifier.h
 	 * @date 2025-10-14 22:10:50
-	 * File is auto generated from VSS utility.
+	 * File is auto generated from VSS-CSV utility.
 	 * VSS Version:1.0.0.1
 	 */
 	#ifndef __VSS_GENERATED__SIGNAL_IDENTIFIER_H_20251014_221050_829__
@@ -387,18 +386,18 @@ The :term:`Vehicle Device` interfaces are not to meant to be used from another p
 
 The interfaces of :term:`Basic Service` s instead need to be accessible from another processes. Therefore we cannot use the --no_ps option. Use --ps_lib_name<some_name> instead to give the binary a name.
 
-Repeat for all .idl files in ``generated/vss_files/``
+Repeat for all .idl files in ``generated/vss_csv_files/``
 
 .. code-block:: console
 
-       SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWeatherRain_vd_rx.idl -Ogenerated/vss_files/ -I<export_path> -Igenerated/vss_files/ --no_ps
-       SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWindshieldWiperMode_vd_rx.idl -Ogenerated/vss_files/ -I<export_path> -Igenerated/vss_files/ --no_ps
-       SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWindshieldWiperFront_vd_tx.idl -Ogenerated/vss_files/ -I<export_path> -Igenerated/vss_files/ --no_ps
-       SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWindshieldWiperRear_vd_tx.idl -Ogenerated/vss_files/ -I<export_path> -Igenerated/vss_files/ --no_ps
-       SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWeatherRain_bs_rx.idl -Ogenerated/vss_files/ -I<export_path> -Igenerated/vss_files/ --ps_lib_namewiper_proxystub
-       SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWindshieldWiperMode_bs_rx.idl -Ogenerated/vss_files/ -I<export_path> -Igenerated/vss_files/ --ps_lib_namewiper_proxystub
-       SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWindshieldWiperFront_bs_tx.idl -Ogenerated/vss_files/ -I<export_path> -Igenerated/vss_files/  --ps_lib_namewiper_proxystub  
-       SDV_IDL_COMPILER.exe generated/vss_files/VSS_VehicleBodyWindshieldWiperRear_bs_tx.idl -Ogenerated/vss_files/ -I<export_path> -Igenerated/vss_files/  --ps_lib_namewiper_proxystub
+       SDV_IDL_COMPILER.exe generated/vss_csv_files/VSS_VehicleBodyWeatherRain_vd_rx.idl -Ogenerated/vss_csv_files/ -I<export_path> -Igenerated/vss_csv_files/ --no_ps
+       SDV_IDL_COMPILER.exe generated/vss_csv_files/VSS_VehicleBodyWindshieldWiperMode_vd_rx.idl -Ogenerated/vss_csv_files/ -I<export_path> -Igenerated/vss_csv_files/ --no_ps
+       SDV_IDL_COMPILER.exe generated/vss_csv_files/VSS_VehicleBodyWindshieldWiperFront_vd_tx.idl -Ogenerated/vss_csv_files/ -I<export_path> -Igenerated/vss_csv_files/ --no_ps
+       SDV_IDL_COMPILER.exe generated/vss_csv_files/VSS_VehicleBodyWindshieldWiperRear_vd_tx.idl -Ogenerated/vss_csv_files/ -I<export_path> -Igenerated/vss_csv_files/ --no_ps
+       SDV_IDL_COMPILER.exe generated/vss_csv_files/VSS_VehicleBodyWeatherRain_bs_rx.idl -Ogenerated/vss_csv_files/ -I<export_path> -Igenerated/vss_csv_files/ --ps_lib_namewiper_proxystub
+       SDV_IDL_COMPILER.exe generated/vss_csv_files/VSS_VehicleBodyWindshieldWiperMode_bs_rx.idl -Ogenerated/vss_csv_files/ -I<export_path> -Igenerated/vss_csv_files/ --ps_lib_namewiper_proxystub
+       SDV_IDL_COMPILER.exe generated/vss_csv_files/VSS_VehicleBodyWindshieldWiperFront_bs_tx.idl -Ogenerated/vss_csv_files/ -I<export_path> -Igenerated/vss_csv_files/  --ps_lib_namewiper_proxystub  
+       SDV_IDL_COMPILER.exe generated/vss_csv_files/VSS_VehicleBodyWindshieldWiperRear_bs_tx.idl -Ogenerated/vss_csv_files/ -I<export_path> -Igenerated/vss_csv_files/  --ps_lib_namewiper_proxystub
 
 6. Automate Code Generation with CMake
 """"""""""""""""""""""""""""""""""""""
@@ -411,40 +410,39 @@ After verifying the manual steps, you can automate the process using CMake. Belo
 
 .. code-block:: cmake
 
+    cmake_minimum_required (VERSION 3.20)
     project(WiperDemoExample)
-    cmake_policy(SET CMP0048 NEW)
-    cmake_policy(SET CMP0092 NEW)
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_VISIBILITY_PRESET hidden)
     include_directories(${SDV_FRAMEWORK_DEV_INCLUDE})
 
     # Generate VSS components
-    execute_process(COMMAND "${SDV_VSS_UTIL}" "${PROJECT_SOURCE_DIR}/vss_wiper_example.csv" "-O${PROJECT_SOURCE_DIR}/generated/" --prefixwiper --version1.0.0.1 --enable_components)
+    execute_process(COMMAND "${SDV_VSS_UTIL}" "${PROJECT_SOURCE_DIR}/vss_wiper_example.csv" "-O${PROJECT_SOURCE_DIR}/generated/" --prefixwiper --vss_version1.0.0.1 --enable_components)
 
     # Compile IDL files
-    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
-    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
-    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
-    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --no_ps)
+    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodyweatherrain_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
+    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwipermode_vd_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
+    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwiperfront_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
+    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwiperrear_vd_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --no_ps)
 
-    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodyweatherrain_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --ps_lib_namewiper_proxystub)
-    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwipermode_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --ps_lib_namewiper_proxystub)
-    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperfront_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --ps_lib_namewiper_proxystub)
-    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_files/vss_vehiclebodywindshieldwiperrear_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_files/ --ps_lib_namewiper_proxystub)
+    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodyweatherrain_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --ps_lib_namewiper_proxystub)
+    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwipermode_bs_rx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --ps_lib_namewiper_proxystub)
+    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwiperfront_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --ps_lib_namewiper_proxystub)
+    execute_process(COMMAND "${SDV_IDL_COMPILER}" "${PROJECT_SOURCE_DIR}/generated/vss_csv_files/vss_vehiclebodywindshieldwiperrear_bs_tx.idl" "-O${PROJECT_SOURCE_DIR}/generated/vss_csv_files/" "-I${SDV_FRAMEWORK_DEV_INCLUDE}" -Igenerated/vss_csv_files/ --ps_lib_namewiper_proxystub)
 
     # Include proxy and stub binary
-    add_subdirectory(generated/vss_files/ps)
+    add_subdirectory(generated/vss_csv_files/proxystub)
 
     # Include generated components
-    add_subdirectory(generated/vss_files/bs_wipermode)
-    add_subdirectory(generated/vss_files/vd_wipermode)
-    add_subdirectory(generated/vss_files/vd_rainsensor)
-    add_subdirectory(generated/vss_files/bs_rainsensor)
+    add_subdirectory(generated/vss_csv_files/bs_wipermode)
+    add_subdirectory(generated/vss_csv_files/vd_wipermode)
+    add_subdirectory(generated/vss_csv_files/vd_rainsensor)
+    add_subdirectory(generated/vss_csv_files/bs_rainsensor)
 
-    add_subdirectory(generated/vss_files/vd_frontwiper)
-    add_subdirectory(generated/vss_files/bs_frontwiper)
-    add_subdirectory(generated/vss_files/vd_rearwiper)
-    add_subdirectory(generated/vss_files/bs_rearwiper)
+    add_subdirectory(generated/vss_csv_files/vd_frontwiper)
+    add_subdirectory(generated/vss_csv_files/bs_frontwiper)
+    add_subdirectory(generated/vss_csv_files/vd_rearwiper)
+    add_subdirectory(generated/vss_csv_files/bs_rearwiper)
 
 Be aware that the `execute_process` is a configuration-time command of CMake, not a build-time command.
 
